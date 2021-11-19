@@ -7,7 +7,7 @@ namespace Utility
         static char buffer[2048]{ 0 };          // Temp buffer
         va_list params;                         // Variable argument params start
 
-        const char *pLogFileName("log.txt"),
+        const char *pLogFileName("log.txt");
         const char *pMode("a+");
 
         va_start(params, pFmt);                 // Try to print in allocated space
