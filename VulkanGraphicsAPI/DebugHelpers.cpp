@@ -2,12 +2,13 @@
 
 namespace Utility
 {
-    void DebugHelpers::DPrintf(const char* pFmt, ...)
+    void DebugHelpers::DPrintf(const char *pFmt, ...)
     {
         static char buffer[2048]{ 0 };          // Temp buffer
         va_list params;                         // Variable argument params start
+
         const char *pLogFileName("log.txt"),
-                   *pMode("a+");
+        const char *pMode("a+");
 
         va_start(params, pFmt);                 // Try to print in allocated space
         vsprintf_s(buffer, pFmt, params);       // Format data into a string buffer
