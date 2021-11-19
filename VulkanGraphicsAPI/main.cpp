@@ -1,15 +1,17 @@
-#include <vulkan/vulkan.hpp>
+#include "DebugHelpers.hpp"
+
+using namespace Utility;
 
 int main()
 {
-    const char* appName = "Hello Vulkan!";
+    const char *pAppName = "Hello Vulkan!";
 
     // Fill out application description
     VkApplicationInfo applicationInfo
     {
-        .sType			  = VK_STRUCTURE_TYPE_APPLICATION_INFO,		// Mandatory
-        .pNext			  = NULL,									// Mandatory
-        .pApplicationName = appName,								// Name of the application
+        .sType			  = VK_STRUCTURE_TYPE_APPLICATION_INFO,		// Mandatory, describes type of structure
+        .pNext			  = NULL,									// Mandatory, stores pointers to extension-specific structures
+        .pApplicationName = pAppName,								// Name of the application
         .pEngineName	  = NULL,									// Name of the engine
         .engineVersion	  = 1,										// Version of the engine
         .apiVersion		  = VK_API_VERSION_1_0						// Version of Vulkan used by application
@@ -33,9 +35,6 @@ int main()
     VkResult result = vkCreateInstance(&instanceCreateInfo, 
                                        NULL, 
                                        &instance);
-
-    assert(result == VK_SUCCESS && 
-           "Failed to create Vulkan Instance.");
 
     vkDestroyInstance(instance, NULL);
 
