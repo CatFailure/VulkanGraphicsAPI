@@ -53,6 +53,6 @@ namespace Utility
     class DebugHelpers
     {
     public:
-        static void DPrintf(const char *pFmt, ...);
+        static void DPrintf(const char *format, ...);
     };
 }

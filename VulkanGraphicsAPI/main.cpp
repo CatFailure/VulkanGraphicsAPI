@@ -3,9 +3,9 @@
 using namespace Utility;
 
 LRESULT CALLBACK WndProc(HWND hWnd,
-    UINT uMsg,
-    WPARAM wParam,
-    LPARAM lParam)
+                         UINT uMsg,
+                         WPARAM wParam,
+                         LPARAM lParam)
 {
     switch (uMsg)
     {
@@ -22,8 +22,8 @@ LRESULT CALLBACK WndProc(HWND hWnd,
 }
 
 void SetupWin32Window(const int width,
-    const int height,
-    HWND *pOutWindowHandle)
+                      const int height,
+                      HWND *pOutWindowHandle)
 {
     // Defines window properties
     HINSTANCE hInst{ GetModuleHandle(NULL) };
@@ -55,10 +55,70 @@ void SetupWin32Window(const int width,
                                        hInst,                               // Exe File Handle
                                        NULL);                               // No params to pass
 
-// Was this successful?
+    // Was this successful?
     DBG_ASSERT(*pOutWindowHandle != NULL);
 }
 
+void SetupVulkanInstance(HWND windowHandle,         // Win32 Handle
+                         VkInstance *pOutInstance,  // Instance Handle
+                         VkSurfaceKHR *pOutSurface) // Surface Handle
+{
+    const char *layers[] { "VK_LAYER_NV_optimus" };
+    uint32_t layerCount(1), extensionCount(0);
+
+#ifndef ENABLE_VULKAN_DEBUG_CALLBACK
+    const char *extensions[]
+    {
+        "VK_KHR_surface",
+        "VK_KHR_win32_surface",
+        "VK_EXT_debug_report",
+    };
+
+    extensionCount = 3;
+#else
+    const char *extensions[]
+    {
+        "VK_KHR_surface",
+        "VK_KHR_win32_surface",
+    };
+
+    extensionCount = 2;
+#endif // !ENABLE_VULKAN_DEBUG_CALLBACK
+
+    // Information about the application
+    // to pass to the Vulkan driver.
+    VkApplicationInfo applicationInfo
+    {
+        .sType            = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+        .pApplicationName = "Hello Vulkan",
+        .engineVersion    = 1,
+        .apiVersion       = VK_API_VERSION_1_0
+    };
+
+    // Fill out instance description
+    VkInstanceCreateInfo instanceCreateInfo
+    {
+        .sType					 = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,	// Mandatory
+        .pNext					 = NULL,									// Mandatory set
+        .flags					 = 0,										// Mandatory set
+        .pApplicationInfo		 = &applicationInfo,						// Pass application info instance
+        .enabledLayerCount		 = layerCount,								// Number of enabled layers
+        .ppEnabledLayerNames	 = layers,                                  // Specified layer names
+        .enabledExtensionCount   = extensionCount,							// Number of enabled extensions
+        .ppEnabledExtensionNames = extensions,                              // Specified extension names
+    };
+
+    VkResult result = vkCreateInstance(&instanceCreateInfo, 
+                                       NULL, 
+                                       pOutInstance);
+
+    // Was creation successful?
+    DBG_ASSERT_VULKAN_MSG(result, 
+                          "Failed to create Vulkan instance.");
+
+    // Is instance handle valid?
+    DBG_ASSERT(*pOutInstance != NULL);
+}
 
 // Win32 Entry point
 int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the exe memory image
@@ -68,11 +128,11 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
 {
     // Requested window size.
     const int width(800), height(600);
-    const LPCWSTR className = L"MyWindowClass";
+    const LPCWSTR className(L"MyWindowClass");
 
     // Win32 handle identifier for use later 
     // when setting up vulkan surfaces.
-    HWND windowHandle = NULL;
+    HWND windowHandle{NULL};
     SetupWin32Window(width, height, &windowHandle);
 
     MSG msg{};      // Structure for storing Win32 Messages.
@@ -84,7 +144,7 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
                     NULL,           // wMessageFilterMax (NULL - No range filtering performed)
                     PM_REMOVE);     // How messages are to be handled
 
-// Has the window been closed?
+        // Has the window been closed?
         if (msg.message == WM_QUIT)
         {
             break;
