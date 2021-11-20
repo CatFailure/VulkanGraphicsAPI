@@ -21,6 +21,15 @@ LRESULT CALLBACK WndProc(HWND hWnd,
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
+#ifdef ENABLE_VULKAN_DEBUG_CALLBACK
+VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugReportCallback(VkDebugReportFlagsEXT flags,
+                                                         VkDebugReportObjectTypeEXT objectType)
+{
+
+}
+#endif // ENABLE_VULKAN_DEBUG_CALLBACK
+
+
 void SetupWin32Window(const int width,
                       const int height,
                       HWND *pOutWindowHandle)
