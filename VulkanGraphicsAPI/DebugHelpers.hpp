@@ -6,7 +6,6 @@
 #include <stdarg.h>
 #include <windows.h>    // OutputDebugStringA
 #include <stdio.h>      // vsprintf_s
-
 #include <vulkan/vulkan.hpp>
 
 namespace Utility
@@ -54,6 +53,6 @@ namespace Utility
     class DebugHelpers
     {
     public:
-        static void DPrintf(const char* pFmt, ...);
+        static void DPrintf(const char *pFmt, ...);
     };
 }
