@@ -85,39 +85,66 @@ void SetupVulkanInstance(HWND windowHandle,         // Win32 Handle
     extensionCount = 2;
 #endif // !ENABLE_VULKAN_DEBUG_CALLBACK
 
-    // Information about the application
-    // to pass to the Vulkan driver.
-    VkApplicationInfo applicationInfo
+    // pOutInstance initialisation
     {
-        .sType            = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-        .pApplicationName = "Hello Vulkan",
-        .engineVersion    = 1,
-        .apiVersion       = VK_API_VERSION_1_0
-    };
+        // Information about the application
+        // to pass to the Vulkan driver.
+        VkApplicationInfo applicationInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+            .pApplicationName = "Hello Vulkan",
+            .engineVersion = 1,
+            .apiVersion = VK_API_VERSION_1_0
+        };
 
-    // Fill out instance description
-    VkInstanceCreateInfo instanceCreateInfo
+        // Fill out instance description
+        VkInstanceCreateInfo instanceCreateInfo
+        {
+            .sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,	// Mandatory
+            .pNext                   = NULL,									// Mandatory set
+            .flags                   = 0,										// Mandatory set
+            .pApplicationInfo        = &applicationInfo,						// Pass application info instance
+            .enabledLayerCount       = layerCount,								// Number of enabled layers
+            .ppEnabledLayerNames     = layers,                                  // Specified layer names
+            .enabledExtensionCount   = extensionCount,							// Number of enabled extensions
+            .ppEnabledExtensionNames = extensions,                              // Specified extension names
+        };
+
+        VkResult result = vkCreateInstance(&instanceCreateInfo,
+                                           NULL,
+                                           pOutInstance);
+
+        // Was creation successful?
+        DBG_ASSERT_VULKAN_MSG(result,
+                              "Failed to create Vulkan instance.");
+
+        // Is instance handle valid?
+        DBG_ASSERT(*pOutInstance != NULL);
+    }
+    
+    // pOutSurface initialisation
     {
-        .sType					 = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,	// Mandatory
-        .pNext					 = NULL,									// Mandatory set
-        .flags					 = 0,										// Mandatory set
-        .pApplicationInfo		 = &applicationInfo,						// Pass application info instance
-        .enabledLayerCount		 = layerCount,								// Number of enabled layers
-        .ppEnabledLayerNames	 = layers,                                  // Specified layer names
-        .enabledExtensionCount   = extensionCount,							// Number of enabled extensions
-        .ppEnabledExtensionNames = extensions,                              // Specified extension names
-    };
+        HINSTANCE hInstance = GetModuleHandle(NULL);
+        VkWin32SurfaceCreateInfoKHR surfaceCreateInfo
+        {
+            .sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
+            .hinstance = hInstance,     // Param is NULL - GetModuleHandle returns handle to file used to create the calling process
+            .hwnd      = windowHandle
+        };
 
-    VkResult result = vkCreateInstance(&instanceCreateInfo, 
-                                       NULL, 
-                                       pOutInstance);
+        // OutSurface must be empty before assignment
+        DBG_ASSERT(*pOutSurface == NULL);
 
-    // Was creation successful?
-    DBG_ASSERT_VULKAN_MSG(result, 
-                          "Failed to create Vulkan instance.");
+        VkResult result = vkCreateWin32SurfaceKHR(*pOutInstance, 
+                                                  &surfaceCreateInfo, 
+                                                  NULL, 
+                                                  pOutSurface);
 
-    // Is instance handle valid?
-    DBG_ASSERT(*pOutInstance != NULL);
+        DBG_ASSERT_VULKAN_MSG(result, 
+                              "Could not create Surface.");
+
+        DBG_ASSERT(pOutSurface != NULL);
+    }
 }
 
 // Win32 Entry point
