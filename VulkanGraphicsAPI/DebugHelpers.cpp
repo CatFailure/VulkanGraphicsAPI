@@ -18,8 +18,8 @@ namespace Utility
         FILE *pFile = nullptr;
         errno_t result = fopen_s(&pFile, pLogFileName, pMode);       // Open file for writing
 
-        DBG_ASSERT_MSG(pFile || result, 
-                       "Log file could not be opened.");
+        DBG_ASSERT_MSG(pFile || result,
+            "Log file could not be opened.");
 
         fprintf(pFile, "%s", buffer);                                // Write to file
         fclose(pFile);                                               // Close file
