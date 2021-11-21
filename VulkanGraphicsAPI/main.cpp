@@ -1,3 +1,4 @@
+#define ENABLE_VULKAN_DEBUG_CALLBACK
 #include "DebugHelpers.hpp"
 
 using namespace Utility;
@@ -23,12 +24,24 @@ LRESULT CALLBACK WndProc(HWND hWnd,
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
 VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugReportCallback(VkDebugReportFlagsEXT flags,
-                                                         VkDebugReportObjectTypeEXT objectType)
+                                                         VkDebugReportObjectTypeEXT objectType, 
+                                                         uint64_t object,
+                                                         size_t location, 
+                                                         int32_t messageCode, 
+                                                         const char *pLayerPrefix, 
+                                                         const char *pMessage,
+                                                         void *pUserData)
 {
+    DebugHelpers::DPrintf(pLayerPrefix);
+    DebugHelpers::DPrintf(" ");
+    DebugHelpers::DPrintf(pMessage);
+    DebugHelpers::DPrintf("\n");
+    
+    DBG_ASSERT(false);
 
+    return VK_FALSE;
 }
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
-
 
 void SetupWin32Window(const int width,
                       const int height,
@@ -75,7 +88,7 @@ void SetupVulkanInstance(HWND windowHandle,         // Win32 Handle
     const char *layers[] { "VK_LAYER_NV_optimus" };
     uint32_t layerCount(1), extensionCount(0);
 
-#ifndef ENABLE_VULKAN_DEBUG_CALLBACK
+#ifdef ENABLE_VULKAN_DEBUG_CALLBACK
     const char *extensions[]
     {
         "VK_KHR_surface",
@@ -92,7 +105,9 @@ void SetupVulkanInstance(HWND windowHandle,         // Win32 Handle
     };
 
     extensionCount = 2;
-#endif // !ENABLE_VULKAN_DEBUG_CALLBACK
+#endif // ENABLE_VULKAN_DEBUG_CALLBACK
+
+
 
     // pOutInstance initialisation
     {
@@ -130,6 +145,49 @@ void SetupVulkanInstance(HWND windowHandle,         // Win32 Handle
         // Is instance handle valid?
         DBG_ASSERT(*pOutInstance != NULL);
     }
+
+    // Optional - Setup debug callbacks so Vulkan 
+    // can tell us if something has gone wrong.
+#ifdef ENABLE_VULKAN_DEBUG_CALLBACK
+    {
+        // Register error logging function
+        VkDebugReportCallbackEXT warningCallback{ VK_NULL_HANDLE }, errorCallback{ VK_NULL_HANDLE };
+        PFN_vkCreateDebugReportCallbackEXT vkCreateDebugReportCallbackEXT{ NULL };
+
+        *(void **)&vkCreateDebugReportCallbackEXT = vkGetInstanceProcAddr(*pOutInstance,
+                                                                          "vkCreateDebugReportCallbackEXT");
+
+        DBG_ASSERT(vkCreateDebugReportCallbackEXT);
+
+        // Capture errors
+        VkDebugReportCallbackCreateInfoEXT callbackCreateInfo
+        {
+            .sType       = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT,
+            .flags       = VK_DEBUG_REPORT_ERROR_BIT_EXT,
+            .pfnCallback = &VulkanDebugReportCallback
+        };
+
+        VkResult result = vkCreateDebugReportCallbackEXT(*pOutInstance,
+                                                         &callbackCreateInfo,
+                                                         nullptr,
+                                                         &errorCallback);
+
+        DBG_ASSERT_VULKAN_MSG(result,
+                              "vkCreateDebugReportCallbackEXT (ERROR) failed.");
+
+        // Capture warnings
+        callbackCreateInfo.flags       = VK_DEBUG_REPORT_WARNING_BIT_EXT | VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT;
+        callbackCreateInfo.pfnCallback = &VulkanDebugReportCallback;
+
+        result = vkCreateDebugReportCallbackEXT(*pOutInstance,
+                                                &callbackCreateInfo,
+                                                nullptr,
+                                                &warningCallback);
+
+        DBG_ASSERT_VULKAN_MSG(result,
+                              "vkCreateDebugReportCallbackEXT (WARNING) failed.");
+    }
+#endif // ENABLE_VULKAN_DEBUG_CALLBACK
     
     // pOutSurface initialisation
     {
@@ -168,8 +226,12 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
 
     // Win32 handle identifier for use later 
     // when setting up vulkan surfaces.
-    HWND windowHandle{NULL};
+    HWND windowHandle{ NULL };
+    VkInstance pInstance{ NULL };
+    VkSurfaceKHR psurface{ NULL };
+
     SetupWin32Window(width, height, &windowHandle);
+    SetupVulkanInstance(windowHandle, &pInstance, &psurface);
 
     MSG msg{};      // Structure for storing Win32 Messages.
     while (true)    // Start of main render loop
