@@ -5,27 +5,6 @@ void Application::Dispose()
 	vkDestroyInstance(_vkInstance, NULL);
 }
 
-#ifdef ENABLE_VULKAN_DEBUG_CALLBACK
-VKAPI_ATTR VkBool32 VKAPI_CALL Application::VulkanDebugReportCallback(VkDebugReportFlagsEXT flags,
-                                                                      VkDebugReportObjectTypeEXT objectType,
-                                                                      uint64_t object,
-                                                                      size_t location,
-                                                                      int32_t messageCode,
-                                                                      const char *layerPrefix,
-                                                                      const char *message,
-                                                                      void *pUserData)
-{
-    DebugHelpers::DPrintf(layerPrefix);
-    DebugHelpers::DPrintf(" ");
-    DebugHelpers::DPrintf(message);
-    DebugHelpers::DPrintf("\n");
-
-    DBG_ASSERT(false);
-
-    return VK_FALSE;
-}
-#endif // ENABLE_VULKAN_DEBUG_CALLBACK
-
 Application::Application(const ApplicationData &appData)
     : _appData(appData)
 {}
@@ -202,3 +181,24 @@ void Application::SetupVulkanInstance()
         DBG_ASSERT(_vkSurface != NULL);
     }
 }
+
+#ifdef ENABLE_VULKAN_DEBUG_CALLBACK
+VKAPI_ATTR VkBool32 VKAPI_CALL Application::VulkanDebugReportCallback(VkDebugReportFlagsEXT flags,
+                                                                      VkDebugReportObjectTypeEXT objectType,
+                                                                      uint64_t object,
+                                                                      size_t location,
+                                                                      int32_t messageCode,
+                                                                      const char *layerPrefix,
+                                                                      const char *message,
+                                                                      void *pUserData)
+{
+    DebugHelpers::DPrintf(layerPrefix);
+    DebugHelpers::DPrintf(" ");
+    DebugHelpers::DPrintf(message);
+    DebugHelpers::DPrintf("\n");
+
+    DBG_ASSERT(false);
+
+    return VK_FALSE;
+}
+#endif // ENABLE_VULKAN_DEBUG_CALLBACK
