@@ -107,18 +107,21 @@ void SetupVulkanInstance(HWND windowHandle,         // Win32 Handle
     extensionCount = 2;
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
-
-
     // pOutInstance initialisation
     {
+        const char *appName = "Hello Vulkan";
+
         // Information about the application
         // to pass to the Vulkan driver.
+        // Fill out application description
         VkApplicationInfo applicationInfo
         {
-            .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-            .pApplicationName = "Hello Vulkan",
-            .engineVersion = 1,
-            .apiVersion = VK_API_VERSION_1_0
+            .sType            = VK_STRUCTURE_TYPE_APPLICATION_INFO,		// Mandatory, describes type of structure
+            .pNext            = NULL,									// Mandatory, stores pointers to extension-specific structures
+            .pApplicationName = appName,								// Name of the application
+            .pEngineName      = NULL,									// Name of the engine
+            .engineVersion    = 1,										// Version of the engine
+            .apiVersion       = VK_API_VERSION_1_0						// Version of Vulkan used by application
         };
 
         // Fill out instance description
@@ -214,7 +217,6 @@ void SetupVulkanInstance(HWND windowHandle,         // Win32 Handle
     }
 }
 
-// Win32 Entry point
 int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the exe memory image
                    HINSTANCE hPrevInstance,   // Previous instance handle - Always 0
                    LPSTR lpCmdLine,           // Cmd line args (Alt. use GetCommandLine API Call)
@@ -227,11 +229,11 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
     // Win32 handle identifier for use later 
     // when setting up vulkan surfaces.
     HWND windowHandle{ NULL };
-    VkInstance pInstance{ NULL };
-    VkSurfaceKHR psurface{ NULL };
+    VkInstance vkInstance{ NULL };
+    VkSurfaceKHR vkSurface{ NULL };
 
     SetupWin32Window(width, height, &windowHandle);
-    SetupVulkanInstance(windowHandle, &pInstance, &psurface);
+    SetupVulkanInstance(windowHandle, &vkInstance, &vkSurface);
 
     MSG msg{};      // Structure for storing Win32 Messages.
     while (true)    // Start of main render loop
@@ -256,44 +258,7 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
         DispatchMessage(&msg);
     }
 
+    vkDestroyInstance(vkInstance, NULL);
+
     return 0;
 }
-
-//int main()
-//{
-//    const char *pAppName = "Hello Vulkan";
-//
-//    // Fill out application description
-//    VkApplicationInfo applicationInfo
-//    {
-//        .sType			  = VK_STRUCTURE_TYPE_APPLICATION_INFO,		// Mandatory, describes type of structure
-//        .pNext			  = NULL,									// Mandatory, stores pointers to extension-specific structures
-//        .pApplicationName = pAppName,								// Name of the application
-//        .pEngineName	  = NULL,									// Name of the engine
-//        .engineVersion	  = 1,										// Version of the engine
-//        .apiVersion		  = VK_API_VERSION_1_0						// Version of Vulkan used by application
-//    };
-//
-//    // Fill out instance description
-//    VkInstanceCreateInfo instanceCreateInfo
-//    {
-//        .sType					 = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,	// Mandatory
-//        .pNext					 = NULL,									// Mandatory set
-//        .flags					 = 0,										// Mandatory set
-//        .pApplicationInfo		 = &applicationInfo,						// Pass application info instance
-//        .enabledLayerCount		 = 0,										// Don't enable any layers
-//        .ppEnabledLayerNames	 = NULL,
-//        .enabledExtensionCount   = 0,										// Don't enable any extensions
-//        .ppEnabledExtensionNames = NULL,
-//    };
-//
-//    // Create desired instance
-//    VkInstance instance = VK_NULL_HANDLE;
-//    VkResult result = vkCreateInstance(&instanceCreateInfo, 
-//                                       NULL, 
-//                                       &instance);
-//
-//    vkDestroyInstance(instance, NULL);
-//
-//    return 0;
-//}
