@@ -19,7 +19,8 @@ public:
 	virtual void Dispose() override;
 private:
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
-	VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugReportCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objectType, uint64_t object, size_t location, int32_t messageCode, const char *layerPrefix, const char *message, void *pUserData);
+	VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugReportCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objectType, uint64_t object, size_t location,
+															 int32_t messageCode, const char *layerPrefix, const char *message, void *pUserData);
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
 	ApplicationData _appData;
