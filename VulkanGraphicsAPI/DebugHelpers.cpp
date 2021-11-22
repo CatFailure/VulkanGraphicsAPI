@@ -2,29 +2,29 @@
 
 namespace Utility
 {
-    void DebugHelpers::DPrintf(const char *pFmt, ...)
+    void DebugHelpers::DPrintf(const char *format, ...)
     {
         static char buffer[2048]{ 0 };          // Temp buffer
         va_list params;                         // Variable argument params start
 
-        const char *pLogFileName("log.txt");
-        const char *pMode("a+");
+        const char *logFileName("log.txt");     
+        const char *mode("a+");
 
-        va_start(params, pFmt);                 // Try to print in allocated space
-        vsprintf_s(buffer, pFmt, params);       // Format data into a string buffer
+        va_start(params, format);               // Try to print in allocated space
+        vsprintf_s(buffer, format, params);     // Format data into a string buffer
         va_end(params);
 
-#ifdef ENABLE_LOGGING                                                // Write the info out to a txt file
+#ifdef ENABLE_LOGGING                                           // Write the info out to a txt file
         FILE *pFile = nullptr;
-        errno_t result = fopen_s(&pFile, pLogFileName, pMode);       // Open file for writing
+        errno_t result = fopen_s(&pFile, logFileName, mode);    // Open file for writing
 
         DBG_ASSERT_MSG(pFile || result,
             "Log file could not be opened.");
 
-        fprintf(pFile, "%s", buffer);                                // Write to file
-        fclose(pFile);                                               // Close file
+        fprintf(pFile, "%s", buffer);   // Write to file
+        fclose(pFile);                  // Close file
 #endif // ENABLE_LOGGING
 
-        OutputDebugStringA(buffer);             // Output to the Visual Studio Window
+        OutputDebugStringA(buffer);     // Output to the Visual Studio Window
     }
 }
