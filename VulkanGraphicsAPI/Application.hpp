@@ -1,8 +1,6 @@
 #pragma once
 #define ENABLE_VULKAN_DEBUG_CALLBACK
 
-#include <functional>
-
 #include "IDisposable.hpp"
 #include "ApplicationData.hpp"
 #include "DebugHelpers.hpp"

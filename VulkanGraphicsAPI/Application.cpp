@@ -56,8 +56,15 @@ void Application::SetupWin32Window(const WNDPROC wndProcCallback)
 
 void Application::SetupVulkanInstance()
 {
-    const char *layers[]{ "VK_LAYER_NV_optimus" };
-    uint32_t layerCount(1), extensionCount(0);
+    // Laptop (No NVIDIA Card)
+    const char *layers[]{ NULL };
+    uint32_t layerCount(0);
+
+    // Desktop (NVIDIA Card)
+    //const char *layers[]{ "VK_LAYER_NV_optimus" };
+    //uint32_t layerCount(1);
+    
+    uint32_t extensionCount(0);
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
     const char *extensions[]
