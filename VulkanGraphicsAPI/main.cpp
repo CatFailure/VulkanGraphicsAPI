@@ -1,4 +1,7 @@
+#include "pch.hpp"
 #include "Application.hpp"
+
+using namespace Engine;
 
 LRESULT CALLBACK WndProc(HWND hWnd,
                          UINT uMsg,
@@ -25,11 +28,10 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
                    int nCmdShow)              // How should the window appear when created (Alt. use GetStartupInfo API Call)
 {
     // Requested window size.
-    const int width(800), height(600);
-    ApplicationData appData
+    const ApplicationData appData
     {
         .windowHandle = { NULL },
-        .clientWidth = 800,
+        .clientWidth  = 800,
         .clientHeight = 600
     };
 
