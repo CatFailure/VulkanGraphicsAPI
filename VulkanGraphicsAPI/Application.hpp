@@ -1,11 +1,24 @@
 #pragma once
 #define ENABLE_VULKAN_DEBUG_CALLBACK
 
+#include <functional>
+
 #include "IDisposable.hpp"
 #include "ApplicationData.hpp"
 #include "DebugHelpers.hpp"
 
 using namespace Utility;
+
+class Application;
+
+typedef VkBool32(__stdcall Application:: *VulkanDebugReportCallback_t)(VkDebugReportFlagsEXT,
+																	   VkDebugReportObjectTypeEXT,
+																	   uint64_t,
+																	   size_t,
+																	   int32_t,
+																	   const char *,
+																	   const char *,
+																	   void *);
 
 class Application : public IDisposable
 {

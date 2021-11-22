@@ -1,6 +1,5 @@
 #include "Application.hpp"
 
-
 Application::Application()
 {}
 
@@ -134,14 +133,14 @@ void Application::SetupVulkanInstance()
 
         DBG_ASSERT(vkCreateDebugReportCallbackEXT);
 
-        auto vulkanDebugReportCallback = &Application::VulkanDebugReportCallback;
+        VulkanDebugReportCallback_t pVulkanDebugReportCallback = &Application::VulkanDebugReportCallback;
 
         // Capture errors
         VkDebugReportCallbackCreateInfoEXT callbackCreateInfo
         {
             .sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CALLBACK_CREATE_INFO_EXT,
             .flags = VK_DEBUG_REPORT_ERROR_BIT_EXT,
-            .pfnCallback = (PFN_vkDebugReportCallbackEXT)&vulkanDebugReportCallback
+            .pfnCallback = (PFN_vkDebugReportCallbackEXT)&pVulkanDebugReportCallback
         };
 
         VkResult result = vkCreateDebugReportCallbackEXT(_vkInstance,
@@ -154,7 +153,7 @@ void Application::SetupVulkanInstance()
 
         // Capture warnings
         callbackCreateInfo.flags = VK_DEBUG_REPORT_WARNING_BIT_EXT | VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT;
-        callbackCreateInfo.pfnCallback = (PFN_vkDebugReportCallbackEXT)&vulkanDebugReportCallback;
+        callbackCreateInfo.pfnCallback = (PFN_vkDebugReportCallbackEXT)&pVulkanDebugReportCallback;
 
         result = vkCreateDebugReportCallbackEXT(_vkInstance,
                                                 &callbackCreateInfo,
