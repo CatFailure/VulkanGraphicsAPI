@@ -183,9 +183,9 @@ void Application::SetupVulkanInstance()
         HINSTANCE hInstance = GetModuleHandle(NULL);
         VkWin32SurfaceCreateInfoKHR surfaceCreateInfo
         {
-            .sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
+            .sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
             .hinstance = hInstance,     // Param is NULL - GetModuleHandle returns handle to file used to create the calling process
-            .hwnd = _appData.windowHandle
+            .hwnd      = _appData.windowHandle
         };
 
         // OutSurface must be empty before assignment
