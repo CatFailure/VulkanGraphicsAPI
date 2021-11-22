@@ -1,13 +1,22 @@
 #include "Application.hpp"
 
+
+Application::Application()
+{}
+
 void Application::Dispose()
 {
-	vkDestroyInstance(_vkInstance, NULL);
+    vkDestroyInstance(_vkInstance, NULL);
 }
 
-Application::Application(const ApplicationData &appData)
-    : _appData(appData)
-{}
+void Application::Initialise(const ApplicationData &appData, 
+                             const WNDPROC wndProcCallback)
+{
+    _appData = appData;
+
+    SetupWin32Window(wndProcCallback);
+    SetupVulkanInstance();
+}
 
 void Application::SetupWin32Window(const WNDPROC wndProcCallback)
 {

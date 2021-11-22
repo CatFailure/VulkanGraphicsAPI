@@ -33,9 +33,8 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
         .clientHeight = 600
     };
 
-    Application application(appData);
-    application.SetupWin32Window(WndProc);
-    application.SetupVulkanInstance();
+    Application application;
+    application.Initialise(appData, WndProc);
 
     MSG msg{};      // Structure for storing Win32 Messages.
     while (true)    // Start of main render loop
