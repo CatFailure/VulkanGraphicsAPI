@@ -43,6 +43,8 @@ namespace Engine
         void SetupSwapchain_CreateImages();
         void SetupSwapchain_CreateImageViews();
 
+        void PrintDeviceMemoryCapabilities();
+
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
         void SetupVulkanInstance_InitVkDebugCallback();
 
@@ -67,10 +69,12 @@ namespace Engine
         VkDevice _vkLogicalDevice{ NULL };
 
         VkSwapchainKHR _vkSwapchain{ NULL };
-        VkImage *_pVkSwapchainImages = nullptr;
-        VkImageView *_pVkSwapchainImageViews = nullptr;
 
         constexpr static uint32_t SWAPCHAIN_BUFFER_COUNT{ 2 };
+
+        std::vector<VkImage> _vkSwapchainImages;
+        std::vector<VkImageView> _vkSwapchainImageViews;
+
         uint32_t _surfaceBufferWidth{ 0 }, _surfaceBufferHeight{ 0 };
     };
 }

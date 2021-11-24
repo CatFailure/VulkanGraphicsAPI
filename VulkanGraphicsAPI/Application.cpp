@@ -118,8 +118,8 @@ namespace Engine
             .pNext                   = NULL,									// Mandatory set
             .flags                   = 0,										// Mandatory set
             .pApplicationInfo        = &applicationInfo,						// Pass application info instance
-            .enabledLayerCount       = ENABLED_LAYER_COUNT,								// Number of enabled layers
-            .ppEnabledLayerNames     = _enabledLayerNames.data(),              // Specified layer names
+            .enabledLayerCount       = ENABLED_LAYER_COUNT,					    // Number of enabled layers
+            .ppEnabledLayerNames     = _enabledLayerNames.data(),               // Specified layer names
             .enabledExtensionCount   = extensionCount,							// Number of enabled extensions
             .ppEnabledExtensionNames = extensions,                              // Specified extension names
         };
@@ -320,13 +320,13 @@ namespace Engine
         // Make sure the images match what is expected
         DBG_ASSERT(imageCount == SWAPCHAIN_BUFFER_COUNT);
 
-        _pVkSwapchainImages = new VkImage[imageCount];
+        _vkSwapchainImages = std::vector<VkImage>(imageCount);
         
         // Link the images to the Swapchain
         VkResult result = vkGetSwapchainImagesKHR(_vkLogicalDevice,
                                                   _vkSwapchain,
                                                   &imageCount,
-                                                  _pVkSwapchainImages);
+                                                  _vkSwapchainImages.data());
 
         // Was it successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Swapchain Images.");
@@ -334,7 +334,7 @@ namespace Engine
 
     void Application::SetupSwapchain_CreateImageViews()
     {
-        _pVkSwapchainImageViews = new VkImageView[SWAPCHAIN_BUFFER_COUNT];
+        _vkSwapchainImageViews = std::vector<VkImageView>(SWAPCHAIN_BUFFER_COUNT);
 
         for (uint32_t i(0); i < SWAPCHAIN_BUFFER_COUNT; ++i)
         {
@@ -342,7 +342,7 @@ namespace Engine
             VkImageViewCreateInfo imageViewCreateInfo
             {
                 .sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
-                .image    = _pVkSwapchainImages[i],
+                .image    = _vkSwapchainImages.at(i),
                 .viewType = VK_IMAGE_VIEW_TYPE_2D,
                 .format   = VK_FORMAT_B8G8R8A8_UNORM,
                 .components
@@ -365,11 +365,22 @@ namespace Engine
             VkResult result = vkCreateImageView(_vkLogicalDevice, 
                                                 &imageViewCreateInfo,
                                                 NULL, 
-                                                &_pVkSwapchainImageViews[i]);
+                                                &_vkSwapchainImageViews.at(i));
 
             // Was it successful?
             DBG_ASSERT_VULKAN_MSG(result, "Failed to create ImageView");
         }
+    }
+
+    void Application::PrintDeviceMemoryCapabilities()
+    {
+        // TEMP
+        uint32_t queueFamilyCount = 0;
+
+        // Query device for memory count
+        vkGetPhysicalDeviceQueueFamilyProperties(_vkPhysicalDevice, 
+                                                 &queueFamilyCount, 
+                                                 NULL);
     }
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
