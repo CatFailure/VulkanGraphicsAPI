@@ -3,6 +3,8 @@
 
 namespace Engine
 {
+    //const uint32_t Application::ENABLED_LAYER_COUNT;
+
     Application::Application(const ApplicationData &appData)
         : _appData(appData)
     {}
@@ -17,6 +19,7 @@ namespace Engine
         SetupWin32Window(wndProcCallback);
         SetupVulkanInstance();
         SetupPhysicalDevices();
+        SetupVulkanDevice();
     }
 
     void Application::SetupWin32Window(const WNDPROC wndProcCallback)
@@ -71,14 +74,6 @@ namespace Engine
 
     void Application::SetupVulkanInstance_InitVkInstance()
     {
-        // Laptop (No NVIDIA Card)
-        const char *layers[]{ NULL };
-        uint32_t layerCount(0);
-
-        // Desktop (NVIDIA Card)
-        //const char *layers[]{ "VK_LAYER_NV_optimus" };
-        //uint32_t layerCount(1);
-
         uint32_t extensionCount(0);
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
@@ -122,8 +117,8 @@ namespace Engine
             .pNext                   = NULL,									// Mandatory set
             .flags                   = 0,										// Mandatory set
             .pApplicationInfo        = &applicationInfo,						// Pass application info instance
-            .enabledLayerCount       = layerCount,								// Number of enabled layers
-            .ppEnabledLayerNames     = layers,                                  // Specified layer names
+            .enabledLayerCount       = ENABLED_LAYER_COUNT,								// Number of enabled layers
+            .ppEnabledLayerNames     = _enabledLayerNames.data(),              // Specified layer names
             .enabledExtensionCount   = extensionCount,							// Number of enabled extensions
             .ppEnabledExtensionNames = extensions,                              // Specified extension names
         };
@@ -215,6 +210,52 @@ namespace Engine
         }
     }
 
+    void Application::SetupVulkanDevice()
+    {
+        VkPhysicalDeviceMemoryProperties deviceMemoryProperties{};
+
+        vkGetPhysicalDeviceMemoryProperties(_vkPhysicalDevice, 
+                                            &deviceMemoryProperties);
+
+        // Initialise Queues
+        const float queueProperties[] = { 1.0f };
+        const VkDeviceQueueCreateInfo queueCreateInfo
+        {
+            .sType            = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+            .queueFamilyIndex = 0,  // Use first queue family in list
+            .queueCount       = 1,
+            .pQueuePriorities = queueProperties
+        };
+
+        const char *deviceExtensions[]{ "VK_KHR_swapchain" };
+        const VkPhysicalDeviceFeatures deviceFeatures
+        {
+            .shaderClipDistance = VK_TRUE,
+        };
+
+        const VkDeviceCreateInfo deviceCreateInfo
+        {
+            .sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+            .queueCreateInfoCount    = 1,
+            .pQueueCreateInfos       = &queueCreateInfo,
+            .enabledLayerCount       = ENABLED_LAYER_COUNT,
+            .ppEnabledLayerNames     = _enabledLayerNames.data(),
+            .enabledExtensionCount   = 1,
+            .ppEnabledExtensionNames = deviceExtensions,
+            .pEnabledFeatures        = &deviceFeatures
+        };
+
+        // Ideally, want to enumerate to find best device.
+        // Just use the first for now.
+        VkResult result = vkCreateDevice(_vkPhysicalDevice,
+                                         &deviceCreateInfo,
+                                         NULL, 
+                                         &_vkLogicalDevice);
+
+        // Was it successful?
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to create Logical Device!");
+    }
+
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
     void Application::SetupVulkanInstance_InitVkDebugCallback()
     {
@@ -244,7 +285,7 @@ namespace Engine
         DBG_ASSERT_VULKAN_MSG(result, "vkCreateDebugReportCallbackEXT (ERROR) failed.");
 
         // Capture warnings
-        callbackCreateInfo.flags = VK_DEBUG_REPORT_WARNING_BIT_EXT | VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT;
+        callbackCreateInfo.flags       = VK_DEBUG_REPORT_WARNING_BIT_EXT | VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT;
         callbackCreateInfo.pfnCallback = (PFN_vkDebugReportCallbackEXT)&pVulkanDebugReportCallback;
 
         result = vkCreateDebugReportCallbackEXT(_vkInstance,

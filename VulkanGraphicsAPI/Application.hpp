@@ -36,6 +36,7 @@ namespace Engine
         void SetupVulkanInstance_InitVkSurface();
 
         void SetupPhysicalDevices();
+        void SetupVulkanDevice();
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
         void SetupVulkanInstance_InitVkDebugCallback();
@@ -45,8 +46,18 @@ namespace Engine
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
         ApplicationData _appData;
+
+        // Desktop (NVIDIA Card)
+        //const static uint32_t LAYER_COUNT{ 1 };
+        //std::array<const char *, LAYER_COUNT> _enabledLayerNames{ "VK_LAYER_NV_optimus" };
+
+        // Laptop (No NVIDIA Card)
+        const static uint32_t ENABLED_LAYER_COUNT{ 0 };
+        std::array<const char *, ENABLED_LAYER_COUNT> _enabledLayerNames{ NULL };
+
         VkInstance _vkInstance{ NULL };
         VkSurfaceKHR _vkSurface{ NULL };
         VkPhysicalDevice _vkPhysicalDevice{ NULL };
+        VkDevice _vkLogicalDevice{ NULL };
     };
 }
