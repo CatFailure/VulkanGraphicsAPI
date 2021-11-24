@@ -235,14 +235,14 @@ namespace Engine
 
         const VkDeviceCreateInfo deviceCreateInfo
         {
-            .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-            .queueCreateInfoCount = 1,
-            .pQueueCreateInfos = &queueCreateInfo,
-            .enabledLayerCount = ENABLED_LAYER_COUNT,
-            .ppEnabledLayerNames = _enabledLayerNames.data(),
-            .enabledExtensionCount = 1,
+            .sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+            .queueCreateInfoCount    = 1,
+            .pQueueCreateInfos       = &queueCreateInfo,
+            .enabledLayerCount       = ENABLED_LAYER_COUNT,
+            .ppEnabledLayerNames     = _enabledLayerNames.data(),
+            .enabledExtensionCount   = 1,
             .ppEnabledExtensionNames = deviceExtensions,
-            .pEnabledFeatures = &deviceFeatures
+            .pEnabledFeatures        = &deviceFeatures
         };
 
         // Ideally, want to enumerate to find best device.
