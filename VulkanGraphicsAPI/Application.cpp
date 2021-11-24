@@ -18,8 +18,11 @@ namespace Engine
     {
         SetupWin32Window(wndProcCallback);
         SetupVulkanInstance();
-        SetupPhysicalDevices();
+        SetupVulkanPhysicalDevices();
         SetupVulkanDevice();
+        SetupVulkanSwapchain();
+        PrintDeviceMemoryCapabilities();
+        SetupVulkanDrawCommandBuffer();
     }
 
     void Application::SetupWin32Window(const WNDPROC wndProcCallback)
@@ -117,8 +120,8 @@ namespace Engine
             .pNext                   = NULL,									// Mandatory set
             .flags                   = 0,										// Mandatory set
             .pApplicationInfo        = &applicationInfo,						// Pass application info instance
-            .enabledLayerCount       = ENABLED_LAYER_COUNT,								// Number of enabled layers
-            .ppEnabledLayerNames     = _enabledLayerNames.data(),              // Specified layer names
+            .enabledLayerCount       = ENABLED_LAYER_COUNT,					    // Number of enabled layers
+            .ppEnabledLayerNames     = _enabledLayerNames.data(),               // Specified layer names
             .enabledExtensionCount   = extensionCount,							// Number of enabled extensions
             .ppEnabledExtensionNames = extensions,                              // Specified extension names
         };
@@ -157,25 +160,23 @@ namespace Engine
         DBG_ASSERT(_vkSurface != NULL);
     }
 
-    void Application::SetupPhysicalDevices()
+    void Application::SetupVulkanPhysicalDevices()
     {
         // Query how many devices are present
-        uint32_t deviceCount(0);
-
         VkResult result = vkEnumeratePhysicalDevices(_vkInstance,
-                                                     &deviceCount,
+                                                     &_physDeviceCount,
                                                      NULL);
 
         // Was it successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to query the number of physical devices present.\n");
 
         // Make sure at least 1 device is present.
-        DBG_ASSERT_MSG(deviceCount != 0, "Could not detect any physical devices present with Vulkan support.\n");
+        DBG_ASSERT_MSG(_physDeviceCount != 0, "Could not detect any physical devices present with Vulkan support.\n");
 
-        std::vector<VkPhysicalDevice> physicalDevices(deviceCount);
+        std::vector<VkPhysicalDevice> physicalDevices(_physDeviceCount);
 
         result = vkEnumeratePhysicalDevices(_vkInstance,
-                                            &deviceCount, 
+                                            &_physDeviceCount,
                                             &physicalDevices.at(0));
 
         // Was it successful?
@@ -254,6 +255,213 @@ namespace Engine
 
         // Was it successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Logical Device!");
+    }
+
+    void Application::SetupVulkanSwapchain()
+    {
+        SetupVulkanSwapchain_CreateSwapchain();
+        SetupVulkanSwapchain_CreateImages();
+        SetupVulkanSwapchain_CreateImageViews();
+    }
+
+    void Application::SetupVulkanSwapchain_CreateSwapchain()
+    {
+        // Structure listing surface capabilities
+        VkSurfaceCapabilitiesKHR surfaceCapabilities{};
+        
+        // Fill structure with data
+        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(_vkPhysicalDevice, 
+                                                  _vkSurface, 
+                                                  &surfaceCapabilities);
+
+        // Retrieve and use the actual back/front buffer widths
+        VkExtent2D surfaceResolution = surfaceCapabilities.currentExtent;
+        _surfaceBufferWidth = surfaceResolution.width;
+        _surfaceBufferHeight = surfaceResolution.height;
+
+        VkSwapchainCreateInfoKHR swapchainCreateInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+            .surface = _vkSurface,
+            .minImageCount = SWAPCHAIN_BUFFER_COUNT,
+            .imageFormat = VK_FORMAT_B8G8R8A8_UNORM,
+            .imageColorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR,
+            .imageExtent = surfaceResolution,
+            .imageArrayLayers = 1,
+            .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+            .imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
+            .preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
+            .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+            .presentMode = VK_PRESENT_MODE_MAILBOX_KHR,
+            .clipped = true,    // Clipping outside of extents?
+            .oldSwapchain = NULL
+        };
+
+        VkResult result = vkCreateSwapchainKHR(_vkLogicalDevice, 
+                                               &swapchainCreateInfo, 
+                                               NULL, 
+                                               &_vkSwapchain);
+
+        // Was this successful?
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to create Swapchain.");
+    }
+
+    void Application::SetupVulkanSwapchain_CreateImages()
+    {
+        // How many images need to be created?
+        vkGetSwapchainImagesKHR(_vkLogicalDevice, 
+                                _vkSwapchain, 
+                                &_swapChainImageCount,
+                                NULL);
+
+        // Make sure the images match what is expected
+        const bool isCorrectSwapChainImageCount = _swapChainImageCount == SWAPCHAIN_BUFFER_COUNT;
+        DBG_ASSERT(isCorrectSwapChainImageCount);
+
+        _vkSwapchainImages = std::vector<VkImage>(_swapChainImageCount);
+        
+        // Link the images to the Swapchain
+        VkResult result = vkGetSwapchainImagesKHR(_vkLogicalDevice,
+                                                  _vkSwapchain,
+                                                  &_swapChainImageCount,
+                                                  _vkSwapchainImages.data());
+
+        // Was it successful?
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to create Swapchain Images.");
+    }
+
+    void Application::SetupVulkanSwapchain_CreateImageViews()
+    {
+        _vkSwapchainImageViews = std::vector<VkImageView>(SWAPCHAIN_BUFFER_COUNT);
+
+        for (uint32_t i(0); i < SWAPCHAIN_BUFFER_COUNT; ++i)
+        {
+            // Create VkImageViews for the Swapchain
+            VkImageViewCreateInfo imageViewCreateInfo
+            {
+                .sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+                .image    = _vkSwapchainImages.at(i),
+                .viewType = VK_IMAGE_VIEW_TYPE_2D,
+                .format   = VK_FORMAT_B8G8R8A8_UNORM,
+                .components
+                {
+                    .r = VK_COMPONENT_SWIZZLE_R,
+                    .g = VK_COMPONENT_SWIZZLE_G,
+                    .b = VK_COMPONENT_SWIZZLE_B,
+                    .a = VK_COMPONENT_SWIZZLE_A
+                },
+                .subresourceRange
+                {
+                    .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+                    .baseMipLevel   = 0,
+                    .levelCount     = 1,
+                    .baseArrayLayer = 0,
+                    .layerCount     = 1
+                }
+            };
+
+            VkResult result = vkCreateImageView(_vkLogicalDevice, 
+                                                &imageViewCreateInfo,
+                                                NULL, 
+                                                &_vkSwapchainImageViews.at(i));
+
+            // Was it successful?
+            DBG_ASSERT_VULKAN_MSG(result, "Failed to create ImageView");
+        }
+    }
+
+    void Application::PrintDeviceMemoryCapabilities()
+    {
+        // Query device for memory count
+        vkGetPhysicalDeviceQueueFamilyProperties(_vkPhysicalDevice, 
+                                                 &_physDeviceQueueFamilyCount,
+                                                 NULL);
+
+        // Create vector of the size of the family count
+        std::vector<VkQueueFamilyProperties> queueFamilyProperties(_physDeviceQueueFamilyCount);
+
+        // Retrieve properties
+        vkGetPhysicalDeviceQueueFamilyProperties(_vkPhysicalDevice, 
+                                                 &_physDeviceQueueFamilyCount,
+                                                 &queueFamilyProperties.at(0));
+
+        // Print out the families
+        for (uint32_t i(0); i < _physDeviceCount; ++i)
+        {
+            for (uint32_t j(0); j < _physDeviceQueueFamilyCount; ++j)
+            {
+                const VkQueueFamilyProperties& currentQueueFamilyProperties = queueFamilyProperties.at(j);
+                const VkQueueFlags& queueFlags = currentQueueFamilyProperties.queueFlags;
+
+                DebugHelpers::DPrintf("Queue count: %d\n", currentQueueFamilyProperties.queueCount);
+                DebugHelpers::DPrintf("Supporting operating on this queue:\n");
+
+                if (queueFlags & VK_QUEUE_GRAPHICS_BIT)
+                {
+                    DebugHelpers::DPrintf("\t\tGraphics\n");
+                }
+
+                if (queueFlags & VK_QUEUE_COMPUTE_BIT)
+                {
+                    DebugHelpers::DPrintf("\t\tCompute\n");
+                }
+
+                if (queueFlags & VK_QUEUE_TRANSFER_BIT)
+                {
+                    DebugHelpers::DPrintf("\t\tTransfer\n");
+                }
+
+                if (queueFlags & VK_QUEUE_SPARSE_BINDING_BIT)
+                {
+                    DebugHelpers::DPrintf("\t\tSparse Binding\n");
+                }
+            }
+        }
+    }
+
+    void Application::SetupVulkanDrawCommandBuffer()
+    {
+        // Queue address
+        VkQueue logicalDeviceQueue{ NULL };
+        const uint32_t queueFamilyIndex = 0;
+
+        // Request the device queue to submit work to
+        vkGetDeviceQueue(_vkLogicalDevice, 
+                         queueFamilyIndex,
+                         0, 
+                         &logicalDeviceQueue);
+
+        // Create Command Pool and Buffers
+        VkCommandPoolCreateInfo commandPoolCreateInfo
+        {
+            .sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+            .flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+            .queueFamilyIndex = queueFamilyIndex
+        };
+
+        VkResult result = vkCreateCommandPool(_vkLogicalDevice, 
+                                              &commandPoolCreateInfo, 
+                                              NULL, 
+                                              &_vkCommandPool);
+
+        // Was is successful?
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to create Command Pool.");
+
+        // Define type of Command Buffer
+        VkCommandBufferAllocateInfo commandBufferAllocateInfo
+        {
+            .sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+            .commandPool        = _vkCommandPool,
+            .level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+            .commandBufferCount = _commandBufferCount
+        };
+
+        result = vkAllocateCommandBuffers(_vkLogicalDevice, 
+                                          &commandBufferAllocateInfo, 
+                                          &_vkDrawCommandBuffer);
+
+        // Was it successful?
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to allocate Draw Command Buffer.")
     }
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK

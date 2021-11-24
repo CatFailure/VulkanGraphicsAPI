@@ -35,8 +35,17 @@ namespace Engine
         void SetupVulkanInstance_InitVkInstance();
         void SetupVulkanInstance_InitVkSurface();
 
-        void SetupPhysicalDevices();
+        void SetupVulkanPhysicalDevices();
         void SetupVulkanDevice();
+
+        void SetupVulkanSwapchain();
+        void SetupVulkanSwapchain_CreateSwapchain();
+        void SetupVulkanSwapchain_CreateImages();
+        void SetupVulkanSwapchain_CreateImageViews();
+
+        void PrintDeviceMemoryCapabilities();
+
+        void SetupVulkanDrawCommandBuffer();
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
         void SetupVulkanInstance_InitVkDebugCallback();
@@ -44,20 +53,35 @@ namespace Engine
         VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugReportCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objectType, uint64_t object, size_t location,
                                                                  int32_t messageCode, const char *layerPrefix, const char *message, void *pUserData);
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
+        constexpr static uint32_t ENABLED_LAYER_COUNT{ 1 };
+        constexpr static uint32_t SWAPCHAIN_BUFFER_COUNT{ 2 };
+
+        uint32_t _surfaceBufferWidth{ 0 }, _surfaceBufferHeight{ 0 };
+        uint32_t _physDeviceCount{ 0 }, _physDeviceQueueFamilyCount{ 0 };
+        uint32_t _swapChainImageCount{ 0 };
+        uint32_t _commandBufferCount{ 1 };
 
         ApplicationData _appData;
 
         // Desktop (NVIDIA Card)
-        //const static uint32_t LAYER_COUNT{ 1 };
-        //std::array<const char *, LAYER_COUNT> _enabledLayerNames{ "VK_LAYER_NV_optimus" };
+        std::array<const char *, ENABLED_LAYER_COUNT> _enabledLayerNames{ "VK_LAYER_NV_optimus" };
 
         // Laptop (No NVIDIA Card)
-        const static uint32_t ENABLED_LAYER_COUNT{ 0 };
-        std::array<const char *, ENABLED_LAYER_COUNT> _enabledLayerNames{ NULL };
+        //constexpr static uint32_t ENABLED_LAYER_COUNT{ 0 };
+        //std::array<const char *, ENABLED_LAYER_COUNT> _enabledLayerNames{ NULL };
 
         VkInstance _vkInstance{ NULL };
         VkSurfaceKHR _vkSurface{ NULL };
+
         VkPhysicalDevice _vkPhysicalDevice{ NULL };
         VkDevice _vkLogicalDevice{ NULL };
+
+        VkSwapchainKHR _vkSwapchain{ NULL };
+
+        std::vector<VkImage> _vkSwapchainImages;
+        std::vector<VkImageView> _vkSwapchainImageViews;
+
+        VkCommandPool _vkCommandPool{ NULL };
+        VkCommandBuffer _vkDrawCommandBuffer{ NULL };
     };
 }
