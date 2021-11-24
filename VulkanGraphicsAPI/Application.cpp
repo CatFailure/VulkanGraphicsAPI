@@ -281,20 +281,20 @@ namespace Engine
 
         VkSwapchainCreateInfoKHR swapchainCreateInfo
         {
-            .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
-            .surface = _vkSurface,
-            .minImageCount = SWAPCHAIN_BUFFER_COUNT,
-            .imageFormat = VK_FORMAT_B8G8R8A8_UNORM,
-            .imageColorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR,
-            .imageExtent = surfaceResolution,
+            .sType            = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+            .surface          = _vkSurface,
+            .minImageCount    = SWAPCHAIN_BUFFER_COUNT,
+            .imageFormat      = VK_FORMAT_B8G8R8A8_UNORM,
+            .imageColorSpace  = VK_COLORSPACE_SRGB_NONLINEAR_KHR,
+            .imageExtent      = surfaceResolution,
             .imageArrayLayers = 1,
-            .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+            .imageUsage       = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
             .imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
-            .preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
-            .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
-            .presentMode = VK_PRESENT_MODE_MAILBOX_KHR,
-            .clipped = true,    // Clipping outside of extents?
-            .oldSwapchain = NULL
+            .preTransform     = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
+            .compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+            .presentMode      = VK_PRESENT_MODE_MAILBOX_KHR,
+            .clipped          = true,    // Clipping outside of extents?
+            .oldSwapchain     = NULL
         };
 
         VkResult result = vkCreateSwapchainKHR(_vkLogicalDevice, 
