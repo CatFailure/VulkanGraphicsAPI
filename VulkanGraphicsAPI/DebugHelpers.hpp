@@ -1,15 +1,6 @@
 #pragma once
 //#define ENABLE_LOGGING    // Debug Logging
 
-#define VK_USE_PLATFORM_WIN32_KHR
-#include <vulkan/vulkan.hpp>
-
-// Variable argument functions, e.g., dprintf(..)
-#include <stdlib.h>
-#include <stdarg.h>
-#include <windows.h>    // OutputDebugStringA
-#include <stdio.h>      // vsprintf_s
-
 namespace Utility
 {
     // DebugBreak() (Win32) causes Visual Studio to halt.
