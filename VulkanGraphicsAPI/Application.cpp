@@ -20,6 +20,7 @@ namespace Engine
         SetupVulkanInstance();
         SetupPhysicalDevices();
         SetupVulkanDevice();
+        SetupSwapchain();
     }
 
     void Application::SetupWin32Window(const WNDPROC wndProcCallback)
@@ -254,6 +255,121 @@ namespace Engine
 
         // Was it successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Logical Device!");
+    }
+
+    void Application::SetupSwapchain()
+    {
+        SetupSwapchain_CreateSwapchain();
+        SetupSwapchain_CreateImages();
+        SetupSwapchain_CreateImageViews();
+    }
+
+    void Application::SetupSwapchain_CreateSwapchain()
+    {
+        // Structure listing surface capabilities
+        VkSurfaceCapabilitiesKHR surfaceCapabilities{};
+        
+        // Fill structure with data
+        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(_vkPhysicalDevice, 
+                                                  _vkSurface, 
+                                                  &surfaceCapabilities);
+
+        // Retrieve and use the actual back/front buffer widths
+        VkExtent2D surfaceResolution = surfaceCapabilities.currentExtent;
+        _surfaceBufferWidth = surfaceResolution.width;
+        _surfaceBufferHeight = surfaceResolution.height;
+
+        VkSwapchainCreateInfoKHR swapchainCreateInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+            .surface = _vkSurface,
+            .minImageCount = SWAPCHAIN_BUFFER_COUNT,
+            .imageFormat = VK_FORMAT_B8G8R8A8_UNORM,
+            .imageColorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR,
+            .imageExtent = surfaceResolution,
+            .imageArrayLayers = 1,
+            .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+            .imageSharingMode = VK_SHARING_MODE_EXCLUSIVE,
+            .preTransform = VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
+            .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+            .presentMode = VK_PRESENT_MODE_MAILBOX_KHR,
+            .clipped = true,    // Clipping outside of extents?
+            .oldSwapchain = NULL
+        };
+
+        VkResult result = vkCreateSwapchainKHR(_vkLogicalDevice, 
+                                               &swapchainCreateInfo, 
+                                               NULL, 
+                                               &_vkSwapchain);
+
+        // Was this successful?
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to create Swapchain.");
+    }
+
+    void Application::SetupSwapchain_CreateImages()
+    {
+        // TEMP
+        uint32_t imageCount{ 0 };
+
+        // How many images need to be created?
+        vkGetSwapchainImagesKHR(_vkLogicalDevice, 
+                                _vkSwapchain, 
+                                &imageCount,
+                                NULL);
+
+        // Make sure the images match what is expected
+        DBG_ASSERT(imageCount == SWAPCHAIN_BUFFER_COUNT);
+
+        _pVkSwapchainImages = new VkImage[imageCount];
+        
+        // Link the images to the Swapchain
+        VkResult result = vkGetSwapchainImagesKHR(_vkLogicalDevice,
+                                                  _vkSwapchain,
+                                                  &imageCount,
+                                                  _pVkSwapchainImages);
+
+        // Was it successful?
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to create Swapchain Images.");
+    }
+
+    void Application::SetupSwapchain_CreateImageViews()
+    {
+        _pVkSwapchainImageViews = new VkImageView[SWAPCHAIN_BUFFER_COUNT];
+
+        for (uint32_t i(0); i < SWAPCHAIN_BUFFER_COUNT; ++i)
+        {
+            // Create VkImageViews for the Swapchain
+            VkImageViewCreateInfo imageViewCreateInfo
+            {
+                .sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+                .image    = _pVkSwapchainImages[i],
+                .viewType = VK_IMAGE_VIEW_TYPE_2D,
+                .format   = VK_FORMAT_B8G8R8A8_UNORM,
+                .components
+                {
+                    .r = VK_COMPONENT_SWIZZLE_R,
+                    .g = VK_COMPONENT_SWIZZLE_G,
+                    .b = VK_COMPONENT_SWIZZLE_B,
+                    .a = VK_COMPONENT_SWIZZLE_A
+                },
+                .subresourceRange
+                {
+                    .aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+                    .baseMipLevel   = 0,
+                    .levelCount     = 1,
+                    .baseArrayLayer = 0,
+                    .layerCount     = 1
+                }
+            };
+
+            VkResult result = vkCreateImageView(_vkLogicalDevice, 
+                                                &imageViewCreateInfo,
+                                                NULL, 
+                                                &_pVkSwapchainImageViews[i]);
+
+            // Was it successful?
+            DBG_ASSERT_VULKAN_MSG(result, "Failed to create ImageView");
+        }
     }
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK

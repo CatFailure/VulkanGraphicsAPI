@@ -38,6 +38,11 @@ namespace Engine
         void SetupPhysicalDevices();
         void SetupVulkanDevice();
 
+        void SetupSwapchain();
+        void SetupSwapchain_CreateSwapchain();
+        void SetupSwapchain_CreateImages();
+        void SetupSwapchain_CreateImageViews();
+
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
         void SetupVulkanInstance_InitVkDebugCallback();
 
@@ -52,12 +57,20 @@ namespace Engine
         //std::array<const char *, LAYER_COUNT> _enabledLayerNames{ "VK_LAYER_NV_optimus" };
 
         // Laptop (No NVIDIA Card)
-        const static uint32_t ENABLED_LAYER_COUNT{ 0 };
+        constexpr static uint32_t ENABLED_LAYER_COUNT{ 0 };
         std::array<const char *, ENABLED_LAYER_COUNT> _enabledLayerNames{ NULL };
 
         VkInstance _vkInstance{ NULL };
         VkSurfaceKHR _vkSurface{ NULL };
+
         VkPhysicalDevice _vkPhysicalDevice{ NULL };
         VkDevice _vkLogicalDevice{ NULL };
+
+        VkSwapchainKHR _vkSwapchain{ NULL };
+        VkImage *_pVkSwapchainImages = nullptr;
+        VkImageView *_pVkSwapchainImageViews = nullptr;
+
+        constexpr static uint32_t SWAPCHAIN_BUFFER_COUNT{ 2 };
+        uint32_t _surfaceBufferWidth{ 0 }, _surfaceBufferHeight{ 0 };
     };
 }
