@@ -381,7 +381,6 @@ namespace Engine
         vkGetPhysicalDeviceQueueFamilyProperties(_vkPhysicalDevice, 
                                                  &queueFamilyCount, 
                                                  NULL);
-        //
     }
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
