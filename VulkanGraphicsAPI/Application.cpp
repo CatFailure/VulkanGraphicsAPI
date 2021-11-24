@@ -3,8 +3,6 @@
 
 namespace Engine
 {
-    //const uint32_t Application::ENABLED_LAYER_COUNT;
-
     Application::Application(const ApplicationData &appData)
         : _appData(appData)
     {}
