@@ -53,7 +53,7 @@ namespace Engine
         VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugReportCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objectType, uint64_t object, size_t location,
                                                                  int32_t messageCode, const char *layerPrefix, const char *message, void *pUserData);
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
-        constexpr static uint32_t ENABLED_LAYER_COUNT{ 1 };
+        constexpr static uint32_t ENABLED_LAYER_COUNT{ 1 };     // Change to 0 for no NVIDIA card
         constexpr static uint32_t SWAPCHAIN_BUFFER_COUNT{ 2 };
 
         uint32_t _surfaceBufferWidth{ 0 }, _surfaceBufferHeight{ 0 };
@@ -67,7 +67,6 @@ namespace Engine
         std::array<const char *, ENABLED_LAYER_COUNT> _enabledLayerNames{ "VK_LAYER_NV_optimus" };
 
         // Laptop (No NVIDIA Card)
-        //constexpr static uint32_t ENABLED_LAYER_COUNT{ 0 };
         //std::array<const char *, ENABLED_LAYER_COUNT> _enabledLayerNames{ NULL };
 
         VkInstance _vkInstance{ NULL };
