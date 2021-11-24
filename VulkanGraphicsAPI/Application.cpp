@@ -18,9 +18,11 @@ namespace Engine
     {
         SetupWin32Window(wndProcCallback);
         SetupVulkanInstance();
-        SetupPhysicalDevices();
+        SetupVulkanPhysicalDevices();
         SetupVulkanDevice();
-        SetupSwapchain();
+        SetupVulkanSwapchain();
+        PrintDeviceMemoryCapabilities();
+        SetupVulkanDrawCommandBuffer();
     }
 
     void Application::SetupWin32Window(const WNDPROC wndProcCallback)
@@ -158,25 +160,23 @@ namespace Engine
         DBG_ASSERT(_vkSurface != NULL);
     }
 
-    void Application::SetupPhysicalDevices()
+    void Application::SetupVulkanPhysicalDevices()
     {
         // Query how many devices are present
-        uint32_t deviceCount(0);
-
         VkResult result = vkEnumeratePhysicalDevices(_vkInstance,
-                                                     &deviceCount,
+                                                     &_physDeviceCount,
                                                      NULL);
 
         // Was it successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to query the number of physical devices present.\n");
 
         // Make sure at least 1 device is present.
-        DBG_ASSERT_MSG(deviceCount != 0, "Could not detect any physical devices present with Vulkan support.\n");
+        DBG_ASSERT_MSG(_physDeviceCount != 0, "Could not detect any physical devices present with Vulkan support.\n");
 
-        std::vector<VkPhysicalDevice> physicalDevices(deviceCount);
+        std::vector<VkPhysicalDevice> physicalDevices(_physDeviceCount);
 
         result = vkEnumeratePhysicalDevices(_vkInstance,
-                                            &deviceCount, 
+                                            &_physDeviceCount,
                                             &physicalDevices.at(0));
 
         // Was it successful?
@@ -257,14 +257,14 @@ namespace Engine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Logical Device!");
     }
 
-    void Application::SetupSwapchain()
+    void Application::SetupVulkanSwapchain()
     {
-        SetupSwapchain_CreateSwapchain();
-        SetupSwapchain_CreateImages();
-        SetupSwapchain_CreateImageViews();
+        SetupVulkanSwapchain_CreateSwapchain();
+        SetupVulkanSwapchain_CreateImages();
+        SetupVulkanSwapchain_CreateImageViews();
     }
 
-    void Application::SetupSwapchain_CreateSwapchain()
+    void Application::SetupVulkanSwapchain_CreateSwapchain()
     {
         // Structure listing surface capabilities
         VkSurfaceCapabilitiesKHR surfaceCapabilities{};
@@ -306,33 +306,31 @@ namespace Engine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Swapchain.");
     }
 
-    void Application::SetupSwapchain_CreateImages()
+    void Application::SetupVulkanSwapchain_CreateImages()
     {
-        // TEMP
-        uint32_t imageCount{ 0 };
-
         // How many images need to be created?
         vkGetSwapchainImagesKHR(_vkLogicalDevice, 
                                 _vkSwapchain, 
-                                &imageCount,
+                                &_swapChainImageCount,
                                 NULL);
 
         // Make sure the images match what is expected
-        DBG_ASSERT(imageCount == SWAPCHAIN_BUFFER_COUNT);
+        const bool isCorrectSwapChainImageCount = _swapChainImageCount == SWAPCHAIN_BUFFER_COUNT;
+        DBG_ASSERT(isCorrectSwapChainImageCount);
 
-        _vkSwapchainImages = std::vector<VkImage>(imageCount);
+        _vkSwapchainImages = std::vector<VkImage>(_swapChainImageCount);
         
         // Link the images to the Swapchain
         VkResult result = vkGetSwapchainImagesKHR(_vkLogicalDevice,
                                                   _vkSwapchain,
-                                                  &imageCount,
+                                                  &_swapChainImageCount,
                                                   _vkSwapchainImages.data());
 
         // Was it successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Swapchain Images.");
     }
 
-    void Application::SetupSwapchain_CreateImageViews()
+    void Application::SetupVulkanSwapchain_CreateImageViews()
     {
         _vkSwapchainImageViews = std::vector<VkImageView>(SWAPCHAIN_BUFFER_COUNT);
 
@@ -374,13 +372,96 @@ namespace Engine
 
     void Application::PrintDeviceMemoryCapabilities()
     {
-        // TEMP
-        uint32_t queueFamilyCount = 0;
-
         // Query device for memory count
         vkGetPhysicalDeviceQueueFamilyProperties(_vkPhysicalDevice, 
-                                                 &queueFamilyCount, 
+                                                 &_physDeviceQueueFamilyCount,
                                                  NULL);
+
+        // Create vector of the size of the family count
+        std::vector<VkQueueFamilyProperties> queueFamilyProperties(_physDeviceQueueFamilyCount);
+
+        // Retrieve properties
+        vkGetPhysicalDeviceQueueFamilyProperties(_vkPhysicalDevice, 
+                                                 &_physDeviceQueueFamilyCount,
+                                                 &queueFamilyProperties.at(0));
+
+        // Print out the families
+        for (uint32_t i(0); i < _physDeviceCount; ++i)
+        {
+            for (uint32_t j(0); j < _physDeviceQueueFamilyCount; ++j)
+            {
+                const VkQueueFamilyProperties& currentQueueFamilyProperties = queueFamilyProperties.at(j);
+                const VkQueueFlags& queueFlags = currentQueueFamilyProperties.queueFlags;
+
+                DebugHelpers::DPrintf("Queue count: %d\n", currentQueueFamilyProperties.queueCount);
+                DebugHelpers::DPrintf("Supporting operating on this queue:\n");
+
+                if (queueFlags & VK_QUEUE_GRAPHICS_BIT)
+                {
+                    DebugHelpers::DPrintf("\t\tGraphics\n");
+                }
+
+                if (queueFlags & VK_QUEUE_COMPUTE_BIT)
+                {
+                    DebugHelpers::DPrintf("\t\tCompute\n");
+                }
+
+                if (queueFlags & VK_QUEUE_TRANSFER_BIT)
+                {
+                    DebugHelpers::DPrintf("\t\tTransfer\n");
+                }
+
+                if (queueFlags & VK_QUEUE_SPARSE_BINDING_BIT)
+                {
+                    DebugHelpers::DPrintf("\t\tSparse Binding\n");
+                }
+            }
+        }
+    }
+
+    void Application::SetupVulkanDrawCommandBuffer()
+    {
+        // Queue address
+        VkQueue logicalDeviceQueue{ NULL };
+        const uint32_t queueFamilyIndex = 0;
+
+        // Request the device queue to submit work to
+        vkGetDeviceQueue(_vkLogicalDevice, 
+                         queueFamilyIndex,
+                         0, 
+                         &logicalDeviceQueue);
+
+        // Create Command Pool and Buffers
+        VkCommandPoolCreateInfo commandPoolCreateInfo
+        {
+            .sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+            .flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+            .queueFamilyIndex = queueFamilyIndex
+        };
+
+        VkResult result = vkCreateCommandPool(_vkLogicalDevice, 
+                                              &commandPoolCreateInfo, 
+                                              NULL, 
+                                              &_vkCommandPool);
+
+        // Was is successful?
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to create Command Pool.");
+
+        // Define type of Command Buffer
+        VkCommandBufferAllocateInfo commandBufferAllocateInfo
+        {
+            .sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+            .commandPool        = _vkCommandPool,
+            .level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+            .commandBufferCount = _commandBufferCount
+        };
+
+        result = vkAllocateCommandBuffers(_vkLogicalDevice, 
+                                          &commandBufferAllocateInfo, 
+                                          &_vkDrawCommandBuffer);
+
+        // Was it successful?
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to allocate Draw Command Buffer.")
     }
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
