@@ -21,18 +21,25 @@ namespace Engine
     class Application : public IDisposable
     {
     public:
-        Application();
+        Application() = delete;
+        Application(const ApplicationData &appData);
 
-        void Initialise(const ApplicationData &appData, const WNDPROC wndProcCallback);
+        void Initialise(const WNDPROC wndProcCallback);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
         void SetupWin32Window(const WNDPROC wndProcCallback);
+
         void SetupVulkanInstance();
+        void SetupVulkanInstance_InitVkInstance();
+        void SetupVulkanInstance_InitVkSurface();
+
         void SetupPhysicalDevices();
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
+        void SetupVulkanInstance_InitVkDebugCallback();
+
         VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugReportCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objectType, uint64_t object, size_t location,
                                                                  int32_t messageCode, const char *layerPrefix, const char *message, void *pUserData);
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
@@ -40,6 +47,6 @@ namespace Engine
         ApplicationData _appData;
         VkInstance _vkInstance{ NULL };
         VkSurfaceKHR _vkSurface{ NULL };
-        VkPhysicalDevice _vkDevice{ NULL };
+        VkPhysicalDevice _vkPhysicalDevice{ NULL };
     };
 }

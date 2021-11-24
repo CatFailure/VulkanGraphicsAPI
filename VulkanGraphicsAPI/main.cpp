@@ -35,8 +35,8 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
         .clientHeight = 600
     };
 
-    Application application;
-    application.Initialise(appData, WndProc);
+    Application application(appData);
+    application.Initialise(WndProc);
 
     MSG msg{};      // Structure for storing Win32 Messages.
     while (true)    // Start of main render loop
