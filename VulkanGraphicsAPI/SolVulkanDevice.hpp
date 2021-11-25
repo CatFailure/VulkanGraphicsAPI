@@ -19,9 +19,10 @@ namespace SolEngine
     class SolVulkanDevice : public IDisposable
     {
     public:
-        SolVulkanDevice(HWND &rWindowHandle);
+        SolVulkanDevice(HWND &rWinHandle);
         ~SolVulkanDevice();
 
+        // Public Accessors
         VkInstance       Instance()		  const { return _vkInstance; }
         VkDevice         Device()		  const { return _vkDevice; }
         VkPhysicalDevice PhysicalDevice() const { return _vkPhysicalDevice; }
@@ -49,7 +50,7 @@ namespace SolEngine
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
         // TEMP: Will need to be wrapped in the future
-        HWND &_rWindowHandle;
+        HWND &_rWinHandle;
 
         VkInstance       _vkInstance      { NULL };
         VkDevice         _vkDevice        { NULL };
@@ -58,7 +59,7 @@ namespace SolEngine
         VkCommandPool    _vkCommandPool   { NULL };
 
         std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };
-        std::vector<const char *> _enabledExtensionNames;
+        std::vector<const char *> _enabledExtensionNames;   // Defined in CreateVulkanInstance()
         std::vector<const char *> _logicalDeviceExtensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     };
 }

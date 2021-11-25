@@ -3,10 +3,12 @@
 
 namespace SolEngine
 {
-	SolVulkanDevice::SolVulkanDevice(HWND &rWindowHandle)
-        : _rWindowHandle(rWindowHandle)
+	SolVulkanDevice::SolVulkanDevice(HWND &rWinHandle)
+        : _rWinHandle(rWinHandle)
 	{
         CreateVulkanInstance();
+        CreateVulkanPhysicalDevice();
+        CreateVulkanDevice();
         CreateVulkanSurface();
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
@@ -15,8 +17,6 @@ namespace SolEngine
         CreateVulkanDebugCallback();
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
-        CreateVulkanPhysicalDevice();
-        CreateVulkanDevice();
         CreateVulkanCommandPool();
 	}
 
@@ -91,7 +91,7 @@ namespace SolEngine
         {
             .sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
             .hinstance = hInstance,     // Param is NULL - GetModuleHandle returns handle to file used to create the calling process
-            .hwnd      = _rWindowHandle
+            .hwnd      = _rWinHandle
         };
 
         // OutSurface must be empty before assignment
@@ -144,6 +144,7 @@ namespace SolEngine
         {
             VkPhysicalDeviceProperties deviceProperties{};
             ZeroMemory(&deviceProperties, sizeof(VkPhysicalDeviceProperties));
+
             // Fill structure with device info.
             vkGetPhysicalDeviceProperties(rDevice, &deviceProperties);
             const uint32_t deviceApiVersion = deviceProperties.apiVersion;
