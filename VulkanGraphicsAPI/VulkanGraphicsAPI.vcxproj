@@ -338,6 +338,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="SolVulkanDevice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
@@ -345,6 +346,8 @@
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="IDisposable.hpp" />
     <ClInclude Include="pch.hpp" />
+    <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="SolVulkanDevice.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #pragma once
 #define ENABLE_VULKAN_DEBUG_CALLBACK
+#define DEPTH_BUFFER
 
 #include "ApplicationData.hpp"
 
@@ -46,6 +47,8 @@ namespace Engine
         void PrintDeviceMemoryCapabilities();
 
         void SetupVulkanDrawCommandBuffer();
+
+        void SetupFrameBufferRenderPass();
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
         void SetupVulkanInstance_InitVkDebugCallback();

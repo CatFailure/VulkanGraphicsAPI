@@ -19,6 +19,9 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{719541ff-5a13-40be-8597-8fc93590bb01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine">
+      <UniqueIdentifier>{63aff029-0da5-4899-96be-913e14f03998}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,13 +36,13 @@
     <ClCompile Include="Application.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="SolVulkanDevice.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="IDisposable.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ApplicationData.hpp">
       <Filter>Header Files</Filter>
@@ -49,6 +52,15 @@
     </ClInclude>
     <ClInclude Include="Application.hpp">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SolVulkanDevice.h">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="IDisposable.hpp">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

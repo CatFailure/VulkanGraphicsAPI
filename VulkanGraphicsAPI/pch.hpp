@@ -26,3 +26,4 @@
 
 #include "DebugHelpers.hpp"
 #include "IDisposable.hpp"
+#include "Singleton.hpp"
