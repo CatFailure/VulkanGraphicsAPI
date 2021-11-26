@@ -1,19 +1,17 @@
 #pragma once
 #define DEPTH_BUFFER
 
-#include "ApplicationData.hpp"
 #include "SolVulkanDevice.hpp"
 
 using namespace Utility;
-using namespace SolEngine;
 
-namespace Engine
+namespace SolEngine
 {
     class Application : public IDisposable
     {
     public:
         Application() = delete;
-        Application(HWND& rWinHandle);
+        Application(HWND &rWinHandle, ApplicationData &rAppData);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
@@ -38,6 +36,7 @@ namespace Engine
         uint32_t _commandBufferCount{ 1 };
 
         HWND &_rWinHandle;
+        ApplicationData &_rAppData;
 
         std::unique_ptr<SolVulkanDevice> _pSolVulkanDevice;
 

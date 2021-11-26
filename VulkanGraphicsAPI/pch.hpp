@@ -13,6 +13,7 @@
 #include <memory>
 #include <thread>
 #include <utility>
+#include <cmath>
 
 #include <vector>
 #include <array>

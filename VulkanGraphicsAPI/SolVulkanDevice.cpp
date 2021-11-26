@@ -3,8 +3,10 @@
 
 namespace SolEngine
 {
-	SolVulkanDevice::SolVulkanDevice(HWND &rWinHandle)
-        : _rWinHandle(rWinHandle)
+	SolVulkanDevice::SolVulkanDevice(HWND &rWinHandle, 
+                                     ApplicationData &rAppData)
+        : _rWinHandle(rWinHandle),
+          _rAppData(rAppData)
 	{
         CreateVulkanInstance();
         CreateVulkanPhysicalDevice();
@@ -35,8 +37,6 @@ namespace SolEngine
 
     void SolVulkanDevice::CreateVulkanInstance()
 	{
-        const char *appName = "Hello Vulkan";
-
         _enabledExtensionNames =
         {
             "VK_KHR_surface",
@@ -54,7 +54,7 @@ namespace SolEngine
         {
             .sType            = VK_STRUCTURE_TYPE_APPLICATION_INFO,	    // Mandatory, describes type of structure
             .pNext            = NULL,								    // Mandatory, stores pointers to extension-specific structures
-            .pApplicationName = appName,							    // Name of the application
+            .pApplicationName = _rAppData.appName,					    // Name of the application
             .pEngineName      = NULL,								    // Name of the engine
             .engineVersion    = 1,									    // Version of the engine
             .apiVersion       = VK_API_VERSION_1_0					    // Version of Vulkan used by application
@@ -241,7 +241,8 @@ namespace SolEngine
         VkDebugReportCallbackEXT warningCallback{ VK_NULL_HANDLE }, errorCallback{ VK_NULL_HANDLE };
         PFN_vkCreateDebugReportCallbackEXT vkCreateDebugReportCallbackEXT{ NULL };
 
-        *(void **)&vkCreateDebugReportCallbackEXT = vkGetInstanceProcAddr(_vkInstance, "vkCreateDebugReportCallbackEXT");
+        *(void **)&vkCreateDebugReportCallbackEXT = vkGetInstanceProcAddr(_vkInstance, 
+                                                                          "vkCreateDebugReportCallbackEXT");
 
         DBG_ASSERT(vkCreateDebugReportCallbackEXT);
 

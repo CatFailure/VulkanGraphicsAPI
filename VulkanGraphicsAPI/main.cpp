@@ -1,7 +1,7 @@
 #include "pch.hpp"
 #include "Application.hpp"
 
-using namespace Engine;
+using namespace SolEngine;
 
 LRESULT CALLBACK WndProc(HWND hWnd,
                          UINT uMsg,
@@ -30,8 +30,15 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
     // Defines window properties
     HINSTANCE hInst{ GetModuleHandle(NULL) };
     HWND winHandle{ NULL };
-    LPCWSTR className{ L"VulkanWindowClass" }, windowTitle{ L"Hello Vulkan!" };
-    uint32_t clientWidth(800), clientHeight(600);
+
+    ApplicationData appData
+    {
+        .windowTitle      = L"Hello Vulkan!",
+        .windowClassName  = L"VulkanWindowClass",
+        .engineName       = L"SolEngine",
+        .appName          = "VulkanGraphicsAPI",
+        .windowDimensions = Vector2<uint32_t>(800, 600)
+    };
 
     WNDCLASSEX windowClass{};
     ZeroMemory(&windowClass, sizeof(WNDCLASSEX));
@@ -42,18 +49,18 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
     windowClass.hInstance     = hInst;                              // File Handle
     windowClass.hCursor       = LoadCursor(NULL, IDC_ARROW);        // Cursor type
     windowClass.hbrBackground = (HBRUSH)COLOR_WINDOW;               // Preferred Window colour
-    windowClass.lpszClassName = className;                          // Class name
+    windowClass.lpszClassName = appData.windowClassName;            // Class name
 
     RegisterClassEx(&windowClass);
 
     winHandle = CreateWindowEx(NULL,                                // No additional Window Styles
-                               className,                           // Class Name
-                               windowTitle,                         // Window Title
+                               appData.windowClassName,             // Class Name
+                               appData.windowTitle,                 // Window Title
                                WS_OVERLAPPEDWINDOW | WS_VISIBLE,    // Window Appearance Styles
                                100,                                 // x
                                100,                                 // y
-                               clientWidth,                         // Window width
-                               clientHeight,                        // Window height
+                               appData.windowDimensions._x,         // Window width
+                               appData.windowDimensions._y,         // Window height
                                NULL,                                // No Parents
                                NULL,                                // No popup menus
                                hInst,                               // Exe File Handle
@@ -62,7 +69,7 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
     // Was this successful?
     DBG_ASSERT(winHandle != NULL);
 
-    Application application(winHandle);
+    Application application(winHandle, appData);
 
     MSG msg{};      // Structure for storing Win32 Messages.
     while (true)    // Start of main render loop

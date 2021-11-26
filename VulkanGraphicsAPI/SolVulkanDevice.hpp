@@ -1,6 +1,8 @@
 #pragma once
 #define ENABLE_VULKAN_DEBUG_CALLBACK
 
+#include "ApplicationData.hpp"
+
 using namespace Utility;
 
 namespace SolEngine
@@ -19,7 +21,7 @@ namespace SolEngine
     class SolVulkanDevice : public IDisposable
     {
     public:
-        SolVulkanDevice(HWND &rWinHandle);
+        SolVulkanDevice(HWND &rWinHandle, ApplicationData &rAppData);
         ~SolVulkanDevice();
 
         // Public Accessors
@@ -51,6 +53,7 @@ namespace SolEngine
 
         // TEMP: Will need to be wrapped in the future
         HWND &_rWinHandle;
+        ApplicationData &_rAppData;
 
         VkInstance       _vkInstance      { NULL };
         VkDevice         _vkDevice        { NULL };
@@ -58,7 +61,8 @@ namespace SolEngine
         VkSurfaceKHR     _vkSurface       { NULL };
         VkCommandPool    _vkCommandPool   { NULL };
 
-        std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };
+        std::vector<const char *> _enabledLayerNames{};                             // Laptop
+        //std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };    // Desktop
         std::vector<const char *> _enabledExtensionNames;   // Defined in CreateVulkanInstance()
         std::vector<const char *> _logicalDeviceExtensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     };

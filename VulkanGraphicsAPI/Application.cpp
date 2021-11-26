@@ -1,11 +1,14 @@
 #include "pch.hpp"
 #include "Application.hpp"
 
-namespace Engine
+namespace SolEngine
 {
-    Application::Application(HWND &rWindowHandle)
+    Application::Application(HWND &rWindowHandle, 
+                             ApplicationData &rAppData)
         : _rWinHandle(rWindowHandle),
-          _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(rWindowHandle))
+          _rAppData(rAppData),
+          _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(rWindowHandle, 
+                                                              rAppData))
     {
         SetupVulkanSwapchain();
         PrintDeviceMemoryCapabilities();
