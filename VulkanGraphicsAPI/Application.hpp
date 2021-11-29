@@ -20,9 +20,7 @@ namespace SolEngine
         void PrintDeviceMemoryCapabilities();
 
         void SetupVulkanDrawCommandBuffer();
-        void SetupFrameBufferRenderPass();
 
-        uint32_t _surfaceBufferWidth{ 0 }, _surfaceBufferHeight{ 0 };
         uint32_t _physDeviceCount{ 0 }, _physDeviceQueueFamilyCount{ 0 };
         uint32_t _commandBufferCount{ 1 };
 

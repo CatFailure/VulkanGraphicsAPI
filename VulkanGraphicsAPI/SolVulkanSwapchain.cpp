@@ -23,6 +23,7 @@ namespace SolEngine
         CreateSwapchainImages(imageCount, surfaceImageFormat, swapchainExtent);
         CreateSwapchainImageViews();
         CreateDepthResources();
+        CreateRenderPass();
 
         // Old Swapchain no longer needed
         _pOldSwapchain = nullptr;
@@ -69,6 +70,11 @@ namespace SolEngine
             _vkDepthImageViews.clear();
             _vkDepthImages.clear();
             _vkDepthImageMemories.clear();
+        }
+
+        // Render Pass
+        {
+            vkDestroyRenderPass(vkDevice, _vkRenderPass, NULL);
         }
     }
 
@@ -266,6 +272,91 @@ namespace SolEngine
 
             DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Image View.");
         }
+    }
+
+    void SolVulkanSwapchain::CreateRenderPass()
+    {
+        // Depth Stencil
+        const VkAttachmentDescription depthStencilAttachment
+        {
+            .format         = FindDepthFormat(),
+            .samples        = VK_SAMPLE_COUNT_1_BIT,
+            .loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR,
+            .storeOp        = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+            .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED,
+            .finalLayout    = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
+        };
+
+        const VkAttachmentReference depthStencilAttachmentReference
+        {
+            .attachment = 1,
+            .layout     = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
+        };
+
+        // Colour
+        const VkAttachmentDescription colourAttachment
+        {
+            .format         = _vkSwapchainImageFormat,
+            .samples        = VK_SAMPLE_COUNT_1_BIT,
+            .loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR,
+            .storeOp        = VK_ATTACHMENT_STORE_OP_STORE,
+            .stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+            .stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED,
+            .finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+        };
+
+        const VkAttachmentReference colourAttachmentReference
+        {
+            .attachment = 0,
+            .layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+        };
+
+
+        // Subpass
+        const VkSubpassDescription subpassDescription
+        {
+            .pipelineBindPoint       = VK_PIPELINE_BIND_POINT_GRAPHICS,
+            .colorAttachmentCount    = 1,
+            .pColorAttachments       = &colourAttachmentReference,
+            .pDepthStencilAttachment = &depthStencilAttachmentReference
+        };
+
+        const VkSubpassDependency subpassDependency
+        {
+            .srcSubpass    = VK_SUBPASS_EXTERNAL,
+            .dstSubpass    = 0,
+            .srcStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT,
+            .dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT,
+            .srcAccessMask = 0,
+            .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT
+        };
+
+        const std::array<VkAttachmentDescription, 2> attachments
+        {
+            colourAttachment,
+            depthStencilAttachment
+        };
+
+        const VkRenderPassCreateInfo renderPassCreateInfo
+        {
+            .sType           = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
+            .attachmentCount = static_cast<uint32_t>(attachments.size()),
+            .pAttachments    = attachments.data(),
+            .subpassCount    = 1,
+            .pSubpasses      = &subpassDescription,
+            .dependencyCount = 1,
+            .pDependencies   = &subpassDependency
+        };
+
+        const VkResult result = vkCreateRenderPass(_rSolDevice.Device(), 
+                                                   &renderPassCreateInfo, 
+                                                   NULL, 
+                                                   &_vkRenderPass);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Render Pass.");
     }
 
     VkSurfaceFormatKHR SolVulkanSwapchain::ChooseImageFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats)

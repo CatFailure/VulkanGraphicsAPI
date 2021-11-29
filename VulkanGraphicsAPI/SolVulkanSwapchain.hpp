@@ -19,6 +19,7 @@ namespace SolEngine
         void CreateSwapchainImages(uint32_t &rImageCount, const VkSurfaceFormatKHR &surfaceImageFormat, const VkExtent2D &swapchainExtent);
         void CreateSwapchainImageViews();
         void CreateDepthResources();
+        void CreateRenderPass();
 
         VkSurfaceFormatKHR ChooseImageFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats);
         VkPresentModeKHR ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
@@ -28,6 +29,7 @@ namespace SolEngine
         SolVulkanDevice &_rSolDevice;
         VkExtent2D _windowExtent;
 
+        // Swapchain
         VkSwapchainKHR _vkSwapchain{ NULL };
         std::shared_ptr<SolVulkanSwapchain> _pOldSwapchain;
 
@@ -36,6 +38,9 @@ namespace SolEngine
         VkFormat _vkSwapchainImageFormat;
         VkExtent2D _vkSwapchainExtent;
 
+        VkRenderPass _vkRenderPass{ NULL };
+
+        // Depth
         std::vector<VkImage> _vkDepthImages;
         std::vector<VkImageView> _vkDepthImageViews;
         std::vector<VkDeviceMemory> _vkDepthImageMemories;
