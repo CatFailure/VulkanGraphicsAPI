@@ -27,6 +27,90 @@ namespace SolEngine
         Dispose();
     }
 
+    void SolVulkanDevice::CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, 
+                                              VkMemoryPropertyFlags properties, 
+                                              VkImage &rImage, 
+                                              VkDeviceMemory &rImageMemory)
+    {
+        VkResult result = vkCreateImage(_vkDevice, 
+                                        &imageCreateInfo,
+                                        NULL, 
+                                        &rImage);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Image.");
+
+        VkMemoryRequirements imageMemoryRequirements{};
+
+        vkGetImageMemoryRequirements(_vkDevice, 
+                                     rImage,
+                                     &imageMemoryRequirements);
+
+        VkMemoryAllocateInfo memoryAllocateInfo
+        {
+            .sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+            .allocationSize  = imageMemoryRequirements.size,
+            .memoryTypeIndex = FindMemoryType(imageMemoryRequirements.memoryTypeBits, 
+                                              properties)
+        };
+
+        result = vkAllocateMemory(_vkDevice, 
+                                  &memoryAllocateInfo,
+                                  NULL,
+                                  &rImageMemory);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to allocate Image Memory.");
+
+        result = vkBindImageMemory(_vkDevice, 
+                                   rImage,
+                                   rImageMemory,
+                                   0);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Bind Image Memory.");
+    }
+
+    uint32_t SolVulkanDevice::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
+    {
+        VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties{};
+
+        vkGetPhysicalDeviceMemoryProperties(_vkPhysicalDevice,
+                                            &physicalDeviceMemoryProperties);
+
+        for (uint32_t i(0); i < physicalDeviceMemoryProperties.memoryTypeCount; ++i)
+        {
+            if ((typeFilter & (1 << i)) &&
+                (physicalDeviceMemoryProperties.memoryTypes[i].propertyFlags & properties) == properties)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    VkFormat SolVulkanDevice::FindSupportedFormat(const std::vector<VkFormat> &candidates,
+                                                  VkImageTiling tiling, 
+                                                  VkFormatFeatureFlags features)
+    {
+        for (const VkFormat &format : candidates)
+        {
+            VkFormatProperties properties{};
+
+            vkGetPhysicalDeviceFormatProperties(_vkPhysicalDevice, 
+                                                format, 
+                                                &properties);
+
+            if ((tiling == VK_IMAGE_TILING_LINEAR && (properties.linearTilingFeatures & features) == features) ||
+                (tiling == VK_IMAGE_TILING_OPTIMAL && (properties.optimalTilingFeatures & features) == features))
+            {
+                return format;
+            }
+        }
+
+        DBG_ASSERT_MSG(true, "Failed to find supported format.");
+
+        return VkFormat();
+    }
+
     void SolVulkanDevice::Dispose()
     {
         vkDestroyCommandPool(_vkDevice, _vkCommandPool, NULL);

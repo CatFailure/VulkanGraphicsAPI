@@ -34,8 +34,12 @@ namespace SolEngine
         VkSurfaceKHR     Surface()		  const { return _vkSurface; }
         VkCommandPool    CommandPool()	  const { return _vkCommandPool; }
 
+        void CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, VkMemoryPropertyFlags properties, VkImage &rImage, VkDeviceMemory &rImageMemory);
+
         SwapchainSupportDetails QueryPhysicalDeviceSwapchainSupport() { return QuerySwapchainSupport(_vkPhysicalDevice); }
         QueueFamilyIndices QueryPhysicalDeviceQueueFamilies() { return QueryQueueFamilies(_vkPhysicalDevice); }
+        uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+        VkFormat FindSupportedFormat(const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 
         uint32_t EnabledLayerCount()	 const { return static_cast<uint32_t>(_enabledLayerNames.size()); }
         uint32_t EnabledExtensionCount() const { return static_cast<uint32_t>(_enabledExtensionNames.size()); }
@@ -70,8 +74,8 @@ namespace SolEngine
         VkSurfaceKHR     _vkSurface       { NULL };
         VkCommandPool    _vkCommandPool   { NULL };
 
-        std::vector<const char *> _enabledLayerNames{};                             // Laptop
-        //std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };    // Desktop
+        //std::vector<const char *> _enabledLayerNames{};                       // Laptop
+        std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop
         std::vector<const char *> _enabledExtensionNames;   // Defined in CreateVulkanInstance()
         std::vector<const char *> _logicalDeviceExtensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     };
