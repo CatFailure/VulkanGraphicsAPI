@@ -16,20 +16,17 @@
     <Filter Include="Utility">
       <UniqueIdentifier>{5e084675-5c2f-4ae6-9160-0bb42f10c6f9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{719541ff-5a13-40be-8597-8fc93590bb01}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SolEngine">
       <UniqueIdentifier>{63aff029-0da5-4899-96be-913e14f03998}</UniqueIdentifier>
     </Filter>
     <Filter Include="SolEngine\Math">
       <UniqueIdentifier>{7ceb137a-b787-489a-b0ae-b558d7cb928d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\Data">
+      <UniqueIdentifier>{542ef050-a841-4c51-9b41-61ac09e1d8fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DebugHelpers.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
@@ -41,6 +38,12 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>SolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="SolVulkanSwapchain.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +70,15 @@
     </ClInclude>
     <ClInclude Include="Vector.hpp">
       <Filter>SolEngine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SolVulkanSwapchain.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapchainSupportDetails.hpp">
+      <Filter>SolEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueFamilyIndices.hpp">
+      <Filter>SolEngine\Data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

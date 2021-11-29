@@ -294,4 +294,103 @@ namespace SolEngine
         return VK_FALSE;
     }
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
+
+    SwapchainSupportDetails SolVulkanDevice::QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice)
+    {
+        SwapchainSupportDetails supportDetails{};
+        uint32_t surfaceFormatCount, presentModeCount;
+
+        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice,
+                                                  _vkSurface,
+                                                  &supportDetails.surfaceCapabilities);
+
+        // Query for surface format count
+        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice,
+                                             _vkSurface,
+                                             &surfaceFormatCount,
+                                             NULL);
+
+        if (surfaceFormatCount != 0)
+        {
+            supportDetails.imageFormats.resize(surfaceFormatCount);
+
+            vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice,
+                                                 _vkSurface,
+                                                 &surfaceFormatCount,
+                                                 supportDetails.imageFormats.data());
+        }
+
+        // Query for present mode count
+        vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice,
+                                                  _vkSurface,
+                                                  &presentModeCount,
+                                                  NULL);
+
+        if (presentModeCount != 0)
+        {
+            supportDetails.presentModes.resize(presentModeCount);
+
+            vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice,
+                                                      _vkSurface,
+                                                      &presentModeCount,
+                                                      supportDetails.presentModes.data());
+        }
+
+        return supportDetails;
+    }
+
+    QueueFamilyIndices SolVulkanDevice::QueryQueueFamilies(const VkPhysicalDevice &physicalDevice)
+    {
+        QueueFamilyIndices queueFamilyIndices{};
+        uint32_t queueFamilyCount;
+
+        // Query for Queue Family count
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice,
+                                                 &queueFamilyCount,
+                                                 NULL);
+
+        if (queueFamilyCount == 0)
+        {
+            return queueFamilyIndices;
+        }
+
+        std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+
+        // Fill out QueueFamilies vector
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice,
+                                                 &queueFamilyCount,
+                                                 queueFamilies.data());
+
+        for (uint32_t i(0); i < queueFamilies.size(); ++i)
+        {
+            const VkQueueFamilyProperties& queueFamilyProperties = queueFamilies.at(i);
+
+            if (queueFamilyProperties.queueCount > 0 &&
+                queueFamilyProperties.queueFlags & VK_QUEUE_GRAPHICS_BIT)
+            {
+                queueFamilyIndices.graphicsFamily = i;
+                queueFamilyIndices.graphicsFamilyHasValue = true;
+            }
+
+            VkBool32 isPresentSupported = false;
+            vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, 
+                                                 i,
+                                                 _vkSurface, 
+                                                 &isPresentSupported);
+
+            if (queueFamilyProperties.queueCount > 0 && 
+                isPresentSupported)
+            {
+                queueFamilyIndices.presentFamily = i;
+                queueFamilyIndices.presentFamilyHasValue = true;
+            }
+
+            if (queueFamilyIndices.IsComplete())
+            {
+                break;
+            }
+        }
+
+        return queueFamilyIndices;
+    }
 }

@@ -339,6 +339,7 @@
       </PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="SolVulkanDevice.cpp" />
+    <ClCompile Include="SolVulkanSwapchain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
@@ -346,8 +347,11 @@
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="IDisposable.hpp" />
     <ClInclude Include="pch.hpp" />
+    <ClInclude Include="QueueFamilyIndices.hpp" />
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolVulkanDevice.hpp" />
+    <ClInclude Include="SolVulkanSwapchain.hpp" />
+    <ClInclude Include="SwapchainSupportDetails.hpp" />
     <ClInclude Include="Vector.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

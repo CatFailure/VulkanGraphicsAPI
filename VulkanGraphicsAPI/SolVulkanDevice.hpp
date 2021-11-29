@@ -2,8 +2,11 @@
 #define ENABLE_VULKAN_DEBUG_CALLBACK
 
 #include "ApplicationData.hpp"
+#include "SwapchainSupportDetails.hpp"
+#include "QueueFamilyIndices.hpp"
 
 using namespace Utility;
+using namespace SolEngine::Data;
 
 namespace SolEngine
 {
@@ -31,6 +34,9 @@ namespace SolEngine
         VkSurfaceKHR     Surface()		  const { return _vkSurface; }
         VkCommandPool    CommandPool()	  const { return _vkCommandPool; }
 
+        SwapchainSupportDetails QueryPhysicalDeviceSwapchainSupport() { return QuerySwapchainSupport(_vkPhysicalDevice); }
+        QueueFamilyIndices QueryPhysicalDeviceQueueFamilies() { return QueryQueueFamilies(_vkPhysicalDevice); }
+
         uint32_t EnabledLayerCount()	 const { return static_cast<uint32_t>(_enabledLayerNames.size()); }
         uint32_t EnabledExtensionCount() const { return static_cast<uint32_t>(_enabledExtensionNames.size()); }
         uint32_t DeviceExtensionCount()  const { return static_cast<uint32_t>(_logicalDeviceExtensions.size()); }
@@ -51,8 +57,11 @@ namespace SolEngine
                                                                  int32_t messageCode, const char *layerPrefix, const char *message, void *pUserData);
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
-        // TEMP: Will need to be wrapped in the future
-        HWND &_rWinHandle;
+        // Helper Functions
+        SwapchainSupportDetails QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice);
+        QueueFamilyIndices QueryQueueFamilies(const VkPhysicalDevice &physicalDevice);
+
+        HWND &_rWinHandle;      // TEMP: Will need to be wrapped in the future
         ApplicationData &_rAppData;
 
         VkInstance       _vkInstance      { NULL };

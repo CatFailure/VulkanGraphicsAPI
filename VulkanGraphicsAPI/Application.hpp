@@ -2,6 +2,7 @@
 #define DEPTH_BUFFER
 
 #include "SolVulkanDevice.hpp"
+#include "SolVulkanSwapchain.hpp"
 
 using namespace Utility;
 
@@ -27,7 +28,6 @@ namespace SolEngine
 
         void SetupFrameBufferRenderPass();
 
-        constexpr static uint32_t ENABLED_LAYER_COUNT{ 1 };     // Change to 0 for no NVIDIA card
         constexpr static uint32_t SWAPCHAIN_BUFFER_COUNT{ 2 };
 
         uint32_t _surfaceBufferWidth{ 0 }, _surfaceBufferHeight{ 0 };
@@ -39,6 +39,7 @@ namespace SolEngine
         ApplicationData &_rAppData;
 
         std::unique_ptr<SolVulkanDevice> _pSolVulkanDevice;
+        std::unique_ptr<SolVulkanSwapchain> _pSolVulkanSwapchain;
 
         VkSwapchainKHR _vkSwapchain{ NULL };
 

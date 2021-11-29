@@ -9,7 +9,11 @@ namespace SolEngine
           _rAppData(rAppData),
           _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(rWindowHandle, 
                                                               rAppData))
+        
     {
+        VkExtent2D extent = rAppData.GetExtent();
+        _pSolVulkanSwapchain = std::make_unique<SolVulkanSwapchain>(*_pSolVulkanDevice, rAppData.GetExtent());
+
         SetupVulkanSwapchain();
         PrintDeviceMemoryCapabilities();
         SetupVulkanDrawCommandBuffer();
