@@ -361,7 +361,7 @@ namespace SolEngine
                                                  &queueFamilyCount,
                                                  queueFamilies.data());
 
-        for (uint32_t i(0); i < queueFamilies.size(); ++i)
+        for (uint32_t i(0); i < queueFamilyCount; ++i)
         {
             const VkQueueFamilyProperties& queueFamilyProperties = queueFamilies.at(i);
 

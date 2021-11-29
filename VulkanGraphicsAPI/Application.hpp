@@ -17,22 +17,13 @@ namespace SolEngine
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
-        void SetupVulkanSwapchain();
-        void SetupVulkanSwapchain_CreateSwapchain();
-        void SetupVulkanSwapchain_CreateImages();
-        void SetupVulkanSwapchain_CreateImageViews();
-
         void PrintDeviceMemoryCapabilities();
 
         void SetupVulkanDrawCommandBuffer();
-
         void SetupFrameBufferRenderPass();
-
-        constexpr static uint32_t SWAPCHAIN_BUFFER_COUNT{ 2 };
 
         uint32_t _surfaceBufferWidth{ 0 }, _surfaceBufferHeight{ 0 };
         uint32_t _physDeviceCount{ 0 }, _physDeviceQueueFamilyCount{ 0 };
-        uint32_t _swapChainImageCount{ 0 };
         uint32_t _commandBufferCount{ 1 };
 
         HWND &_rWinHandle;
