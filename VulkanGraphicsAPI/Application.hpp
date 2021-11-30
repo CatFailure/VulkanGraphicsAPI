@@ -23,18 +23,12 @@ namespace SolEngine
 
         uint32_t _physDeviceCount{ 0 }, _physDeviceQueueFamilyCount{ 0 };
         uint32_t _commandBufferCount{ 1 };
+        VkCommandBuffer _vkDrawCommandBuffer{ NULL };
 
         HWND &_rWinHandle;
         ApplicationData &_rAppData;
 
         std::unique_ptr<SolVulkanDevice> _pSolVulkanDevice;
         std::unique_ptr<SolVulkanSwapchain> _pSolVulkanSwapchain;
-
-        VkSwapchainKHR _vkSwapchain{ NULL };
-
-        std::vector<VkImage> _vkSwapchainImages;
-        std::vector<VkImageView> _vkSwapchainImageViews;
-
-        VkCommandBuffer _vkDrawCommandBuffer{ NULL };
     };
 }

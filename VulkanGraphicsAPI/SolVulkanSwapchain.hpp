@@ -10,6 +10,8 @@ namespace SolEngine
         SolVulkanSwapchain(SolVulkanDevice &rDevice, const VkExtent2D &windowExtent, std::shared_ptr<SolVulkanSwapchain> pOldSwapchain);
         ~SolVulkanSwapchain();
 
+        static constexpr uint32_t MAX_FRAMES_IN_FLIGHT{ 2 };
+
         size_t SwapchainImageCount() const { return _vkSwapchainImages.size(); }
 
         // Inherited via IDisposable
@@ -20,10 +22,12 @@ namespace SolEngine
         void CreateSwapchainImageViews();
         void CreateDepthResources();
         void CreateRenderPass();
+        void CreateFramebuffers();
+        void CreateSyncObjects();
 
         VkSurfaceFormatKHR ChooseImageFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats);
         VkPresentModeKHR ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
-        VkExtent2D ChooseExtent(const VkSurfaceCapabilitiesKHR &capabilities);
+        VkExtent2D ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities);
         VkFormat FindDepthFormat();
 
         SolVulkanDevice &_rSolDevice;
@@ -35,6 +39,7 @@ namespace SolEngine
 
         std::vector<VkImage> _vkSwapchainImages;
         std::vector<VkImageView> _vkSwapchainImageViews;
+        std::vector<VkFramebuffer> _vkSwapchainFramebuffers;
         VkFormat _vkSwapchainImageFormat;
         VkExtent2D _vkSwapchainExtent;
 
@@ -54,5 +59,11 @@ namespace SolEngine
 
         VkImageTiling _vkDepthImageTiling{ VK_IMAGE_TILING_OPTIMAL };
         VkFormatFeatureFlags _vkDepthFormatFeatureFlags{ VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT };
+
+        // Sync
+        std::vector<VkSemaphore> _vkImageAvailableSemaphores;
+        std::vector<VkSemaphore> _vkRenderFinishedSemaphores;
+        std::vector<VkFence> _vkInFlightFences;
+        std::vector<VkFence> _vkImagesInFlight;
     };
 }

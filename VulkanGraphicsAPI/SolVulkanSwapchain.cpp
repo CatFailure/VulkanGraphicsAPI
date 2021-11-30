@@ -24,6 +24,8 @@ namespace SolEngine
         CreateSwapchainImageViews();
         CreateDepthResources();
         CreateRenderPass();
+        CreateFramebuffers();
+        CreateSyncObjects();
 
         // Old Swapchain no longer needed
         _pOldSwapchain = nullptr;
@@ -72,9 +74,27 @@ namespace SolEngine
             _vkDepthImageMemories.clear();
         }
 
+        // Framebuffers
+        {
+            for (const VkFramebuffer &framebuffer : _vkSwapchainFramebuffers)
+            {
+                vkDestroyFramebuffer(vkDevice, framebuffer, NULL);
+            }
+        }
+
         // Render Pass
         {
             vkDestroyRenderPass(vkDevice, _vkRenderPass, NULL);
+        }
+
+        // Synchronisation Objects
+        {
+            for (size_t i(0); i < MAX_FRAMES_IN_FLIGHT; ++i)
+            {
+                vkDestroySemaphore(vkDevice, _vkRenderFinishedSemaphores.at(i), NULL);
+                vkDestroySemaphore(vkDevice, _vkImageAvailableSemaphores.at(i), NULL);
+                vkDestroyFence(vkDevice, _vkInFlightFences.at(i), NULL);
+            }
         }
     }
 
@@ -91,7 +111,7 @@ namespace SolEngine
         };
 
         *pOutSurfaceImageFormat = ChooseImageFormat(swapchainSupportDetails.imageFormats);
-        *pOutSwapchainExtent    = ChooseExtent(swapchainSupportDetails.surfaceCapabilities);    // Retrieve and use the actual back/front buffer widths
+        *pOutSwapchainExtent    = ChooseSwapchainExtent(swapchainSupportDetails.surfaceCapabilities);    // Retrieve and use the actual back/front buffer widths
         *pOutImageCount         = swapchainSupportDetails.surfaceCapabilities.minImageCount + 1;
 
         const VkPresentModeKHR presentMode = ChoosePresentMode(swapchainSupportDetails.presentModes);
@@ -212,8 +232,8 @@ namespace SolEngine
 
     void SolVulkanSwapchain::CreateDepthResources()
     {
-        VkFormat depthFormat = FindDepthFormat();
-        size_t swapchainImageCount = SwapchainImageCount();
+        const VkFormat depthFormat       = FindDepthFormat();
+        const size_t swapchainImageCount = SwapchainImageCount();
 
         _vkDepthImages.resize(swapchainImageCount);
         _vkDepthImageMemories.resize(swapchainImageCount);
@@ -221,7 +241,7 @@ namespace SolEngine
 
         for (size_t i(0); i < swapchainImageCount; ++i)
         {
-            VkImageCreateInfo imageCreateInfo
+            const VkImageCreateInfo imageCreateInfo
             {
                 .sType     = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
                 .flags     = NULL,
@@ -249,7 +269,7 @@ namespace SolEngine
                                             rCurrentDepthImage,
                                             _vkDepthImageMemories.at(i));
 
-            VkImageViewCreateInfo imageViewCreateInfo
+            const VkImageViewCreateInfo imageViewCreateInfo
             {
                 .sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
                 .image    = rCurrentDepthImage,
@@ -359,6 +379,85 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Render Pass.");
     }
 
+    void SolVulkanSwapchain::CreateFramebuffers()
+    {
+        const size_t imageCount = SwapchainImageCount();
+
+        _vkSwapchainFramebuffers.resize(imageCount);
+
+        for (size_t i(0); i < imageCount; ++i)
+        {
+            const std::array<VkImageView, 2> imageAttachments
+            {
+                _vkSwapchainImageViews.at(i),
+                _vkDepthImageViews.at(i)
+            };
+
+            const VkFramebufferCreateInfo framebufferCreateInfo
+            {
+                .sType           = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
+                .renderPass      = _vkRenderPass,
+                .attachmentCount = static_cast<uint32_t>(imageAttachments.size()),
+                .pAttachments    = imageAttachments.data(),
+                .width           = _vkSwapchainExtent.width,
+                .height          = _vkSwapchainExtent.height,
+                .layers          = 1
+            };
+
+            const VkResult result = vkCreateFramebuffer(_rSolDevice.Device(), 
+                                                        &framebufferCreateInfo, 
+                                                        NULL, 
+                                                        &_vkSwapchainFramebuffers.at(i));
+
+            DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Framebuffer.");
+        }
+    }
+
+    void SolVulkanSwapchain::CreateSyncObjects()
+    {
+        const VkDevice &vkDevice = _rSolDevice.Device();
+
+        _vkImageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
+        _vkRenderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
+        _vkInFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
+        _vkImagesInFlight.resize(SwapchainImageCount(), VK_NULL_HANDLE);
+
+        const VkSemaphoreCreateInfo semaphoreCreateInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO
+        };
+
+        const VkFenceCreateInfo fenceCreateInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
+            .flags = VK_FENCE_CREATE_SIGNALED_BIT
+        };
+
+        for (size_t i(0); i < MAX_FRAMES_IN_FLIGHT; ++i)
+        {
+            VkResult result = vkCreateSemaphore(vkDevice, 
+                                                &semaphoreCreateInfo,
+                                                NULL, 
+                                                &_vkImageAvailableSemaphores.at(i));
+
+            DBG_ASSERT_VULKAN_MSG(result, "Failed to create Semaphore - Image Available for a frame.");
+
+            result = vkCreateSemaphore(vkDevice, 
+                                       &semaphoreCreateInfo, 
+                                       NULL, 
+                                       &_vkRenderFinishedSemaphores.at(i));
+
+            DBG_ASSERT_VULKAN_MSG(result, "Failed to create Semaphore - Render Finished for a frame.");
+
+            result = vkCreateFence(vkDevice, 
+                                   &fenceCreateInfo,    
+                                   NULL, 
+                                   &_vkInFlightFences.at(i));
+
+            DBG_ASSERT_VULKAN_MSG(result, "Failed to create Fence - In Flight Fences for a frame.");
+        }
+    }
+
     VkSurfaceFormatKHR SolVulkanSwapchain::ChooseImageFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats)
     {
         for (const VkSurfaceFormatKHR &availableFormat : availableFormats)
@@ -408,7 +507,7 @@ namespace SolEngine
         return VK_PRESENT_MODE_FIFO_KHR;
     }
 
-    VkExtent2D SolVulkanSwapchain::ChooseExtent(const VkSurfaceCapabilitiesKHR &capabilities)
+    VkExtent2D SolVulkanSwapchain::ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities)
     {
         if (capabilities.currentExtent.width != (std::numeric_limits<uint32_t>::max)())
         {
