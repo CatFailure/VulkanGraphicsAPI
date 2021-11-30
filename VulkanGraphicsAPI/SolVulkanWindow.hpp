@@ -23,7 +23,7 @@ namespace SolEngine
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
-        static void FramebufferResizeCallback(GLFWwindow *pWindow, const const Vector2<uint32_t> &newWinDimensions);
+        static void FramebufferResizeCallback(GLFWwindow *pWindow, const int newWidth, const int newHeight);
         void CreateGLFWWindow();
 
         Vector2<uint32_t> _winDimensions;

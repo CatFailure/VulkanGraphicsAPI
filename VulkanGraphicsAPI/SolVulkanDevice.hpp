@@ -2,6 +2,7 @@
 #define ENABLE_VULKAN_DEBUG_CALLBACK
 
 #include "ApplicationData.hpp"
+#include "SolVulkanWindow.hpp"
 #include "SwapchainSupportDetails.hpp"
 #include "QueueFamilyIndices.hpp"
 
@@ -24,7 +25,7 @@ namespace SolEngine
     class SolVulkanDevice : public IDisposable
     {
     public:
-        SolVulkanDevice(HWND &rWinHandle, ApplicationData &rAppData);
+        SolVulkanDevice(SolVulkanWindow &rSolVulkanWindow, ApplicationData &rAppData);
         ~SolVulkanDevice();
 
         // Public Accessors
@@ -49,7 +50,7 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         void CreateVulkanInstance();
-        void CreateVulkanSurface();
+        void CreateVulkanSurface() { _rSolVulkanWindow.CreateWindowSurface(_vkInstance, &_vkSurface); }
         void CreateVulkanPhysicalDevice();
         void CreateVulkanDevice();
         void CreateVulkanCommandPool();
@@ -65,7 +66,7 @@ namespace SolEngine
         SwapchainSupportDetails QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice);
         QueueFamilyIndices QueryQueueFamilies(const VkPhysicalDevice &physicalDevice);
 
-        HWND &_rWinHandle;      // TEMP: Will need to be wrapped in the future
+        SolVulkanWindow &_rSolVulkanWindow;
         ApplicationData &_rAppData;
 
         VkInstance       _vkInstance      { NULL };
@@ -74,8 +75,8 @@ namespace SolEngine
         VkSurfaceKHR     _vkSurface       { NULL };
         VkCommandPool    _vkCommandPool   { NULL };
 
-        //std::vector<const char *> _enabledLayerNames{};                       // Laptop
-        std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop
+        std::vector<const char *> _enabledLayerNames{};                           // Laptop
+        //std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop
         std::vector<const char *> _enabledExtensionNames;   // Defined in CreateVulkanInstance()
         std::vector<const char *> _logicalDeviceExtensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     };

@@ -3,17 +3,14 @@
 
 namespace SolEngine
 {
-    Application::Application(HWND &rWindowHandle, 
-                             ApplicationData &rAppData)
-        : _rWinHandle(rWindowHandle),
-          _rAppData(rAppData),
-          _pSolVulkanSwapchain(std::make_unique<SolVulkanSwapchain>(*_pSolVulkanDevice, 
-                                                                    rAppData.GetExtent())),
-          _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(rWindowHandle, 
-                                                              rAppData))
-        
+    Application::Application(ApplicationData &rAppData)
+        : _rAppData(rAppData),
+          _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(*_pSolVulkanWindow, rAppData)),
+          _pSolVulkanWindow(std::make_unique<SolVulkanWindow>(rAppData.windowTitle, 
+                                                              rAppData.windowDimensions))
     {
         PrintDeviceMemoryCapabilities();
+        RecreateSwapchain();
         SetupVulkanDrawCommandBuffer();
     }
 
@@ -87,5 +84,38 @@ namespace SolEngine
 
         // Was it successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to allocate Draw Command Buffer.")
+    }
+
+    void Application::RecreateSwapchain()
+    {
+        VkExtent2D winExtent = _pSolVulkanWindow->GetWindowExtent();
+
+        // Whilst a dimension of the window is dimensionless,
+        // wait until it is set correctly.
+        while (winExtent.width == 0 || winExtent.height == 0)
+        {
+            winExtent = _pSolVulkanWindow->GetWindowExtent();
+
+            glfwWaitEvents();
+        }
+
+        // Wait until the current Swapchain is no longer being used
+        // before creating a new one.
+        vkDeviceWaitIdle(_pSolVulkanDevice->Device());
+
+        // Check if there's an old Swapchain to be passed
+        if (_pSolVulkanSwapchain == nullptr)
+        {
+            _pSolVulkanSwapchain = std::make_unique<SolVulkanSwapchain>(*_pSolVulkanDevice, winExtent);
+        }
+        else
+        {
+            _pSolVulkanSwapchain = std::make_unique<SolVulkanSwapchain>(*_pSolVulkanDevice, 
+                                                                        winExtent,
+                                                                        std::move(_pSolVulkanSwapchain));
+        }
+
+        _pSolVulkanSwapchain = nullptr; // TEMP: Ensure old swap chain is destroyed to prevent 2 swapchains co-existing.
+        _pSolVulkanSwapchain = std::make_unique<SolVulkanSwapchain>(*_pSolVulkanDevice, winExtent);
     }
 }

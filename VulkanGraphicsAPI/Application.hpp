@@ -1,6 +1,6 @@
 #pragma once
-#define DEPTH_BUFFER
 
+#include "SolVulkanWindow.hpp"
 #include "SolVulkanDevice.hpp"
 #include "SolVulkanSwapchain.hpp"
 
@@ -12,7 +12,7 @@ namespace SolEngine
     {
     public:
         Application() = delete;
-        Application(HWND &rWinHandle, ApplicationData &rAppData);
+        Application(ApplicationData &rAppData);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
@@ -21,13 +21,15 @@ namespace SolEngine
 
         void SetupVulkanDrawCommandBuffer();
 
+        void RecreateSwapchain();
+
         uint32_t _physDeviceCount{ 0 }, _physDeviceQueueFamilyCount{ 0 };
         uint32_t _commandBufferCount{ 1 };
         VkCommandBuffer _vkDrawCommandBuffer{ NULL };
 
-        HWND &_rWinHandle;
         ApplicationData &_rAppData;
 
+        std::unique_ptr<SolVulkanWindow> _pSolVulkanWindow;
         std::unique_ptr<SolVulkanDevice> _pSolVulkanDevice;
         std::unique_ptr<SolVulkanSwapchain> _pSolVulkanSwapchain;
     };

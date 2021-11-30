@@ -28,50 +28,18 @@ int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the e
                    int nCmdShow)              // How should the window appear when created (Alt. use GetStartupInfo API Call)
 {
     // Defines window properties
-    HINSTANCE hInst{ GetModuleHandle(NULL) };
-    HWND winHandle{ NULL };
-
     ApplicationData appData
     {
-        .windowTitle      = L"Hello Vulkan!",
+        .windowTitle      = "Hello Vulkan!",
         .windowClassName  = L"VulkanWindowClass",
-        .engineName       = L"SolEngine",
+        .engineName       = "SolEngine",
         .appName          = "VulkanGraphicsAPI",
         .windowDimensions = Vector2<uint32_t>(800, 600)
     };
 
-    WNDCLASSEX windowClass{};
-    ZeroMemory(&windowClass, sizeof(WNDCLASSEX));
-
-    windowClass.cbSize        = sizeof(WNDCLASSEX);                 // Size of struct in bytes
-    windowClass.style         = CS_OWNDC | CS_VREDRAW | CS_HREDRAW; // Window Styles
-    windowClass.lpfnWndProc   = WndProc;                            // Callback func for message handling
-    windowClass.hInstance     = hInst;                              // File Handle
-    windowClass.hCursor       = LoadCursor(NULL, IDC_ARROW);        // Cursor type
-    windowClass.hbrBackground = (HBRUSH)COLOR_WINDOW;               // Preferred Window colour
-    windowClass.lpszClassName = appData.windowClassName;            // Class name
-
-    RegisterClassEx(&windowClass);
-
-    winHandle = CreateWindowEx(NULL,                                // No additional Window Styles
-                               appData.windowClassName,             // Class Name
-                               appData.windowTitle,                 // Window Title
-                               WS_OVERLAPPEDWINDOW | WS_VISIBLE,    // Window Appearance Styles
-                               100,                                 // x
-                               100,                                 // y
-                               appData.windowDimensions._x,         // Window width
-                               appData.windowDimensions._y,         // Window height
-                               NULL,                                // No Parents
-                               NULL,                                // No popup menus
-                               hInst,                               // Exe File Handle
-                               NULL);                               // No params to pass
-
-    // Was this successful?
-    DBG_ASSERT(winHandle != NULL);
-
-    Application application(winHandle, appData);
-
+    Application application(appData);
     MSG msg{};      // Structure for storing Win32 Messages.
+
     while (true)    // Start of main render loop
     {
         PeekMessage(&msg,           // Receive message info
