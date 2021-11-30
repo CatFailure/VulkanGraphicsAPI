@@ -340,6 +340,7 @@
     </ClCompile>
     <ClCompile Include="SolVulkanDevice.cpp" />
     <ClCompile Include="SolVulkanSwapchain.cpp" />
+    <ClCompile Include="SolVulkanWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
@@ -351,6 +352,7 @@
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolVulkanDevice.hpp" />
     <ClInclude Include="SolVulkanSwapchain.hpp" />
+    <ClInclude Include="SolVulkanWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
     <ClInclude Include="Vector.hpp" />
   </ItemGroup>

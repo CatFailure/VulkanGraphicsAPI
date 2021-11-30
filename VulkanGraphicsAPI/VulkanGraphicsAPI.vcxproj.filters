@@ -45,6 +45,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SolVulkanWindow.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="QueueFamilyIndices.hpp">
       <Filter>SolEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SolVulkanWindow.hpp">
+      <Filter>SolEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

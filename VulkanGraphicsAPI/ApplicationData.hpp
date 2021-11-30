@@ -5,9 +5,9 @@ using namespace SolEngine::Math;
 
 struct ApplicationData
 {
-	const LPCWSTR windowTitle;
+	const std::string windowTitle;
 	const LPCWSTR windowClassName;
-	const LPCWSTR engineName;
+	const char *engineName;
 	const char *appName;
 
 	Vector2<uint32_t> windowDimensions;
