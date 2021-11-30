@@ -1,7 +1,11 @@
 #pragma once
 #define VK_USE_PLATFORM_WIN32_KHR
+#define GLFW_INCLUDE_VULKAN
+#define NOMINMAX      // Prevent Windows.h interacting with limits
+
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_core.h>
+#include <glfw/glfw3.h>
 
 #include <iostream>
 #include <stdlib.h>     // Variable argument functions, e.g., dprintf(..)
@@ -13,6 +17,8 @@
 #include <memory>
 #include <thread>
 #include <utility>
+#include <cmath>
+#include <limits>
 
 #include <vector>
 #include <array>
@@ -26,3 +32,4 @@
 
 #include "DebugHelpers.hpp"
 #include "IDisposable.hpp"
+#include "Singleton.hpp"

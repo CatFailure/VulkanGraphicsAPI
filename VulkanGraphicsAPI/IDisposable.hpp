@@ -1,7 +1,9 @@
 #pragma once
-class IDisposable
+namespace Utility
 {
-public:
-	void virtual Dispose() = 0;
-};
-
+	class IDisposable
+	{
+	public:
+		void virtual Dispose() = 0;
+	};
+}
