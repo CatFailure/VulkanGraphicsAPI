@@ -3,11 +3,11 @@
 
 namespace SolEngine
 {
-    SolVulkanDevice::SolVulkanDevice(SolVulkanWindow &rSolVulkanWindow, 
+	SolVulkanDevice::SolVulkanDevice(SolVulkanWindow &rSolVulkanWindow,
                                      ApplicationData &rAppData)
-        : _rAppData(rAppData),
-          _rSolVulkanWindow(rSolVulkanWindow)
-    {
+        : _rSolVulkanWindow(rSolVulkanWindow),
+          _rAppData(rAppData)
+	{
         CreateVulkanInstance();
         CreateVulkanSurface();
         CreateVulkanPhysicalDevice();

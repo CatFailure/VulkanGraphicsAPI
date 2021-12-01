@@ -50,7 +50,7 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         void CreateVulkanInstance();
-        void CreateVulkanSurface() { _rSolVulkanWindow.CreateWindowSurface(_vkInstance, &_vkSurface); }
+        void CreateVulkanSurface() { _rSolVulkanWindow.CreateWindowSurface(_vkInstance, &_vkSurface); };
         void CreateVulkanPhysicalDevice();
         void CreateVulkanDevice();
         void CreateVulkanCommandPool();

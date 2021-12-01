@@ -13,6 +13,8 @@ namespace SolEngine
     public:
         Application() = delete;
         Application(ApplicationData &rAppData);
+        
+        void Run();
 
         // Inherited via IDisposable
         virtual void Dispose() override;
@@ -27,6 +29,7 @@ namespace SolEngine
         uint32_t _commandBufferCount{ 1 };
         VkCommandBuffer _vkDrawCommandBuffer{ NULL };
 
+        SolVulkanWindow _solVulkanWindow;
         ApplicationData &_rAppData;
 
         std::unique_ptr<SolVulkanWindow> _pSolVulkanWindow;

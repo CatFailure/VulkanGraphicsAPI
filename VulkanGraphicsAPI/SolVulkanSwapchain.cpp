@@ -233,7 +233,7 @@ namespace SolEngine
     void SolVulkanSwapchain::CreateDepthResources()
     {
         const VkFormat depthFormat       = FindDepthFormat();
-        const size_t swapchainImageCount = SwapchainImageCount();
+        const size_t swapchainImageCount = ImageCount();
 
         _vkDepthImages.resize(swapchainImageCount);
         _vkDepthImageMemories.resize(swapchainImageCount);
@@ -381,7 +381,7 @@ namespace SolEngine
 
     void SolVulkanSwapchain::CreateFramebuffers()
     {
-        const size_t imageCount = SwapchainImageCount();
+        const size_t imageCount = ImageCount();
 
         _vkSwapchainFramebuffers.resize(imageCount);
 
@@ -420,7 +420,7 @@ namespace SolEngine
         _vkImageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         _vkRenderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         _vkInFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
-        _vkImagesInFlight.resize(SwapchainImageCount(), VK_NULL_HANDLE);
+        _vkImagesInFlight.resize(ImageCount(), VK_NULL_HANDLE);
 
         const VkSemaphoreCreateInfo semaphoreCreateInfo
         {
@@ -532,5 +532,28 @@ namespace SolEngine
         return _rSolDevice.FindSupportedFormat(_vkDepthFormatCandidates,
                                                _vkDepthImageTiling, 
                                                _vkDepthFormatFeatureFlags);
+    }
+
+    VkResult SolVulkanSwapchain::AcquireNextImage(uint32_t *pImageIndex)
+    {
+        const VkDevice &device = _rSolDevice.Device();
+        const uint32_t fenceCount(1);
+
+        VkResult result = vkWaitForFences(device, 
+                                          fenceCount, 
+                                          &_vkInFlightFences.at(_currentFrame), 
+                                          VK_TRUE, 
+                                          _timeout);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Wait For Fences Failed.");
+
+        result = vkAcquireNextImageKHR(device, 
+                                       _vkSwapchain,
+                                       _timeout, 
+                                       _vkImageAvailableSemaphores.at(_currentFrame),   // Must be a non-signaled semaphore
+                                       VK_NULL_HANDLE, 
+                                       pImageIndex);
+
+        return result;
     }
 };

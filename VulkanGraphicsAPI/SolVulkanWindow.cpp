@@ -29,12 +29,14 @@ namespace SolEngine
         glfwTerminate();
     }
 
-    void SolVulkanWindow::FramebufferResizeCallback(GLFWwindow *pWindow, const int newWidth, const int newHeight)
+    void SolVulkanWindow::FramebufferResizeCallback(GLFWwindow *pWindow, 
+                                                    const int width, 
+                                                    const int height)
     {
         SolVulkanWindow *pVulkanWindow = reinterpret_cast<SolVulkanWindow *>(glfwGetWindowUserPointer(pWindow));
 
         pVulkanWindow->_isFramebufferResized = true;
-        pVulkanWindow->_winDimensions = { static_cast<uint32_t>(newWidth), static_cast<uint32_t>(newHeight) };
+        pVulkanWindow->_winDimensions = { static_cast<uint32_t>(width), static_cast<uint32_t>(height) };
     }
 
     void SolVulkanWindow::CreateGLFWWindow()

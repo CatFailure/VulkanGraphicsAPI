@@ -12,7 +12,20 @@ namespace SolEngine
 
         static constexpr uint32_t MAX_FRAMES_IN_FLIGHT{ 2 };
 
-        size_t SwapchainImageCount() const { return _vkSwapchainImages.size(); }
+        // Public Accessors
+        VkFramebuffer Framebuffer(const size_t index) const { return _vkSwapchainFramebuffers.at(index); }
+        VkRenderPass RenderPass() const { return _vkRenderPass; }
+        VkImageView ImageView(const size_t index) const { _vkSwapchainImageViews.at(index); }
+        size_t ImageCount() const { return _vkSwapchainImages.size(); }
+        VkFormat ImageFormat() const { return _vkSwapchainImageFormat; }
+
+        VkExtent2D Extent() const { return _vkSwapchainExtent; }
+        Vector2<uint32_t> ExtentDimensions() const { return { _vkSwapchainExtent.width, _vkSwapchainExtent.height }; }
+        float ExtentAspectRatio() const { return static_cast<float>(_vkSwapchainExtent.width) / static_cast<float>(_vkSwapchainExtent.height); }
+
+        VkFormat FindDepthFormat();
+
+        VkResult AcquireNextImage(uint32_t *pImageIndex);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
@@ -28,7 +41,6 @@ namespace SolEngine
         VkSurfaceFormatKHR ChooseImageFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats);
         VkPresentModeKHR ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
         VkExtent2D ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities);
-        VkFormat FindDepthFormat();
 
         SolVulkanDevice &_rSolDevice;
         VkExtent2D _windowExtent;
@@ -65,5 +77,8 @@ namespace SolEngine
         std::vector<VkSemaphore> _vkRenderFinishedSemaphores;
         std::vector<VkFence> _vkInFlightFences;
         std::vector<VkFence> _vkImagesInFlight;
+
+        size_t _currentFrame{ 0 };
+        uint64_t _timeout{ (std::numeric_limits<uint64_t>::max)() };
     };
 }

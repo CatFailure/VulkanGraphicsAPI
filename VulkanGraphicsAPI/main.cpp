@@ -3,66 +3,31 @@
 
 using namespace SolEngine;
 
-LRESULT CALLBACK WndProc(HWND hWnd,
-                         UINT uMsg,
-                         WPARAM wParam,
-                         LPARAM lParam)
+int main()
 {
-    switch (uMsg)
-    {
-    case WM_CLOSE:
-        PostQuitMessage(0);
-        break;
-    case WM_PAINT:
-        break;
-    default:
-        break;
-    }
+	ApplicationData appData
+	{
+		.windowTitle	  = "Hello Vulkan!",
+		.windowClassName  = L"VulkanWindowClass",
+		.engineName		  = L"SolEngine",
+		.appName		  = "VulkanGraphicsAPI",
+		.windowDimensions = Vector2<uint32_t>(800, 600)
+	};
 
-    return DefWindowProc(hWnd, uMsg, wParam, lParam);
-}
+	Application application(appData);
 
-int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the exe memory image
-                   HINSTANCE hPrevInstance,   // Previous instance handle - Always 0
-                   LPSTR lpCmdLine,           // Cmd line args (Alt. use GetCommandLine API Call)
-                   int nCmdShow)              // How should the window appear when created (Alt. use GetStartupInfo API Call)
-{
-    // Defines window properties
-    ApplicationData appData
-    {
-        .windowTitle      = "Hello Vulkan!",
-        .windowClassName  = L"VulkanWindowClass",
-        .engineName       = "SolEngine",
-        .appName          = "VulkanGraphicsAPI",
-        .windowDimensions = Vector2<uint32_t>(800, 600)
-    };
+	try
+	{
+		application.Run();
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << '\n';
 
-    Application application(appData);
-    MSG msg{};      // Structure for storing Win32 Messages.
+		return EXIT_FAILURE;
+	}
 
-    while (true)    // Start of main render loop
-    {
-        PeekMessage(&msg,           // Receive message info
-                    NULL,           // Handle to Window whose message are to be retrieved. NULL = Retrieves messages for any window.
-                    NULL,           // wMessageFilterMin (NULL - No range filtering performed)
-                    NULL,           // wMessageFilterMax (NULL - No range filtering performed)
-                    PM_REMOVE);     // How messages are to be handled
+	application.Dispose();
 
-        // Has the window been closed?
-        if (msg.message == WM_QUIT)
-        {
-            break;
-        }
-
-        // Process messages (e.g. Keypresses, mouse inputs)
-        // Translates any Virtual-Key messages.
-        TranslateMessage(&msg);
-
-        // Execute appropriate function
-        DispatchMessage(&msg);
-    }
-
-    application.Dispose();
-
-    return 0;
+	return EXIT_SUCCESS;
 }

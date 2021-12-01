@@ -5,13 +5,26 @@ namespace SolEngine
 {
     Application::Application(ApplicationData &rAppData)
         : _rAppData(rAppData),
-          _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(*_pSolVulkanWindow, rAppData)),
-          _pSolVulkanWindow(std::make_unique<SolVulkanWindow>(rAppData.windowTitle, 
-                                                              rAppData.windowDimensions))
+          _pSolVulkanSwapchain(std::make_unique<SolVulkanSwapchain>(*_pSolVulkanDevice, 
+                                                                    rAppData.GetExtent())),
+          _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(_solVulkanWindow, 
+                                                              rAppData)),
+          _solVulkanWindow(rAppData.windowTitle, 
+                           rAppData.windowDimensions)
     {
         PrintDeviceMemoryCapabilities();
         RecreateSwapchain();
         SetupVulkanDrawCommandBuffer();
+    }
+
+    void Application::Run()
+    {
+        while (!_solVulkanWindow.ShouldClose())
+        {
+            glfwPollEvents();   // Poll Window Events
+        }
+
+        vkDeviceWaitIdle(_pSolVulkanDevice->Device());
     }
 
     void Application::Dispose()
