@@ -7,10 +7,10 @@ namespace SolEngine
         : _rAppData(rAppData),
           _pSolVulkanSwapchain(std::make_unique<SolVulkanSwapchain>(*_pSolVulkanDevice, 
                                                                     rAppData.GetExtent())),
-          _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(_solVulkanWindow, 
+          _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(*_pSolVulkanWindow, 
                                                               rAppData)),
-          _solVulkanWindow(rAppData.windowTitle, 
-                           rAppData.windowDimensions)
+        _pSolVulkanWindow(std::make_unique<SolVulkanWindow>(rAppData.windowTitle,
+                                                            rAppData.windowDimensions))
     {
         PrintDeviceMemoryCapabilities();
         RecreateSwapchain();
@@ -19,7 +19,7 @@ namespace SolEngine
 
     void Application::Run()
     {
-        while (!_solVulkanWindow.ShouldClose())
+        while (!_pSolVulkanWindow->ShouldClose())
         {
             glfwPollEvents();   // Poll Window Events
         }

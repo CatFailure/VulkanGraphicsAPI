@@ -9,7 +9,7 @@ int main()
 	{
 		.windowTitle	  = "Hello Vulkan!",
 		.windowClassName  = L"VulkanWindowClass",
-		.engineName		  = L"SolEngine",
+		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",
 		.windowDimensions = Vector2<uint32_t>(800, 600)
 	};
