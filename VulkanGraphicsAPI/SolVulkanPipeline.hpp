@@ -12,6 +12,8 @@ namespace SolEngine
         SolVulkanPipeline(SolVulkanDevice &rSolVulkanDevice, const std::string &vertShaderFilePath, const std::string &fragShaderFilePath, const PipelineConfigInfo &configInfo);
         ~SolVulkanPipeline();
 
+        void Bind(const VkCommandBuffer &commandBuffer);
+
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
@@ -19,7 +21,7 @@ namespace SolEngine
 
         SolVulkanDevice &_rSolVulkanDevice;
         
-        VkPipeline _vkPipeline;
+        VkPipeline _vkGraphicsPipeline;
 
         VkShaderModule _vkVertexShaderModule;
         VkShaderModule _vkFragmentShaderModule;

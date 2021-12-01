@@ -19,6 +19,13 @@ namespace SolEngine
         Dispose();
     }
 
+    void SolVulkanPipeline::Bind(const VkCommandBuffer &commandBuffer)
+    {
+        vkCmdBindPipeline(commandBuffer, 
+                          VK_PIPELINE_BIND_POINT_GRAPHICS, 
+                          _vkGraphicsPipeline);
+    }
+
     void SolVulkanPipeline::Dispose()
     {
     }
