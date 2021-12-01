@@ -15,7 +15,7 @@ namespace SolEngine
         // Public Accessors
         VkFramebuffer Framebuffer(const size_t index) const { return _vkSwapchainFramebuffers.at(index); }
         VkRenderPass RenderPass() const { return _vkRenderPass; }
-        VkImageView ImageView(const size_t index) const { _vkSwapchainImageViews.at(index); }
+        VkImageView ImageView(const size_t index) const { return _vkSwapchainImageViews.at(index); }
         size_t ImageCount() const { return _vkSwapchainImages.size(); }
         VkFormat ImageFormat() const { return _vkSwapchainImageFormat; }
 
