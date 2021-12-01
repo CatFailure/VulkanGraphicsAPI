@@ -3,9 +3,9 @@
 
 namespace SolEngine
 {
-	SolVulkanDevice::SolVulkanDevice(HWND &rWinHandle, 
+	SolVulkanDevice::SolVulkanDevice(SolVulkanWindow &rSolVulkanWindow,
                                      ApplicationData &rAppData)
-        : _rWinHandle(rWinHandle),
+        : _rSolVulkanWindow(rSolVulkanWindow),
           _rAppData(rAppData)
 	{
         CreateVulkanInstance();
@@ -168,28 +168,28 @@ namespace SolEngine
         DBG_ASSERT(_vkInstance != NULL);
 	}
 
-    void SolVulkanDevice::CreateVulkanSurface()
-    {
-        HINSTANCE hInstance = GetModuleHandle(NULL);
-        VkWin32SurfaceCreateInfoKHR surfaceCreateInfo
-        {
-            .sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
-            .hinstance = hInstance,     // Param is NULL - GetModuleHandle returns handle to file used to create the calling process
-            .hwnd      = _rWinHandle
-        };
+    //void SolVulkanDevice::CreateVulkanSurface()
+    //{
+    //    HINSTANCE hInstance = GetModuleHandle(NULL);
+    //    VkWin32SurfaceCreateInfoKHR surfaceCreateInfo
+    //    {
+    //        .sType     = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
+    //        .hinstance = hInstance,     // Param is NULL - GetModuleHandle returns handle to file used to create the calling process
+    //        .hwnd      = _rWinHandle
+    //    };
 
-        // OutSurface must be empty before assignment
-        DBG_ASSERT(_vkSurface == NULL);
+    //    // OutSurface must be empty before assignment
+    //    DBG_ASSERT(_vkSurface == NULL);
 
-        VkResult result = vkCreateWin32SurfaceKHR(_vkInstance,
-                                                  &surfaceCreateInfo,
-                                                  NULL,
-                                                  &_vkSurface);
+    //    VkResult result = vkCreateWin32SurfaceKHR(_vkInstance,
+    //                                              &surfaceCreateInfo,
+    //                                              NULL,
+    //                                              &_vkSurface);
 
-        DBG_ASSERT_VULKAN_MSG(result, "Could not create Surface.\n");
+    //    DBG_ASSERT_VULKAN_MSG(result, "Could not create Surface.\n");
 
-        DBG_ASSERT(_vkSurface != NULL);
-    }
+    //    DBG_ASSERT(_vkSurface != NULL);
+    //}
 
     void SolVulkanDevice::CreateVulkanPhysicalDevice()
     {

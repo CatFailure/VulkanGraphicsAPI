@@ -3,98 +3,31 @@
 
 using namespace SolEngine;
 
-LRESULT CALLBACK WndProc(HWND hWnd,
-                         UINT uMsg,
-                         WPARAM wParam,
-                         LPARAM lParam)
+int main()
 {
-    switch (uMsg)
-    {
-    case WM_CLOSE:
-        PostQuitMessage(0);
-        break;
-    case WM_PAINT:
-        break;
-    default:
-        break;
-    }
+	ApplicationData appData
+	{
+		.windowTitle	  = "Hello Vulkan!",
+		.windowClassName  = L"VulkanWindowClass",
+		.engineName		  = L"SolEngine",
+		.appName		  = "VulkanGraphicsAPI",
+		.windowDimensions = Vector2<uint32_t>(800, 600)
+	};
 
-    return DefWindowProc(hWnd, uMsg, wParam, lParam);
-}
+	Application application(appData);
 
-int WINAPI WinMain(HINSTANCE hInstance,       // Handle to base address of the exe memory image
-                   HINSTANCE hPrevInstance,   // Previous instance handle - Always 0
-                   LPSTR lpCmdLine,           // Cmd line args (Alt. use GetCommandLine API Call)
-                   int nCmdShow)              // How should the window appear when created (Alt. use GetStartupInfo API Call)
-{
-    // Defines window properties
-    HINSTANCE hInst{ GetModuleHandle(NULL) };
-    HWND winHandle{ NULL };
+	try
+	{
+		application.Run();
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << '\n';
 
-    ApplicationData appData
-    {
-        .windowTitle      = L"Hello Vulkan!",
-        .windowClassName  = L"VulkanWindowClass",
-        .engineName       = L"SolEngine",
-        .appName          = "VulkanGraphicsAPI",
-        .windowDimensions = Vector2<uint32_t>(800, 600)
-    };
+		return EXIT_FAILURE;
+	}
 
-    WNDCLASSEX windowClass{};
-    ZeroMemory(&windowClass, sizeof(WNDCLASSEX));
+	application.Dispose();
 
-    windowClass.cbSize        = sizeof(WNDCLASSEX);                 // Size of struct in bytes
-    windowClass.style         = CS_OWNDC | CS_VREDRAW | CS_HREDRAW; // Window Styles
-    windowClass.lpfnWndProc   = WndProc;                            // Callback func for message handling
-    windowClass.hInstance     = hInst;                              // File Handle
-    windowClass.hCursor       = LoadCursor(NULL, IDC_ARROW);        // Cursor type
-    windowClass.hbrBackground = (HBRUSH)COLOR_WINDOW;               // Preferred Window colour
-    windowClass.lpszClassName = appData.windowClassName;            // Class name
-
-    RegisterClassEx(&windowClass);
-
-    winHandle = CreateWindowEx(NULL,                                // No additional Window Styles
-                               appData.windowClassName,             // Class Name
-                               appData.windowTitle,                 // Window Title
-                               WS_OVERLAPPEDWINDOW | WS_VISIBLE,    // Window Appearance Styles
-                               100,                                 // x
-                               100,                                 // y
-                               appData.windowDimensions._x,         // Window width
-                               appData.windowDimensions._y,         // Window height
-                               NULL,                                // No Parents
-                               NULL,                                // No popup menus
-                               hInst,                               // Exe File Handle
-                               NULL);                               // No params to pass
-
-    // Was this successful?
-    DBG_ASSERT(winHandle != NULL);
-
-    Application application(winHandle, appData);
-
-    MSG msg{};      // Structure for storing Win32 Messages.
-    while (true)    // Start of main render loop
-    {
-        PeekMessage(&msg,           // Receive message info
-                    NULL,           // Handle to Window whose message are to be retrieved. NULL = Retrieves messages for any window.
-                    NULL,           // wMessageFilterMin (NULL - No range filtering performed)
-                    NULL,           // wMessageFilterMax (NULL - No range filtering performed)
-                    PM_REMOVE);     // How messages are to be handled
-
-        // Has the window been closed?
-        if (msg.message == WM_QUIT)
-        {
-            break;
-        }
-
-        // Process messages (e.g. Keypresses, mouse inputs)
-        // Translates any Virtual-Key messages.
-        TranslateMessage(&msg);
-
-        // Execute appropriate function
-        DispatchMessage(&msg);
-    }
-
-    application.Dispose();
-
-    return 0;
+	return EXIT_SUCCESS;
 }

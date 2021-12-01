@@ -13,12 +13,12 @@ namespace SolEngine
         SolVulkanWindow(const std::string &winTitle, const Vector2<uint32_t> &winDimensions);
         ~SolVulkanWindow();
 
-        VkExtent2D GetWindowExtent() const { return { _winDimensions._x, _winDimensions._y }; }
         bool ShouldClose() const { return glfwWindowShouldClose(_pWindow); }
         bool WasWindowResized() const { return _isFramebufferResized; }
         void ResetWindowResizedFlag() { _isFramebufferResized = false; }
 
         void CreateWindowSurface(const VkInstance &vkInstance, VkSurfaceKHR *pSurface);
+        VkExtent2D GetWindowExtent() const { return { _winDimensions._x, _winDimensions._y }; }
 
         // Inherited via IDisposable
         virtual void Dispose() override;
