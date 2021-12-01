@@ -41,17 +41,17 @@ namespace SolEngine
 
     void SolVulkanWindow::CreateGLFWWindow()
     {
-        glfwInit();										// Initialise the GLFW library
-        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);	// Tell GLFW to not create an OpenGL context
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);		// Disable Window Resizing, needs handling in a special way
+        glfwInit();                                    // Initialise GLFW Library
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);  // Don't create OpenGL Context
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);     // Allow window resizing
 
-        _pWindow = glfwCreateWindow(_winDimensions._x, 
-                                    _winDimensions._y,
+        _pWindow = glfwCreateWindow(_winDimensions._x,
+                                    _winDimensions._y, 
                                     _winTitle.c_str(), 
-                                    NULL, 
-                                    NULL);
+                                    nullptr, 
+                                    nullptr);
 
         glfwSetWindowUserPointer(_pWindow, this);
-        glfwSetFramebufferSizeCallback(_pWindow, FramebufferResizeCallback);
+        glfwSetFramebufferSizeCallback(_pWindow, FramebufferResizeCallback);    // Bind Resize Callback
     }
 }

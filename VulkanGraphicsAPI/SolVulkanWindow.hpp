@@ -24,6 +24,7 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         static void FramebufferResizeCallback(GLFWwindow *pWindow, const int width, const int height);
+
         void CreateGLFWWindow();
 
         Vector2<uint32_t> _winDimensions;
