@@ -28,7 +28,6 @@ namespace SolEngine
         uint32_t _commandBufferCount{ 1 };
         VkCommandBuffer _vkDrawCommandBuffer{ NULL };
 
-        //HWND &_rWinHandle;
         SolVulkanWindow _solVulkanWindow;
         ApplicationData &_rAppData;
 
