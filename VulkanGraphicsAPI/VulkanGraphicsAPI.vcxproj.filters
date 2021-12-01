@@ -48,6 +48,9 @@
     <ClCompile Include="SolVulkanWindow.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
+    <ClCompile Include="SolVulkanPipeline.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -84,6 +87,9 @@
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
     <ClInclude Include="SolVulkanWindow.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="SolVulkanPipeline.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
   </ItemGroup>

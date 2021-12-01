@@ -339,6 +339,7 @@
       </PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="SolVulkanDevice.cpp" />
+    <ClCompile Include="SolVulkanPipeline.cpp" />
     <ClCompile Include="SolVulkanSwapchain.cpp" />
     <ClCompile Include="SolVulkanWindow.cpp" />
   </ItemGroup>
@@ -351,6 +352,7 @@
     <ClInclude Include="QueueFamilyIndices.hpp" />
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolVulkanDevice.hpp" />
+    <ClInclude Include="SolVulkanPipeline.hpp" />
     <ClInclude Include="SolVulkanSwapchain.hpp" />
     <ClInclude Include="SolVulkanWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
