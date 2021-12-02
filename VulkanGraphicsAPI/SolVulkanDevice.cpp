@@ -111,6 +111,52 @@ namespace SolEngine
         return VkFormat();
     }
 
+    void SolVulkanDevice::CreateBuffer(const VkDeviceSize bufferSize,
+                                       const VkBufferUsageFlags usage, 
+                                       const VkMemoryPropertyFlags properties, 
+                                       VkBuffer &rBuffer, 
+                                       VkDeviceMemory &rBufferMemory)
+    {
+        const VkBufferCreateInfo bufferCreateInfo
+        {
+            .sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
+            .size        = bufferSize,
+            .usage       = usage,
+            .sharingMode = VK_SHARING_MODE_EXCLUSIVE
+        };
+
+        VkResult result = vkCreateBuffer(_vkDevice, &bufferCreateInfo, NULL, &rBuffer);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Buffer.");
+
+        VkMemoryRequirements memoryRequirements{};
+
+        vkGetBufferMemoryRequirements(_vkDevice,
+                                      rBuffer, 
+                                      &memoryRequirements);
+
+        const VkMemoryAllocateInfo memoryAllocateInfo
+        {
+            .sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+            .allocationSize  = memoryRequirements.size,
+            .memoryTypeIndex = FindMemoryType(memoryRequirements.memoryTypeBits, 
+                                              properties)
+        };
+
+        result = vkAllocateMemory(_vkDevice, 
+                                  &memoryAllocateInfo, 
+                                  NULL,
+                                  &rBufferMemory);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Allocate Buffer Memory.");
+
+        // Bind buffer to allocated memory
+        vkBindBufferMemory(_vkDevice, 
+                           rBuffer,
+                           rBufferMemory,
+                           0);
+    }
+
     void SolVulkanDevice::Dispose()
     {
         vkDestroyCommandPool(_vkDevice, _vkCommandPool, NULL);

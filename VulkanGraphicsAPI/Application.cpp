@@ -167,9 +167,9 @@ namespace SolEngine
 
         const VkCommandBufferAllocateInfo commandBufferAllocateInfo
         {
-            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-            .commandPool = _pSolVulkanDevice->CommandPool(),
-            .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+            .sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+            .commandPool        = _pSolVulkanDevice->CommandPool(),
+            .level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
             .commandBufferCount = static_cast<uint32_t>(_vkCommandBuffers.size())
         };
 

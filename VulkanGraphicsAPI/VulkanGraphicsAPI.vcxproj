@@ -339,6 +339,7 @@
       </PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="SolVulkanDevice.cpp" />
+    <ClCompile Include="SolVulkanModel.cpp" />
     <ClCompile Include="SolVulkanPipeline.cpp" />
     <ClCompile Include="SolVulkanSwapchain.cpp" />
     <ClCompile Include="SolVulkanWindow.cpp" />
@@ -354,11 +355,13 @@
     <ClInclude Include="SimplePushConstantData.hpp" />
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolVulkanDevice.hpp" />
+    <ClInclude Include="SolVulkanModel.hpp" />
     <ClInclude Include="SolVulkanPipeline.hpp" />
     <ClInclude Include="SolVulkanSwapchain.hpp" />
     <ClInclude Include="SolVulkanWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
     <ClInclude Include="Vector.hpp" />
+    <ClInclude Include="Vertex.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
