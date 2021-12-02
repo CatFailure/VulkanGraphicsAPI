@@ -144,6 +144,68 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Allocate Command Buffers.");
     }
 
+    void Application::RecordCommandBuffer(const size_t imageIndex)
+    {
+        const VkCommandBuffer &currentCommandBuffer = _vkCommandBuffers.at(imageIndex);
+        const VkExtent2D &swapchainExtent = _pSolVulkanSwapchain->Extent();
+
+        const VkCommandBufferBeginInfo commandBufferBeginInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO
+        };
+
+        VkResult result = vkBeginCommandBuffer(currentCommandBuffer,
+                                               &commandBufferBeginInfo);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Begin Recording Command Buffer.");
+
+        const VkRenderPassBeginInfo renderPassBeginInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
+            .renderPass = _pSolVulkanSwapchain->RenderPass(),
+            .framebuffer = _pSolVulkanSwapchain->Framebuffer(imageIndex),
+            .renderArea
+            {
+                .offset = { 0, 0 },
+                .extent = swapchainExtent
+            }
+        };
+
+        vkCmdBeginRenderPass(currentCommandBuffer,
+                             &renderPassBeginInfo, 
+                             VK_SUBPASS_CONTENTS_INLINE);
+
+        // Setup Viewport and Scissor
+        const VkViewport viewport
+        {
+            .x = 0.0f,
+            .y = 0.0f,
+            .width = static_cast<float>(swapchainExtent.width),
+            .height = static_cast<float>(swapchainExtent.height),
+            .minDepth = 0.0f,
+            .maxDepth = 1.0f
+        };
+
+        const VkRect2D scissor
+        {
+            .offset { 0, 0 },
+            .extent = swapchainExtent
+        };
+
+        // Set them on the Command Buffer
+        vkCmdSetViewport(currentCommandBuffer, 0, 1, &viewport);
+        vkCmdSetScissor(currentCommandBuffer, 0, 1, &scissor);
+
+        // Render stuff here
+
+        // End of Rendering
+        vkCmdEndRenderPass(currentCommandBuffer);
+
+        result = vkEndCommandBuffer(currentCommandBuffer);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Record Command Buffer.");
+    }
+
     void Application::FreeCommandBuffers()
     {
         vkFreeCommandBuffers(_pSolVulkanDevice->Device(), 

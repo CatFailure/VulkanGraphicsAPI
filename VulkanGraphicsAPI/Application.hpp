@@ -21,11 +21,15 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         void PrintDeviceMemoryCapabilities();
+        void DrawFrame();
 
         void CreatePipelineLayout();
         void CreatePipeline();
+
         void CreateCommandBuffers();
+        void RecordCommandBuffer(const size_t imageIndex);
         void FreeCommandBuffers();
+
         void RecreateSwapchain();
 
         uint32_t _physDeviceCount{ 0 }, _physDeviceQueueFamilyCount{ 0 };
