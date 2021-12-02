@@ -34,6 +34,8 @@ namespace SolEngine
         VkPhysicalDevice PhysicalDevice() const { return _vkPhysicalDevice; }
         VkSurfaceKHR     Surface()		  const { return _vkSurface; }
         VkCommandPool    CommandPool()	  const { return _vkCommandPool; }
+        VkQueue          GraphicsQueue()  const { return _vkGraphicsQueue; }
+        VkQueue          PresentQueue()   const { return _vkPresentQueue; }
 
         void CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, VkMemoryPropertyFlags properties, VkImage &rImage, VkDeviceMemory &rImageMemory);
 
@@ -74,6 +76,8 @@ namespace SolEngine
         VkPhysicalDevice _vkPhysicalDevice{ NULL };
         VkSurfaceKHR     _vkSurface       { NULL };
         VkCommandPool    _vkCommandPool   { NULL };
+        VkQueue          _vkGraphicsQueue { NULL };
+        VkQueue          _vkPresentQueue  { NULL };
 
         std::vector<const char *> _enabledLayerNames{};                           // Laptop
         //std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop

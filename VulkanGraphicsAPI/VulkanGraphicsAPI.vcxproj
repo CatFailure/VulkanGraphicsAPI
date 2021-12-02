@@ -350,6 +350,7 @@
     <ClInclude Include="IDisposable.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
+    <ClInclude Include="SimplePushConstantData.hpp" />
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolVulkanDevice.hpp" />
     <ClInclude Include="SolVulkanPipeline.hpp" />

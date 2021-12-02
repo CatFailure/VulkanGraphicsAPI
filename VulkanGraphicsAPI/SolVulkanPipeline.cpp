@@ -26,6 +26,15 @@ namespace SolEngine
                           _vkGraphicsPipeline);
     }
 
+    void SolVulkanPipeline::DefaultPipelineConfigInfo(PipelineConfigInfo &rConfigInfo)
+    {
+        // TODO
+        rConfigInfo =
+        {
+            
+        };
+    }
+
     void SolVulkanPipeline::Dispose()
     {
     }
