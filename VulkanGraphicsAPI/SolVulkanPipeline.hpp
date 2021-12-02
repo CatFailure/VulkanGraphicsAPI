@@ -13,6 +13,7 @@ namespace SolEngine
         ~SolVulkanPipeline();
 
         void Bind(const VkCommandBuffer &commandBuffer);
+        static void DefaultPipelineConfigInfo(PipelineConfigInfo &rConfigInfo);
 
         // Inherited via IDisposable
         virtual void Dispose() override;

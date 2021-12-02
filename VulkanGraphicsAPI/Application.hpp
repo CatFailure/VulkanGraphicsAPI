@@ -23,14 +23,12 @@ namespace SolEngine
         void PrintDeviceMemoryCapabilities();
 
         void CreatePipelineLayout();
-
-        void SetupVulkanDrawCommandBuffer();
-
+        void CreatePipeline();
+        void CreateCommandBuffers();
+        void FreeCommandBuffers();
         void RecreateSwapchain();
 
         uint32_t _physDeviceCount{ 0 }, _physDeviceQueueFamilyCount{ 0 };
-        uint32_t _commandBufferCount{ 1 };
-        VkCommandBuffer _vkDrawCommandBuffer{ NULL };
 
         ApplicationData &_rAppData;
 
@@ -40,6 +38,6 @@ namespace SolEngine
         std::unique_ptr<SolVulkanPipeline> _pSolVulkanPipeline;
 
         VkPipelineLayout _vkPipelineLayout;
-        std::vector<VkCommandBuffer> _commandBuffers;
+        std::vector<VkCommandBuffer> _vkCommandBuffers;
     };
 }
