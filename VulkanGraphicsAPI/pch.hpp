@@ -1,11 +1,13 @@
 #pragma once
 #define VK_USE_PLATFORM_WIN32_KHR
 #define GLFW_INCLUDE_VULKAN
-#define NOMINMAX      // Prevent Windows.h interacting with limits
+#define GLM_FORCE_RADIANS	// Make glm functions expect angles in radians instead of degrees
+#define NOMINMAX			// Prevent Windows.h interacting with limits
 
 #include <vulkan/vulkan.hpp>
 #include <vulkan/vulkan_core.h>
 #include <glfw/glfw3.h>
+#include <glm/glm.hpp>
 
 #include <iostream>
 #include <stdlib.h>     // Variable argument functions, e.g., dprintf(..)
@@ -33,3 +35,5 @@
 #include "DebugHelpers.hpp"
 #include "IDisposable.hpp"
 #include "Singleton.hpp"
+#include "SimplePushConstantData.hpp"
+#include "PipelineConfigInfo.hpp"

@@ -4,8 +4,8 @@ namespace SolEngine::Data
 {
     struct SwapchainSupportDetails
     {
-        VkSurfaceCapabilitiesKHR surfaceCapabilities;
+        VkSurfaceCapabilitiesKHR        surfaceCapabilities;
         std::vector<VkSurfaceFormatKHR> imageFormats;
-        std::vector<VkPresentModeKHR> presentModes;
+        std::vector<VkPresentModeKHR>   presentModes;
     };
 }

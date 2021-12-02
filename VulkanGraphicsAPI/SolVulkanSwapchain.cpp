@@ -135,7 +135,7 @@ namespace SolEngine
             .preTransform     = swapchainSupportDetails.surfaceCapabilities.currentTransform,
             .compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
             .presentMode      = presentMode,
-            .clipped          = VK_TRUE,    // Clipping outside of extents?
+            .clipped          = VK_TRUE,                                            // Clipping outside of extents?
             .oldSwapchain     = _pOldSwapchain == nullptr ?                         // Provide old swapchain if possible
                                     VK_NULL_HANDLE : _pOldSwapchain->_vkSwapchain
         };
@@ -420,7 +420,7 @@ namespace SolEngine
         _vkImageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         _vkRenderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         _vkInFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
-        _vkImagesInFlight.resize(ImageCount(), VK_NULL_HANDLE);
+        _vkInFlightImages.resize(ImageCount(), VK_NULL_HANDLE);
 
         const VkSemaphoreCreateInfo semaphoreCreateInfo
         {
@@ -543,16 +543,79 @@ namespace SolEngine
                                           fenceCount, 
                                           &_vkInFlightFences.at(_currentFrame), 
                                           VK_TRUE, 
-                                          _timeout);
+                                          _timeoutDuration);
 
         DBG_ASSERT_VULKAN_MSG(result, "Wait For Fences Failed.");
 
         result = vkAcquireNextImageKHR(device, 
                                        _vkSwapchain,
-                                       _timeout, 
+                                       _timeoutDuration, 
                                        _vkImageAvailableSemaphores.at(_currentFrame),   // Must be a non-signaled semaphore
                                        VK_NULL_HANDLE, 
                                        pImageIndex);
+
+        return result;
+    }
+
+    VkResult SolVulkanSwapchain::SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, 
+                                                      uint32_t *pImageIndex)
+    {
+        const VkDevice &device  = _rSolDevice.Device();
+        VkFence &rInFlightImage = _vkInFlightImages.at(*pImageIndex);
+        VkFence &rInFlightFence = _vkInFlightFences.at(_currentFrame);
+
+        if (rInFlightImage != VK_NULL_HANDLE)
+        {
+            vkWaitForFences(device, 
+                            1,
+                            &rInFlightImage, 
+                            VK_TRUE, 
+                            _timeoutDuration);
+        }
+
+        rInFlightImage = rInFlightFence;
+
+        const VkSemaphore          waitSemaphores[]  { _vkImageAvailableSemaphores.at(_currentFrame) };
+        const VkPipelineStageFlags waitStageFlags[]  { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+        const VkSemaphore          signalSemaphores[]{ _vkRenderFinishedSemaphores.at(_currentFrame) };
+        const VkSwapchainKHR       swapChains[]      { _vkSwapchain };
+
+        const VkSubmitInfo submitInfo
+        {
+            .sType                = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+            .waitSemaphoreCount   = 1,
+            .pWaitSemaphores      = waitSemaphores,
+            .pWaitDstStageMask    = waitStageFlags,
+            .commandBufferCount   = 1,
+            .pCommandBuffers      = pCommandBuffers,
+            .signalSemaphoreCount = 1,
+            .pSignalSemaphores    = signalSemaphores
+        };
+
+        vkResetFences(device, 1, &rInFlightFence);
+
+        VkResult result = vkQueueSubmit(_rSolDevice.GraphicsQueue(), 
+                                        1,
+                                        &submitInfo,
+                                        rInFlightFence);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Submit Draw Command Buffer.");
+
+        const VkPresentInfoKHR presentInfo
+        {
+            .sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+            .waitSemaphoreCount = 1,
+            .pWaitSemaphores    = signalSemaphores,
+            .swapchainCount     = 1,
+            .pSwapchains        = swapChains,
+            .pImageIndices      = pImageIndex
+        };
+
+        result = vkQueuePresentKHR(_rSolDevice.PresentQueue(), 
+                                   &presentInfo);
+
+        // Flip current frame
+        _currentFrame = (_currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 
         return result;
     }

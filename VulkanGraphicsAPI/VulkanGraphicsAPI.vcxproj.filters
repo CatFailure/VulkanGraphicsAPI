@@ -48,13 +48,13 @@
     <ClCompile Include="SolVulkanWindow.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
+    <ClCompile Include="SolVulkanPipeline.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="ApplicationData.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.hpp">
       <Filter>Header Files</Filter>
@@ -85,6 +85,18 @@
     </ClInclude>
     <ClInclude Include="SolVulkanWindow.hpp">
       <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="SolVulkanPipeline.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="SimplePushConstantData.hpp">
+      <Filter>SolEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="PipelineConfigInfo.hpp">
+      <Filter>SolEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationData.hpp">
+      <Filter>SolEngine\Data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
