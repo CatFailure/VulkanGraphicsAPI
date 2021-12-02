@@ -24,6 +24,7 @@ namespace SolEngine
         while (!_pSolVulkanWindow->ShouldClose())
         {
             glfwPollEvents();   // Poll Window Events
+            DrawFrame();
         }
 
         vkDeviceWaitIdle(_pSolVulkanDevice->Device());
@@ -85,6 +86,40 @@ namespace SolEngine
         }
     }
 
+    void Application::DrawFrame()
+    {
+        uint32_t imageIndex;
+        VkResult result = _pSolVulkanSwapchain->AcquireNextImage(&imageIndex);
+
+        // After window resize
+        if (result == VK_ERROR_OUT_OF_DATE_KHR)
+        {
+            RecreateSwapchain();
+
+            return;
+        }
+
+        DBG_ASSERT_MSG((result == VK_SUCCESS || result == VK_SUBOPTIMAL_KHR), 
+                       "Failed to acquire Swapchain Image.");
+
+        RecordCommandBuffer(imageIndex);
+
+        result = _pSolVulkanSwapchain->SubmitCommandBuffers(&_vkCommandBuffers.at(imageIndex), 
+                                                            &imageIndex);
+
+        if (result == VK_ERROR_OUT_OF_DATE_KHR ||
+            result == VK_SUBOPTIMAL_KHR ||
+            _pSolVulkanWindow->WasWindowResized())
+        {
+            _pSolVulkanWindow->ResetWindowResizedFlag();
+            RecreateSwapchain();
+
+            return;
+        }
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Present Swapchain Image.");
+    }
+
     void Application::CreatePipelineLayout()
     {
         const VkPushConstantRange pushConstantRange
@@ -96,11 +131,11 @@ namespace SolEngine
 
         const VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo
         {
-            .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
-            .setLayoutCount = 0,
-            .pSetLayouts = NULL,
+            .sType                  = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
+            .setLayoutCount         = 0,
+            .pSetLayouts            = NULL,
             .pushConstantRangeCount = 1,
-            .pPushConstantRanges = &pushConstantRange
+            .pPushConstantRanges    = &pushConstantRange
         };
 
         const VkResult result = vkCreatePipelineLayout(_pSolVulkanDevice->Device(),
@@ -119,6 +154,7 @@ namespace SolEngine
         PipelineConfigInfo pipelineConfigInfo{};
         SolVulkanPipeline::DefaultPipelineConfigInfo(pipelineConfigInfo);
 
+        // TODO
         _pSolVulkanPipeline = std::make_unique<SolVulkanPipeline>(*_pSolVulkanDevice,
                                                                   "",
                                                                   "",
@@ -147,7 +183,7 @@ namespace SolEngine
     void Application::RecordCommandBuffer(const size_t imageIndex)
     {
         const VkCommandBuffer &currentCommandBuffer = _vkCommandBuffers.at(imageIndex);
-        const VkExtent2D &swapchainExtent = _pSolVulkanSwapchain->Extent();
+        const VkExtent2D      &swapchainExtent      = _pSolVulkanSwapchain->Extent();
 
         const VkCommandBufferBeginInfo commandBufferBeginInfo
         {
@@ -159,16 +195,42 @@ namespace SolEngine
 
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Begin Recording Command Buffer.");
 
+        // Index 0 = Colour Attachment
+        // Index 1 = Depth Attachment
+        const std::array<VkClearValue, 2> clearValues
+        {
+            VkClearValue
+            {
+                .color
+                {
+                    0.01f,  // R
+                    0.01f,  // G
+                    0.01f,  // B
+                    1.0f    // A
+                }
+            },
+            VkClearValue
+            {
+                .depthStencil 
+                {
+                    .depth   = 1.0f,
+                    .stencil = 0 
+                }
+            },
+        };
+
         const VkRenderPassBeginInfo renderPassBeginInfo
         {
-            .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
-            .renderPass = _pSolVulkanSwapchain->RenderPass(),
+            .sType       = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
+            .renderPass  = _pSolVulkanSwapchain->RenderPass(),
             .framebuffer = _pSolVulkanSwapchain->Framebuffer(imageIndex),
             .renderArea
             {
                 .offset = { 0, 0 },
                 .extent = swapchainExtent
-            }
+            },
+            .clearValueCount = static_cast<uint32_t>(clearValues.size()),
+            .pClearValues    = clearValues.data()
         };
 
         vkCmdBeginRenderPass(currentCommandBuffer,
@@ -178,10 +240,10 @@ namespace SolEngine
         // Setup Viewport and Scissor
         const VkViewport viewport
         {
-            .x = 0.0f,
-            .y = 0.0f,
-            .width = static_cast<float>(swapchainExtent.width),
-            .height = static_cast<float>(swapchainExtent.height),
+            .x        = 0.0f,
+            .y        = 0.0f,
+            .width    = static_cast<float>(swapchainExtent.width),
+            .height   = static_cast<float>(swapchainExtent.height),
             .minDepth = 0.0f,
             .maxDepth = 1.0f
         };

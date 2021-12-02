@@ -223,20 +223,29 @@ namespace SolEngine
 
     void SolVulkanDevice::CreateVulkanDevice()
     {
-        VkPhysicalDeviceMemoryProperties deviceMemoryProperties{};
-        // Query and store physical device properties
-        vkGetPhysicalDeviceMemoryProperties(_vkPhysicalDevice,
-                                            &deviceMemoryProperties);
+        std::vector<VkDeviceQueueCreateInfo> deviceQueueCreateInfos;
 
-        // Initialise Queues
-        const float queueProperties[] = { 1.0f };
-        const VkDeviceQueueCreateInfo queueCreateInfo
+        const float queuePriority(1.0f);
+        const QueueFamilyIndices queueFamilyIndices = QueryQueueFamilies(_vkPhysicalDevice);
+        const std::set<uint32_t> uniqueQueueFamilies
         {
-            .sType            = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-            .queueFamilyIndex = 0,  // Use first queue family in list
-            .queueCount       = 1,
-            .pQueuePriorities = queueProperties
+            queueFamilyIndices.graphicsFamily, 
+            queueFamilyIndices.presentFamily 
         };
+
+        // Initialise Device Queues
+        for (const uint32_t queueFamily : uniqueQueueFamilies)
+        {
+            const VkDeviceQueueCreateInfo deviceQueueCreateInfo
+            {
+                .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+                .queueFamilyIndex = queueFamily,
+                .queueCount = 1,
+                .pQueuePriorities = &queuePriority
+            };
+
+            deviceQueueCreateInfos.push_back(deviceQueueCreateInfo);
+        }
 
         const VkPhysicalDeviceFeatures deviceFeatures
         {
@@ -246,8 +255,8 @@ namespace SolEngine
         const VkDeviceCreateInfo deviceCreateInfo
         {
             .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-            .queueCreateInfoCount    = 1,
-            .pQueueCreateInfos       = &queueCreateInfo,
+            .queueCreateInfoCount    = static_cast<uint32_t>(deviceQueueCreateInfos.size()),
+            .pQueueCreateInfos       = deviceQueueCreateInfos.data(),
             .enabledLayerCount       = EnabledLayerCount(),
             .ppEnabledLayerNames     = _enabledLayerNames.data(),
             .enabledExtensionCount   = DeviceExtensionCount(),
@@ -257,13 +266,16 @@ namespace SolEngine
 
         // Ideally, want to enumerate to find best device.
         // Just use the first for now.
-        VkResult result = vkCreateDevice(_vkPhysicalDevice,
-                                         &deviceCreateInfo,
-                                         NULL,
-                                         &_vkDevice);
+        const VkResult result = vkCreateDevice(_vkPhysicalDevice,
+                                               &deviceCreateInfo,
+                                               NULL,
+                                               &_vkDevice);
 
         // Was it successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Logical Device!");
+
+        vkGetDeviceQueue(_vkDevice, queueFamilyIndices.graphicsFamily, 0, &_vkGraphicsQueue);
+        vkGetDeviceQueue(_vkDevice, queueFamilyIndices.presentFamily, 0, &_vkPresentQueue);
     }
 
     void SolVulkanDevice::CreateVulkanCommandPool()

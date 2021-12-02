@@ -26,6 +26,7 @@ namespace SolEngine
         VkFormat FindDepthFormat();
 
         VkResult AcquireNextImage(uint32_t *pImageIndex);
+        VkResult SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, uint32_t *pImageIndex);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
@@ -76,7 +77,7 @@ namespace SolEngine
         std::vector<VkSemaphore> _vkImageAvailableSemaphores;
         std::vector<VkSemaphore> _vkRenderFinishedSemaphores;
         std::vector<VkFence> _vkInFlightFences;
-        std::vector<VkFence> _vkImagesInFlight;
+        std::vector<VkFence> _vkInFlightImages;
 
         size_t _currentFrame{ 0 };
         uint64_t _timeout{ (std::numeric_limits<uint64_t>::max)() };
