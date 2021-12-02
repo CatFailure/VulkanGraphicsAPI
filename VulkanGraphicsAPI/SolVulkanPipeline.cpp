@@ -135,6 +135,11 @@ namespace SolEngine
 
     void SolVulkanPipeline::Dispose()
     {
+        const VkDevice &device = _rSolVulkanDevice.Device();
+
+        vkDestroyShaderModule(device, _vkVertexShaderModule, NULL);
+        vkDestroyShaderModule(device, _vkFragmentShaderModule, NULL);
+        vkDestroyPipeline(device, _vkGraphicsPipeline, NULL);
     }
 
     std::vector<char> SolVulkanPipeline::ReadFile(const std::string &filePath)
