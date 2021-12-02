@@ -29,7 +29,11 @@ namespace SolEngine
 
     void SolVulkanModel::Draw(const VkCommandBuffer &commandBuffer)
     {
-        vkCmdDraw(commandBuffer, _vertexCount, 1, 0, 0);
+        vkCmdDraw(commandBuffer, 
+                  _vertexCount,
+                  1,
+                  0,
+                  0);
     }
 
     void SolVulkanModel::Dispose()

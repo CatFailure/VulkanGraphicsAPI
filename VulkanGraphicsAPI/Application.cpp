@@ -27,6 +27,7 @@ namespace SolEngine
             DrawFrame();
         }
 
+        // Make CPU wait until all GPU operations have completed.
         vkDeviceWaitIdle(_pSolVulkanDevice->Device());
     }
 

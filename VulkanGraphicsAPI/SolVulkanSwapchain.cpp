@@ -44,7 +44,9 @@ namespace SolEngine
         {
             for (const VkImageView &imageView : _vkSwapchainImageViews)
             {
-                vkDestroyImageView(vkDevice, imageView, NULL);
+                vkDestroyImageView(vkDevice, 
+                                   imageView, 
+                                   NULL);
             }
 
             _vkSwapchainImageViews.clear();
@@ -54,7 +56,9 @@ namespace SolEngine
         {
             if (_vkSwapchain != nullptr)
             {
-                vkDestroySwapchainKHR(vkDevice, _vkSwapchain, NULL);
+                vkDestroySwapchainKHR(vkDevice, 
+                                      _vkSwapchain,
+                                      NULL);
 
                 _vkSwapchain = nullptr;
             }
@@ -64,9 +68,17 @@ namespace SolEngine
         {
             for (size_t i(0); i < _vkDepthImages.size(); ++i)
             {
-                vkDestroyImageView(vkDevice, _vkDepthImageViews.at(i), NULL);
-                vkDestroyImage(vkDevice, _vkDepthImages.at(i), NULL);
-                vkFreeMemory(vkDevice, _vkDepthImageMemories.at(i), NULL);
+                vkDestroyImageView(vkDevice,
+                                   _vkDepthImageViews.at(i),
+                                   NULL);
+
+                vkDestroyImage(vkDevice,
+                               _vkDepthImages.at(i),
+                               NULL);
+
+                vkFreeMemory(vkDevice, 
+                             _vkDepthImageMemories.at(i),
+                             NULL);
             }
 
             _vkDepthImageViews.clear();
@@ -78,22 +90,34 @@ namespace SolEngine
         {
             for (const VkFramebuffer &framebuffer : _vkSwapchainFramebuffers)
             {
-                vkDestroyFramebuffer(vkDevice, framebuffer, NULL);
+                vkDestroyFramebuffer(vkDevice, 
+                                     framebuffer, 
+                                     NULL);
             }
         }
 
         // Render Pass
         {
-            vkDestroyRenderPass(vkDevice, _vkRenderPass, NULL);
+            vkDestroyRenderPass(vkDevice,
+                                _vkRenderPass, 
+                                NULL);
         }
 
         // Synchronisation Objects
         {
             for (size_t i(0); i < MAX_FRAMES_IN_FLIGHT; ++i)
             {
-                vkDestroySemaphore(vkDevice, _vkRenderFinishedSemaphores.at(i), NULL);
-                vkDestroySemaphore(vkDevice, _vkImageAvailableSemaphores.at(i), NULL);
-                vkDestroyFence(vkDevice, _vkInFlightFences.at(i), NULL);
+                vkDestroySemaphore(vkDevice,
+                                   _vkRenderFinishedSemaphores.at(i), 
+                                   NULL);
+
+                vkDestroySemaphore(vkDevice,
+                                   _vkImageAvailableSemaphores.at(i),
+                                   NULL);
+
+                vkDestroyFence(vkDevice, 
+                               _vkInFlightFences.at(i), 
+                               NULL);
             }
         }
     }
