@@ -252,9 +252,9 @@ namespace SolEngine
     {
         const VkShaderModuleCreateInfo shaderModuleCreateInfo
         {
-            .sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
+            .sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
             .codeSize = shaderCode.size(),
-            .pCode = reinterpret_cast<const uint32_t *>(shaderCode.data())
+            .pCode    = reinterpret_cast<const uint32_t *>(shaderCode.data())
         };
 
         const VkResult result = vkCreateShaderModule(_rSolVulkanDevice.Device(), 
