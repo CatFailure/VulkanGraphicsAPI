@@ -1,9 +1,10 @@
 #pragma once
 
 #include "SolVulkanWindow.hpp"
-#include "SolVulkanDevice.hpp"
 #include "SolVulkanSwapchain.hpp"
+#include "SolVulkanPipeline.hpp"
 
+using namespace SolEngine::Data;
 using namespace Utility;
 
 namespace SolEngine
@@ -21,6 +22,8 @@ namespace SolEngine
     private:
         void PrintDeviceMemoryCapabilities();
 
+        void CreatePipelineLayout();
+
         void SetupVulkanDrawCommandBuffer();
 
         void RecreateSwapchain();
@@ -34,5 +37,9 @@ namespace SolEngine
         std::unique_ptr<SolVulkanWindow> _pSolVulkanWindow;
         std::unique_ptr<SolVulkanDevice> _pSolVulkanDevice;
         std::unique_ptr<SolVulkanSwapchain> _pSolVulkanSwapchain;
+        std::unique_ptr<SolVulkanPipeline> _pSolVulkanPipeline;
+
+        VkPipelineLayout _vkPipelineLayout;
+        std::vector<VkCommandBuffer> _commandBuffers;
     };
 }

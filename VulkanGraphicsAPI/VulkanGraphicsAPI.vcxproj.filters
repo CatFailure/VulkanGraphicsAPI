@@ -92,5 +92,8 @@
     <ClInclude Include="SolVulkanPipeline.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
+    <ClInclude Include="SimplePushConstantData.hpp">
+      <Filter>SolEngine\Data</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

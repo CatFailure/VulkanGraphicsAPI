@@ -13,6 +13,7 @@ namespace SolEngine
                                                             rAppData.windowDimensions))
     {
         PrintDeviceMemoryCapabilities();
+        CreatePipelineLayout();
         RecreateSwapchain();
         SetupVulkanDrawCommandBuffer();
     }
@@ -78,6 +79,32 @@ namespace SolEngine
                 }
             }
         }
+    }
+
+    void Application::CreatePipelineLayout()
+    {
+        const VkPushConstantRange pushConstantRange
+        {
+            .stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,    // Allow access to push constant data and both vertex/frag shaders.
+            .offset = 0,
+            .size = sizeof(SimplePushConstantData)
+        };
+
+        const VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
+            .setLayoutCount = 0,
+            .pSetLayouts = NULL,
+            .pushConstantRangeCount = 1,
+            .pPushConstantRanges = &pushConstantRange
+        };
+
+        const VkResult result = vkCreatePipelineLayout(_pSolVulkanDevice->Device(),
+                                                       &pipelineLayoutCreateInfo, 
+                                                       NULL, 
+                                                       &_vkPipelineLayout);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Pipeline Layout.");
     }
 
     void Application::SetupVulkanDrawCommandBuffer()
