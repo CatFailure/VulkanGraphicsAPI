@@ -582,14 +582,14 @@ namespace SolEngine
 
         const VkSubmitInfo submitInfo
         {
-            .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
-            .waitSemaphoreCount = 1,
-            .pWaitSemaphores = waitSemaphores,
-            .pWaitDstStageMask = waitStageFlags,
-            .commandBufferCount = 1,
-            .pCommandBuffers = pCommandBuffers,
+            .sType                = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+            .waitSemaphoreCount   = 1,
+            .pWaitSemaphores      = waitSemaphores,
+            .pWaitDstStageMask    = waitStageFlags,
+            .commandBufferCount   = 1,
+            .pCommandBuffers      = pCommandBuffers,
             .signalSemaphoreCount = 1,
-            .pSignalSemaphores = signalSemaphores
+            .pSignalSemaphores    = signalSemaphores
         };
 
         vkResetFences(device, 1, &rInFlightFence);
@@ -603,17 +603,18 @@ namespace SolEngine
 
         const VkPresentInfoKHR presentInfo
         {
-            .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+            .sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
             .waitSemaphoreCount = 1,
-            .pWaitSemaphores = signalSemaphores,
-            .swapchainCount = 1,
-            .pSwapchains = swapChains,
-            .pImageIndices = pImageIndex
+            .pWaitSemaphores    = signalSemaphores,
+            .swapchainCount     = 1,
+            .pSwapchains        = swapChains,
+            .pImageIndices      = pImageIndex
         };
 
         result = vkQueuePresentKHR(_rSolDevice.PresentQueue(), 
                                    &presentInfo);
 
+        // Flip current frame
         _currentFrame = (_currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 
         return result;
