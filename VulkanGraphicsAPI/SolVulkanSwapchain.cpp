@@ -543,13 +543,13 @@ namespace SolEngine
                                           fenceCount, 
                                           &_vkInFlightFences.at(_currentFrame), 
                                           VK_TRUE, 
-                                          _timeout);
+                                          _timeoutDuration);
 
         DBG_ASSERT_VULKAN_MSG(result, "Wait For Fences Failed.");
 
         result = vkAcquireNextImageKHR(device, 
                                        _vkSwapchain,
-                                       _timeout, 
+                                       _timeoutDuration, 
                                        _vkImageAvailableSemaphores.at(_currentFrame),   // Must be a non-signaled semaphore
                                        VK_NULL_HANDLE, 
                                        pImageIndex);
@@ -570,7 +570,7 @@ namespace SolEngine
                             1,
                             &rInFlightImage, 
                             VK_TRUE, 
-                            _timeout);
+                            _timeoutDuration);
         }
 
         rInFlightImage = rInFlightFence;

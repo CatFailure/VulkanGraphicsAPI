@@ -10,7 +10,7 @@ namespace SolEngine
         SolVulkanPipeline(SolVulkanDevice &rSolVulkanDevice, const std::string &vertShaderFilePath, const std::string &fragShaderFilePath, const PipelineConfigInfo &configInfo);
         ~SolVulkanPipeline();
 
-        void Bind(const VkCommandBuffer &commandBuffer);
+        void        Bind(const VkCommandBuffer &commandBuffer);
         static void DefaultPipelineConfigInfo(PipelineConfigInfo &rConfigInfo);
 
         // Inherited via IDisposable

@@ -14,14 +14,14 @@ namespace SolEngine
 
         // Public Accessors
         VkFramebuffer Framebuffer(const size_t index) const { return _vkSwapchainFramebuffers.at(index); }
-        VkRenderPass RenderPass() const { return _vkRenderPass; }
-        VkImageView ImageView(const size_t index) const { return _vkSwapchainImageViews.at(index); }
-        size_t ImageCount() const { return _vkSwapchainImages.size(); }
-        VkFormat ImageFormat() const { return _vkSwapchainImageFormat; }
+        VkRenderPass  RenderPass()                    const { return _vkRenderPass; }
+        VkImageView   ImageView(const size_t index)   const { return _vkSwapchainImageViews.at(index); }
+        size_t        ImageCount()                    const { return _vkSwapchainImages.size(); }
+        VkFormat      ImageFormat()                   const { return _vkSwapchainImageFormat; }
 
-        VkExtent2D Extent() const { return _vkSwapchainExtent; }
-        Vector2<uint32_t> ExtentDimensions() const { return { _vkSwapchainExtent.width, _vkSwapchainExtent.height }; }
-        float ExtentAspectRatio() const { return static_cast<float>(_vkSwapchainExtent.width) / static_cast<float>(_vkSwapchainExtent.height); }
+        VkExtent2D        Extent()            const { return _vkSwapchainExtent; }
+        Vector2<uint32_t> ExtentDimensions()  const { return { _vkSwapchainExtent.width, _vkSwapchainExtent.height }; }
+        float             ExtentAspectRatio() const { return static_cast<float>(_vkSwapchainExtent.width) / static_cast<float>(_vkSwapchainExtent.height); }
 
         VkFormat FindDepthFormat();
 
@@ -40,8 +40,8 @@ namespace SolEngine
         void CreateSyncObjects();
 
         VkSurfaceFormatKHR ChooseImageFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats);
-        VkPresentModeKHR ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
-        VkExtent2D ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities);
+        VkPresentModeKHR   ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
+        VkExtent2D         ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities);
 
         SolVulkanDevice &_rSolDevice;
         VkExtent2D _windowExtent;
@@ -50,17 +50,17 @@ namespace SolEngine
         VkSwapchainKHR _vkSwapchain{ NULL };
         std::shared_ptr<SolVulkanSwapchain> _pOldSwapchain;
 
-        std::vector<VkImage> _vkSwapchainImages;
-        std::vector<VkImageView> _vkSwapchainImageViews;
+        std::vector<VkImage>       _vkSwapchainImages;
+        std::vector<VkImageView>   _vkSwapchainImageViews;
         std::vector<VkFramebuffer> _vkSwapchainFramebuffers;
-        VkFormat _vkSwapchainImageFormat;
-        VkExtent2D _vkSwapchainExtent;
+        VkFormat                   _vkSwapchainImageFormat;
+        VkExtent2D                 _vkSwapchainExtent;
 
         VkRenderPass _vkRenderPass{ NULL };
 
         // Depth
-        std::vector<VkImage> _vkDepthImages;
-        std::vector<VkImageView> _vkDepthImageViews;
+        std::vector<VkImage>        _vkDepthImages;
+        std::vector<VkImageView>    _vkDepthImageViews;
         std::vector<VkDeviceMemory> _vkDepthImageMemories;
 
         std::vector<VkFormat> _vkDepthFormatCandidates
@@ -70,16 +70,16 @@ namespace SolEngine
             VK_FORMAT_D24_UNORM_S8_UINT
         };
 
-        VkImageTiling _vkDepthImageTiling{ VK_IMAGE_TILING_OPTIMAL };
+        VkImageTiling        _vkDepthImageTiling{ VK_IMAGE_TILING_OPTIMAL };
         VkFormatFeatureFlags _vkDepthFormatFeatureFlags{ VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT };
 
         // Sync
         std::vector<VkSemaphore> _vkImageAvailableSemaphores;
         std::vector<VkSemaphore> _vkRenderFinishedSemaphores;
-        std::vector<VkFence> _vkInFlightFences;
-        std::vector<VkFence> _vkInFlightImages;
+        std::vector<VkFence>     _vkInFlightFences;
+        std::vector<VkFence>     _vkInFlightImages;
 
-        size_t _currentFrame{ 0 };
-        uint64_t _timeout{ (std::numeric_limits<uint64_t>::max)() };
+        size_t   _currentFrame{ 0 };
+        uint64_t _timeoutDuration{ (std::numeric_limits<uint64_t>::max)() };
     };
 }

@@ -36,12 +36,12 @@ namespace SolEngine
 
         ApplicationData &_rAppData;
 
-        std::unique_ptr<SolVulkanWindow> _pSolVulkanWindow;
-        std::unique_ptr<SolVulkanDevice> _pSolVulkanDevice;
+        std::unique_ptr<SolVulkanWindow>    _pSolVulkanWindow;
+        std::unique_ptr<SolVulkanDevice>    _pSolVulkanDevice;
         std::unique_ptr<SolVulkanSwapchain> _pSolVulkanSwapchain;
-        std::unique_ptr<SolVulkanPipeline> _pSolVulkanPipeline;
+        std::unique_ptr<SolVulkanPipeline>  _pSolVulkanPipeline;
 
-        VkPipelineLayout _vkPipelineLayout;
+        VkPipelineLayout             _vkPipelineLayout;
         std::vector<VkCommandBuffer> _vkCommandBuffers;
     };
 }

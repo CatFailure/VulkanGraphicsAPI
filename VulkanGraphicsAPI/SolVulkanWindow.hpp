@@ -13,11 +13,11 @@ namespace SolEngine
         SolVulkanWindow(const std::string &winTitle, const Vector2<uint32_t> &winDimensions);
         ~SolVulkanWindow();
 
-        bool ShouldClose() const { return glfwWindowShouldClose(_pWindow); }
+        bool ShouldClose()      const { return glfwWindowShouldClose(_pWindow); }
         bool WasWindowResized() const { return _isFramebufferResized; }
         void ResetWindowResizedFlag() { _isFramebufferResized = false; }
 
-        void CreateWindowSurface(const VkInstance &vkInstance, VkSurfaceKHR *pSurface);
+        void       CreateWindowSurface(const VkInstance &vkInstance, VkSurfaceKHR *pSurface);
         VkExtent2D GetWindowExtent() const { return { _winDimensions._x, _winDimensions._y }; }
 
         // Inherited via IDisposable
@@ -28,7 +28,7 @@ namespace SolEngine
         void CreateGLFWWindow();
 
         Vector2<uint32_t> _winDimensions;
-        bool _isFramebufferResized{ false };
+        bool              _isFramebufferResized{ false };
 
         std::string _winTitle{ NULL };
         GLFWwindow *_pWindow{ NULL };
