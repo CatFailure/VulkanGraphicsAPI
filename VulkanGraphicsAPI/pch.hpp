@@ -36,3 +36,4 @@
 #include "IDisposable.hpp"
 #include "Singleton.hpp"
 #include "SimplePushConstantData.hpp"
+#include "PipelineConfigInfo.hpp"

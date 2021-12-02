@@ -135,7 +135,7 @@ namespace SolEngine
             .preTransform     = swapchainSupportDetails.surfaceCapabilities.currentTransform,
             .compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
             .presentMode      = presentMode,
-            .clipped          = VK_TRUE,    // Clipping outside of extents?
+            .clipped          = VK_TRUE,                                            // Clipping outside of extents?
             .oldSwapchain     = _pOldSwapchain == nullptr ?                         // Provide old swapchain if possible
                                     VK_NULL_HANDLE : _pOldSwapchain->_vkSwapchain
         };

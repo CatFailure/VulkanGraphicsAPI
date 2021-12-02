@@ -3,8 +3,6 @@
 
 namespace SolEngine
 {
-    struct PipelineConfigInfo {};
-
     class SolVulkanPipeline : public IDisposable
     {
     public:
@@ -19,6 +17,7 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         void CreateGraphicsPipeline(const std::string &vertShaderFilePath, const std::string &fragShaderFilePath, const PipelineConfigInfo &configInfo);
+        void CreateShaderModule(const std::vector<char> &shaderCode, VkShaderModule *pOutShaderModule);
 
         SolVulkanDevice &_rSolVulkanDevice;
         

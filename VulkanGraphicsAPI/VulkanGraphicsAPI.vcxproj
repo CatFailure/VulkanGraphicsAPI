@@ -349,6 +349,7 @@
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="IDisposable.hpp" />
     <ClInclude Include="pch.hpp" />
+    <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
     <ClInclude Include="SimplePushConstantData.hpp" />
     <ClInclude Include="Singleton.hpp" />
