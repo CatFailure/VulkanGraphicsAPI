@@ -154,6 +154,10 @@ namespace SolEngine
         PipelineConfigInfo pipelineConfigInfo{};
         SolVulkanPipeline::DefaultPipelineConfigInfo(pipelineConfigInfo);
 
+        // TEMP
+        pipelineConfigInfo.renderPass     = _pSolVulkanSwapchain->RenderPass();
+        pipelineConfigInfo.pipelineLayout = _vkPipelineLayout;
+
         _pSolVulkanPipeline = std::make_unique<SolVulkanPipeline>(*_pSolVulkanDevice,
                                                                   "Shaders/SimpleShader.vert.spv",
                                                                   "Shaders/SimpleShader.frag.spv",

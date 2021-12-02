@@ -28,7 +28,7 @@ namespace SolEngine
 
     void SolVulkanPipeline::DefaultPipelineConfigInfo(PipelineConfigInfo &rConfigInfo)
     {
-        const PipelineConfigInfo configInfo
+        rConfigInfo = PipelineConfigInfo
         {
             // Combine Viewport and Scissor
             .viewportStateCreateInfo
@@ -92,7 +92,6 @@ namespace SolEngine
                 .logicOpEnable   = VK_FALSE,
                 .logicOp         = VK_LOGIC_OP_COPY,    // Optional
                 .attachmentCount = 1,
-                .pAttachments    = &configInfo.colourBlendAttachmentState,
                 .blendConstants
                 {
                     0.0f,   // Optional
@@ -124,12 +123,14 @@ namespace SolEngine
             {
                 .sType             = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO,
                 .flags             = NULL,
-                .dynamicStateCount = static_cast<uint32_t>(configInfo.dynamicStateEnables.size()),
-                .pDynamicStates    = configInfo.dynamicStateEnables.data(),
             }
         };
 
-        rConfigInfo = configInfo;
+        // We have to set these afterwards or else they will be <???>
+        rConfigInfo.colourBlendStateCreateInfo.pAttachments = &rConfigInfo.colourBlendAttachmentState;
+
+        rConfigInfo.dynamicStateCreateInfo.dynamicStateCount = static_cast<uint32_t>(rConfigInfo.dynamicStateEnables.size());
+        rConfigInfo.dynamicStateCreateInfo.pDynamicStates    = rConfigInfo.dynamicStateEnables.data();
     }
 
     void SolVulkanPipeline::Dispose()
@@ -168,9 +169,99 @@ namespace SolEngine
 
         DBG_ASSERT_MSG((configInfo.renderPass != VK_NULL_HANDLE),
                        "Cannot create Graphics pipeline:: No renderPass provided in configInfo!");
+
+        const std::vector<char> vertexShaderCode = ReadFile(vertShaderFilePath);
+        const std::vector<char> fragShaderCode = ReadFile(fragShaderFilePath);
+        const char *shaderStageName = "main";
+
+        CreateShaderModule(vertexShaderCode, &_vkVertexShaderModule);
+        CreateShaderModule(fragShaderCode, &_vkFragmentShaderModule);
+
+        const std::array<VkPipelineShaderStageCreateInfo, 2> shaderStageCreateInfos
+        {
+            // Vertex Shader
+            VkPipelineShaderStageCreateInfo
+            {
+                .sType               = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
+                .pNext               = NULL,
+                .flags               = 0,
+                .stage               = VK_SHADER_STAGE_VERTEX_BIT,
+                .module              = _vkVertexShaderModule,
+                .pName               = shaderStageName,
+                .pSpecializationInfo = NULL             // Customise Shader functionality
+            },
+            // Fragment Shader
+            VkPipelineShaderStageCreateInfo
+            {
+                .sType               = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
+                .pNext               = NULL,
+                .flags               = 0,
+                .stage               = VK_SHADER_STAGE_FRAGMENT_BIT,
+                .module              = _vkFragmentShaderModule,
+                .pName               = shaderStageName,
+                .pSpecializationInfo = NULL             // Customise Shader functionality
+            }
+        };
+
+        const std::vector<VkVertexInputBindingDescription> inputBindingDescriptions     = Vertex::InputBindingDescriptors();
+        const std::vector<VkVertexInputAttributeDescription> inputAttributeDescriptions = Vertex::InputAttributeDescriptions();
+
+        // Describe how to interpret Vertex Buffer data
+        // that is the initial input into the Graphics Pipeline
+        const VkPipelineVertexInputStateCreateInfo vertexInputStateCreateInfo
+        {
+            .sType                           = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
+            .vertexBindingDescriptionCount   = static_cast<uint32_t>(inputBindingDescriptions.size()),
+            .pVertexBindingDescriptions      = inputBindingDescriptions.data(),
+            .vertexAttributeDescriptionCount = static_cast<uint32_t>(inputAttributeDescriptions.size()),
+            .pVertexAttributeDescriptions    = inputAttributeDescriptions.data()
+        };
+
+        const VkGraphicsPipelineCreateInfo graphicsPipelineCreateInfo
+        {
+            .sType               = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
+            .stageCount          = static_cast<uint32_t>(shaderStageCreateInfos.size()),
+            .pStages             = shaderStageCreateInfos.data(),
+            .pVertexInputState   = &vertexInputStateCreateInfo,
+            .pInputAssemblyState = &configInfo.inputAssemblyStateCreateInfo,
+            .pViewportState      = &configInfo.viewportStateCreateInfo,
+            .pRasterizationState = &configInfo.rasterizationStateCreateInfo,
+            .pMultisampleState   = &configInfo.multisampleStateCreateInfo,
+            .pDepthStencilState  = &configInfo.depthStencilStateCreateInfo,
+            .pColorBlendState    = &configInfo.colourBlendStateCreateInfo,
+            .pDynamicState       = &configInfo.dynamicStateCreateInfo,
+            .layout              = configInfo.pipelineLayout,
+            .renderPass          = configInfo.renderPass,
+            .subpass             = configInfo.subpass,
+            .basePipelineHandle  = VK_NULL_HANDLE,
+            .basePipelineIndex   = -1,
+        };
+
+        const VkResult result = vkCreateGraphicsPipelines(_rSolVulkanDevice.Device(), 
+                                                          VK_NULL_HANDLE, 
+                                                          1,
+                                                          &graphicsPipelineCreateInfo, 
+                                                          NULL, 
+                                                          &_vkGraphicsPipeline);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Graphics Pipeline.");
     }
 
-    void SolVulkanPipeline::CreateShaderModule(const std::vector<char> &shaderCode, VkShaderModule *pOutShaderModule)
+    void SolVulkanPipeline::CreateShaderModule(const std::vector<char> &shaderCode, 
+                                               VkShaderModule *pOutShaderModule)
     {
+        const VkShaderModuleCreateInfo shaderModuleCreateInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
+            .codeSize = shaderCode.size(),
+            .pCode = reinterpret_cast<const uint32_t *>(shaderCode.data())
+        };
+
+        const VkResult result = vkCreateShaderModule(_rSolVulkanDevice.Device(), 
+                                                     &shaderModuleCreateInfo, 
+                                                     NULL, 
+                                                     pOutShaderModule);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Shader Module.");
     }
 }
