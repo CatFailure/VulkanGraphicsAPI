@@ -140,6 +140,12 @@ namespace SolEngine
                                                    const std::string &fragShaderFilePath, 
                                                    const PipelineConfigInfo &configInfo)
     {
+        // Ensure Config Info is properly set up
+        DBG_ASSERT_MSG((configInfo.pipelineLayout != VK_NULL_HANDLE), 
+                       "Cannot create Graphics pipeline:: No pipelineLayout provided in configInfo!");
+
+        DBG_ASSERT_MSG((configInfo.renderPass != VK_NULL_HANDLE),
+                       "Cannot create Graphics pipeline:: No renderPass provided in configInfo!");
     }
 
     void SolVulkanPipeline::CreateShaderModule(const std::vector<char> &shaderCode, VkShaderModule *pOutShaderModule)

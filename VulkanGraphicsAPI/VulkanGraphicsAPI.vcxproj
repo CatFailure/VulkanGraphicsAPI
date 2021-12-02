@@ -363,6 +363,10 @@
     <ClInclude Include="Vector.hpp" />
     <ClInclude Include="Vertex.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\SimpleShader.frag" />
+    <None Include="Shaders\SimpleShader.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
