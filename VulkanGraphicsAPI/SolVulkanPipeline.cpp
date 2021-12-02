@@ -136,6 +136,28 @@ namespace SolEngine
     {
     }
 
+    std::vector<char> SolVulkanPipeline::ReadFile(const std::string &filePath)
+    {
+        const std::string openFileFailedMessage = "Failed to open file: " + filePath;
+
+        // ate = seek to the end of the open file immediately.
+        // binary = read file in as a binary.
+        std::ifstream file(filePath,
+            std::ios::ate | std::ios::binary);
+
+        DBG_ASSERT_MSG(file.is_open(), openFileFailedMessage.c_str());
+
+        const size_t fileSize = static_cast<size_t>(file.tellg());
+        std::vector<char> fileBuffer(fileSize);
+
+        // Read from file into buffer
+        file.seekg(0);
+        file.read(fileBuffer.data(), fileSize);
+        file.close();
+
+        return fileBuffer;
+    }
+
     void SolVulkanPipeline::CreateGraphicsPipeline(const std::string &vertShaderFilePath, 
                                                    const std::string &fragShaderFilePath, 
                                                    const PipelineConfigInfo &configInfo)

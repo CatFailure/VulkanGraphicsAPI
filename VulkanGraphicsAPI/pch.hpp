@@ -10,6 +10,7 @@
 #include <glm/glm.hpp>
 
 #include <iostream>
+#include <fstream>
 #include <stdlib.h>     // Variable argument functions, e.g., dprintf(..)
 #include <stdarg.h>
 #include <windows.h>    // OutputDebugStringA
