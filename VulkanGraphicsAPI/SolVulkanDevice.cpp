@@ -3,11 +3,11 @@
 
 namespace SolEngine
 {
-	SolVulkanDevice::SolVulkanDevice(SolVulkanWindow &rSolVulkanWindow,
+    SolVulkanDevice::SolVulkanDevice(SolVulkanWindow &rSolVulkanWindow,
                                      ApplicationData &rAppData)
         : _rSolVulkanWindow(rSolVulkanWindow),
           _rAppData(rAppData)
-	{
+    {
         CreateVulkanInstance();
         CreateVulkanSurface();
         CreateVulkanPhysicalDevice();
@@ -166,7 +166,7 @@ namespace SolEngine
     }
 
     void SolVulkanDevice::CreateVulkanInstance()
-	{
+    {
         _enabledExtensionNames =
         {
             "VK_KHR_surface",
@@ -180,39 +180,39 @@ namespace SolEngine
         // Information about the application
         // to pass to the Vulkan driver.
         // Fill out application description
-        VkApplicationInfo applicationInfo
+        const VkApplicationInfo applicationInfo
         {
             .sType            = VK_STRUCTURE_TYPE_APPLICATION_INFO,	    // Mandatory, describes type of structure
             .pNext            = NULL,								    // Mandatory, stores pointers to extension-specific structures
             .pApplicationName = _rAppData.appName,					    // Name of the application
-            .pEngineName      = _rAppData.engineName,								    // Name of the engine
+            .pEngineName      = _rAppData.engineName,					// Name of the engine
             .engineVersion    = 1,									    // Version of the engine
-            .apiVersion       = VK_API_VERSION_1_0					    // Version of Vulkan used by application
+            .apiVersion       = VK_API_VERSION_1_2					    // Version of Vulkan used by application
         };
 
         // Fill out instance description
-        VkInstanceCreateInfo instanceCreateInfo
+        const VkInstanceCreateInfo instanceCreateInfo
         {
-            .sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,	              // Mandatory
-            .pNext                   = NULL,									              // Mandatory set
-            .flags                   = 0,										              // Mandatory set
-            .pApplicationInfo        = &applicationInfo,						              // Pass application info instance
-            .enabledLayerCount       = EnabledLayerCount(),	                                  // Number of enabled layers
-            .ppEnabledLayerNames     = _enabledLayerNames.data(),                             // Specified layer names
-            .enabledExtensionCount   = EnabledExtensionCount(),                               // Number of enabled extensions
-            .ppEnabledExtensionNames = _enabledExtensionNames.data(),                         // Specified extension names
+            .sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,  // Mandatory
+            .pNext                   = NULL,								    // Mandatory set
+            .flags                   = 0,									    // Mandatory set
+            .pApplicationInfo        = &applicationInfo,					    // Pass application info instance
+            .enabledLayerCount       = EnabledLayerCount(),	                    // Number of enabled layers
+            .ppEnabledLayerNames     = _enabledLayerNames.data(),               // Specified layer names
+            .enabledExtensionCount   = EnabledExtensionCount(),                 // Number of enabled extensions
+            .ppEnabledExtensionNames = _enabledExtensionNames.data(),           // Specified extension names
         };
 
-        VkResult result = vkCreateInstance(&instanceCreateInfo,
-                                           NULL,
-                                           &_vkInstance);
+        const VkResult result = vkCreateInstance(&instanceCreateInfo,
+                                                 NULL,
+                                                 &_vkInstance);
 
         // Was creation successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Vulkan instance.");
 
         // Is instance handle valid?
         DBG_ASSERT(_vkInstance != NULL);
-	}
+    }
 
     void SolVulkanDevice::CreateVulkanPhysicalDevice()
     {
@@ -300,7 +300,7 @@ namespace SolEngine
 
         const VkDeviceCreateInfo deviceCreateInfo
         {
-            .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+            .sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
             .queueCreateInfoCount    = static_cast<uint32_t>(deviceQueueCreateInfos.size()),
             .pQueueCreateInfos       = deviceQueueCreateInfos.data(),
             .enabledLayerCount       = EnabledLayerCount(),

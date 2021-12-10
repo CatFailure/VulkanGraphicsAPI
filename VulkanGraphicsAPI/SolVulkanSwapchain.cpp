@@ -582,7 +582,7 @@ namespace SolEngine
     }
 
     VkResult SolVulkanSwapchain::SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, 
-                                                      uint32_t *pImageIndex)
+                                                      const uint32_t *pImageIndex)
     {
         const VkDevice &device  = _rSolDevice.Device();
         VkFence &rInFlightImage = _vkInFlightImages.at(*pImageIndex);

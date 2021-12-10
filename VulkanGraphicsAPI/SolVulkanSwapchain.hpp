@@ -26,7 +26,7 @@ namespace SolEngine
         VkFormat FindDepthFormat();
 
         VkResult AcquireNextImage(uint32_t *pImageIndex);
-        VkResult SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, uint32_t *pImageIndex);
+        VkResult SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, const uint32_t *pImageIndex);
 
         // Inherited via IDisposable
         virtual void Dispose() override;

@@ -121,8 +121,8 @@ namespace SolEngine
             },
             .dynamicStateCreateInfo
             {
-                .sType             = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO,
-                .flags             = NULL,
+                .sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO,
+                .flags = NULL,
             }
         };
 
