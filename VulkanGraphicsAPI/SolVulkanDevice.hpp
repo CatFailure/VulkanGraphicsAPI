@@ -82,8 +82,8 @@ namespace SolEngine
         VkQueue          _vkGraphicsQueue { NULL };
         VkQueue          _vkPresentQueue  { NULL };
 
-        //std::vector<const char *> _enabledLayerNames{};                           // Laptop
-        std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop
+        std::vector<const char *> _enabledLayerNames{};                           // Laptop
+        //std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop
         std::vector<const char *> _enabledExtensionNames;   // Defined in CreateVulkanInstance()
         std::vector<const char *> _logicalDeviceExtensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     };
