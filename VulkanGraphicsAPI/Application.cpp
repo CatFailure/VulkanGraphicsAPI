@@ -38,6 +38,20 @@ namespace SolEngine
                                 NULL);
     }
 
+    void Application::LoadGameObjects()
+    {
+        std::vector<Vertex> vertices
+        {
+            {{ 0.0f, -0.5f }, { 1.0f, 0.0f, 0.0f }},
+            {{ 0.5f, 0.5f }, { 0.0f, 1.0f, 0.0f }},
+            {{ -0.5f, 0.5f }, { 0.0f, 0.0f, 1.0f }}
+        };
+    }
+
+    void Application::RenderGameObjects()
+    {
+    }
+
     void Application::PrintDeviceMemoryCapabilities()
     {
         // Query device for memory count

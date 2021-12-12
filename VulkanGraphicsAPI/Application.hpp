@@ -20,6 +20,9 @@ namespace SolEngine
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
+        void LoadGameObjects();
+        void RenderGameObjects();
+
         void PrintDeviceMemoryCapabilities();
         void DrawFrame();
 

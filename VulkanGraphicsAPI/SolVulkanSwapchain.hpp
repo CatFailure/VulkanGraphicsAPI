@@ -43,12 +43,12 @@ namespace SolEngine
         VkPresentModeKHR   ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
         VkExtent2D         ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities);
 
-        SolVulkanDevice &_rSolDevice;
-        VkExtent2D _windowExtent;
+        SolVulkanDevice &_rSolVulkanDevice;
+        VkExtent2D      _windowExtent;
 
         // Swapchain
-        VkSwapchainKHR _vkSwapchain{ NULL };
-        std::shared_ptr<SolVulkanSwapchain> _pOldSwapchain;
+        VkSwapchainKHR                      _vkSwapchain{ NULL };
+        std::shared_ptr<SolVulkanSwapchain> _pVkOldSwapchain;
 
         std::vector<VkImage>       _vkSwapchainImages;
         std::vector<VkImageView>   _vkSwapchainImageViews;

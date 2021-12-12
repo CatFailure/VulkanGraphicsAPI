@@ -112,7 +112,7 @@ namespace SolEngine
                 .front{},                       // Optional
                 .back{},                        // Optional
                 .minDepthBounds        = 0.0f,  // Optional
-                .maxDepthBounds        = 1.0f,  // Optional
+                .maxDepthBounds        = 1.0f   // Optional
             },
             .dynamicStateEnables 
             { 
@@ -121,8 +121,8 @@ namespace SolEngine
             },
             .dynamicStateCreateInfo
             {
-                .sType             = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO,
-                .flags             = NULL,
+                .sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO,
+                .flags = NULL
             }
         };
 
@@ -137,9 +137,17 @@ namespace SolEngine
     {
         const VkDevice &device = _rSolVulkanDevice.Device();
 
-        vkDestroyShaderModule(device, _vkVertexShaderModule, NULL);
-        vkDestroyShaderModule(device, _vkFragmentShaderModule, NULL);
-        vkDestroyPipeline(device, _vkGraphicsPipeline, NULL);
+        vkDestroyShaderModule(device, 
+                              _vkVertexShaderModule, 
+                              NULL);
+
+        vkDestroyShaderModule(device, 
+                              _vkFragmentShaderModule,
+                              NULL);
+
+        vkDestroyPipeline(device, 
+                          _vkGraphicsPipeline, 
+                          NULL);
     }
 
     std::vector<char> SolVulkanPipeline::ReadFile(const std::string &filePath)
