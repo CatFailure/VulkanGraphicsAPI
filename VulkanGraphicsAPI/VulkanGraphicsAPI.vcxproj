@@ -339,6 +339,7 @@
       </PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="SolVulkanDevice.cpp" />
+    <ClCompile Include="SolVulkanGameObject.cpp" />
     <ClCompile Include="SolVulkanModel.cpp" />
     <ClCompile Include="SolVulkanPipeline.cpp" />
     <ClCompile Include="SolVulkanSwapchain.cpp" />
@@ -349,12 +350,14 @@
     <ClInclude Include="ApplicationData.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="IDisposable.hpp" />
+    <ClInclude Include="IMonoBehaviour.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
     <ClInclude Include="SimplePushConstantData.hpp" />
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolVulkanDevice.hpp" />
+    <ClInclude Include="SolVulkanGameObject.hpp" />
     <ClInclude Include="SolVulkanModel.hpp" />
     <ClInclude Include="SolVulkanPipeline.hpp" />
     <ClInclude Include="SolVulkanSwapchain.hpp" />

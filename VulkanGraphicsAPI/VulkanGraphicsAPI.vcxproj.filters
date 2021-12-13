@@ -28,6 +28,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{bbae8be9-b1c7-4e43-a74a-1cffbaaf5e79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\Interface">
+      <UniqueIdentifier>{1957ed1c-9a5d-46fb-8d8b-5ed4c83881fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -57,6 +60,9 @@
     <ClCompile Include="SolVulkanModel.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
+    <ClCompile Include="SolVulkanGameObject.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -69,9 +75,6 @@
       <Filter>SolEngine</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.hpp">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="IDisposable.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Application.hpp">
@@ -109,6 +112,15 @@
     </ClInclude>
     <ClInclude Include="Vertex.hpp">
       <Filter>SolEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SolVulkanGameObject.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="IMonoBehaviour.hpp">
+      <Filter>SolEngine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IDisposable.hpp">
+      <Filter>SolEngine\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

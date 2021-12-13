@@ -33,8 +33,11 @@
 #include <unordered_set>
 #include <deque>
 
-#include "DebugHelpers.hpp"
+// Interfaces
 #include "IDisposable.hpp"
+#include "IMonoBehaviour.hpp"
+
+#include "DebugHelpers.hpp"
 #include "Singleton.hpp"
 #include "SimplePushConstantData.hpp"
 #include "PipelineConfigInfo.hpp"

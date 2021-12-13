@@ -2,8 +2,9 @@
 #include "ApplicationData.hpp"
 #include "Vector.hpp"
 
-using namespace Utility;
+using namespace SolEngine::Interface;
 using namespace SolEngine::Math;
+using namespace Utility;
 
 namespace SolEngine
 {

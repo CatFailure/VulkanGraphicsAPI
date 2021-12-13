@@ -13,7 +13,7 @@ namespace SolEngine
                                                             rAppData.windowDimensions))
     {
         PrintDeviceMemoryCapabilities();
-
+        LoadGameObjects();
         CreatePipelineLayout();
         RecreateSwapchain();
         CreateCommandBuffers();
@@ -21,10 +21,18 @@ namespace SolEngine
 
     void Application::Run()
     {
+        // TEMP
+        const float deltaTime = 1 / 60.f;
+
         while (!_pSolVulkanWindow->ShouldClose())
         {
             glfwPollEvents();   // Poll Window Events
-            DrawFrame();
+
+            _totalTime_TEMP += deltaTime;
+
+            Update(deltaTime);
+            Draw();
+
         }
 
         // Make CPU wait until all GPU operations have completed.
@@ -40,16 +48,49 @@ namespace SolEngine
 
     void Application::LoadGameObjects()
     {
-        std::vector<Vertex> vertices
+        const std::vector<Vertex> vertices
         {
             {{ 0.0f, -0.5f }, { 1.0f, 0.0f, 0.0f }},
             {{ 0.5f, 0.5f }, { 0.0f, 1.0f, 0.0f }},
             {{ -0.5f, 0.5f }, { 0.0f, 0.0f, 1.0f }}
         };
+
+        std::shared_ptr<SolVulkanModel> pModel = std::make_shared<SolVulkanModel>(*_pSolVulkanDevice, vertices);
+        SolVulkanGameObject triangle{};
+
+        triangle.SetModel(pModel);
+        triangle.SetColour({ .1f, .8f, .1f });
+        triangle._transform.position.x = .2f;
+        
+        _gameObjects.push_back(triangle);
     }
 
-    void Application::RenderGameObjects()
+    void Application::RenderGameObjects(const VkCommandBuffer &commandBuffer)
     {
+        _pSolVulkanPipeline->Bind(commandBuffer);
+
+        for (const SolVulkanGameObject &gameObject : _gameObjects)
+        {
+            const std::shared_ptr<SolVulkanModel> &pGameObjectModel = gameObject.GetModel();
+
+            const SimplePushConstantData pushConstantData
+            {
+                .transform = gameObject._transform.Mat2(),
+                .offset    = gameObject._transform.position,
+                .colour    = gameObject.GetColour(),
+            };
+
+            vkCmdPushConstants(commandBuffer, 
+                               _vkPipelineLayout, 
+                               VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+                               0, 
+                               sizeof(SimplePushConstantData), 
+                               &pushConstantData);
+
+
+            pGameObjectModel->Bind(commandBuffer);
+            pGameObjectModel->Draw(commandBuffer);
+        }
     }
 
     void Application::PrintDeviceMemoryCapabilities()
@@ -101,7 +142,18 @@ namespace SolEngine
         }
     }
 
-    void Application::DrawFrame()
+    void Application::Update(const float deltaTime)
+    {
+        const float moveSpeed = .25f;
+        const float magnitude = .05f;
+
+        for (SolVulkanGameObject &rGameObject : _gameObjects)
+        {
+            rGameObject._transform.position.y = sinf(_totalTime_TEMP * moveSpeed) * magnitude;
+        }
+    }
+
+    void Application::Draw()
     {
         uint32_t imageIndex;
         VkResult result = _pSolVulkanSwapchain->AcquireNextImage(&imageIndex);
@@ -277,6 +329,7 @@ namespace SolEngine
         vkCmdSetScissor(currentCommandBuffer, 0, 1, &scissor);
 
         // Render stuff here
+        RenderGameObjects(currentCommandBuffer);
 
         // End of Rendering
         vkCmdEndRenderPass(currentCommandBuffer);

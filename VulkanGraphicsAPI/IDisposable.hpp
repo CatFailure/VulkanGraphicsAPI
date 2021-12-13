@@ -1,5 +1,5 @@
 #pragma once
-namespace Utility
+namespace SolEngine::Interface
 {
 	class IDisposable
 	{

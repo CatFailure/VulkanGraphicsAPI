@@ -1,6 +1,8 @@
 #pragma once
 #include "SolVulkanDevice.hpp"
 
+using namespace SolEngine::Interface;
+
 namespace SolEngine
 {
     class SolVulkanSwapchain : public IDisposable
