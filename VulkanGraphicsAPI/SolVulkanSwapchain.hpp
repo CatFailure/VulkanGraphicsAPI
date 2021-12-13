@@ -1,6 +1,8 @@
 #pragma once
 #include "SolVulkanDevice.hpp"
 
+using namespace SolEngine::Interface;
+
 namespace SolEngine
 {
     class SolVulkanSwapchain : public IDisposable
@@ -26,7 +28,7 @@ namespace SolEngine
         VkFormat FindDepthFormat();
 
         VkResult AcquireNextImage(uint32_t *pImageIndex);
-        VkResult SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, uint32_t *pImageIndex);
+        VkResult SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, const uint32_t *pImageIndex);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
@@ -43,12 +45,12 @@ namespace SolEngine
         VkPresentModeKHR   ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
         VkExtent2D         ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities);
 
-        SolVulkanDevice &_rSolDevice;
-        VkExtent2D _windowExtent;
+        SolVulkanDevice &_rSolVulkanDevice;
+        VkExtent2D      _windowExtent;
 
         // Swapchain
-        VkSwapchainKHR _vkSwapchain{ NULL };
-        std::shared_ptr<SolVulkanSwapchain> _pOldSwapchain;
+        VkSwapchainKHR                      _vkSwapchain{ NULL };
+        std::shared_ptr<SolVulkanSwapchain> _pVkOldSwapchain;
 
         std::vector<VkImage>       _vkSwapchainImages;
         std::vector<VkImageView>   _vkSwapchainImageViews;

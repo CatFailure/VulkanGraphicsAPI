@@ -178,7 +178,7 @@
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;D:\VulkanSDK\1.2.189.2\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -198,7 +198,7 @@
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -220,7 +220,7 @@
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -258,7 +258,7 @@
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\lib-vc2019;D:\VulkanSDK\1.2.189.2\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -278,7 +278,7 @@
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -300,7 +300,7 @@
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -339,6 +339,8 @@
       </PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="SolVulkanDevice.cpp" />
+    <ClCompile Include="SolVulkanGameObject.cpp" />
+    <ClCompile Include="SolVulkanModel.cpp" />
     <ClCompile Include="SolVulkanPipeline.cpp" />
     <ClCompile Include="SolVulkanSwapchain.cpp" />
     <ClCompile Include="SolVulkanWindow.cpp" />
@@ -348,17 +350,25 @@
     <ClInclude Include="ApplicationData.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="IDisposable.hpp" />
+    <ClInclude Include="IMonoBehaviour.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
     <ClInclude Include="SimplePushConstantData.hpp" />
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolVulkanDevice.hpp" />
+    <ClInclude Include="SolVulkanGameObject.hpp" />
+    <ClInclude Include="SolVulkanModel.hpp" />
     <ClInclude Include="SolVulkanPipeline.hpp" />
     <ClInclude Include="SolVulkanSwapchain.hpp" />
     <ClInclude Include="SolVulkanWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
     <ClInclude Include="Vector.hpp" />
+    <ClInclude Include="Vertex.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\SimpleShader.frag" />
+    <None Include="Shaders\SimpleShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

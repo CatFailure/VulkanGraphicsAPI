@@ -3,13 +3,15 @@
 #include "SolVulkanWindow.hpp"
 #include "SolVulkanSwapchain.hpp"
 #include "SolVulkanPipeline.hpp"
+#include "SolVulkanModel.hpp"
+#include "SolVulkanGameObject.hpp"
 
 using namespace SolEngine::Data;
-using namespace Utility;
+using namespace SolEngine::Interface;
 
 namespace SolEngine
 {
-    class Application : public IDisposable
+    class Application : public IDisposable, public IMonoBehaviour
     {
     public:
         Application() = delete;
@@ -20,8 +22,13 @@ namespace SolEngine
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
+        void LoadGameObjects();
+        void RenderGameObjects(const VkCommandBuffer &commandBuffer);
+
         void PrintDeviceMemoryCapabilities();
-        void DrawFrame();
+
+        virtual void Update(const float deltaTime) override;
+        void Draw();
 
         void CreatePipelineLayout();
         void CreatePipeline();
@@ -43,5 +50,9 @@ namespace SolEngine
 
         VkPipelineLayout             _vkPipelineLayout;
         std::vector<VkCommandBuffer> _vkCommandBuffers;
+
+        std::vector<SolVulkanGameObject> _gameObjects;
+
+        float _totalTime_TEMP{ 0 };  // TEMP
     };
 }

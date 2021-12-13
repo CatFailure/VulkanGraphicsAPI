@@ -25,6 +25,12 @@
     <Filter Include="SolEngine\Data">
       <UniqueIdentifier>{542ef050-a841-4c51-9b41-61ac09e1d8fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{bbae8be9-b1c7-4e43-a74a-1cffbaaf5e79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SolEngine\Interface">
+      <UniqueIdentifier>{1957ed1c-9a5d-46fb-8d8b-5ed4c83881fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -51,6 +57,12 @@
     <ClCompile Include="SolVulkanPipeline.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
+    <ClCompile Include="SolVulkanModel.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="SolVulkanGameObject.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -63,9 +75,6 @@
       <Filter>SolEngine</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.hpp">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="IDisposable.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Application.hpp">
@@ -98,5 +107,28 @@
     <ClInclude Include="ApplicationData.hpp">
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
+    <ClInclude Include="SolVulkanModel.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.hpp">
+      <Filter>SolEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SolVulkanGameObject.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="IMonoBehaviour.hpp">
+      <Filter>SolEngine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IDisposable.hpp">
+      <Filter>SolEngine\Interface</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\SimpleShader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\SimpleShader.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

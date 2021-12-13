@@ -11,9 +11,9 @@ namespace SolEngine
     SolVulkanSwapchain::SolVulkanSwapchain(SolVulkanDevice &rDevice, 
                                            const VkExtent2D &windowExtent, 
                                            std::shared_ptr<SolVulkanSwapchain> pOldSwapchain)
-        : _rSolDevice(rDevice),
+        : _rSolVulkanDevice(rDevice),
           _windowExtent(windowExtent),
-          _pOldSwapchain(pOldSwapchain)
+          _pVkOldSwapchain(pOldSwapchain)
     {
         uint32_t imageCount;
         VkSurfaceFormatKHR surfaceImageFormat;
@@ -28,7 +28,7 @@ namespace SolEngine
         CreateSyncObjects();
 
         // Old Swapchain no longer needed
-        _pOldSwapchain = nullptr;
+        _pVkOldSwapchain = nullptr;
     }
 
     SolVulkanSwapchain::~SolVulkanSwapchain()
@@ -38,13 +38,15 @@ namespace SolEngine
 
     void SolVulkanSwapchain::Dispose()
     {
-        const VkDevice vkDevice = _rSolDevice.Device();
+        const VkDevice vkDevice = _rSolVulkanDevice.Device();
 
         // Image Views
         {
             for (const VkImageView &imageView : _vkSwapchainImageViews)
             {
-                vkDestroyImageView(vkDevice, imageView, NULL);
+                vkDestroyImageView(vkDevice, 
+                                   imageView, 
+                                   NULL);
             }
 
             _vkSwapchainImageViews.clear();
@@ -54,7 +56,9 @@ namespace SolEngine
         {
             if (_vkSwapchain != nullptr)
             {
-                vkDestroySwapchainKHR(vkDevice, _vkSwapchain, NULL);
+                vkDestroySwapchainKHR(vkDevice, 
+                                      _vkSwapchain,
+                                      NULL);
 
                 _vkSwapchain = nullptr;
             }
@@ -64,9 +68,17 @@ namespace SolEngine
         {
             for (size_t i(0); i < _vkDepthImages.size(); ++i)
             {
-                vkDestroyImageView(vkDevice, _vkDepthImageViews.at(i), NULL);
-                vkDestroyImage(vkDevice, _vkDepthImages.at(i), NULL);
-                vkFreeMemory(vkDevice, _vkDepthImageMemories.at(i), NULL);
+                vkDestroyImageView(vkDevice,
+                                   _vkDepthImageViews.at(i),
+                                   NULL);
+
+                vkDestroyImage(vkDevice,
+                               _vkDepthImages.at(i),
+                               NULL);
+
+                vkFreeMemory(vkDevice, 
+                             _vkDepthImageMemories.at(i),
+                             NULL);
             }
 
             _vkDepthImageViews.clear();
@@ -78,22 +90,34 @@ namespace SolEngine
         {
             for (const VkFramebuffer &framebuffer : _vkSwapchainFramebuffers)
             {
-                vkDestroyFramebuffer(vkDevice, framebuffer, NULL);
+                vkDestroyFramebuffer(vkDevice, 
+                                     framebuffer, 
+                                     NULL);
             }
         }
 
         // Render Pass
         {
-            vkDestroyRenderPass(vkDevice, _vkRenderPass, NULL);
+            vkDestroyRenderPass(vkDevice,
+                                _vkRenderPass, 
+                                NULL);
         }
 
         // Synchronisation Objects
         {
             for (size_t i(0); i < MAX_FRAMES_IN_FLIGHT; ++i)
             {
-                vkDestroySemaphore(vkDevice, _vkRenderFinishedSemaphores.at(i), NULL);
-                vkDestroySemaphore(vkDevice, _vkImageAvailableSemaphores.at(i), NULL);
-                vkDestroyFence(vkDevice, _vkInFlightFences.at(i), NULL);
+                vkDestroySemaphore(vkDevice,
+                                   _vkRenderFinishedSemaphores.at(i), 
+                                   NULL);
+
+                vkDestroySemaphore(vkDevice,
+                                   _vkImageAvailableSemaphores.at(i),
+                                   NULL);
+
+                vkDestroyFence(vkDevice, 
+                               _vkInFlightFences.at(i), 
+                               NULL);
             }
         }
     }
@@ -102,8 +126,8 @@ namespace SolEngine
                                              VkSurfaceFormatKHR *pOutSurfaceImageFormat, 
                                              VkExtent2D *pOutSwapchainExtent)
     {
-        const SwapchainSupportDetails swapchainSupportDetails = _rSolDevice.QueryPhysicalDeviceSwapchainSupport();
-        QueueFamilyIndices            queueFamilies           = _rSolDevice.QueryPhysicalDeviceQueueFamilies();
+        const SwapchainSupportDetails swapchainSupportDetails = _rSolVulkanDevice.QueryPhysicalDeviceSwapchainSupport();
+        QueueFamilyIndices            queueFamilies           = _rSolVulkanDevice.QueryPhysicalDeviceQueueFamilies();
         const std::vector<uint32_t>   queueFamilyIndices
         {
             queueFamilies.graphicsFamily, 
@@ -125,7 +149,7 @@ namespace SolEngine
         VkSwapchainCreateInfoKHR swapchainCreateInfo
         {
             .sType            = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
-            .surface          = _rSolDevice.Surface(),
+            .surface          = _rSolVulkanDevice.Surface(),
             .minImageCount    = *pOutImageCount,
             .imageFormat      = pOutSurfaceImageFormat->format,
             .imageColorSpace  = pOutSurfaceImageFormat->colorSpace,
@@ -136,8 +160,8 @@ namespace SolEngine
             .compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
             .presentMode      = presentMode,
             .clipped          = VK_TRUE,                                            // Clipping outside of extents?
-            .oldSwapchain     = _pOldSwapchain == nullptr ?                         // Provide old swapchain if possible
-                                    VK_NULL_HANDLE : _pOldSwapchain->_vkSwapchain
+            .oldSwapchain     = _pVkOldSwapchain == nullptr ?                         // Provide old swapchain if possible
+                                    VK_NULL_HANDLE : _pVkOldSwapchain->_vkSwapchain
         };
 
         if (queueFamilies.AreFamiliesEqual())
@@ -153,7 +177,7 @@ namespace SolEngine
             swapchainCreateInfo.pQueueFamilyIndices   = queueFamilyIndices.data();                         // Optional
         }
 
-        const VkResult result = vkCreateSwapchainKHR(_rSolDevice.Device(),
+        const VkResult result = vkCreateSwapchainKHR(_rSolVulkanDevice.Device(),
                                                      &swapchainCreateInfo,
                                                      NULL,
                                                      &_vkSwapchain);
@@ -170,7 +194,7 @@ namespace SolEngine
         // allowed to create a swapchain with more. That's why we'll first query the final number of
         // images with vkGetSwapchainImagesKHR, then resize the container and finally call it again to
         // retrieve the handles.
-        VkResult result = vkGetSwapchainImagesKHR(_rSolDevice.Device(),
+        VkResult result = vkGetSwapchainImagesKHR(_rSolVulkanDevice.Device(),
                                                   _vkSwapchain,
                                                   &rImageCount,
                                                   NULL);
@@ -179,7 +203,7 @@ namespace SolEngine
 
         _vkSwapchainImages.resize(rImageCount);
 
-        result = vkGetSwapchainImagesKHR(_rSolDevice.Device(),
+        result = vkGetSwapchainImagesKHR(_rSolVulkanDevice.Device(),
                                          _vkSwapchain,
                                          &rImageCount,
                                          _vkSwapchainImages.data());
@@ -221,7 +245,7 @@ namespace SolEngine
                 }
             };
 
-            const VkResult result = vkCreateImageView(_rSolDevice.Device(),
+            const VkResult result = vkCreateImageView(_rSolVulkanDevice.Device(),
                                                       &imageViewCreateInfo, 
                                                       NULL,
                                                       &_vkSwapchainImageViews.at(i));
@@ -264,7 +288,7 @@ namespace SolEngine
 
             VkImage& rCurrentDepthImage = _vkDepthImages.at(i);
 
-            _rSolDevice.CreateImageWithInfo(imageCreateInfo, 
+            _rSolVulkanDevice.CreateImageWithInfo(imageCreateInfo, 
                                             VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
                                             rCurrentDepthImage,
                                             _vkDepthImageMemories.at(i));
@@ -285,7 +309,7 @@ namespace SolEngine
                 }
             };
 
-            const VkResult result = vkCreateImageView(_rSolDevice.Device(),
+            const VkResult result = vkCreateImageView(_rSolVulkanDevice.Device(),
                                                       &imageViewCreateInfo, 
                                                       NULL, 
                                                       &_vkDepthImageViews.at(i));
@@ -371,7 +395,7 @@ namespace SolEngine
             .pDependencies   = &subpassDependency
         };
 
-        const VkResult result = vkCreateRenderPass(_rSolDevice.Device(), 
+        const VkResult result = vkCreateRenderPass(_rSolVulkanDevice.Device(), 
                                                    &renderPassCreateInfo, 
                                                    NULL, 
                                                    &_vkRenderPass);
@@ -404,7 +428,7 @@ namespace SolEngine
                 .layers          = 1
             };
 
-            const VkResult result = vkCreateFramebuffer(_rSolDevice.Device(), 
+            const VkResult result = vkCreateFramebuffer(_rSolVulkanDevice.Device(), 
                                                         &framebufferCreateInfo, 
                                                         NULL, 
                                                         &_vkSwapchainFramebuffers.at(i));
@@ -415,7 +439,7 @@ namespace SolEngine
 
     void SolVulkanSwapchain::CreateSyncObjects()
     {
-        const VkDevice &vkDevice = _rSolDevice.Device();
+        const VkDevice &vkDevice = _rSolVulkanDevice.Device();
 
         _vkImageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         _vkRenderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
@@ -529,14 +553,14 @@ namespace SolEngine
 
     VkFormat SolVulkanSwapchain::FindDepthFormat()
     {
-        return _rSolDevice.FindSupportedFormat(_vkDepthFormatCandidates,
+        return _rSolVulkanDevice.FindSupportedFormat(_vkDepthFormatCandidates,
                                                _vkDepthImageTiling, 
                                                _vkDepthFormatFeatureFlags);
     }
 
     VkResult SolVulkanSwapchain::AcquireNextImage(uint32_t *pImageIndex)
     {
-        const VkDevice &device = _rSolDevice.Device();
+        const VkDevice &device = _rSolVulkanDevice.Device();
         const uint32_t fenceCount(1);
 
         VkResult result = vkWaitForFences(device, 
@@ -558,9 +582,9 @@ namespace SolEngine
     }
 
     VkResult SolVulkanSwapchain::SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, 
-                                                      uint32_t *pImageIndex)
+                                                      const uint32_t *pImageIndex)
     {
-        const VkDevice &device  = _rSolDevice.Device();
+        const VkDevice &device  = _rSolVulkanDevice.Device();
         VkFence &rInFlightImage = _vkInFlightImages.at(*pImageIndex);
         VkFence &rInFlightFence = _vkInFlightFences.at(_currentFrame);
 
@@ -594,7 +618,7 @@ namespace SolEngine
 
         vkResetFences(device, 1, &rInFlightFence);
 
-        VkResult result = vkQueueSubmit(_rSolDevice.GraphicsQueue(), 
+        VkResult result = vkQueueSubmit(_rSolVulkanDevice.GraphicsQueue(), 
                                         1,
                                         &submitInfo,
                                         rInFlightFence);
@@ -611,7 +635,7 @@ namespace SolEngine
             .pImageIndices      = pImageIndex
         };
 
-        result = vkQueuePresentKHR(_rSolDevice.PresentQueue(), 
+        result = vkQueuePresentKHR(_rSolVulkanDevice.PresentQueue(), 
                                    &presentInfo);
 
         // Flip current frame

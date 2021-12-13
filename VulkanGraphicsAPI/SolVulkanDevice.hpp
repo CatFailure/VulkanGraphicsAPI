@@ -44,6 +44,9 @@ namespace SolEngine
         uint32_t                FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
         VkFormat                FindSupportedFormat(const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 
+        // Buffer Helper Functions
+        void CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
+
         uint32_t EnabledLayerCount()	 const { return static_cast<uint32_t>(_enabledLayerNames.size()); }
         uint32_t EnabledExtensionCount() const { return static_cast<uint32_t>(_enabledExtensionNames.size()); }
         uint32_t DeviceExtensionCount()  const { return static_cast<uint32_t>(_logicalDeviceExtensions.size()); }

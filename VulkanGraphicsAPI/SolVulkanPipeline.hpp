@@ -16,6 +16,8 @@ namespace SolEngine
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
+        static std::vector<char> ReadFile(const std::string &filePath);
+
         void CreateGraphicsPipeline(const std::string &vertShaderFilePath, const std::string &fragShaderFilePath, const PipelineConfigInfo &configInfo);
         void CreateShaderModule(const std::vector<char> &shaderCode, VkShaderModule *pOutShaderModule);
 
