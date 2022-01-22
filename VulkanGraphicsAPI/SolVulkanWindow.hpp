@@ -11,7 +11,7 @@ namespace SolEngine
     class SolVulkanWindow : public IDisposable
     {
     public:
-        SolVulkanWindow(const std::string &winTitle, const Vector2<uint32_t> &winDimensions);
+        SolVulkanWindow(const std::string &winTitle, const Vector2u &winDimensions);
         ~SolVulkanWindow();
 
         bool ShouldClose()      const { return glfwWindowShouldClose(_pWindow); }
@@ -28,8 +28,8 @@ namespace SolEngine
 
         void CreateGLFWWindow();
 
-        Vector2<uint32_t> _winDimensions;
-        bool              _isFramebufferResized{ false };
+        Vector2u _winDimensions;
+        bool     _isFramebufferResized{ false };
 
         std::string _winTitle{ NULL };
         GLFWwindow *_pWindow{ NULL };

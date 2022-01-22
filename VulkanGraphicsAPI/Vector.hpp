@@ -99,5 +99,13 @@ namespace SolEngine::Math
         _Ty _y{ 0 };
         _Ty _z{ 0 };
     };
+
+    typedef Vector2<int> Vector2i;
+    typedef Vector2<uint32_t> Vector2u;
+    typedef Vector2<float> Vector2f;
+
+    typedef Vector3<int> Vector3i;
+    typedef Vector3<uint32_t> Vector3u;
+    typedef Vector3<float> Vector3f;
 }
 

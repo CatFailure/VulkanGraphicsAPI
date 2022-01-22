@@ -12,7 +12,7 @@ namespace SolEngine::Data
         const char		  *engineName;
         const char		  *appName;
 
-        Vector2<uint32_t> windowDimensions;
+        Vector2u windowDimensions;
 
         VkExtent2D GetExtent() { return { windowDimensions._x, windowDimensions._y }; }
     };

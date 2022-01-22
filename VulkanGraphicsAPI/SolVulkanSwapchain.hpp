@@ -21,9 +21,9 @@ namespace SolEngine
         size_t        ImageCount()                    const { return _vkSwapchainImages.size(); }
         VkFormat      ImageFormat()                   const { return _vkSwapchainImageFormat; }
 
-        VkExtent2D        Extent()            const { return _vkSwapchainExtent; }
-        Vector2<uint32_t> ExtentDimensions()  const { return { _vkSwapchainExtent.width, _vkSwapchainExtent.height }; }
-        float             ExtentAspectRatio() const { return static_cast<float>(_vkSwapchainExtent.width) / static_cast<float>(_vkSwapchainExtent.height); }
+        VkExtent2D Extent()            const { return _vkSwapchainExtent; }
+        Vector2u   ExtentDimensions()  const { return { _vkSwapchainExtent.width, _vkSwapchainExtent.height }; }
+        float      ExtentAspectRatio() const { return static_cast<float>(_vkSwapchainExtent.width) / static_cast<float>(_vkSwapchainExtent.height); }
 
         VkFormat FindDepthFormat();
 
