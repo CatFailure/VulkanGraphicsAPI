@@ -58,8 +58,7 @@ namespace SolEngine
         triangle.SetModel(pModel);
         triangle.SetColour({ .1f, .8f, .1f });
         triangle.transform2D.position.x = .2f;
-        triangle.transform2D.scale = { 2.f, .5f };
-        triangle.transform2D.rotation = .25f * glm::two_pi<float>();
+        triangle.transform2D.scale = { 1.f, 1.f };
         
         _gameObjects.push_back(std::move(triangle));
     }
@@ -143,10 +142,6 @@ namespace SolEngine
 
     void Application::Update(const float deltaTime)
     {
-        for (SolVulkanGameObject& rGameObject : _gameObjects)
-        {
-            rGameObject.transform2D.rotation = glm::mod(rGameObject.transform2D.rotation + 0.01f, glm::two_pi<float>());
-        }
     }
 
     void Application::Draw()

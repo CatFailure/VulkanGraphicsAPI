@@ -342,6 +342,7 @@
     <ClCompile Include="SolVulkanGameObject.cpp" />
     <ClCompile Include="SolVulkanModel.cpp" />
     <ClCompile Include="SolVulkanPipeline.cpp" />
+    <ClCompile Include="SolVulkanRenderer.cpp" />
     <ClCompile Include="SolVulkanSwapchain.cpp" />
     <ClCompile Include="SolVulkanWindow.cpp" />
   </ItemGroup>
@@ -360,6 +361,7 @@
     <ClInclude Include="SolVulkanGameObject.hpp" />
     <ClInclude Include="SolVulkanModel.hpp" />
     <ClInclude Include="SolVulkanPipeline.hpp" />
+    <ClInclude Include="SolVulkanRenderer.hpp" />
     <ClInclude Include="SolVulkanSwapchain.hpp" />
     <ClInclude Include="SolVulkanWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
