@@ -52,7 +52,5 @@ namespace SolEngine
         std::vector<VkCommandBuffer> _vkCommandBuffers;
 
         std::vector<SolVulkanGameObject> _gameObjects;
-
-        float _totalTime_TEMP{ 0 };  // TEMP
     };
 }

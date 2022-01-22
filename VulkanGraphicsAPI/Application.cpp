@@ -28,11 +28,8 @@ namespace SolEngine
         {
             glfwPollEvents();   // Poll Window Events
 
-            _totalTime_TEMP += deltaTime;
-
             Update(deltaTime);
             Draw();
-
         }
 
         // Make CPU wait until all GPU operations have completed.
@@ -144,13 +141,6 @@ namespace SolEngine
 
     void Application::Update(const float deltaTime)
     {
-        const float moveSpeed = .25f;
-        const float magnitude = .05f;
-
-        for (SolVulkanGameObject &rGameObject : _gameObjects)
-        {
-            rGameObject._transform.position.y = sinf(_totalTime_TEMP * moveSpeed) * magnitude;
-        }
     }
 
     void Application::Draw()
