@@ -11,7 +11,7 @@ int main()
 		.windowClassName  = L"VulkanWindowClass",
 		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",
-		.windowDimensions = Vector2<uint32_t>(800, 600)
+		.windowDimensions = Vector2u(800, 600)
 	};
 
 	Application application(appData);

@@ -4,7 +4,7 @@
 namespace SolEngine
 {
     SolVulkanWindow::SolVulkanWindow(const std::string &winTitle, 
-                                     const Vector2<uint32_t> &winDimensions)
+                                     const Vector2u &winDimensions)
         : _winTitle(winTitle),
           _winDimensions(winDimensions)
     {
