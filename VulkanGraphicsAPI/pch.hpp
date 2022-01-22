@@ -8,6 +8,7 @@
 #include <vulkan/vulkan_core.h>
 #include <glfw/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 
 #include <iostream>
 #include <fstream>
