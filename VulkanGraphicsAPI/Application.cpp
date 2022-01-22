@@ -53,13 +53,15 @@ namespace SolEngine
         };
 
         std::shared_ptr<SolVulkanModel> pModel = std::make_shared<SolVulkanModel>(*_pSolVulkanDevice, vertices);
-        SolVulkanGameObject triangle{};
+        SolVulkanGameObject triangle = SolVulkanGameObject::CreateGameObject();
 
         triangle.SetModel(pModel);
         triangle.SetColour({ .1f, .8f, .1f });
-        triangle._transform.position.x = .2f;
+        triangle.transform2D.position.x = .2f;
+        triangle.transform2D.scale = { 2.f, .5f };
+        triangle.transform2D.rotation = .25f * glm::two_pi<float>();
         
-        _gameObjects.push_back(triangle);
+        _gameObjects.push_back(std::move(triangle));
     }
 
     void Application::RenderGameObjects(const VkCommandBuffer &commandBuffer)
@@ -72,8 +74,8 @@ namespace SolEngine
 
             const SimplePushConstantData pushConstantData
             {
-                .transform = gameObject._transform.Mat2(),
-                .offset    = gameObject._transform.position,
+                .transform = gameObject.transform2D.Mat2(),
+                .offset    = gameObject.transform2D.position,
                 .colour    = gameObject.GetColour(),
             };
 
@@ -141,6 +143,10 @@ namespace SolEngine
 
     void Application::Update(const float deltaTime)
     {
+        for (SolVulkanGameObject& rGameObject : _gameObjects)
+        {
+            rGameObject.transform2D.rotation = glm::mod(rGameObject.transform2D.rotation + 0.01f, glm::two_pi<float>());
+        }
     }
 
     void Application::Draw()
