@@ -5,12 +5,12 @@ namespace SolEngine
 {
     Application::Application(const ApplicationData &appData)
         : _solRenderer(_appData,
-                              _solWindow, 
-                              _solDevice),
+                       _solWindow, 
+                       _solDevice),
           _solDevice(_solWindow,
-                            _appData),
+                     _appData),
           _solWindow(_appData.windowTitle,
-                            _appData.windowDimensions),
+                     _appData.windowDimensions),
          _appData(appData)
     {
         LoadGameObjects();
@@ -38,8 +38,8 @@ namespace SolEngine
         vkDeviceWaitIdle(_solDevice.Device());
     }
 
-    std::shared_ptr<SolVulkanModel> Application::CreateCubeModel(SolVulkanDevice &rDevice, 
-                                                                 const glm::vec3 &offset)
+    std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
+                                                           const glm::vec3 &offset)
     {
         std::vector<Vertex> vertices
         {
@@ -98,7 +98,7 @@ namespace SolEngine
             rVertex.position += offset;
         }
 
-        return std::make_shared<SolVulkanModel>(rDevice, vertices);
+        return std::make_shared<SolModel>(rDevice, vertices);
     }
 
     void Application::Dispose()
@@ -106,7 +106,7 @@ namespace SolEngine
 
     void Application::Update(const float deltaTime)
     {
-        for (SolVulkanGameObject &rGameObject : _gameObjects)
+        for (SolGameObject &rGameObject : _gameObjects)
         {
             const float scaledTwoPi = deltaTime * glm::two_pi<float>();
 
@@ -135,8 +135,8 @@ namespace SolEngine
 
     void Application::LoadGameObjects()
     {
-        std::shared_ptr<SolVulkanModel> cubeModel = CreateCubeModel(_solDevice, { 0,0,0 });
-        SolVulkanGameObject cubeGameObject = SolVulkanGameObject::CreateGameObject();
+        std::shared_ptr<SolModel> cubeModel = CreateCubeModel(_solDevice, { 0,0,0 });
+        SolGameObject cubeGameObject = SolGameObject::CreateGameObject();
 
         cubeGameObject.SetModel(cubeModel);
 

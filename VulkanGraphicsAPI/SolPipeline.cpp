@@ -1,12 +1,12 @@
 #include "pch.hpp"
-#include "SolVulkanPipeline.hpp"
+#include "SolPipeline.hpp"
 
 namespace SolEngine
 {
-    SolVulkanPipeline::SolVulkanPipeline(SolVulkanDevice &rSolDevice, 
-                                         const std::string &vertShaderFilePath, 
-                                         const std::string &fragShaderFilePath, 
-                                         const PipelineConfigInfo &configInfo)
+    SolPipeline::SolPipeline(SolDevice &rSolDevice, 
+                             const std::string &vertShaderFilePath, 
+                             const std::string &fragShaderFilePath, 
+                             const PipelineConfigInfo &configInfo)
         : _rSolDevice(rSolDevice)
     {
         CreateGraphicsPipeline(vertShaderFilePath, 
@@ -14,19 +14,19 @@ namespace SolEngine
                                configInfo);
     }
 
-    SolVulkanPipeline::~SolVulkanPipeline()
+    SolPipeline::~SolPipeline()
     {
         Dispose();
     }
 
-    void SolVulkanPipeline::Bind(const VkCommandBuffer commandBuffer)
+    void SolPipeline::Bind(const VkCommandBuffer commandBuffer)
     {
         vkCmdBindPipeline(commandBuffer, 
                           VK_PIPELINE_BIND_POINT_GRAPHICS, 
                           _vkGraphicsPipeline);
     }
 
-    void SolVulkanPipeline::DefaultPipelineConfigInfo(PipelineConfigInfo &rConfigInfo)
+    void SolPipeline::DefaultPipelineConfigInfo(PipelineConfigInfo &rConfigInfo)
     {
         rConfigInfo = PipelineConfigInfo
         {
@@ -133,7 +133,7 @@ namespace SolEngine
         rConfigInfo.dynamicStateCreateInfo.pDynamicStates    = rConfigInfo.dynamicStateEnables.data();
     }
 
-    void SolVulkanPipeline::Dispose()
+    void SolPipeline::Dispose()
     {
         const VkDevice &device = _rSolDevice.Device();
 
@@ -150,7 +150,7 @@ namespace SolEngine
                           NULL);
     }
 
-    std::vector<char> SolVulkanPipeline::ReadFile(const std::string &filePath)
+    std::vector<char> SolPipeline::ReadFile(const std::string &filePath)
     {
         const std::string openFileFailedMessage = "Failed to open file: " + filePath;
 
@@ -172,7 +172,7 @@ namespace SolEngine
         return fileBuffer;
     }
 
-    void SolVulkanPipeline::CreateGraphicsPipeline(const std::string &vertShaderFilePath, 
+    void SolPipeline::CreateGraphicsPipeline(const std::string &vertShaderFilePath, 
                                                    const std::string &fragShaderFilePath, 
                                                    const PipelineConfigInfo &configInfo)
     {
@@ -260,7 +260,7 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Graphics Pipeline.");
     }
 
-    void SolVulkanPipeline::CreateShaderModule(const std::vector<char> &shaderCode, 
+    void SolPipeline::CreateShaderModule(const std::vector<char> &shaderCode, 
                                                VkShaderModule *pOutShaderModule)
     {
         const VkShaderModuleCreateInfo shaderModuleCreateInfo

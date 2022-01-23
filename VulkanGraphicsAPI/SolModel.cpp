@@ -1,23 +1,23 @@
 #include "pch.hpp"
-#include "SolVulkanModel.hpp"
+#include "SolModel.hpp"
 
 namespace SolEngine
 {
-    SolVulkanModel::SolVulkanModel(SolVulkanDevice &rSolDevice, 
-                                   const std::vector<Vertex> &vertices)
+    SolModel::SolModel(SolDevice &rSolDevice, 
+                       const std::vector<Vertex> &vertices)
         : _rSolDevice(rSolDevice)
     {
         CreateVertexBuffers(vertices);
     }
 
-    SolVulkanModel::~SolVulkanModel()
+    SolModel::~SolModel()
     {
         Dispose();
     }
 
-    void SolVulkanModel::Bind(const VkCommandBuffer commandBuffer)
+    void SolModel::Bind(const VkCommandBuffer commandBuffer)
     {
-        VkBuffer buffers[]{ _vkVertexBuffer };
+        VkBuffer     buffers[]{ _vkVertexBuffer };
         VkDeviceSize offsets[]{ 0 };
 
         vkCmdBindVertexBuffers(commandBuffer,
@@ -27,7 +27,7 @@ namespace SolEngine
                                offsets);
     }
 
-    void SolVulkanModel::Draw(const VkCommandBuffer commandBuffer)
+    void SolModel::Draw(const VkCommandBuffer commandBuffer)
     {
         vkCmdDraw(commandBuffer, 
                   _vertexCount,
@@ -36,7 +36,7 @@ namespace SolEngine
                   0);
     }
 
-    void SolVulkanModel::Dispose()
+    void SolModel::Dispose()
     {
         const VkDevice &device = _rSolDevice.Device();
 
@@ -49,7 +49,7 @@ namespace SolEngine
                      NULL);
     }
 
-    void SolVulkanModel::CreateVertexBuffers(const std::vector<Vertex> &vertices)
+    void SolModel::CreateVertexBuffers(const std::vector<Vertex> &vertices)
     {
         _vertexCount = static_cast<uint32_t>(vertices.size());
 

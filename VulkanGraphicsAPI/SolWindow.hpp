@@ -8,11 +8,11 @@ using namespace Utility;
 
 namespace SolEngine
 {
-    class SolVulkanWindow : public IDisposable
+    class SolWindow : public IDisposable
     {
     public:
-        SolVulkanWindow(const std::string &winTitle, const Vector2u &winDimensions);
-        ~SolVulkanWindow();
+        SolWindow(const std::string &winTitle, const Vector2u &winDimensions);
+        ~SolWindow();
 
         bool ShouldClose()      const { return glfwWindowShouldClose(_pWindow); }
         bool WasWindowResized() const { return _isFramebufferResized; }

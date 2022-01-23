@@ -1,11 +1,11 @@
 #include "pch.hpp"
-#include "SolVulkanRenderer.hpp"
+#include "SolRenderer.hpp"
 
 namespace SolEngine
 {
-	SolVulkanRenderer::SolVulkanRenderer(const ApplicationData &appData, 
-										 SolVulkanWindow &rSolWindow, 
-										 SolVulkanDevice &rSolDevice)
+	SolRenderer::SolRenderer(const ApplicationData &appData, 
+										 SolWindow &rSolWindow, 
+										 SolDevice &rSolDevice)
 		: _appData(appData),
 		  _rSolWindow(rSolWindow),
 		  _rSolDevice(rSolDevice)
@@ -14,12 +14,12 @@ namespace SolEngine
         CreateCommandBuffers();
     }
 
-    SolVulkanRenderer::~SolVulkanRenderer()
+    SolRenderer::~SolRenderer()
     {
         Dispose();
     }
 
-    VkCommandBuffer SolVulkanRenderer::GetCurrentCommandBuffer() const
+    VkCommandBuffer SolRenderer::GetCurrentCommandBuffer() const
     {
         DBG_ASSERT_MSG(_isFrameStarted,
                        "Cannot get Command Buffer when frame is not in progress!");
@@ -27,7 +27,7 @@ namespace SolEngine
         return _commandBuffers.at(_currentFrameIndex);
     }
 
-    size_t SolVulkanRenderer::GetFrameIndex() const
+    size_t SolRenderer::GetFrameIndex() const
     {
         DBG_ASSERT_MSG(_isFrameStarted,
                        "Cannot get Frame Index when frame is not in progress!");
@@ -35,7 +35,7 @@ namespace SolEngine
         return _currentFrameIndex;
     }
 
-    VkCommandBuffer SolVulkanRenderer::BeginFrame()
+    VkCommandBuffer SolRenderer::BeginFrame()
     {
         // Ensure multiple frames can't be started.
         DBG_ASSERT_MSG(!_isFrameStarted, 
@@ -73,7 +73,7 @@ namespace SolEngine
         return commandBuffer;
     }
 
-    void SolVulkanRenderer::EndFrame()
+    void SolRenderer::EndFrame()
     {
         // You can't end a frame that was never started...
         DBG_ASSERT_MSG(_isFrameStarted,
@@ -104,10 +104,10 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Present Swapchain Image.");
 
         _isFrameStarted = false;
-        _currentFrameIndex = (_currentFrameIndex + 1) % SolVulkanSwapchain::MAX_FRAMES_IN_FLIGHT;
+        _currentFrameIndex = (_currentFrameIndex + 1) % SolSwapchain::MAX_FRAMES_IN_FLIGHT;
     }
 
-    void SolVulkanRenderer::BeginSwapchainRenderPass(const VkCommandBuffer commandBuffer)
+    void SolRenderer::BeginSwapchainRenderPass(const VkCommandBuffer commandBuffer)
     {
         // Swapchain Render Pass' require a frame in progress.
         // If a frame is started, the passed command buffer MUST be the current frame.
@@ -182,7 +182,7 @@ namespace SolEngine
         vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
     }
 
-    void SolVulkanRenderer::EndSwapchainRenderPass(const VkCommandBuffer commandBuffer)
+    void SolRenderer::EndSwapchainRenderPass(const VkCommandBuffer commandBuffer)
     {
         // Swapchain Render Pass' require a frame in progress.
         // If a frame is started, the passed command buffer MUST be the current frame.
@@ -194,12 +194,12 @@ namespace SolEngine
         vkCmdEndRenderPass(commandBuffer);
     }
 
-    void SolVulkanRenderer::Dispose()
+    void SolRenderer::Dispose()
 	{
         FreeCommandBuffers();
 	}
 
-	void SolVulkanRenderer::PrintDeviceMemoryCapabilities()
+	void SolRenderer::PrintDeviceMemoryCapabilities()
 	{
         // Query device for memory count
         vkGetPhysicalDeviceQueueFamilyProperties(_rSolDevice.PhysicalDevice(),
@@ -248,9 +248,9 @@ namespace SolEngine
         }
 	}
 
-    void SolVulkanRenderer::CreateCommandBuffers()
+    void SolRenderer::CreateCommandBuffers()
     {
-        _commandBuffers.resize(SolVulkanSwapchain::MAX_FRAMES_IN_FLIGHT);
+        _commandBuffers.resize(SolSwapchain::MAX_FRAMES_IN_FLIGHT);
 
         const VkCommandBufferAllocateInfo commandBufferAllocateInfo
         {
@@ -267,7 +267,7 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Allocate Command Buffers.");
     }
 
-    void SolVulkanRenderer::FreeCommandBuffers()
+    void SolRenderer::FreeCommandBuffers()
     {
         vkFreeCommandBuffers(_rSolDevice.Device(), 
                              _rSolDevice.CommandPool(),
@@ -277,7 +277,7 @@ namespace SolEngine
         _commandBuffers.clear();
     }
 
-    void SolVulkanRenderer::RecreateSwapchain()
+    void SolRenderer::RecreateSwapchain()
     {
         VkExtent2D winExtent = _rSolWindow.GetWindowExtent();
 
@@ -297,13 +297,13 @@ namespace SolEngine
         // Check if there's an old Swapchain to be passed
         if (_pSolSwapchain == nullptr)
         {
-            _pSolSwapchain = std::make_unique<SolVulkanSwapchain>(_rSolDevice, winExtent);
+            _pSolSwapchain = std::make_unique<SolSwapchain>(_rSolDevice, winExtent);
         }
         else
         {
-            std::shared_ptr<SolVulkanSwapchain> pOldSwapchain = std::move(_pSolSwapchain);
+            std::shared_ptr<SolSwapchain> pOldSwapchain = std::move(_pSolSwapchain);
 
-            _pSolSwapchain = std::make_unique<SolVulkanSwapchain>(_rSolDevice,
+            _pSolSwapchain = std::make_unique<SolSwapchain>(_rSolDevice,
                                                                   winExtent,
                                                                   pOldSwapchain);
 
@@ -313,6 +313,6 @@ namespace SolEngine
         }
 
         _pSolSwapchain = nullptr; // TEMP: Ensure old swap chain is destroyed to prevent 2 swapchains co-existing.
-        _pSolSwapchain = std::make_unique<SolVulkanSwapchain>(_rSolDevice, winExtent);
+        _pSolSwapchain = std::make_unique<SolSwapchain>(_rSolDevice, winExtent);
     }
 }

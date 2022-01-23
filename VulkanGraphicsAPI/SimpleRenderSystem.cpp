@@ -3,7 +3,7 @@
 
 namespace SolEngine
 {
-    SimpleRenderSystem::SimpleRenderSystem(SolVulkanDevice& rSolDevice, 
+    SimpleRenderSystem::SimpleRenderSystem(SolDevice& rSolDevice, 
                                            VkRenderPass renderPass)
         : _rSolDevice(rSolDevice)
     {
@@ -17,13 +17,13 @@ namespace SolEngine
     }
 
     void SimpleRenderSystem::RenderGameObjects(const VkCommandBuffer commandBuffer,
-                                               const std::vector<SolVulkanGameObject>& gameObjects) const
+                                               const std::vector<SolGameObject>& gameObjects) const
     {
         _pSolPipeline->Bind(commandBuffer);
 
-        for (const SolVulkanGameObject& gameObject : gameObjects)
+        for (const SolGameObject& gameObject : gameObjects)
         {
-            const std::shared_ptr<SolVulkanModel>& pGameObjectModel = gameObject.GetModel();
+            const std::shared_ptr<SolModel>& pGameObjectModel = gameObject.GetModel();
 
             const SimplePushConstantData pushConstantData
             {
@@ -83,13 +83,13 @@ namespace SolEngine
                        "Cannot create Pipeline before Pipeline Layout.");
 
         PipelineConfigInfo pipelineConfigInfo{};
-        SolVulkanPipeline::DefaultPipelineConfigInfo(pipelineConfigInfo);
+        SolPipeline::DefaultPipelineConfigInfo(pipelineConfigInfo);
 
         // TEMP
         pipelineConfigInfo.renderPass     = renderPass;
         pipelineConfigInfo.pipelineLayout = _pipelineLayout;
 
-        _pSolPipeline = std::make_unique<SolVulkanPipeline>(_rSolDevice,
+        _pSolPipeline = std::make_unique<SolPipeline>(_rSolDevice,
                                                             "Shaders/SimpleShader.vert.spv",
                                                             "Shaders/SimpleShader.frag.spv",
                                                             pipelineConfigInfo);

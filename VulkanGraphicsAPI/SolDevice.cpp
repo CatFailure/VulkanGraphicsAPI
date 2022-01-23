@@ -1,10 +1,10 @@
 #include "pch.hpp"
-#include "SolVulkanDevice.hpp"
+#include "SolDevice.hpp"
 
 namespace SolEngine
 {
-    SolVulkanDevice::SolVulkanDevice(SolVulkanWindow &rSolWindow,
-                                     ApplicationData &rAppData)
+    SolDevice::SolDevice(SolWindow &rSolWindow,
+                         ApplicationData &rAppData)
         : _rSolWindow(rSolWindow),
           _rAppData(rAppData)
     {
@@ -22,15 +22,15 @@ namespace SolEngine
         CreateVulkanCommandPool();
     }
 
-    SolVulkanDevice::~SolVulkanDevice()
+    SolDevice::~SolDevice()
     {
         Dispose();
     }
 
-    void SolVulkanDevice::CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, 
-                                              VkMemoryPropertyFlags properties, 
-                                              VkImage &rImage, 
-                                              VkDeviceMemory &rImageMemory)
+    void SolDevice::CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, 
+                                        VkMemoryPropertyFlags properties, 
+                                        VkImage &rImage, 
+                                        VkDeviceMemory &rImageMemory)
     {
         VkResult result = vkCreateImage(_vkDevice, 
                                         &imageCreateInfo,
@@ -68,7 +68,7 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Bind Image Memory.");
     }
 
-    uint32_t SolVulkanDevice::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
+    uint32_t SolDevice::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
     {
         VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties{};
 
@@ -87,9 +87,9 @@ namespace SolEngine
         return -1;
     }
 
-    VkFormat SolVulkanDevice::FindSupportedFormat(const std::vector<VkFormat> &candidates,
-                                                  VkImageTiling tiling, 
-                                                  VkFormatFeatureFlags features)
+    VkFormat SolDevice::FindSupportedFormat(const std::vector<VkFormat> &candidates,
+                                            VkImageTiling tiling, 
+                                            VkFormatFeatureFlags features)
     {
         for (const VkFormat &format : candidates)
         {
@@ -111,11 +111,11 @@ namespace SolEngine
         return VkFormat();
     }
 
-    void SolVulkanDevice::CreateBuffer(const VkDeviceSize bufferSize,
-                                       const VkBufferUsageFlags usage, 
-                                       const VkMemoryPropertyFlags properties, 
-                                       VkBuffer &rBuffer, 
-                                       VkDeviceMemory &rBufferMemory)
+    void SolDevice::CreateBuffer(const VkDeviceSize bufferSize,
+                                 const VkBufferUsageFlags usage, 
+                                 const VkMemoryPropertyFlags properties, 
+                                 VkBuffer &rBuffer, 
+                                 VkDeviceMemory &rBufferMemory)
     {
         const VkBufferCreateInfo bufferCreateInfo
         {
@@ -157,7 +157,7 @@ namespace SolEngine
                            0);
     }
 
-    void SolVulkanDevice::Dispose()
+    void SolDevice::Dispose()
     {
         vkDestroyCommandPool(_vkDevice, _vkCommandPool, NULL);
         vkDestroyDevice(_vkDevice, NULL);
@@ -165,7 +165,7 @@ namespace SolEngine
         vkDestroyInstance(_vkInstance, NULL);
     }
 
-    void SolVulkanDevice::CreateVulkanInstance()
+    void SolDevice::CreateVulkanInstance()
     {
         _enabledExtensionNames =
         {
@@ -214,7 +214,7 @@ namespace SolEngine
         DBG_ASSERT(_vkInstance != NULL);
     }
 
-    void SolVulkanDevice::CreateVulkanPhysicalDevice()
+    void SolDevice::CreateVulkanPhysicalDevice()
     {
         uint32_t physicalDeviceCount = 0;
 
@@ -267,7 +267,7 @@ namespace SolEngine
         }
     }
 
-    void SolVulkanDevice::CreateVulkanDevice()
+    void SolDevice::CreateVulkanDevice()
     {
         std::vector<VkDeviceQueueCreateInfo> deviceQueueCreateInfos;
 
@@ -324,7 +324,7 @@ namespace SolEngine
         vkGetDeviceQueue(_vkDevice, queueFamilyIndices.presentFamily, 0, &_vkPresentQueue);
     }
 
-    void SolVulkanDevice::CreateVulkanCommandPool()
+    void SolDevice::CreateVulkanCommandPool()
     {
         // Queue address
         VkQueue logicalDeviceQueue{ NULL };
@@ -354,7 +354,7 @@ namespace SolEngine
     }
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
-    void SolVulkanDevice::CreateVulkanDebugCallback()
+    void SolDevice::CreateVulkanDebugCallback()
     {
         // Register error logging function
         VkDebugReportCallbackEXT warningCallback{ VK_NULL_HANDLE }, errorCallback{ VK_NULL_HANDLE };
@@ -365,7 +365,7 @@ namespace SolEngine
 
         DBG_ASSERT(vkCreateDebugReportCallbackEXT);
 
-        VulkanDebugReportCallback_t pVulkanDebugReportCallback = &SolVulkanDevice::VulkanDebugReportCallback;
+        VulkanDebugReportCallback_t pVulkanDebugReportCallback = &SolDevice::VulkanDebugReportCallback;
 
         // Capture errors
         VkDebugReportCallbackCreateInfoEXT callbackCreateInfo
@@ -394,14 +394,14 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "vkCreateDebugReportCallbackEXT (WARNING) failed.");
     }
 
-    VKAPI_ATTR VkBool32 VKAPI_CALL SolVulkanDevice::VulkanDebugReportCallback(VkDebugReportFlagsEXT flags,
-                                                                              VkDebugReportObjectTypeEXT objectType, 
-                                                                              uint64_t object, 
-                                                                              size_t location, 
-                                                                              int32_t messageCode, 
-                                                                              const char *layerPrefix, 
-                                                                              const char *message, 
-                                                                              void *pUserData)
+    VKAPI_ATTR VkBool32 VKAPI_CALL SolDevice::VulkanDebugReportCallback(VkDebugReportFlagsEXT flags,
+                                                                        VkDebugReportObjectTypeEXT objectType, 
+                                                                        uint64_t object, 
+                                                                        size_t location, 
+                                                                        int32_t messageCode, 
+                                                                        const char *layerPrefix, 
+                                                                        const char *message, 
+                                                                        void *pUserData)
     {
         DebugHelpers::DPrintf(layerPrefix);
         DebugHelpers::DPrintf(" ");
@@ -414,7 +414,7 @@ namespace SolEngine
     }
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
-    SwapchainSupportDetails SolVulkanDevice::QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice)
+    SwapchainSupportDetails SolDevice::QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice)
     {
         SwapchainSupportDetails supportDetails{};
         uint32_t surfaceFormatCount, presentModeCount;
@@ -458,7 +458,7 @@ namespace SolEngine
         return supportDetails;
     }
 
-    QueueFamilyIndices SolVulkanDevice::QueryQueueFamilies(const VkPhysicalDevice &physicalDevice)
+    QueueFamilyIndices SolDevice::QueryQueueFamilies(const VkPhysicalDevice &physicalDevice)
     {
         QueueFamilyIndices queueFamilyIndices{};
         uint32_t queueFamilyCount;

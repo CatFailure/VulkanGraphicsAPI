@@ -1,7 +1,7 @@
 #pragma once
-#include "SolVulkanDevice.hpp"
-#include "SolVulkanGameObject.hpp"
-#include "SolVulkanPipeline.hpp"
+#include "SolDevice.hpp"
+#include "SolGameObject.hpp"
+#include "SolPipeline.hpp"
 
 namespace SolEngine
 {
@@ -9,10 +9,10 @@ namespace SolEngine
     {
     public:
         SimpleRenderSystem() = delete;
-        SimpleRenderSystem(SolVulkanDevice &rSolDevice, VkRenderPass renderPass);
+        SimpleRenderSystem(SolDevice &rSolDevice, VkRenderPass renderPass);
         ~SimpleRenderSystem();
 
-        void RenderGameObjects(const VkCommandBuffer commandBuffer, const std::vector<SolVulkanGameObject> &gameObjects) const;
+        void RenderGameObjects(const VkCommandBuffer commandBuffer, const std::vector<SolGameObject> &gameObjects) const;
 
     private:
         // Inherited via IDisposable
@@ -21,9 +21,8 @@ namespace SolEngine
         void CreatePipelineLayout();
         void CreatePipeline(VkRenderPass renderPass);
 
-        SolVulkanDevice &_rSolDevice;
-
-        std::unique_ptr<SolVulkanPipeline> _pSolPipeline{ nullptr };
-        VkPipelineLayout                   _pipelineLayout;
+        SolDevice                   &_rSolDevice;
+        std::unique_ptr<SolPipeline> _pSolPipeline{ nullptr };
+        VkPipelineLayout             _pipelineLayout;
     };
 }
