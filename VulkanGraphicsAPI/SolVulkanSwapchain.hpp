@@ -8,8 +8,8 @@ namespace SolEngine
     class SolVulkanSwapchain : public IDisposable
     {
     public:
-        SolVulkanSwapchain(SolVulkanDevice &rDevice, const VkExtent2D &windowExtent);
-        SolVulkanSwapchain(SolVulkanDevice &rDevice, const VkExtent2D &windowExtent, std::shared_ptr<SolVulkanSwapchain> pOldSwapchain);
+        SolVulkanSwapchain(SolVulkanDevice &rSolDevice, const VkExtent2D &windowExtent);
+        SolVulkanSwapchain(SolVulkanDevice &rSolDevice, const VkExtent2D &windowExtent, std::shared_ptr<SolVulkanSwapchain> pOldSwapchain);
         ~SolVulkanSwapchain();
 
         static constexpr uint32_t MAX_FRAMES_IN_FLIGHT{ 2 };

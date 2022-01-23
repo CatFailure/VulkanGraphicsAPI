@@ -25,10 +25,29 @@ namespace SolEngine
             return _vkCommandBuffers.at(_currentImageIndex); 
         }
 
+        /// <summary>
+        /// Called to begin the Draw frame and create the frame's Command Buffer.
+        /// </summary>
+        /// <returns></returns>
         VkCommandBuffer BeginFrame();
-        void            EndFrame();
 
+        /// <summary>
+        /// Called to end the Draw frame.
+        /// Submits the Command Buffer and Recreates Swapchain on Window Resize.
+        /// </summary>
+        void EndFrame();
+
+        /// <summary>
+        /// Called after BeginFrame to begin the Swapchain's Render pass.
+        /// Sets the Viewport and Scissor to the Command Buffer.
+        /// </summary>
+        /// <param name="commandBuffer"></param>
         void BeginSwapchainRenderPass(const VkCommandBuffer commandBuffer);
+
+        /// <summary>
+        /// Called before EndFrame.
+        /// </summary>
+        /// <param name="commandBuffer"></param>
         void EndSwapchainRenderPass(const VkCommandBuffer commandBuffer);
 
         // Inherited via IDisposable

@@ -3,19 +3,26 @@
 
 namespace SolEngine
 {
-    Application::Application(ApplicationData &rAppData)
-        : _appData(rAppData),
-          _pSolVulkanRenderer(std::make_unique<SolVulkanRenderer>(rAppData,
-                                                                  *_pSolVulkanWindow, 
-                                                                  *_pSolVulkanDevice)),
-          _pSolVulkanDevice(std::make_unique<SolVulkanDevice>(*_pSolVulkanWindow, 
-                                                              rAppData)),
-          _pSolVulkanWindow(std::make_unique<SolVulkanWindow>(rAppData.windowTitle,
-                                                              rAppData.windowDimensions))
+    Application::Application(const ApplicationData &appData)
+        : _solRenderer(_appData,
+                              _solWindow, 
+                              _solDevice),
+          _solDevice(_solWindow,
+                            _appData),
+          _solWindow(_appData.windowTitle,
+                            _appData.windowDimensions),
+         _appData(appData)
     {
         LoadGameObjects();
         CreatePipelineLayout();
         CreatePipeline();
+    }
+
+    void Application::Dispose()
+    {
+        vkDestroyPipelineLayout(_solDevice.Device(), 
+                                _vkPipelineLayout, 
+                                NULL);
     }
 
     void Application::Run()
@@ -23,34 +30,37 @@ namespace SolEngine
         // TEMP
         const float deltaTime = 1 / 60.f;
 
-        while (!_pSolVulkanWindow->ShouldClose())
+        while (!_solWindow.ShouldClose())
         {
             glfwPollEvents();   // Poll Window Events
 
             Update(deltaTime);
-
-            const VkCommandBuffer commandBuffer = _pSolVulkanRenderer->BeginFrame();
-
-            if (commandBuffer != nullptr)
-            {
-                _pSolVulkanRenderer->BeginSwapchainRenderPass(commandBuffer);
-
-                RenderGameObjects(commandBuffer);
-
-                _pSolVulkanRenderer->EndSwapchainRenderPass(commandBuffer);
-                _pSolVulkanRenderer->EndFrame();
-            }
+            Draw();
         }
 
         // Make CPU wait until all GPU operations have completed.
-        vkDeviceWaitIdle(_pSolVulkanDevice->Device());
+        vkDeviceWaitIdle(_solDevice.Device());
     }
 
-    void Application::Dispose()
+    void Application::Update(const float deltaTime)
     {
-        vkDestroyPipelineLayout(_pSolVulkanDevice->Device(), 
-                                _vkPipelineLayout, 
-                                NULL);
+    }
+
+    void Application::Draw()
+    {
+        const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
+
+        if (commandBuffer == nullptr)
+        {
+            return;
+        }
+
+        _solRenderer.BeginSwapchainRenderPass(commandBuffer);
+
+        RenderGameObjects(commandBuffer);
+
+        _solRenderer.EndSwapchainRenderPass(commandBuffer);
+        _solRenderer.EndFrame();
     }
 
     void Application::LoadGameObjects()
@@ -62,7 +72,7 @@ namespace SolEngine
             {{ -0.5f, 0.5f }, { 0.0f, 0.0f, 1.0f }}
         };
 
-        std::shared_ptr<SolVulkanModel> pModel = std::make_shared<SolVulkanModel>(*_pSolVulkanDevice, vertices);
+        std::shared_ptr<SolVulkanModel> pModel = std::make_shared<SolVulkanModel>(_solDevice, vertices);
         SolVulkanGameObject triangle = SolVulkanGameObject::CreateGameObject();
 
         triangle.SetModel(pModel);
@@ -73,9 +83,9 @@ namespace SolEngine
         _gameObjects.push_back(std::move(triangle));
     }
 
-    void Application::RenderGameObjects(const VkCommandBuffer &commandBuffer)
+    void Application::RenderGameObjects(const VkCommandBuffer commandBuffer)
     {
-        _pSolVulkanPipeline->Bind(commandBuffer);
+        _pSolPipeline->Bind(commandBuffer);
 
         for (const SolVulkanGameObject &gameObject : _gameObjects)
         {
@@ -101,10 +111,6 @@ namespace SolEngine
         }
     }
 
-    void Application::Update(const float deltaTime)
-    {
-    }
-
     void Application::CreatePipelineLayout()
     {
         const VkPushConstantRange pushConstantRange
@@ -123,7 +129,7 @@ namespace SolEngine
             .pPushConstantRanges    = &pushConstantRange
         };
 
-        const VkResult result = vkCreatePipelineLayout(_pSolVulkanDevice->Device(),
+        const VkResult result = vkCreatePipelineLayout(_solDevice.Device(),
                                                        &pipelineLayoutCreateInfo, 
                                                        NULL, 
                                                        &_vkPipelineLayout);
@@ -139,10 +145,10 @@ namespace SolEngine
         SolVulkanPipeline::DefaultPipelineConfigInfo(pipelineConfigInfo);
 
         // TEMP
-        pipelineConfigInfo.renderPass = _pSolVulkanRenderer->GetSwapchainRenderPass();
+        pipelineConfigInfo.renderPass = _solRenderer.GetSwapchainRenderPass();
         pipelineConfigInfo.pipelineLayout = _vkPipelineLayout;
 
-        _pSolVulkanPipeline = std::make_unique<SolVulkanPipeline>(*_pSolVulkanDevice,
+        _pSolPipeline = std::make_unique<SolVulkanPipeline>(_solDevice,
                                                                   "Shaders/SimpleShader.vert.spv",
                                                                   "Shaders/SimpleShader.frag.spv",
                                                                   pipelineConfigInfo);

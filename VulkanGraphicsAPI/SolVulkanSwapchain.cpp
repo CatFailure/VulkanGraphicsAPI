@@ -3,15 +3,15 @@
 
 namespace SolEngine
 {
-    SolVulkanSwapchain::SolVulkanSwapchain(SolVulkanDevice &rDevice,
+    SolVulkanSwapchain::SolVulkanSwapchain(SolVulkanDevice &rSolDevice,
                                            const VkExtent2D &windowExtent)
-        : SolVulkanSwapchain(rDevice, windowExtent, nullptr)
+        : SolVulkanSwapchain(rSolDevice, windowExtent, nullptr)
     {}
 
-    SolVulkanSwapchain::SolVulkanSwapchain(SolVulkanDevice &rDevice, 
+    SolVulkanSwapchain::SolVulkanSwapchain(SolVulkanDevice &rSolDevice, 
                                            const VkExtent2D &windowExtent, 
                                            std::shared_ptr<SolVulkanSwapchain> pOldSwapchain)
-        : _rSolVulkanDevice(rDevice),
+        : _rSolVulkanDevice(rSolDevice),
           _windowExtent(windowExtent),
           _pVkOldSwapchain(pOldSwapchain)
     {

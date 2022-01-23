@@ -78,6 +78,8 @@ namespace SolEngine
             _rSolWindow.ResetWindowResizedFlag();
             RecreateSwapchain();
 
+            _isFrameStarted = false;
+
             return;
         }
 

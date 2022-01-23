@@ -15,27 +15,30 @@ namespace SolEngine
     {
     public:
         Application() = delete;
-        Application(ApplicationData &rAppData);
-        
-        void Run();
+        Application(const ApplicationData &appData);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
+        
+        void Run();
+
     private:
+        // Inherited via IMonoBehaviour
+        virtual void Update(const float deltaTime) override;
+        void Draw();
+
         void LoadGameObjects();
-        void RenderGameObjects(const VkCommandBuffer &commandBuffer);
+        void RenderGameObjects(const VkCommandBuffer commandBuffer);
 
         void CreatePipelineLayout();
         void CreatePipeline();
 
-        virtual void Update(const float deltaTime) override;
-
         ApplicationData _appData;
 
-        std::unique_ptr<SolVulkanWindow>   _pSolVulkanWindow;
-        std::unique_ptr<SolVulkanDevice>   _pSolVulkanDevice;
-        std::unique_ptr<SolVulkanPipeline> _pSolVulkanPipeline;
-        std::unique_ptr<SolVulkanRenderer> _pSolVulkanRenderer;
+        SolVulkanWindow   _solWindow;
+        SolVulkanDevice   _solDevice;
+        SolVulkanRenderer _solRenderer;
+        std::unique_ptr<SolVulkanPipeline> _pSolPipeline{ nullptr };
 
         VkPipelineLayout _vkPipelineLayout;
 

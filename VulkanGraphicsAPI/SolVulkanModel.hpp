@@ -10,18 +10,18 @@ namespace SolEngine
     class SolVulkanModel : public IDisposable
     {
     public:
-        SolVulkanModel(SolVulkanDevice &rSolVulkanDevice, const std::vector<Vertex> &vertices);
+        SolVulkanModel(SolVulkanDevice &rSolDevice, const std::vector<Vertex> &vertices);
         ~SolVulkanModel();
 
-        void Bind(const VkCommandBuffer &commandBuffer);
-        void Draw(const VkCommandBuffer &commandBuffer);
+        void Bind(const VkCommandBuffer commandBuffer);
+        void Draw(const VkCommandBuffer commandBuffer);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
         void CreateVertexBuffers(const std::vector<Vertex> &vertices);
 
-        SolVulkanDevice &_rSolVulkanDevice;
+        SolVulkanDevice &_rSolDevice;
 
         VkBuffer	   _vkVertexBuffer;
         VkDeviceMemory _vkVertexBufferMemory;
