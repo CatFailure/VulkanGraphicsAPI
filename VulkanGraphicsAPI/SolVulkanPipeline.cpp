@@ -3,11 +3,11 @@
 
 namespace SolEngine
 {
-    SolVulkanPipeline::SolVulkanPipeline(SolVulkanDevice &rSolVulkanDevice, 
+    SolVulkanPipeline::SolVulkanPipeline(SolVulkanDevice &rSolDevice, 
                                          const std::string &vertShaderFilePath, 
                                          const std::string &fragShaderFilePath, 
                                          const PipelineConfigInfo &configInfo)
-        : _rSolVulkanDevice(rSolVulkanDevice)
+        : _rSolDevice(rSolDevice)
     {
         CreateGraphicsPipeline(vertShaderFilePath, 
                                fragShaderFilePath, 
@@ -19,7 +19,7 @@ namespace SolEngine
         Dispose();
     }
 
-    void SolVulkanPipeline::Bind(const VkCommandBuffer &commandBuffer)
+    void SolVulkanPipeline::Bind(const VkCommandBuffer commandBuffer)
     {
         vkCmdBindPipeline(commandBuffer, 
                           VK_PIPELINE_BIND_POINT_GRAPHICS, 
@@ -135,7 +135,7 @@ namespace SolEngine
 
     void SolVulkanPipeline::Dispose()
     {
-        const VkDevice &device = _rSolVulkanDevice.Device();
+        const VkDevice &device = _rSolDevice.Device();
 
         vkDestroyShaderModule(device, 
                               _vkVertexShaderModule, 
@@ -157,7 +157,7 @@ namespace SolEngine
         // ate = seek to the end of the open file immediately.
         // binary = read file in as a binary.
         std::ifstream file(filePath,
-            std::ios::ate | std::ios::binary);
+                           std::ios::ate | std::ios::binary);
 
         DBG_ASSERT_MSG(file.is_open(), openFileFailedMessage.c_str());
 
@@ -250,7 +250,7 @@ namespace SolEngine
             .basePipelineIndex   = -1,
         };
 
-        const VkResult result = vkCreateGraphicsPipelines(_rSolVulkanDevice.Device(), 
+        const VkResult result = vkCreateGraphicsPipelines(_rSolDevice.Device(), 
                                                           VK_NULL_HANDLE, 
                                                           1,
                                                           &graphicsPipelineCreateInfo, 
@@ -270,7 +270,7 @@ namespace SolEngine
             .pCode    = reinterpret_cast<const uint32_t *>(shaderCode.data())
         };
 
-        const VkResult result = vkCreateShaderModule(_rSolVulkanDevice.Device(), 
+        const VkResult result = vkCreateShaderModule(_rSolDevice.Device(), 
                                                      &shaderModuleCreateInfo, 
                                                      NULL, 
                                                      pOutShaderModule);

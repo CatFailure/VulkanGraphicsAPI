@@ -14,6 +14,6 @@ namespace SolEngine::Data
 
         Vector2u windowDimensions;
 
-        VkExtent2D GetExtent() { return { windowDimensions._x, windowDimensions._y }; }
+        VkExtent2D GetExtent() const { return { windowDimensions._x, windowDimensions._y }; }
     };
 }

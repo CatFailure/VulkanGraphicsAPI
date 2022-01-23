@@ -25,7 +25,7 @@ namespace SolEngine
     class SolVulkanDevice : public IDisposable
     {
     public:
-        SolVulkanDevice(SolVulkanWindow &rSolVulkanWindow, ApplicationData &rAppData);
+        SolVulkanDevice(SolVulkanWindow &rSolWindow, ApplicationData &rAppData);
         ~SolVulkanDevice();
 
         // Public Accessors
@@ -55,7 +55,7 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         void CreateVulkanInstance();
-        void CreateVulkanSurface() { _rSolVulkanWindow.CreateWindowSurface(_vkInstance, &_vkSurface); };
+        void CreateVulkanSurface() { _rSolWindow.CreateWindowSurface(_vkInstance, &_vkSurface); };
         void CreateVulkanPhysicalDevice();
         void CreateVulkanDevice();
         void CreateVulkanCommandPool();
@@ -71,7 +71,7 @@ namespace SolEngine
         SwapchainSupportDetails QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice);
         QueueFamilyIndices      QueryQueueFamilies(const VkPhysicalDevice &physicalDevice);
 
-        SolVulkanWindow &_rSolVulkanWindow;
+        SolVulkanWindow &_rSolWindow;
         ApplicationData &_rAppData;
 
         VkInstance       _vkInstance      { NULL };
@@ -82,8 +82,12 @@ namespace SolEngine
         VkQueue          _vkGraphicsQueue { NULL };
         VkQueue          _vkPresentQueue  { NULL };
 
-        //std::vector<const char *> _enabledLayerNames{};                           // Laptop
+#if  _DEBUG_LAPTOP
+        std::vector<const char*> _enabledLayerNames{};                           // Laptop
+#else
         std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop
+#endif //  _DEBUG_LAPTOP
+
         std::vector<const char *> _enabledExtensionNames;   // Defined in CreateVulkanInstance()
         std::vector<const char *> _logicalDeviceExtensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     };

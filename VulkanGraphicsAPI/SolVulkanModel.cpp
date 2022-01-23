@@ -3,9 +3,9 @@
 
 namespace SolEngine
 {
-    SolVulkanModel::SolVulkanModel(SolVulkanDevice &rSolVulkanDevice, 
+    SolVulkanModel::SolVulkanModel(SolVulkanDevice &rSolDevice, 
                                    const std::vector<Vertex> &vertices)
-        : _rSolVulkanDevice(rSolVulkanDevice)
+        : _rSolDevice(rSolDevice)
     {
         CreateVertexBuffers(vertices);
     }
@@ -15,7 +15,7 @@ namespace SolEngine
         Dispose();
     }
 
-    void SolVulkanModel::Bind(const VkCommandBuffer &commandBuffer)
+    void SolVulkanModel::Bind(const VkCommandBuffer commandBuffer)
     {
         VkBuffer buffers[]{ _vkVertexBuffer };
         VkDeviceSize offsets[]{ 0 };
@@ -27,7 +27,7 @@ namespace SolEngine
                                offsets);
     }
 
-    void SolVulkanModel::Draw(const VkCommandBuffer &commandBuffer)
+    void SolVulkanModel::Draw(const VkCommandBuffer commandBuffer)
     {
         vkCmdDraw(commandBuffer, 
                   _vertexCount,
@@ -38,7 +38,7 @@ namespace SolEngine
 
     void SolVulkanModel::Dispose()
     {
-        const VkDevice &device = _rSolVulkanDevice.Device();
+        const VkDevice &device = _rSolDevice.Device();
 
         vkDestroyBuffer(device,
                         _vkVertexBuffer, 
@@ -57,7 +57,7 @@ namespace SolEngine
 
         const VkDeviceSize bufferSize = sizeof(vertices.at(0)) * _vertexCount;
 
-        _rSolVulkanDevice.CreateBuffer(bufferSize, 
+        _rSolDevice.CreateBuffer(bufferSize, 
                                        VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,                                           // Create a buffer that will hold Vertex Input Data
                                        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,  // Host = CPU, Device = GPU
                                        _vkVertexBuffer,
@@ -67,7 +67,7 @@ namespace SolEngine
         // and point pBufferData to beginning of mapped memory range
         void *pBufferData;
 
-        vkMapMemory(_rSolVulkanDevice.Device(), 
+        vkMapMemory(_rSolDevice.Device(), 
                     _vkVertexBufferMemory,
                     0,
                     bufferSize, 
@@ -79,7 +79,7 @@ namespace SolEngine
                vertices.data(), 
                static_cast<uint32_t>(bufferSize));
 
-        vkUnmapMemory(_rSolVulkanDevice.Device(), 
+        vkUnmapMemory(_rSolDevice.Device(), 
                       _vkVertexBufferMemory);
     }
 }

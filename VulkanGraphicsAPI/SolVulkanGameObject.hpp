@@ -13,6 +13,7 @@ namespace SolEngine
 		{
 			const float rotSin = glm::sin(rotation);
 			const float rotCos = glm::cos(rotation);
+
 			const glm::mat2 rotationMat
 			{
 				{ rotCos,  rotSin}, 

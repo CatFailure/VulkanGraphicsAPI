@@ -63,6 +63,12 @@
     <ClCompile Include="SolVulkanGameObject.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
+    <ClCompile Include="SolVulkanRenderer.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleRenderSystem.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -121,6 +127,12 @@
     </ClInclude>
     <ClInclude Include="IDisposable.hpp">
       <Filter>SolEngine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SolVulkanRenderer.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleRenderSystem.hpp">
+      <Filter>SolEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
