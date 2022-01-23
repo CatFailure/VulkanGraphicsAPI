@@ -340,7 +340,9 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="SimpleRenderSystem.cpp" />
+    <ClCompile Include="SolCamera.cpp" />
     <ClCompile Include="SolDevice.cpp" />
     <ClCompile Include="SolGameObject.cpp" />
     <ClCompile Include="SolModel.cpp" />
@@ -360,9 +362,11 @@
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
+    <ClInclude Include="Rect.hpp" />
     <ClInclude Include="SimplePushConstantData.hpp" />
     <ClInclude Include="SimpleRenderSystem.hpp" />
     <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="SolCamera.hpp" />
     <ClInclude Include="SolDevice.hpp" />
     <ClInclude Include="SolGameObject.hpp" />
     <ClInclude Include="SolModel.hpp" />

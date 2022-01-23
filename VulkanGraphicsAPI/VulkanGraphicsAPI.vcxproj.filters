@@ -72,6 +72,12 @@
     <ClCompile Include="MatrixUtility.cpp">
       <Filter>SolEngine\Math</Filter>
     </ClCompile>
+    <ClCompile Include="SolCamera.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Rect.cpp">
+      <Filter>SolEngine\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -141,6 +147,12 @@
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
     <ClInclude Include="MatrixUtility.hpp">
+      <Filter>SolEngine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SolCamera.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.hpp">
       <Filter>SolEngine\Math</Filter>
     </ClInclude>
   </ItemGroup>
