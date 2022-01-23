@@ -27,7 +27,5 @@ int main()
 		return EXIT_FAILURE;
 	}
 
-	application.Dispose();
-
 	return EXIT_SUCCESS;
 }

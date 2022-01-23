@@ -18,13 +18,9 @@ namespace SolEngine
         bool IsFrameInProgress() const { return _isFrameStarted; }
 
         VkRenderPass    GetSwapchainRenderPass()  const { return _pSolSwapchain->GetRenderPass(); }
-        VkCommandBuffer GetCurrentCommandBuffer() const 
-        {
-            DBG_ASSERT_MSG(_isFrameStarted,
-                           "Cannot get Command Buffer when frame is not in progress!");
-
-            return _vkCommandBuffers.at(_currentImageIndex); 
-        }
+        VkCommandBuffer GetCurrentCommandBuffer() const;
+        size_t          GetFrameIndex() const;
+        
 
         /// <summary>
         /// Called to begin the Draw frame and create the frame's Command Buffer.
@@ -63,7 +59,7 @@ namespace SolEngine
         void RecreateSwapchain();
 
         uint32_t _physDeviceCount{ 0 }, _physDeviceQueueFamilyCount{ 0 };
-        uint32_t _currentImageIndex{ 0 };
+        uint32_t _currentImageIndex{ 0 }, _currentFrameIndex{ 0 };
         bool     _isFrameStarted{ false };
 
         ApplicationData _appData;
@@ -72,6 +68,6 @@ namespace SolEngine
         SolVulkanDevice &_rSolDevice;
         std::unique_ptr<SolVulkanSwapchain> _pSolSwapchain;
 
-        std::vector<VkCommandBuffer> _vkCommandBuffers;
+        std::vector<VkCommandBuffer> _commandBuffers;
 	};
 }

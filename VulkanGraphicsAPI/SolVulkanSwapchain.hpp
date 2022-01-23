@@ -15,19 +15,21 @@ namespace SolEngine
         static constexpr uint32_t MAX_FRAMES_IN_FLIGHT{ 2 };
 
         // Public Accessors
-        VkFramebuffer GetFramebuffer(const size_t index) const { return _vkSwapchainFramebuffers.at(index); }
-        VkRenderPass  GetRenderPass()                    const { return _vkRenderPass; }
-        VkImageView   GetImageView(const size_t index)   const { return _vkSwapchainImageViews.at(index); }
-        size_t        GetImageCount()                    const { return _vkSwapchainImages.size(); }
-        VkFormat      GetImageFormat()                   const { return _vkSwapchainImageFormat; }
-        VkExtent2D    GetExtent()                        const { return _vkSwapchainExtent; }
-        Vector2u      GetExtentDimensions()              const { return { _vkSwapchainExtent.width, _vkSwapchainExtent.height }; }
-        float         GetExtentAspectRatio()             const { return static_cast<float>(_vkSwapchainExtent.width) / static_cast<float>(_vkSwapchainExtent.height); }
+        VkFramebuffer GetFramebuffer(const size_t index) const { return _swapchainFrameBuffers.at(index); }
+        VkRenderPass  GetRenderPass()                    const { return _renderPass; }
+        VkImageView   GetImageView(const size_t index)   const { return _swapchainImageViews.at(index); }
+        size_t        GetImageCount()                    const { return _swapchainImages.size(); }
+        VkFormat      GetImageFormat()                   const { return _swapchainImageFormat; }
+        VkExtent2D    GetExtent()                        const { return _swapchainExtent; }
+        Vector2u      GetExtentDimensions()              const { return { _swapchainExtent.width, _swapchainExtent.height }; }
+        float         GetExtentAspectRatio()             const { return static_cast<float>(_swapchainExtent.width) / static_cast<float>(_swapchainExtent.height); }
 
         VkFormat FindDepthFormat();
 
         VkResult AcquireNextImage(uint32_t *pImageIndex);
         VkResult SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, const uint32_t *pImageIndex);
+
+        bool CompareSwapchanFormats(const SolVulkanSwapchain& swapchain) const;
 
         // Inherited via IDisposable
         virtual void Dispose() override;
@@ -51,34 +53,35 @@ namespace SolEngine
         VkSwapchainKHR                      _vkSwapchain{ NULL };
         std::shared_ptr<SolVulkanSwapchain> _pVkOldSwapchain;
 
-        std::vector<VkImage>       _vkSwapchainImages;
-        std::vector<VkImageView>   _vkSwapchainImageViews;
-        std::vector<VkFramebuffer> _vkSwapchainFramebuffers;
-        VkFormat                   _vkSwapchainImageFormat;
-        VkExtent2D                 _vkSwapchainExtent;
+        std::vector<VkImage>       _swapchainImages;
+        std::vector<VkImageView>   _swapchainImageViews;
+        std::vector<VkFramebuffer> _swapchainFrameBuffers;
+        VkFormat                   _swapchainImageFormat;
+        VkFormat                   _swapchainDepthFormat;
+        VkExtent2D                 _swapchainExtent;
 
-        VkRenderPass _vkRenderPass{ NULL };
+        VkRenderPass _renderPass{ NULL };
 
         // Depth
-        std::vector<VkImage>        _vkDepthImages;
-        std::vector<VkImageView>    _vkDepthImageViews;
-        std::vector<VkDeviceMemory> _vkDepthImageMemories;
+        std::vector<VkImage>        _depthImages;
+        std::vector<VkImageView>    _depthImageViews;
+        std::vector<VkDeviceMemory> _depthImageMemories;
 
-        std::vector<VkFormat> _vkDepthFormatCandidates
+        std::vector<VkFormat> _depthFormatCandidates
         {
             VK_FORMAT_D32_SFLOAT,
             VK_FORMAT_D32_SFLOAT_S8_UINT,
             VK_FORMAT_D24_UNORM_S8_UINT
         };
 
-        VkImageTiling        _vkDepthImageTiling{ VK_IMAGE_TILING_OPTIMAL };
-        VkFormatFeatureFlags _vkDepthFormatFeatureFlags{ VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT };
+        VkImageTiling        _depthImageTiling       { VK_IMAGE_TILING_OPTIMAL };
+        VkFormatFeatureFlags _depthFormatFeatureFlags{ VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT };
 
         // Sync
-        std::vector<VkSemaphore> _vkImageAvailableSemaphores;
-        std::vector<VkSemaphore> _vkRenderFinishedSemaphores;
-        std::vector<VkFence>     _vkInFlightFences;
-        std::vector<VkFence>     _vkInFlightImages;
+        std::vector<VkSemaphore> _imageAvailableSemaphores;
+        std::vector<VkSemaphore> _renderFinishedSemaphores;
+        std::vector<VkFence>     _inFlightFences;
+        std::vector<VkFence>     _inFlightImages;
 
         size_t   _currentFrame{ 0 };
         uint64_t _timeoutDuration{ (std::numeric_limits<uint64_t>::max)() };

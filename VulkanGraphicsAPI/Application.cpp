@@ -14,15 +14,11 @@ namespace SolEngine
          _appData(appData)
     {
         LoadGameObjects();
-        CreatePipelineLayout();
-        CreatePipeline();
     }
 
-    void Application::Dispose()
+    Application::~Application()
     {
-        vkDestroyPipelineLayout(_solDevice.Device(), 
-                                _vkPipelineLayout, 
-                                NULL);
+        Dispose();
     }
 
     void Application::Run()
@@ -42,6 +38,9 @@ namespace SolEngine
         vkDeviceWaitIdle(_solDevice.Device());
     }
 
+    void Application::Dispose()
+    {}
+
     void Application::Update(const float deltaTime)
     {
     }
@@ -49,6 +48,7 @@ namespace SolEngine
     void Application::Draw()
     {
         const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
+        const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
 
         if (commandBuffer == nullptr)
         {
@@ -57,7 +57,7 @@ namespace SolEngine
 
         _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-        RenderGameObjects(commandBuffer);
+        renderSystem.RenderGameObjects(commandBuffer, _gameObjects);
 
         _solRenderer.EndSwapchainRenderPass(commandBuffer);
         _solRenderer.EndFrame();
@@ -78,79 +78,9 @@ namespace SolEngine
         triangle.SetModel(pModel);
         triangle.SetColour({ .1f, .8f, .1f });
         triangle.transform2D.position.x = .2f;
-        triangle.transform2D.scale = { 1.f, 1.f };
+        triangle.transform2D.scale = { 2.f, .5f };
+        //triangle.transform2D.rotation = 0.25f * glm::two_pi<float>();
         
         _gameObjects.push_back(std::move(triangle));
-    }
-
-    void Application::RenderGameObjects(const VkCommandBuffer commandBuffer)
-    {
-        _pSolPipeline->Bind(commandBuffer);
-
-        for (const SolVulkanGameObject &gameObject : _gameObjects)
-        {
-            const std::shared_ptr<SolVulkanModel> &pGameObjectModel = gameObject.GetModel();
-
-            const SimplePushConstantData pushConstantData
-            {
-                .transform = gameObject.transform2D.Mat2(),
-                .offset    = gameObject.transform2D.position,
-                .colour    = gameObject.GetColour(),
-            };
-
-            vkCmdPushConstants(commandBuffer, 
-                               _vkPipelineLayout, 
-                               VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
-                               0, 
-                               sizeof(SimplePushConstantData), 
-                               &pushConstantData);
-
-
-            pGameObjectModel->Bind(commandBuffer);
-            pGameObjectModel->Draw(commandBuffer);
-        }
-    }
-
-    void Application::CreatePipelineLayout()
-    {
-        const VkPushConstantRange pushConstantRange
-        {
-            .stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,    // Allow access to push constant data and both vertex/frag shaders.
-            .offset = 0,
-            .size = sizeof(SimplePushConstantData)
-        };
-
-        const VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo
-        {
-            .sType                  = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
-            .setLayoutCount         = 0,
-            .pSetLayouts            = NULL,
-            .pushConstantRangeCount = 1,
-            .pPushConstantRanges    = &pushConstantRange
-        };
-
-        const VkResult result = vkCreatePipelineLayout(_solDevice.Device(),
-                                                       &pipelineLayoutCreateInfo, 
-                                                       NULL, 
-                                                       &_vkPipelineLayout);
-
-        DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Pipeline Layout.");
-    }
-
-    void Application::CreatePipeline()
-    {
-        DBG_ASSERT_MSG((_vkPipelineLayout != nullptr), "Cannot create Pipeline before Pipeline Layout.");
-
-        PipelineConfigInfo pipelineConfigInfo{};
-        SolVulkanPipeline::DefaultPipelineConfigInfo(pipelineConfigInfo);
-
-        // TEMP
-        pipelineConfigInfo.renderPass = _solRenderer.GetSwapchainRenderPass();
-        pipelineConfigInfo.pipelineLayout = _vkPipelineLayout;
-
-        _pSolPipeline = std::make_unique<SolVulkanPipeline>(_solDevice,
-                                                                  "Shaders/SimpleShader.vert.spv",
-                                                                  "Shaders/SimpleShader.frag.spv",
-                                                                  pipelineConfigInfo);
     }
 }

@@ -19,8 +19,25 @@ namespace SolEngine
         Dispose();
     }
 
+    VkCommandBuffer SolVulkanRenderer::GetCurrentCommandBuffer() const
+    {
+        DBG_ASSERT_MSG(_isFrameStarted,
+                       "Cannot get Command Buffer when frame is not in progress!");
+
+        return _commandBuffers.at(_currentFrameIndex);
+    }
+
+    size_t SolVulkanRenderer::GetFrameIndex() const
+    {
+        DBG_ASSERT_MSG(_isFrameStarted,
+                       "Cannot get Frame Index when frame is not in progress!");
+
+        return _currentFrameIndex;
+    }
+
     VkCommandBuffer SolVulkanRenderer::BeginFrame()
     {
+        // Ensure multiple frames can't be started.
         DBG_ASSERT_MSG(!_isFrameStarted, 
                        "Cannot call BeginFrame while already in progress!");
 
@@ -58,6 +75,7 @@ namespace SolEngine
 
     void SolVulkanRenderer::EndFrame()
     {
+        // You can't end a frame that was never started...
         DBG_ASSERT_MSG(_isFrameStarted,
                        "Cannot call EndFrame while frame is not in progress!");
 
@@ -86,10 +104,13 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Present Swapchain Image.");
 
         _isFrameStarted = false;
+        _currentFrameIndex = (_currentFrameIndex + 1) % SolVulkanSwapchain::MAX_FRAMES_IN_FLIGHT;
     }
 
     void SolVulkanRenderer::BeginSwapchainRenderPass(const VkCommandBuffer commandBuffer)
     {
+        // Swapchain Render Pass' require a frame in progress.
+        // If a frame is started, the passed command buffer MUST be the current frame.
         DBG_ASSERT_MSG(_isFrameStarted,
                        "Cannot call BeginSwapchainRenderPass while frame is not in progress!");
         DBG_ASSERT_MSG((commandBuffer == GetCurrentCommandBuffer()),
@@ -163,6 +184,8 @@ namespace SolEngine
 
     void SolVulkanRenderer::EndSwapchainRenderPass(const VkCommandBuffer commandBuffer)
     {
+        // Swapchain Render Pass' require a frame in progress.
+        // If a frame is started, the passed command buffer MUST be the current frame.
         DBG_ASSERT_MSG(_isFrameStarted,
                        "Cannot call EndSwapchainRenderPass while frame is not in progress!");
         DBG_ASSERT_MSG((commandBuffer == GetCurrentCommandBuffer()),
@@ -227,19 +250,19 @@ namespace SolEngine
 
     void SolVulkanRenderer::CreateCommandBuffers()
     {
-        _vkCommandBuffers.resize(_pSolSwapchain->GetImageCount());
+        _commandBuffers.resize(SolVulkanSwapchain::MAX_FRAMES_IN_FLIGHT);
 
         const VkCommandBufferAllocateInfo commandBufferAllocateInfo
         {
             .sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
             .commandPool        = _rSolDevice.CommandPool(),
             .level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-            .commandBufferCount = static_cast<uint32_t>(_vkCommandBuffers.size())
+            .commandBufferCount = static_cast<uint32_t>(_commandBuffers.size())
         };
 
         const VkResult result = vkAllocateCommandBuffers(_rSolDevice.Device(),
                                                          &commandBufferAllocateInfo,
-                                                         _vkCommandBuffers.data());
+                                                         _commandBuffers.data());
 
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Allocate Command Buffers.");
     }
@@ -248,10 +271,10 @@ namespace SolEngine
     {
         vkFreeCommandBuffers(_rSolDevice.Device(), 
                              _rSolDevice.CommandPool(),
-                             static_cast<uint32_t>(_vkCommandBuffers.size()), 
-                             _vkCommandBuffers.data());
+                             static_cast<uint32_t>(_commandBuffers.size()), 
+                             _commandBuffers.data());
 
-        _vkCommandBuffers.clear();
+        _commandBuffers.clear();
     }
 
     void SolVulkanRenderer::RecreateSwapchain()
@@ -278,15 +301,15 @@ namespace SolEngine
         }
         else
         {
+            std::shared_ptr<SolVulkanSwapchain> pOldSwapchain = std::move(_pSolSwapchain);
+
             _pSolSwapchain = std::make_unique<SolVulkanSwapchain>(_rSolDevice,
                                                                   winExtent,
-                                                                  std::move(_pSolSwapchain));
+                                                                  pOldSwapchain);
 
-            if (_pSolSwapchain->GetImageCount() != _vkCommandBuffers.size())
-            {
-                FreeCommandBuffers();
-                CreateCommandBuffers();
-            }
+            // Ensure re-created swapchain is compatible...
+            DBG_ASSERT_MSG((pOldSwapchain->CompareSwapchanFormats(*_pSolSwapchain)), 
+                           "Swapchain Image (Or Depth) Format has changed!");
         }
 
         _pSolSwapchain = nullptr; // TEMP: Ensure old swap chain is destroyed to prevent 2 swapchains co-existing.
