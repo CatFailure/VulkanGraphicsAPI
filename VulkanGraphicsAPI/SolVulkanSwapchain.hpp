@@ -15,15 +15,14 @@ namespace SolEngine
         static constexpr uint32_t MAX_FRAMES_IN_FLIGHT{ 2 };
 
         // Public Accessors
-        VkFramebuffer Framebuffer(const size_t index) const { return _vkSwapchainFramebuffers.at(index); }
-        VkRenderPass  RenderPass()                    const { return _vkRenderPass; }
-        VkImageView   ImageView(const size_t index)   const { return _vkSwapchainImageViews.at(index); }
-        size_t        ImageCount()                    const { return _vkSwapchainImages.size(); }
-        VkFormat      ImageFormat()                   const { return _vkSwapchainImageFormat; }
-
-        VkExtent2D Extent()            const { return _vkSwapchainExtent; }
-        Vector2u   ExtentDimensions()  const { return { _vkSwapchainExtent.width, _vkSwapchainExtent.height }; }
-        float      ExtentAspectRatio() const { return static_cast<float>(_vkSwapchainExtent.width) / static_cast<float>(_vkSwapchainExtent.height); }
+        VkFramebuffer GetFramebuffer(const size_t index) const { return _vkSwapchainFramebuffers.at(index); }
+        VkRenderPass  GetRenderPass()                    const { return _vkRenderPass; }
+        VkImageView   GetImageView(const size_t index)   const { return _vkSwapchainImageViews.at(index); }
+        size_t        GetImageCount()                    const { return _vkSwapchainImages.size(); }
+        VkFormat      GetImageFormat()                   const { return _vkSwapchainImageFormat; }
+        VkExtent2D    GetExtent()                        const { return _vkSwapchainExtent; }
+        Vector2u      GetExtentDimensions()              const { return { _vkSwapchainExtent.width, _vkSwapchainExtent.height }; }
+        float         GetExtentAspectRatio()             const { return static_cast<float>(_vkSwapchainExtent.width) / static_cast<float>(_vkSwapchainExtent.height); }
 
         VkFormat FindDepthFormat();
 

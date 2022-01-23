@@ -257,7 +257,7 @@ namespace SolEngine
     void SolVulkanSwapchain::CreateDepthResources()
     {
         const VkFormat depthFormat       = FindDepthFormat();
-        const size_t swapchainImageCount = ImageCount();
+        const size_t swapchainImageCount = GetImageCount();
 
         _vkDepthImages.resize(swapchainImageCount);
         _vkDepthImageMemories.resize(swapchainImageCount);
@@ -405,7 +405,7 @@ namespace SolEngine
 
     void SolVulkanSwapchain::CreateFramebuffers()
     {
-        const size_t imageCount = ImageCount();
+        const size_t imageCount = GetImageCount();
 
         _vkSwapchainFramebuffers.resize(imageCount);
 
@@ -444,7 +444,7 @@ namespace SolEngine
         _vkImageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         _vkRenderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         _vkInFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
-        _vkInFlightImages.resize(ImageCount(), VK_NULL_HANDLE);
+        _vkInFlightImages.resize(GetImageCount(), VK_NULL_HANDLE);
 
         const VkSemaphoreCreateInfo semaphoreCreateInfo
         {
