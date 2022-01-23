@@ -27,9 +27,8 @@ namespace SolEngine
 
             const SimplePushConstantData pushConstantData
             {
-                .transform = gameObject.transform2D.Mat2(),
-                .offset    = gameObject.transform2D.position,
-                .colour    = gameObject.GetColour(),
+                .transform = gameObject.transform.TransformMatrix(),
+                .colour    = gameObject.GetColour()
             };
 
             vkCmdPushConstants(commandBuffer,

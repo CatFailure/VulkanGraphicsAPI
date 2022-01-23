@@ -20,6 +20,8 @@ namespace SolEngine
         
         void Run();
 
+        std::shared_ptr<SolVulkanModel> CreateCubeModel(SolVulkanDevice &rDevice, const glm::vec3 &offset);
+
     private:
         // Inherited via IDisposable
         virtual void Dispose() override;

@@ -1,32 +1,23 @@
 #pragma once
 #include "SolVulkanModel.hpp"
+#include "MatrixUtility.hpp"
+
+using namespace SolEngine::Data;
+using namespace SolEngine::Math;
 
 namespace SolEngine
 {
-	struct Transform2D
+	struct Transform
 	{
-		glm::vec2 position{};
-		glm::vec2 scale{ 1.f, 1.f };
-		float rotation;
+		glm::vec3 position{};
+		glm::vec3 scale{ 1.f, 1.f, 1.f };
+		glm::vec3 rotation{};
 
-		glm::mat2 Mat2() const 
+		glm::mat4 TransformMatrix() const
 		{
-			const float rotSin = glm::sin(rotation);
-			const float rotCos = glm::cos(rotation);
-
-			const glm::mat2 rotationMat
-			{
-				{ rotCos,  rotSin}, 
-				{ -rotSin, rotCos}
-			};
-
-			const glm::mat2 scaleMat
-			{
-				{ scale.x, 0 },
-				{ 0, scale.y }
-			};
-
-			return rotationMat * scaleMat;
+			return FastTransformMatrix(position, 
+									   scale,
+									   rotation);
 		}
 	};
 
@@ -49,7 +40,7 @@ namespace SolEngine
 		void SetModel(std::shared_ptr<SolVulkanModel> pModel) { _pSolVulkanModel = pModel; }
 		void SetColour(const glm::vec3 &colour)				  { _colour = colour; }
 
-		Transform2D transform2D;
+		Transform transform;
 	private:
 		SolVulkanGameObject(const id_t id)
 			: _id(id)
@@ -57,6 +48,6 @@ namespace SolEngine
 
 		id_t _id;
 		std::shared_ptr<SolVulkanModel> _pSolVulkanModel;
-		glm::vec3 _colour;
+		glm::vec3 _colour{};
 	};
 }

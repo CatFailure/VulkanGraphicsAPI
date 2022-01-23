@@ -38,11 +38,81 @@ namespace SolEngine
         vkDeviceWaitIdle(_solDevice.Device());
     }
 
+    std::shared_ptr<SolVulkanModel> Application::CreateCubeModel(SolVulkanDevice &rDevice, 
+                                                                 const glm::vec3 &offset)
+    {
+        std::vector<Vertex> vertices
+        {
+            // left face (white)
+            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
+            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
+            {{-.5f, -.5f, .5f}, {.9f, .9f, .9f}},
+            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
+            {{-.5f, .5f, -.5f}, {.9f, .9f, .9f}},
+            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
+
+            // right face (yellow)
+            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
+            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
+            {{.5f, -.5f, .5f}, {.8f, .8f, .1f}},
+            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
+            {{.5f, .5f, -.5f}, {.8f, .8f, .1f}},
+            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
+
+            // top face (orange, remember y axis points down)
+            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
+            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
+            {{-.5f, -.5f, .5f}, {.9f, .6f, .1f}},
+            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
+            {{.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
+            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
+
+            // bottom face (red)
+            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
+            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
+            {{-.5f, .5f, .5f}, {.8f, .1f, .1f}},
+            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
+            {{.5f, .5f, -.5f}, {.8f, .1f, .1f}},
+            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
+
+            // nose face (blue)
+            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
+            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
+            {{-.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
+            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
+            {{.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
+            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
+
+            // tail face (green)
+            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
+            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
+            {{-.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
+            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
+            {{.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
+            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
+
+        };
+
+        for (Vertex &rVertex : vertices) 
+        {
+            rVertex.position += offset;
+        }
+
+        return std::make_shared<SolVulkanModel>(rDevice, vertices);
+    }
+
     void Application::Dispose()
     {}
 
     void Application::Update(const float deltaTime)
     {
+        for (SolVulkanGameObject &rGameObject : _gameObjects)
+        {
+            const float scaledTwoPi = deltaTime * glm::two_pi<float>();
+
+            rGameObject.transform.rotation.y += 0.01f * scaledTwoPi;
+            rGameObject.transform.rotation.x += 0.005f * scaledTwoPi;
+        }
     }
 
     void Application::Draw()
@@ -65,22 +135,14 @@ namespace SolEngine
 
     void Application::LoadGameObjects()
     {
-        const std::vector<Vertex> vertices
-        {
-            {{ 0.0f, -0.5f }, { 1.0f, 0.0f, 0.0f }},
-            {{ 0.5f, 0.5f }, { 0.0f, 1.0f, 0.0f }},
-            {{ -0.5f, 0.5f }, { 0.0f, 0.0f, 1.0f }}
-        };
+        std::shared_ptr<SolVulkanModel> cubeModel = CreateCubeModel(_solDevice, { 0,0,0 });
+        SolVulkanGameObject cubeGameObject = SolVulkanGameObject::CreateGameObject();
 
-        std::shared_ptr<SolVulkanModel> pModel = std::make_shared<SolVulkanModel>(_solDevice, vertices);
-        SolVulkanGameObject triangle = SolVulkanGameObject::CreateGameObject();
+        cubeGameObject.SetModel(cubeModel);
 
-        triangle.SetModel(pModel);
-        triangle.SetColour({ .1f, .8f, .1f });
-        triangle.transform2D.position.x = .2f;
-        triangle.transform2D.scale = { 2.f, .5f };
-        //triangle.transform2D.rotation = 0.25f * glm::two_pi<float>();
-        
-        _gameObjects.push_back(std::move(triangle));
+        cubeGameObject.transform.position = { 0, 0, .5f };
+        cubeGameObject.transform.scale    = { .5f, .5f, .5f };
+
+        _gameObjects.push_back(std::move(cubeGameObject));
     }
 }
