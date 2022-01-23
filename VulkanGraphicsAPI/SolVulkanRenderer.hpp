@@ -20,7 +20,8 @@ namespace SolEngine
         VkRenderPass    GetSwapchainRenderPass()  const { return _pSolSwapchain->GetRenderPass(); }
         VkCommandBuffer GetCurrentCommandBuffer() const 
         {
-            assert(_isFrameStarted && "Cannot get Command Buffer when frame is not in progress!");
+            DBG_ASSERT_MSG(_isFrameStarted,
+                           "Cannot get Command Buffer when frame is not in progress!");
 
             return _vkCommandBuffers.at(_currentImageIndex); 
         }
