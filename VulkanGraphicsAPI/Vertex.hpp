@@ -31,7 +31,7 @@ namespace SolEngine::Data
 				{
 					.location = 0,
 					.binding  = 0,
-					.format   = VK_FORMAT_R32G32_SFLOAT,	// X, Y
+					.format   = VK_FORMAT_R32G32B32_SFLOAT,	// X, Y, Z
 					.offset   = offsetof(Vertex, position)
 				},
 				VkVertexInputAttributeDescription	// Colour
@@ -46,7 +46,7 @@ namespace SolEngine::Data
 			return vertexInputAttributeDescriptions;
 		}
 
-		glm::vec2 position;
+		glm::vec3 position;
 		glm::vec3 colour;
 	};
 }
