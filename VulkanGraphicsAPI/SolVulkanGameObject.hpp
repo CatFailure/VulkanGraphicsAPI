@@ -1,56 +1,23 @@
 #pragma once
 #include "SolVulkanModel.hpp"
+#include "MatrixUtility.hpp"
 
 using namespace SolEngine::Data;
+using namespace SolEngine::Math;
 
 namespace SolEngine
 {
-	//struct Transform2D
-	//{
-	//	glm::vec2 position{};
-	//	glm::vec2 scale{ 1.f, 1.f };
-	//	float rotation;
-
-	//	glm::mat2 Mat2() const 
-	//	{
-	//		const float rotSin = glm::sin(rotation);
-	//		const float rotCos = glm::cos(rotation);
-
-	//		const glm::mat2 rotationMat
-	//		{
-	//			{ rotCos,  rotSin}, 
-	//			{ -rotSin, rotCos}
-	//		};
-
-	//		const glm::mat2 scaleMat
-	//		{
-	//			{ scale.x, 0 },
-	//			{ 0, scale.y }
-	//		};
-
-	//		return rotationMat * scaleMat;
-	//	}
-	//};
-
 	struct Transform
 	{
 		glm::vec3 position{};
 		glm::vec3 scale{ 1.f, 1.f, 1.f };
 		glm::vec3 rotation{};
 
-		glm::mat4 Mat4() const
+		glm::mat4 TransformMatrix() const
 		{
-			glm::mat4 transform = glm::translate(glm::mat4{ 1.0f }, 
-												 position);
-
-			// Rotate using tait-bryan angles convention: https://commons.wikimedia.org/wiki/Tait-Bryan_angles
-			transform = glm::rotate(transform, rotation.y, VECTOR3_AXIS_Y);
-			transform = glm::rotate(transform, rotation.x, VECTOR3_AXIS_X);
-			transform = glm::rotate(transform, rotation.z, VECTOR3_AXIS_Z);
-
-			transform = glm::scale(transform, scale);
-			
-			return transform;
+			return FastTransformMatrix(position, 
+									   scale,
+									   rotation);
 		}
 	};
 

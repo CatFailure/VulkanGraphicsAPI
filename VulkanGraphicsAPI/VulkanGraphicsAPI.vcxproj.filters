@@ -69,6 +69,9 @@
     <ClCompile Include="SimpleRenderSystem.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
+    <ClCompile Include="MatrixUtility.cpp">
+      <Filter>SolEngine\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="Constants.hpp">
       <Filter>SolEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixUtility.hpp">
+      <Filter>SolEngine\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

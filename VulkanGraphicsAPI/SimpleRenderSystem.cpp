@@ -27,7 +27,7 @@ namespace SolEngine
 
             const SimplePushConstantData pushConstantData
             {
-                .transform = gameObject.transform.Mat4(),
+                .transform = gameObject.transform.TransformMatrix(),
                 .colour    = gameObject.GetColour()
             };
 
