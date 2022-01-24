@@ -1,16 +1,16 @@
 #pragma once
-#include "SolVulkanDevice.hpp"
+#include "SolDevice.hpp"
 
 using namespace SolEngine::Interface;
 
 namespace SolEngine
 {
-    class SolVulkanSwapchain : public IDisposable
+    class SolSwapchain : public IDisposable
     {
     public:
-        SolVulkanSwapchain(SolVulkanDevice &rSolDevice, const VkExtent2D &windowExtent);
-        SolVulkanSwapchain(SolVulkanDevice &rSolDevice, const VkExtent2D &windowExtent, std::shared_ptr<SolVulkanSwapchain> pOldSwapchain);
-        ~SolVulkanSwapchain();
+        SolSwapchain(SolDevice &rSolDevice, const VkExtent2D &windowExtent);
+        SolSwapchain(SolDevice &rSolDevice, const VkExtent2D &windowExtent, std::shared_ptr<SolSwapchain> pOldSwapchain);
+        ~SolSwapchain();
 
         static constexpr uint32_t MAX_FRAMES_IN_FLIGHT{ 2 };
 
@@ -29,7 +29,7 @@ namespace SolEngine
         VkResult AcquireNextImage(uint32_t *pImageIndex);
         VkResult SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, const uint32_t *pImageIndex);
 
-        bool CompareSwapchanFormats(const SolVulkanSwapchain& swapchain) const;
+        bool CompareSwapchanFormats(const SolSwapchain& swapchain) const;
 
         // Inherited via IDisposable
         virtual void Dispose() override;
@@ -46,12 +46,12 @@ namespace SolEngine
         VkPresentModeKHR   ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
         VkExtent2D         ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities);
 
-        SolVulkanDevice &_rSolVulkanDevice;
+        SolDevice &_rSolVulkanDevice;
         VkExtent2D      _windowExtent;
 
         // Swapchain
-        VkSwapchainKHR                      _vkSwapchain{ NULL };
-        std::shared_ptr<SolVulkanSwapchain> _pVkOldSwapchain;
+        VkSwapchainKHR                _vkSwapchain{ NULL };
+        std::shared_ptr<SolSwapchain> _pVkOldSwapchain;
 
         std::vector<VkImage>       _swapchainImages;
         std::vector<VkImageView>   _swapchainImageViews;

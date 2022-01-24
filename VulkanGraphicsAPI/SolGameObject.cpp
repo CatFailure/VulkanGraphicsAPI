@@ -1,5 +1,5 @@
 #include "pch.hpp"
-#include "SolVulkanGameObject.hpp"
+#include "SolGameObject.hpp"
 
 namespace SolEngine
 {

@@ -2,7 +2,7 @@
 #define ENABLE_VULKAN_DEBUG_CALLBACK
 
 #include "ApplicationData.hpp"
-#include "SolVulkanWindow.hpp"
+#include "SolWindow.hpp"
 #include "SwapchainSupportDetails.hpp"
 #include "QueueFamilyIndices.hpp"
 
@@ -11,9 +11,9 @@ using namespace SolEngine::Data;
 
 namespace SolEngine
 {
-    class SolVulkanDevice;
+    class SolDevice;
 
-    typedef VkBool32(__stdcall SolVulkanDevice::*VulkanDebugReportCallback_t)(VkDebugReportFlagsEXT,
+    typedef VkBool32(__stdcall SolDevice::*VulkanDebugReportCallback_t)(VkDebugReportFlagsEXT,
                                                                               VkDebugReportObjectTypeEXT,
                                                                               uint64_t,
                                                                               size_t,
@@ -22,11 +22,11 @@ namespace SolEngine
                                                                               const char *,
                                                                               void *);
 
-    class SolVulkanDevice : public IDisposable
+    class SolDevice : public IDisposable
     {
     public:
-        SolVulkanDevice(SolVulkanWindow &rSolWindow, ApplicationData &rAppData);
-        ~SolVulkanDevice();
+        SolDevice(SolWindow &rSolWindow, ApplicationData &rAppData);
+        ~SolDevice();
 
         // Public Accessors
         VkInstance       Instance()		  const { return _vkInstance; }
@@ -71,7 +71,7 @@ namespace SolEngine
         SwapchainSupportDetails QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice);
         QueueFamilyIndices      QueryQueueFamilies(const VkPhysicalDevice &physicalDevice);
 
-        SolVulkanWindow &_rSolWindow;
+        SolWindow       &_rSolWindow;
         ApplicationData &_rAppData;
 
         VkInstance       _vkInstance      { NULL };

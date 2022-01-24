@@ -1,9 +1,9 @@
 #pragma once
 
-#include "SolVulkanWindow.hpp"
-#include "SolVulkanModel.hpp"
-#include "SolVulkanGameObject.hpp"
-#include "SolVulkanRenderer.hpp"
+#include "SolWindow.hpp"
+#include "SolModel.hpp"
+#include "SolGameObject.hpp"
+#include "SolRenderer.hpp"
 #include "SimpleRenderSystem.hpp"
 
 using namespace SolEngine::Data;
@@ -20,7 +20,7 @@ namespace SolEngine
         
         void Run();
 
-        std::shared_ptr<SolVulkanModel> CreateCubeModel(SolVulkanDevice &rDevice, const glm::vec3 &offset);
+        std::shared_ptr<SolModel> CreateCubeModel(SolDevice &rDevice, const glm::vec3 &offset);
 
     private:
         // Inherited via IDisposable
@@ -34,10 +34,14 @@ namespace SolEngine
 
         ApplicationData _appData;
 
-        SolVulkanWindow   _solWindow;
-        SolVulkanDevice   _solDevice;
-        SolVulkanRenderer _solRenderer;
+        SolCamera   _solCamera{};
+        SolWindow   _solWindow;
+        SolDevice   _solDevice;
+        SolRenderer _solRenderer;
 
-        std::vector<SolVulkanGameObject> _gameObjects;
+        std::vector<SolGameObject> _gameObjects;
+
+        static constexpr float CAM_NEAR{ 0.01f };
+        static constexpr float CAM_FAR { 100.f };
     };
 }

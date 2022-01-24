@@ -1,16 +1,16 @@
 #include "pch.hpp"
-#include "SolVulkanSwapchain.hpp"
+#include "SolSwapchain.hpp"
 
 namespace SolEngine
 {
-    SolVulkanSwapchain::SolVulkanSwapchain(SolVulkanDevice &rSolDevice,
+    SolSwapchain::SolSwapchain(SolDevice &rSolDevice,
                                            const VkExtent2D &windowExtent)
-        : SolVulkanSwapchain(rSolDevice, windowExtent, nullptr)
+        : SolSwapchain(rSolDevice, windowExtent, nullptr)
     {}
 
-    SolVulkanSwapchain::SolVulkanSwapchain(SolVulkanDevice &rSolDevice, 
+    SolSwapchain::SolSwapchain(SolDevice &rSolDevice, 
                                            const VkExtent2D &windowExtent, 
-                                           std::shared_ptr<SolVulkanSwapchain> pOldSwapchain)
+                                           std::shared_ptr<SolSwapchain> pOldSwapchain)
         : _rSolVulkanDevice(rSolDevice),
           _windowExtent(windowExtent),
           _pVkOldSwapchain(pOldSwapchain)
@@ -31,12 +31,12 @@ namespace SolEngine
         _pVkOldSwapchain = nullptr;
     }
 
-    SolVulkanSwapchain::~SolVulkanSwapchain()
+    SolSwapchain::~SolSwapchain()
     {
         Dispose();
     }
 
-    void SolVulkanSwapchain::Dispose()
+    void SolSwapchain::Dispose()
     {
         const VkDevice vkDevice = _rSolVulkanDevice.Device();
 
@@ -122,7 +122,7 @@ namespace SolEngine
         }
     }
 
-    void SolVulkanSwapchain::CreateSwapchain(uint32_t *pOutImageCount,
+    void SolSwapchain::CreateSwapchain(uint32_t *pOutImageCount,
                                              VkSurfaceFormatKHR *pOutSurfaceImageFormat, 
                                              VkExtent2D *pOutSwapchainExtent)
     {
@@ -186,7 +186,7 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Swapchain.");
     }
 
-    void SolVulkanSwapchain::CreateSwapchainImages(uint32_t &rImageCount, 
+    void SolSwapchain::CreateSwapchainImages(uint32_t &rImageCount, 
                                                    const VkSurfaceFormatKHR &surfaceImageFormat, 
                                                    const VkExtent2D &swapchainExtent)
     {
@@ -214,7 +214,7 @@ namespace SolEngine
         _swapchainExtent      = swapchainExtent;
     }
 
-    void SolVulkanSwapchain::CreateSwapchainImageViews()
+    void SolSwapchain::CreateSwapchainImageViews()
     {
         const size_t swapchainImageCount = _swapchainImages.size();
 
@@ -254,7 +254,7 @@ namespace SolEngine
         }
     }
 
-    void SolVulkanSwapchain::CreateDepthResources()
+    void SolSwapchain::CreateDepthResources()
     {
         const VkFormat depthFormat       = FindDepthFormat();
         const size_t swapchainImageCount = GetImageCount();
@@ -319,7 +319,7 @@ namespace SolEngine
         }
     }
 
-    void SolVulkanSwapchain::CreateRenderPass()
+    void SolSwapchain::CreateRenderPass()
     {
         // Depth Stencil
         const VkAttachmentDescription depthStencilAttachment
@@ -404,7 +404,7 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Render Pass.");
     }
 
-    void SolVulkanSwapchain::CreateFramebuffers()
+    void SolSwapchain::CreateFramebuffers()
     {
         const size_t imageCount = GetImageCount();
 
@@ -438,7 +438,7 @@ namespace SolEngine
         }
     }
 
-    void SolVulkanSwapchain::CreateSyncObjects()
+    void SolSwapchain::CreateSyncObjects()
     {
         const VkDevice &vkDevice = _rSolVulkanDevice.Device();
 
@@ -483,7 +483,7 @@ namespace SolEngine
         }
     }
 
-    VkSurfaceFormatKHR SolVulkanSwapchain::ChooseImageFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats)
+    VkSurfaceFormatKHR SolSwapchain::ChooseImageFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats)
     {
         for (const VkSurfaceFormatKHR &availableFormat : availableFormats)
         {
@@ -499,7 +499,7 @@ namespace SolEngine
         return availableFormats.at(0);
     }
 
-    VkPresentModeKHR SolVulkanSwapchain::ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes)
+    VkPresentModeKHR SolSwapchain::ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes)
     {
         const char *presentModeFormat = "Present mode: %s\n";
 
@@ -532,7 +532,7 @@ namespace SolEngine
         return VK_PRESENT_MODE_FIFO_KHR;
     }
 
-    VkExtent2D SolVulkanSwapchain::ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities)
+    VkExtent2D SolSwapchain::ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities)
     {
         if (capabilities.currentExtent.width != (std::numeric_limits<uint32_t>::max)())
         {
@@ -552,14 +552,14 @@ namespace SolEngine
         return actualExtent;
     }
 
-    VkFormat SolVulkanSwapchain::FindDepthFormat()
+    VkFormat SolSwapchain::FindDepthFormat()
     {
         return _rSolVulkanDevice.FindSupportedFormat(_depthFormatCandidates,
                                                _depthImageTiling, 
                                                _depthFormatFeatureFlags);
     }
 
-    VkResult SolVulkanSwapchain::AcquireNextImage(uint32_t *pImageIndex)
+    VkResult SolSwapchain::AcquireNextImage(uint32_t *pImageIndex)
     {
         const VkDevice &device = _rSolVulkanDevice.Device();
         const uint32_t fenceCount(1);
@@ -582,7 +582,7 @@ namespace SolEngine
         return result;
     }
 
-    VkResult SolVulkanSwapchain::SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, 
+    VkResult SolSwapchain::SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, 
                                                       const uint32_t *pImageIndex)
     {
         const VkDevice &device  = _rSolVulkanDevice.Device();
@@ -645,7 +645,7 @@ namespace SolEngine
         return result;
     }
 
-    bool SolVulkanSwapchain::CompareSwapchanFormats(const SolVulkanSwapchain& swapchain) const
+    bool SolSwapchain::CompareSwapchanFormats(const SolSwapchain& swapchain) const
     {
         // When a swapchain is re-created, these values may change.
         return swapchain._swapchainDepthFormat == _swapchainDepthFormat &&

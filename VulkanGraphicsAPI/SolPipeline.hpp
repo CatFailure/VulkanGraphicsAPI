@@ -1,14 +1,14 @@
 #pragma once
-#include "SolVulkanDevice.hpp"
+#include "SolDevice.hpp"
 
 namespace SolEngine
 {
-    class SolVulkanPipeline : public IDisposable
+    class SolPipeline : public IDisposable
     {
     public:
-        SolVulkanPipeline() = default;
-        SolVulkanPipeline(SolVulkanDevice &rSolDevice, const std::string &vertShaderFilePath, const std::string &fragShaderFilePath, const PipelineConfigInfo &configInfo);
-        ~SolVulkanPipeline();
+        SolPipeline() = default;
+        SolPipeline(SolDevice &rSolDevice, const std::string &vertShaderFilePath, const std::string &fragShaderFilePath, const PipelineConfigInfo &configInfo);
+        ~SolPipeline();
 
         void        Bind(const VkCommandBuffer commandBuffer);
         static void DefaultPipelineConfigInfo(PipelineConfigInfo &rConfigInfo);
@@ -21,7 +21,7 @@ namespace SolEngine
         void CreateGraphicsPipeline(const std::string &vertShaderFilePath, const std::string &fragShaderFilePath, const PipelineConfigInfo &configInfo);
         void CreateShaderModule(const std::vector<char> &shaderCode, VkShaderModule *pOutShaderModule);
 
-        SolVulkanDevice &_rSolDevice;
+        SolDevice &_rSolDevice;
         
         VkPipeline _vkGraphicsPipeline;
 

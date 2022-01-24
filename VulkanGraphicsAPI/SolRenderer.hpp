@@ -1,25 +1,26 @@
 #pragma once
-#include "SolVulkanWindow.hpp"
-#include "SolVulkanSwapchain.hpp"
-#include "SolVulkanModel.hpp"
+#include "SolWindow.hpp"
+#include "SolSwapchain.hpp"
+#include "SolModel.hpp"
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Interface;
 
 namespace SolEngine
 {
-	class SolVulkanRenderer : public IDisposable
+	class SolRenderer : public IDisposable
 	{
 	public:
-		SolVulkanRenderer() = delete;
-		SolVulkanRenderer(const ApplicationData &appData, SolVulkanWindow &rSolWindow, SolVulkanDevice &rSolDevice);
-        ~SolVulkanRenderer();
+		SolRenderer() = delete;
+		SolRenderer(const ApplicationData &appData, SolWindow &rSolWindow, SolDevice &rSolDevice);
+        ~SolRenderer();
 
         bool IsFrameInProgress() const { return _isFrameStarted; }
 
         VkRenderPass    GetSwapchainRenderPass()  const { return _pSolSwapchain->GetRenderPass(); }
         VkCommandBuffer GetCurrentCommandBuffer() const;
-        size_t          GetFrameIndex() const;
+        size_t          GetFrameIndex()           const;
+        float           GetAspectRatio()          const { return _pSolSwapchain->GetExtentAspectRatio(); }
         
 
         /// <summary>
@@ -64,9 +65,9 @@ namespace SolEngine
 
         ApplicationData _appData;
 
-        SolVulkanWindow &_rSolWindow;
-        SolVulkanDevice &_rSolDevice;
-        std::unique_ptr<SolVulkanSwapchain> _pSolSwapchain;
+        SolWindow &_rSolWindow;
+        SolDevice &_rSolDevice;
+        std::unique_ptr<SolSwapchain> _pSolSwapchain;
 
         std::vector<VkCommandBuffer> _commandBuffers;
 	};

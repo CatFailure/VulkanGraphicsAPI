@@ -340,14 +340,16 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|x64'">
       </PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="Rect.cpp" />
     <ClCompile Include="SimpleRenderSystem.cpp" />
-    <ClCompile Include="SolVulkanDevice.cpp" />
-    <ClCompile Include="SolVulkanGameObject.cpp" />
-    <ClCompile Include="SolVulkanModel.cpp" />
-    <ClCompile Include="SolVulkanPipeline.cpp" />
-    <ClCompile Include="SolVulkanRenderer.cpp" />
-    <ClCompile Include="SolVulkanSwapchain.cpp" />
-    <ClCompile Include="SolVulkanWindow.cpp" />
+    <ClCompile Include="SolCamera.cpp" />
+    <ClCompile Include="SolDevice.cpp" />
+    <ClCompile Include="SolGameObject.cpp" />
+    <ClCompile Include="SolModel.cpp" />
+    <ClCompile Include="SolPipeline.cpp" />
+    <ClCompile Include="SolRenderer.cpp" />
+    <ClCompile Include="SolSwapchain.cpp" />
+    <ClCompile Include="SolWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
@@ -360,16 +362,18 @@
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
+    <ClInclude Include="Rect.hpp" />
     <ClInclude Include="SimplePushConstantData.hpp" />
     <ClInclude Include="SimpleRenderSystem.hpp" />
     <ClInclude Include="Singleton.hpp" />
-    <ClInclude Include="SolVulkanDevice.hpp" />
-    <ClInclude Include="SolVulkanGameObject.hpp" />
-    <ClInclude Include="SolVulkanModel.hpp" />
-    <ClInclude Include="SolVulkanPipeline.hpp" />
-    <ClInclude Include="SolVulkanRenderer.hpp" />
-    <ClInclude Include="SolVulkanSwapchain.hpp" />
-    <ClInclude Include="SolVulkanWindow.hpp" />
+    <ClInclude Include="SolCamera.hpp" />
+    <ClInclude Include="SolDevice.hpp" />
+    <ClInclude Include="SolGameObject.hpp" />
+    <ClInclude Include="SolModel.hpp" />
+    <ClInclude Include="SolPipeline.hpp" />
+    <ClInclude Include="SolRenderer.hpp" />
+    <ClInclude Include="SolSwapchain.hpp" />
+    <ClInclude Include="SolWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
     <ClInclude Include="Vector.hpp" />
     <ClInclude Include="Vertex.hpp" />
