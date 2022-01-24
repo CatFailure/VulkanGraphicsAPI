@@ -23,12 +23,15 @@ namespace SolEngine
 
     void Application::Run()
     {
-        // TEMP
-        const float deltaTime = 1 / 60.f;
+        auto currentTime = std::chrono::high_resolution_clock::now();
 
         while (!_solWindow.ShouldClose())
         {
             glfwPollEvents();   // Poll Window Events
+
+            const auto newTime = std::chrono::high_resolution_clock::now();
+            const float deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
+            currentTime = newTime;
 
             Update(deltaTime);
             Draw();
@@ -110,8 +113,8 @@ namespace SolEngine
         {
             const float scaledTwoPi = deltaTime * glm::two_pi<float>();
 
-            rGameObject.transform.rotation.y += 0.01f * scaledTwoPi;
-            rGameObject.transform.rotation.x += 0.005f * scaledTwoPi;
+            rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
+            rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
             // Camera will look at the cube
             _solCamera.LookAt(glm::vec3{ -1.f, -2.f, 2.f }, 

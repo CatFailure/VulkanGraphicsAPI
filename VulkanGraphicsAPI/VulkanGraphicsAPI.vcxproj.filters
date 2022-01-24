@@ -78,6 +78,9 @@
     <ClCompile Include="Rect.cpp">
       <Filter>SolEngine\Math</Filter>
     </ClCompile>
+    <ClCompile Include="SolTime.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="Rect.hpp">
       <Filter>SolEngine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SolTime.hpp">
+      <Filter>SolEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
