@@ -135,7 +135,7 @@ namespace SolEngine
 
     void SolPipeline::Dispose()
     {
-        const VkDevice &device = _rSolDevice.GetDevice();
+        const VkDevice &device = _rSolDevice.Device();
 
         vkDestroyShaderModule(device, 
                               _vkVertexShaderModule, 
@@ -173,8 +173,8 @@ namespace SolEngine
     }
 
     void SolPipeline::CreateGraphicsPipeline(const std::string &vertShaderFilePath, 
-                                             const std::string &fragShaderFilePath, 
-                                             const PipelineConfigInfo &configInfo)
+                                                   const std::string &fragShaderFilePath, 
+                                                   const PipelineConfigInfo &configInfo)
     {
         // Ensure Config Info is properly set up
         DBG_ASSERT_MSG((configInfo.pipelineLayout != VK_NULL_HANDLE), 
@@ -250,7 +250,7 @@ namespace SolEngine
             .basePipelineIndex   = -1,
         };
 
-        const VkResult result = vkCreateGraphicsPipelines(_rSolDevice.GetDevice(), 
+        const VkResult result = vkCreateGraphicsPipelines(_rSolDevice.Device(), 
                                                           VK_NULL_HANDLE, 
                                                           1,
                                                           &graphicsPipelineCreateInfo, 
@@ -270,7 +270,7 @@ namespace SolEngine
             .pCode    = reinterpret_cast<const uint32_t *>(shaderCode.data())
         };
 
-        const VkResult result = vkCreateShaderModule(_rSolDevice.GetDevice(), 
+        const VkResult result = vkCreateShaderModule(_rSolDevice.Device(), 
                                                      &shaderModuleCreateInfo, 
                                                      NULL, 
                                                      pOutShaderModule);

@@ -23,20 +23,19 @@ namespace SolEngine
 
     void Application::Run()
     {
-        SolClock clock{};
+        // TEMP
+        const float deltaTime = 1 / 60.f;
 
         while (!_solWindow.ShouldClose())
         {
             glfwPollEvents();   // Poll Window Events
-
-            const float deltaTime = clock.Restart();
 
             Update(deltaTime);
             Draw();
         }
 
         // Make CPU wait until all GPU operations have completed.
-        vkDeviceWaitIdle(_solDevice.GetDevice());
+        vkDeviceWaitIdle(_solDevice.Device());
     }
 
     std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
@@ -111,8 +110,8 @@ namespace SolEngine
         {
             const float scaledTwoPi = deltaTime * glm::two_pi<float>();
 
-            rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
-            rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
+            rGameObject.transform.rotation.y += 0.01f * scaledTwoPi;
+            rGameObject.transform.rotation.x += 0.005f * scaledTwoPi;
 
             // Camera will look at the cube
             _solCamera.LookAt(glm::vec3{ -1.f, -2.f, 2.f }, 
