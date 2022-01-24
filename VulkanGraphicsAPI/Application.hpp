@@ -40,5 +40,8 @@ namespace SolEngine
         SolRenderer _solRenderer;
 
         std::vector<SolGameObject> _gameObjects;
+
+        static constexpr float CAM_NEAR{ 0.01f };
+        static constexpr float CAM_FAR { 100.f };
     };
 }

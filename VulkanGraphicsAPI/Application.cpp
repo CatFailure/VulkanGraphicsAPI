@@ -112,6 +112,10 @@ namespace SolEngine
 
             rGameObject.transform.rotation.y += 0.01f * scaledTwoPi;
             rGameObject.transform.rotation.x += 0.005f * scaledTwoPi;
+
+            // Camera will look at the cube
+            _solCamera.LookAt(glm::vec3{ -1.f, -2.f, 2.f }, 
+                              rGameObject.transform.position);
         }
     }
 
@@ -121,7 +125,7 @@ namespace SolEngine
         const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
         const float aspectRatio = _solRenderer.GetAspectRatio();
 
-        _solCamera.SetPerspectiveProjection(50.f, aspectRatio, .1f, 10.f);
+        _solCamera.SetPerspectiveProjection(50.f, aspectRatio, CAM_NEAR, CAM_FAR);
 
         if (commandBuffer == nullptr)
         {

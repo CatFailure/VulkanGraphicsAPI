@@ -20,6 +20,8 @@ namespace SolEngine
                                                const VkCommandBuffer commandBuffer, 
                                                const std::vector<SolGameObject> &gameObjects) const
     {
+        const glm::mat4 projectionView = solCamera.GetProjectionView();
+
         _pSolPipeline->Bind(commandBuffer);
 
         for (const SolGameObject& gameObject : gameObjects)
@@ -28,7 +30,7 @@ namespace SolEngine
 
             const SimplePushConstantData pushConstantData
             {
-                .transform = solCamera.GetProjection() * gameObject.transform.TransformMatrix(),
+                .transform = projectionView * gameObject.transform.TransformMatrix(),
                 .colour    = gameObject.GetColour()
             };
 
