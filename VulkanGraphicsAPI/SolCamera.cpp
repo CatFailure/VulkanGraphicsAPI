@@ -27,17 +27,19 @@ namespace SolEngine
         _projectionMatrix[3][2] = -near / (far - near);
     }
 
-    void SolCamera::SetPerspectiveProjection(const float fov,
+    void SolCamera::SetPerspectiveProjection(const float fovDeg,
                                              const float aspect, 
                                              const float near,
                                              const float far)
     {
         assert(glm::abs(aspect - std::numeric_limits<float>::epsilon()) > 0.f);
 
-        const float tanHalfFOV = tan(fov * .5f);
+        const float tanHalfFOV = tan(glm::radians(fovDeg) * .5f);
         float aspectNom = aspect;
         float aspectDen = 1.f;
 
+        // When the window has a smaller width than height,
+        // This will scale the cube to be smaller instead of staying the same size.
         if (aspect < 1.f)
         {
             aspectNom = 1.f;

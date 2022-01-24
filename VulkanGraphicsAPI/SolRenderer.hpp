@@ -19,7 +19,8 @@ namespace SolEngine
 
         VkRenderPass    GetSwapchainRenderPass()  const { return _pSolSwapchain->GetRenderPass(); }
         VkCommandBuffer GetCurrentCommandBuffer() const;
-        size_t          GetFrameIndex() const;
+        size_t          GetFrameIndex()           const;
+        float           GetAspectRatio()          const { return _pSolSwapchain->GetExtentAspectRatio(); }
         
 
         /// <summary>

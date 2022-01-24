@@ -119,8 +119,11 @@ namespace SolEngine
     {
         const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
         const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
+        const float aspectRatio = _solRenderer.GetAspectRatio();
         SolCamera camera{};
-        camera.SetOrthographicProjection(-1, 1, -1, 1, -1, 1);
+
+        //camera.SetOrthographicProjection(-aspectRatio, aspectRatio, -1, 1, -1, 1);
+        camera.SetPerspectiveProjection(50.f, aspectRatio, .1f, 10.f);
 
         if (commandBuffer == nullptr)
         {
@@ -142,7 +145,7 @@ namespace SolEngine
 
         cubeGameObject.SetModel(cubeModel);
 
-        cubeGameObject.transform.position = { 0, 0, .5f };
+        cubeGameObject.transform.position = { 0, 0, 2.5f };
         cubeGameObject.transform.scale    = { .5f, .5f, .5f };
 
         _gameObjects.push_back(std::move(cubeGameObject));
