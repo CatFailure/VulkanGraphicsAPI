@@ -23,15 +23,13 @@ namespace SolEngine
 
     void Application::Run()
     {
-        auto currentTime = std::chrono::high_resolution_clock::now();
+        SolClock clock{};
 
         while (!_solWindow.ShouldClose())
         {
             glfwPollEvents();   // Poll Window Events
 
-            const auto newTime = std::chrono::high_resolution_clock::now();
-            const float deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
-            currentTime = newTime;
+            const float deltaTime = clock.Restart();
 
             Update(deltaTime);
             Draw();

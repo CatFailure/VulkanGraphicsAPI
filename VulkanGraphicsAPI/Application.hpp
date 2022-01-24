@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SolClock.hpp"
 #include "SolWindow.hpp"
 #include "SolModel.hpp"
 #include "SolGameObject.hpp"
