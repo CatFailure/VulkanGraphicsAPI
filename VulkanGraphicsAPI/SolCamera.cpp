@@ -32,7 +32,8 @@ namespace SolEngine
                                              const float near,
                                              const float far)
     {
-        assert(glm::abs(aspect - std::numeric_limits<float>::epsilon()) > 0.f);
+        DBG_ASSERT_MSG((glm::abs(aspect - glm::epsilon<float>()) > 0.f),
+                       "Aspect must be greater than 0!");
 
         const float tanHalfFOV = tan(glm::radians(fovDeg) * .5f);
         float aspectNom = aspect;
@@ -90,8 +91,9 @@ namespace SolEngine
     {
         const glm::vec3 direction = target - position;  // B - A
 
-        DBG_ASSERT_MSG((direction != glm::vec3(0, 0, 0)), 
-                       "Direction cannot be 0!");
+        // Prevent non-zero directions.
+        DBG_ASSERT_MSG((glm::dot(direction, direction) > glm::epsilon<float>()), 
+                       "Direction must be non-zero!");
 
         SetViewDirection(position, 
                          direction,
