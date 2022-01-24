@@ -31,6 +31,9 @@
     <Filter Include="SolEngine\Interface">
       <UniqueIdentifier>{1957ed1c-9a5d-46fb-8d8b-5ed4c83881fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\Rendering">
+      <UniqueIdentifier>{ce079ae5-79af-486c-bcdd-02284c9a3d77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -66,9 +69,6 @@
     <ClCompile Include="SolRenderer.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleRenderSystem.cpp">
-      <Filter>SolEngine</Filter>
-    </ClCompile>
     <ClCompile Include="MatrixUtility.cpp">
       <Filter>SolEngine\Math</Filter>
     </ClCompile>
@@ -80,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="SolTime.cpp">
       <Filter>SolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleRenderSystem.cpp">
+      <Filter>SolEngine\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,9 +146,6 @@
     <ClInclude Include="SolRenderer.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleRenderSystem.hpp">
-      <Filter>SolEngine</Filter>
-    </ClInclude>
     <ClInclude Include="Constants.hpp">
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
@@ -160,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="SolTime.hpp">
       <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleRenderSystem.hpp">
+      <Filter>SolEngine\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

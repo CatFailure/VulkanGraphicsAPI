@@ -8,6 +8,7 @@
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Interface;
+using namespace SolEngine::Rendering;
 
 namespace SolEngine
 {

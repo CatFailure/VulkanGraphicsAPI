@@ -1,7 +1,7 @@
 #include "pch.hpp"
 #include "SimpleRenderSystem.hpp"
 
-namespace SolEngine
+namespace SolEngine::Rendering
 {
     SimpleRenderSystem::SimpleRenderSystem(SolDevice& rSolDevice, 
                                            VkRenderPass renderPass)

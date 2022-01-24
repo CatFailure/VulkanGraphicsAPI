@@ -1,5 +1,10 @@
 #pragma once
-class SolTime
-{
-};
 
+namespace SolEngine
+{
+	class SolTime
+	{
+	public:
+	private:
+	};
+}
