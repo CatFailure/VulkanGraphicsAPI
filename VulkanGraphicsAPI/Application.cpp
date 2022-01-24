@@ -120,10 +120,8 @@ namespace SolEngine
         const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
         const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
         const float aspectRatio = _solRenderer.GetAspectRatio();
-        SolCamera camera{};
 
-        //camera.SetOrthographicProjection(-aspectRatio, aspectRatio, -1, 1, -1, 1);
-        camera.SetPerspectiveProjection(50.f, aspectRatio, .1f, 10.f);
+        _solCamera.SetPerspectiveProjection(50.f, aspectRatio, .1f, 10.f);
 
         if (commandBuffer == nullptr)
         {
@@ -132,7 +130,7 @@ namespace SolEngine
 
         _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-        renderSystem.RenderGameObjects(camera, commandBuffer, _gameObjects);
+        renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
 
         _solRenderer.EndSwapchainRenderPass(commandBuffer);
         _solRenderer.EndFrame();

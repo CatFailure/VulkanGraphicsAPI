@@ -34,6 +34,7 @@ namespace SolEngine
 
         ApplicationData _appData;
 
+        SolCamera   _solCamera{};
         SolWindow   _solWindow;
         SolDevice   _solDevice;
         SolRenderer _solRenderer;
