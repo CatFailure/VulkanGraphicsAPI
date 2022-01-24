@@ -28,10 +28,10 @@ namespace SolEngine
 
         void CreateGLFWWindow();
 
-        Vector2u _winDimensions;
-        bool     _isFramebufferResized{ false };
+        Vector2u _winDimensions;                    // Window Dimensions
+        bool     _isFramebufferResized{ false };    // Was the window resized?
 
-        std::string _winTitle{ NULL };
-        GLFWwindow *_pWindow{ NULL };
+        std::string _winTitle{ NULL };  // Application Window Title
+        GLFWwindow *_pWindow{ NULL };   // Application Window
     };
 }
