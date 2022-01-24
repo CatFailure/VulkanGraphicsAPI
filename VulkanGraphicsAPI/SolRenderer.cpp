@@ -201,8 +201,10 @@ namespace SolEngine
 
 	void SolRenderer::PrintDeviceMemoryCapabilities()
 	{
+        const VkPhysicalDevice &physicalDevice = _rSolDevice.GetPhysicalDevice();
+
         // Query device for memory count
-        vkGetPhysicalDeviceQueueFamilyProperties(_rSolDevice.PhysicalDevice(),
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice,
                                                  &_physDeviceQueueFamilyCount,
                                                  NULL);
 
@@ -210,7 +212,7 @@ namespace SolEngine
         std::vector<VkQueueFamilyProperties> queueFamilyProperties(_physDeviceQueueFamilyCount);
 
         // Retrieve properties
-        vkGetPhysicalDeviceQueueFamilyProperties(_rSolDevice.PhysicalDevice(),
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice,
                                                  &_physDeviceQueueFamilyCount,
                                                  &queueFamilyProperties.at(0));
 
@@ -255,12 +257,12 @@ namespace SolEngine
         const VkCommandBufferAllocateInfo commandBufferAllocateInfo
         {
             .sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-            .commandPool        = _rSolDevice.CommandPool(),
+            .commandPool        = _rSolDevice.GetCommandPool(),
             .level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
             .commandBufferCount = static_cast<uint32_t>(_commandBuffers.size())
         };
 
-        const VkResult result = vkAllocateCommandBuffers(_rSolDevice.Device(),
+        const VkResult result = vkAllocateCommandBuffers(_rSolDevice.GetDevice(),
                                                          &commandBufferAllocateInfo,
                                                          _commandBuffers.data());
 
@@ -269,8 +271,8 @@ namespace SolEngine
 
     void SolRenderer::FreeCommandBuffers()
     {
-        vkFreeCommandBuffers(_rSolDevice.Device(), 
-                             _rSolDevice.CommandPool(),
+        vkFreeCommandBuffers(_rSolDevice.GetDevice(), 
+                             _rSolDevice.GetCommandPool(),
                              static_cast<uint32_t>(_commandBuffers.size()), 
                              _commandBuffers.data());
 
@@ -292,7 +294,7 @@ namespace SolEngine
 
         // Wait until the current Swapchain is no longer being used
         // before creating a new one.
-        vkDeviceWaitIdle(_rSolDevice.Device());
+        vkDeviceWaitIdle(_rSolDevice.GetDevice());
 
         // Check if there's an old Swapchain to be passed
         if (_pSolSwapchain == nullptr)

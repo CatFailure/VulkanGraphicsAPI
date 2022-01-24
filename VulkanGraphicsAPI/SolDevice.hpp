@@ -29,13 +29,16 @@ namespace SolEngine
         ~SolDevice();
 
         // Public Accessors
-        VkInstance       Instance()		  const { return _vkInstance; }
-        VkDevice         Device()		  const { return _vkDevice; }
-        VkPhysicalDevice PhysicalDevice() const { return _vkPhysicalDevice; }
-        VkSurfaceKHR     Surface()		  const { return _vkSurface; }
-        VkCommandPool    CommandPool()	  const { return _vkCommandPool; }
-        VkQueue          GraphicsQueue()  const { return _vkGraphicsQueue; }
-        VkQueue          PresentQueue()   const { return _vkPresentQueue; }
+        VkInstance       GetInstance()		        const { return _vkInstance; }
+        VkDevice         GetDevice()		        const { return _vkDevice; }
+        VkPhysicalDevice GetPhysicalDevice()        const { return _vkPhysicalDevice; }
+        VkSurfaceKHR     GetSurface()		        const { return _vkSurface; }
+        VkCommandPool    GetCommandPool()	        const { return _vkCommandPool; }
+        VkQueue          GetGraphicsQueue()         const { return _vkGraphicsQueue; }
+        VkQueue          GetPresentQueue()          const { return _vkPresentQueue; }
+        uint32_t         GetEnabledLayerCount()	    const { return static_cast<uint32_t>(_enabledLayerNames.size()); }
+        uint32_t         GetEnabledExtensionCount() const { return static_cast<uint32_t>(_enabledExtensionNames.size()); }
+        uint32_t         GetDeviceExtensionCount()  const { return static_cast<uint32_t>(_logicalDeviceExtensions.size()); }
 
         void CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, VkMemoryPropertyFlags properties, VkImage &rImage, VkDeviceMemory &rImageMemory);
 
@@ -47,9 +50,7 @@ namespace SolEngine
         // Buffer Helper Functions
         void CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
 
-        uint32_t EnabledLayerCount()	 const { return static_cast<uint32_t>(_enabledLayerNames.size()); }
-        uint32_t EnabledExtensionCount() const { return static_cast<uint32_t>(_enabledExtensionNames.size()); }
-        uint32_t DeviceExtensionCount()  const { return static_cast<uint32_t>(_logicalDeviceExtensions.size()); }
+        
 
         // Inherited via IDisposable
         virtual void Dispose() override;

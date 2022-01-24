@@ -7,7 +7,7 @@ int main()
 {
 	ApplicationData appData
 	{
-		.windowTitle	  = "Hello Vulkan!",
+		.windowTitle	  = "[Dev] SolClock deltaTime",
 		.windowClassName  = L"VulkanWindowClass",
 		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",

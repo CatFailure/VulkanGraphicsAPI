@@ -197,9 +197,9 @@ namespace SolEngine
             .pNext                   = NULL,								    // Mandatory set
             .flags                   = 0,									    // Mandatory set
             .pApplicationInfo        = &applicationInfo,					    // Pass application info instance
-            .enabledLayerCount       = EnabledLayerCount(),	                    // Number of enabled layers
+            .enabledLayerCount       = GetEnabledLayerCount(),	                // Number of enabled layers
             .ppEnabledLayerNames     = _enabledLayerNames.data(),               // Specified layer names
-            .enabledExtensionCount   = EnabledExtensionCount(),                 // Number of enabled extensions
+            .enabledExtensionCount   = GetEnabledExtensionCount(),              // Number of enabled extensions
             .ppEnabledExtensionNames = _enabledExtensionNames.data(),           // Specified extension names
         };
 
@@ -303,9 +303,9 @@ namespace SolEngine
             .sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
             .queueCreateInfoCount    = static_cast<uint32_t>(deviceQueueCreateInfos.size()),
             .pQueueCreateInfos       = deviceQueueCreateInfos.data(),
-            .enabledLayerCount       = EnabledLayerCount(),
+            .enabledLayerCount       = GetEnabledLayerCount(),
             .ppEnabledLayerNames     = _enabledLayerNames.data(),
-            .enabledExtensionCount   = DeviceExtensionCount(),
+            .enabledExtensionCount   = GetDeviceExtensionCount(),
             .ppEnabledExtensionNames = _logicalDeviceExtensions.data(),
             .pEnabledFeatures        = &deviceFeatures
         };
