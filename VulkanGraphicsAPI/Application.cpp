@@ -119,6 +119,8 @@ namespace SolEngine
     {
         const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
         const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
+        SolCamera camera{};
+        camera.SetOrthographicProjection(-1, 1, -1, 1, -1, 1);
 
         if (commandBuffer == nullptr)
         {
@@ -127,7 +129,7 @@ namespace SolEngine
 
         _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-        renderSystem.RenderGameObjects(commandBuffer, _gameObjects);
+        renderSystem.RenderGameObjects(camera, commandBuffer, _gameObjects);
 
         _solRenderer.EndSwapchainRenderPass(commandBuffer);
         _solRenderer.EndFrame();

@@ -2,6 +2,7 @@
 #include "SolDevice.hpp"
 #include "SolGameObject.hpp"
 #include "SolPipeline.hpp"
+#include "SolCamera.hpp"
 
 namespace SolEngine
 {
@@ -12,7 +13,7 @@ namespace SolEngine
         SimpleRenderSystem(SolDevice &rSolDevice, VkRenderPass renderPass);
         ~SimpleRenderSystem();
 
-        void RenderGameObjects(const VkCommandBuffer commandBuffer, const std::vector<SolGameObject> &gameObjects) const;
+        void RenderGameObjects(const SolCamera &solCamera, const VkCommandBuffer commandBuffer, const std::vector<SolGameObject> &gameObjects) const;
 
     private:
         // Inherited via IDisposable

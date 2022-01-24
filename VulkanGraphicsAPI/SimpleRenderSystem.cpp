@@ -16,8 +16,9 @@ namespace SolEngine
         Dispose();
     }
 
-    void SimpleRenderSystem::RenderGameObjects(const VkCommandBuffer commandBuffer,
-                                               const std::vector<SolGameObject>& gameObjects) const
+    void SimpleRenderSystem::RenderGameObjects(const SolCamera &solCamera,
+                                               const VkCommandBuffer commandBuffer, 
+                                               const std::vector<SolGameObject> &gameObjects) const
     {
         _pSolPipeline->Bind(commandBuffer);
 
@@ -27,7 +28,7 @@ namespace SolEngine
 
             const SimplePushConstantData pushConstantData
             {
-                .transform = gameObject.transform.TransformMatrix(),
+                .transform = solCamera.GetProjection() * gameObject.transform.TransformMatrix(),
                 .colour    = gameObject.GetColour()
             };
 
