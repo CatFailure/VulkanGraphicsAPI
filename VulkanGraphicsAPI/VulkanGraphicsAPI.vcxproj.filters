@@ -34,6 +34,9 @@
     <Filter Include="SolEngine\Rendering">
       <UniqueIdentifier>{ce079ae5-79af-486c-bcdd-02284c9a3d77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\Events">
+      <UniqueIdentifier>{bbfb351e-fa11-421b-bd12-c61f318a6c64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="SimpleRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SolEvent.cpp">
+      <Filter>SolEngine\Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="SimpleRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SolEvent.hpp">
+      <Filter>SolEngine\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
