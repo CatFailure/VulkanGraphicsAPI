@@ -38,7 +38,7 @@ namespace SolEngine
 
     void SolModel::Dispose()
     {
-        const VkDevice &device = _rSolDevice.Device();
+        const VkDevice &device = _rSolDevice.GetDevice();
 
         vkDestroyBuffer(device,
                         _vkVertexBuffer, 
@@ -67,7 +67,7 @@ namespace SolEngine
         // and point pBufferData to beginning of mapped memory range
         void *pBufferData;
 
-        vkMapMemory(_rSolDevice.Device(), 
+        vkMapMemory(_rSolDevice.GetDevice(), 
                     _vkVertexBufferMemory,
                     0,
                     bufferSize, 
@@ -79,7 +79,7 @@ namespace SolEngine
                vertices.data(), 
                static_cast<uint32_t>(bufferSize));
 
-        vkUnmapMemory(_rSolDevice.Device(), 
+        vkUnmapMemory(_rSolDevice.GetDevice(), 
                       _vkVertexBufferMemory);
     }
 }

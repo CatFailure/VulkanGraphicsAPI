@@ -35,7 +35,7 @@ namespace SolEngine
         }
 
         // Make CPU wait until all GPU operations have completed.
-        vkDeviceWaitIdle(_solDevice.Device());
+        vkDeviceWaitIdle(_solDevice.GetDevice());
     }
 
     std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 

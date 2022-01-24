@@ -49,7 +49,7 @@ namespace SolEngine
 
     void SimpleRenderSystem::Dispose()
     {
-        vkDestroyPipelineLayout(_rSolDevice.Device(), 
+        vkDestroyPipelineLayout(_rSolDevice.GetDevice(), 
                                 _pipelineLayout, 
                                 nullptr);
     }
@@ -72,7 +72,7 @@ namespace SolEngine
             .pPushConstantRanges    = &pushConstantRange
         };
 
-        const VkResult result = vkCreatePipelineLayout(_rSolDevice.Device(),
+        const VkResult result = vkCreatePipelineLayout(_rSolDevice.GetDevice(),
                                                        &pipelineLayoutCreateInfo,
                                                        NULL,
                                                        &_pipelineLayout);
