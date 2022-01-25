@@ -167,15 +167,17 @@ namespace SolEngine
         // Staging buffers act as a "middle man" in the Device 
         // when copying data from Host to Device Local Memory
         //   Host (CPU)              |              Device (GPU)
-        //                   Copy to temp 
-        // ===============  Staging Buffer -> =========================
-        // | void *pData |oooooooooooooooooooo| Staging Buffer Memory |
+        // 
+        //                    Copy to temp 
+        // ===============   Staging Buffer   =========================
+        // | void *pData |------------------->| Staging Buffer Memory |
         // ===============                    =========================
-        //                                                | CopyBuffer()
-        //                                                V
-        //                                  ==============================
-        //                                  | Vertex/Index Buffer Memory |
-        //                                  ==============================
+        //          \                                     | CopyBuffer()
+        //           ----XX----                           V
+        //              ¬      \            ==============================
+        //   Can't map Host      ---------> | Vertex/Index Buffer Memory |
+        //   Memory directly                ==============================
+        //   to Device Local Memory!         (Optimal Device Local Memory)
 
         CreateBuffer(bufferSize, 
                      VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
