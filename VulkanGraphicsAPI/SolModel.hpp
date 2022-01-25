@@ -10,7 +10,9 @@ namespace SolEngine
     class SolModel : public IDisposable
     {
     public:
-        SolModel(SolDevice &rSolDevice, const std::vector<Vertex> &vertices);
+        typedef uint32_t Index_t;
+
+        SolModel(SolDevice &rSolDevice, const std::vector<Vertex> &vertices, const std::vector<Index_t> &indices);
         ~SolModel();
 
         void Bind(const VkCommandBuffer commandBuffer);
@@ -20,11 +22,17 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         void CreateVertexBuffers(const std::vector<Vertex> &vertices);
+        void CreateIndexBuffers(const std::vector<Index_t> &indices);
 
         SolDevice &_rSolDevice;
 
-        VkBuffer	   _vkVertexBuffer;
-        VkDeviceMemory _vkVertexBufferMemory;
+        VkBuffer	   _vertexBuffer;
+        VkDeviceMemory _vertexBufferMemory;
         uint32_t	   _vertexCount;
+
+        bool           _hasIndexBuffer{ false };    // Allows a model to only contain vertex info with no indices
+        VkBuffer	   _indexBuffer;
+        VkDeviceMemory _indexBufferMemory;
+        uint32_t	   _indexCount;
     };
 }
