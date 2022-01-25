@@ -9,6 +9,7 @@ namespace SolEngine
         : _rSolDevice(rSolDevice)
     {
         CreateVertexBuffers(vertices);
+        CreateIndexBuffer(indices);
     }
 
     SolModel::~SolModel()
@@ -40,6 +41,8 @@ namespace SolEngine
         if (_hasIndexBuffer)
         {
             vkCmdDrawIndexed(commandBuffer, _indexCount, 1, 0, 0, 0);
+
+            return;
         }
 
         vkCmdDraw(commandBuffer, _vertexCount, 1, 0, 0);
@@ -107,7 +110,7 @@ namespace SolEngine
                       _vertexBufferMemory);
     }
 
-    void SolModel::CreateIndexBuffers(const std::vector<Index_t> &indices)
+    void SolModel::CreateIndexBuffer(const std::vector<Index_t> &indices)
     {
         _indexCount = static_cast<uint32_t>(indices.size());
 
