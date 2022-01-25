@@ -49,6 +49,7 @@ namespace SolEngine
 
         // Buffer Helper Functions
         void CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
+        void CreateStagingBuffer(VkBuffer *pOutBuffer, VkDeviceMemory *pOutBufferMemory, const VkDeviceSize bufferSize, const void *pSrcData);
         void CopyBuffer(const VkBuffer srcBuffer, const VkBuffer dstBuffer, const VkDeviceSize size);
 
         /// <summary>

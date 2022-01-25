@@ -157,6 +157,37 @@ namespace SolEngine
                            0);
     }
 
+    void SolDevice::CreateStagingBuffer(VkBuffer *pOutBuffer, 
+                                        VkDeviceMemory *pOutBufferMemory, 
+                                        const VkDeviceSize bufferSize,
+                                        const void* pSrcData)
+    {
+        CreateBuffer(bufferSize, 
+                     VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
+                     VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                     *pOutBuffer, 
+                     *pOutBufferMemory);
+
+        // Create a region of host memory mapped to device (staging buffer) memory
+        // - and point pBufferData to beginning of mapped memory range
+        void *pBufferData;
+
+        vkMapMemory(_device, 
+                    *pOutBufferMemory,
+                    0,
+                    bufferSize, 
+                    0,
+                    &pBufferData);
+
+        // Copy vertices data into the host mapped memory region
+        memcpy(pBufferData, 
+               pSrcData, 
+               static_cast<uint32_t>(bufferSize));
+
+        vkUnmapMemory(_device, 
+                      *pOutBufferMemory);
+    }
+
     void SolDevice::CopyBuffer(const VkBuffer srcBuffer, 
                                const VkBuffer dstBuffer, 
                                const VkDeviceSize size)
