@@ -170,7 +170,7 @@ namespace SolEngine
         // 
         //                    Copy to temp 
         // ===============   Staging Buffer   =========================
-        // | void *pData |------------------->| Staging Buffer Memory |
+        // | void *pData | -----------------> | Staging Buffer Memory |
         // ===============                    =========================
         //          \                                     | CopyBuffer()
         //           ----XX----                           V

@@ -19,10 +19,10 @@ namespace SolEngine
 
     void SolModel::Bind(const VkCommandBuffer commandBuffer)
     {
-        VkBuffer     buffers[]{ _vertexBuffer };
-        VkDeviceSize offsets[]{ 0 };
+        VkBuffer     vertexBuffers[]{ _vertexBuffer };
+        VkDeviceSize offsets[]      { 0 };
 
-        vkCmdBindVertexBuffers(commandBuffer, 0, 1, buffers, offsets);
+        vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
 
         if (!_hasIndexBuffer)
         {
