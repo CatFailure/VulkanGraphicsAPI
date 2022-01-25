@@ -49,7 +49,13 @@ namespace SolEngine
 
         // Buffer Helper Functions
         void CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
+
+        /// <summary>
+        /// Creates a Staging Buffer in Device Memory for copying data to Device Local Memory.
+        /// Best for data that is set once and doesn't change.
+        /// </summary>
         void CreateStagingBuffer(VkBuffer *pOutBuffer, VkDeviceMemory *pOutBufferMemory, const VkDeviceSize bufferSize, const void *pSrcData);
+
         void CopyBuffer(const VkBuffer srcBuffer, const VkBuffer dstBuffer, const VkDeviceSize size);
 
         /// <summary>
