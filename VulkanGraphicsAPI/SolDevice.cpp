@@ -158,7 +158,7 @@ namespace SolEngine
     }
 
     void SolDevice::CopyBuffer(const VkBuffer srcBuffer, 
-                               VkBuffer dstBuffer, 
+                               const VkBuffer dstBuffer, 
                                const VkDeviceSize size)
     {
         const VkCommandBuffer oneTimeCommandBuffer = BeginOneTimeCommandBuffer();
@@ -173,6 +173,14 @@ namespace SolEngine
         vkCmdCopyBuffer(oneTimeCommandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
 
         EndOneTimeCommandBuffer(oneTimeCommandBuffer);
+    }
+
+    void SolDevice::DisposeBuffer(const VkBuffer buffer, 
+                                  const VkDeviceMemory memory,
+                                  const VkAllocationCallbacks *pAllocator)
+    {
+        vkDestroyBuffer(_device, buffer, pAllocator);
+        vkFreeMemory(_device, memory, pAllocator);
     }
 
     void SolDevice::Dispose()
@@ -382,7 +390,9 @@ namespace SolEngine
         };
 
         VkCommandBuffer commandBuffer;
-        vkAllocateCommandBuffers(_device, &allocateInfo, &commandBuffer);
+
+        DBG_ASSERT_VULKAN_MSG(vkAllocateCommandBuffers(_device, &allocateInfo, &commandBuffer),
+                              "Failed to allocate Command Buffers!");
 
         const VkCommandBufferBeginInfo beginInfo
         {
@@ -390,10 +400,13 @@ namespace SolEngine
             .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
         };
 
+        DBG_ASSERT_VULKAN_MSG(vkBeginCommandBuffer(commandBuffer, &beginInfo), 
+                              "Failed to begin Command Buffer!");
+
         return commandBuffer;
     }
 
-    void SolDevice::EndOneTimeCommandBuffer(VkCommandBuffer commandBuffer)
+    void SolDevice::EndOneTimeCommandBuffer(const VkCommandBuffer commandBuffer)
     {
         vkEndCommandBuffer(commandBuffer);
 

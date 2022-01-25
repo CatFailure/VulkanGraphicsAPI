@@ -50,16 +50,8 @@ namespace SolEngine
 
     void SolModel::Dispose()
     {
-        const VkDevice &device = _rSolDevice.GetDevice();
-
         // Vertex-buffer/memory
-        vkDestroyBuffer(device,
-                        _vertexBuffer, 
-                        NULL);
-
-        vkFreeMemory(device, 
-                     _vertexBufferMemory,
-                     NULL);
+        _rSolDevice.DisposeBuffer(_vertexBuffer, _vertexBufferMemory);
 
         if (!_hasIndexBuffer)
         {
@@ -67,13 +59,7 @@ namespace SolEngine
         }
 
         // Index-buffer/memory
-        vkDestroyBuffer(device,
-                        _indexBuffer, 
-                        NULL);
-
-        vkFreeMemory(device, 
-                     _indexBufferMemory,
-                     NULL);
+        _rSolDevice.DisposeBuffer(_indexBuffer, _indexBufferMemory);
     }
 
     void SolModel::CreateVertexBuffers(const std::vector<Vertex> &vertices)
@@ -82,7 +68,6 @@ namespace SolEngine
 
         DBG_ASSERT_MSG(!(_vertexCount < 3), "Vertex count must be at least 3.");
 
-        const VkDevice    &device     = _rSolDevice.GetDevice();
         const VkDeviceSize bufferSize = sizeof(vertices.at(0)) * _vertexCount;
 
         VkBuffer stagingBuffer;
@@ -120,9 +105,7 @@ namespace SolEngine
                                  _vertexBufferMemory);
 
         _rSolDevice.CopyBuffer(stagingBuffer, _vertexBuffer, bufferSize);
-
-        vkDestroyBuffer(device, stagingBuffer, NULL);
-        vkFreeMemory(device, stagingBufferMemory, NULL);
+        _rSolDevice.DisposeBuffer(stagingBuffer, stagingBufferMemory);
     }
 
     void SolModel::CreateIndexBuffer(const std::vector<Index_t> &indices)
@@ -138,13 +121,35 @@ namespace SolEngine
 
         _hasIndexBuffer = true;
 
-        const VkDevice    &device     = _rSolDevice.GetDevice();
         const VkDeviceSize bufferSize = sizeof(indices.at(0)) * _indexCount;
 
         VkBuffer stagingBuffer;
         VkDeviceMemory stagingBufferMemory;
 
-        // TODO: copy staging buffer into index buffer like in vertex buffer.
+        _rSolDevice.CreateBuffer(bufferSize, 
+                                 VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+                                 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,  // Host = CPU, Device = GPU
+                                 stagingBuffer,
+                                 stagingBufferMemory);
+
+        // Create a region of host memory mapped to device memory
+        // and point pBufferData to beginning of mapped memory range
+        void *pBufferData;
+
+        vkMapMemory(_rSolDevice.GetDevice(), 
+                    stagingBufferMemory,
+                    0,
+                    bufferSize, 
+                    0,
+                    &pBufferData);
+
+        // Copy vertices data into the host mapped memory region
+        memcpy(pBufferData, 
+               indices.data(), 
+               static_cast<uint32_t>(bufferSize));
+
+        vkUnmapMemory(_rSolDevice.GetDevice(), 
+                      stagingBufferMemory);
 
         _rSolDevice.CreateBuffer(bufferSize, 
                                  VK_BUFFER_USAGE_INDEX_BUFFER_BIT,                                            // Create a buffer that will hold Index Input Data
@@ -152,23 +157,7 @@ namespace SolEngine
                                  _indexBuffer,
                                  _indexBufferMemory);
 
-        // Create a region of host memory mapped to device memory
-        // and point pBufferData to beginning of mapped memory range
-        void *pBufferData;
-
-        vkMapMemory(_rSolDevice.GetDevice(), 
-                    _indexBufferMemory,
-                    0,
-                    bufferSize, 
-                    0,
-                    &pBufferData);
-
-        // Copy indices data into the host mapped memory region
-        memcpy(pBufferData, 
-               indices.data(), 
-               static_cast<uint32_t>(bufferSize));
-
-        vkUnmapMemory(_rSolDevice.GetDevice(), 
-                      _indexBufferMemory);
+        _rSolDevice.CopyBuffer(stagingBuffer, _indexBuffer, bufferSize);
+        _rSolDevice.DisposeBuffer(stagingBuffer, stagingBufferMemory);
     }
 }

@@ -22,7 +22,7 @@ namespace SolEngine
                                                                               const char *,
                                                                               void *);
 
-    class SolDevice : public IDisposable
+    class SolDevice : private IDisposable
     {
     public:
         SolDevice(SolWindow &rSolWindow, ApplicationData &rAppData);
@@ -49,11 +49,17 @@ namespace SolEngine
 
         // Buffer Helper Functions
         void CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
-        void CopyBuffer(const VkBuffer srcBuffer, VkBuffer dstBuffer, const VkDeviceSize size);
+        void CopyBuffer(const VkBuffer srcBuffer, const VkBuffer dstBuffer, const VkDeviceSize size);
 
+        /// <summary>
+        /// Destroys the buffer and frees it's memory.
+        /// </summary>
+        void DisposeBuffer(const VkBuffer buffer, const VkDeviceMemory memory, const VkAllocationCallbacks *pAllocator = NULL);
+
+    private:
         // Inherited via IDisposable
         virtual void Dispose() override;
-    private:
+
         void CreateVulkanInstance();
         void CreateVulkanSurface() { _rSolWindow.CreateWindowSurface(_instance, &_surface); };
         void CreateVulkanPhysicalDevice();
@@ -61,7 +67,7 @@ namespace SolEngine
         void CreateVulkanCommandPool();
 
         VkCommandBuffer BeginOneTimeCommandBuffer();
-        void            EndOneTimeCommandBuffer(VkCommandBuffer commandBuffer);
+        void            EndOneTimeCommandBuffer(const VkCommandBuffer commandBuffer);
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
         void CreateVulkanDebugCallback();
