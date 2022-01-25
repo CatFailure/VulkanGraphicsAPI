@@ -179,6 +179,7 @@ namespace SolEngine
         //   Memory directly                ==============================
         //   to Device Local Memory!         (Optimal Device Local Memory)
 
+        // Create the Staging Buffer...
         CreateBuffer(bufferSize, 
                      VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
                      VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
@@ -195,13 +196,14 @@ namespace SolEngine
                                           bufferSize, 
                                           0,
                                           &pBufferData),
-                              "Failed to map memory to buffer!");
+                              "Failed to map memory to Staging Buffer!");
 
-        // Copy vertices data into the host mapped memory region
+        // Copy data into the Host mapped memory region (Staging Buffer)
         memcpy(pBufferData, 
                pSrcData, 
                static_cast<uint32_t>(bufferSize));
 
+        // Clean up...
         vkUnmapMemory(_device, 
                       *pOutBufferMemory);
     }
