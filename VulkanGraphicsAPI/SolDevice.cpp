@@ -442,7 +442,11 @@ namespace SolEngine
 
     void SolDevice::EndOneTimeCommandBuffer(const VkCommandBuffer commandBuffer)
     {
-        vkEndCommandBuffer(commandBuffer);
+        VkResult result;
+
+        result = vkEndCommandBuffer(commandBuffer);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to end Command Buffer!");
 
         const VkSubmitInfo submitInfo
         {
@@ -451,8 +455,13 @@ namespace SolEngine
             .pCommandBuffers    = &commandBuffer
         };
 
-        vkQueueSubmit(_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
-        vkQueueWaitIdle(_graphicsQueue);
+        result = vkQueueSubmit(_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Submit Graphics Queue!");
+
+        result = vkQueueWaitIdle(_graphicsQueue);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Queue Wait Idle failed!");
 
         vkFreeCommandBuffers(_device, _commandPool, 1, &commandBuffer);
     }
@@ -469,7 +478,7 @@ namespace SolEngine
 
         DBG_ASSERT(vkCreateDebugReportCallbackEXT);
 
-        VulkanDebugReportCallback_t pVulkanDebugReportCallback = &SolDevice::VulkanDebugReportCallback;
+        const VulkanDebugReportCallback_t pVulkanDebugReportCallback = &SolDevice::VulkanDebugReportCallback;
 
         // Capture errors
         VkDebugReportCallbackCreateInfoEXT callbackCreateInfo
@@ -520,6 +529,7 @@ namespace SolEngine
 
     SwapchainSupportDetails SolDevice::QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice)
     {
+        VkResult result;
         SwapchainSupportDetails supportDetails{};
         uint32_t surfaceFormatCount, presentModeCount;
 
@@ -528,10 +538,12 @@ namespace SolEngine
                                                   &supportDetails.surfaceCapabilities);
 
         // Query for surface format count
-        vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice,
-                                             _surface,
-                                             &surfaceFormatCount,
-                                             NULL);
+        result = vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice,
+                                                      _surface,
+                                                      &surfaceFormatCount,
+                                                      NULL);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to get Physical Device Surface Formats!");
 
         if (surfaceFormatCount != 0)
         {
@@ -544,10 +556,12 @@ namespace SolEngine
         }
 
         // Query for present mode count
-        vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice,
-                                                  _surface,
-                                                  &presentModeCount,
-                                                  NULL);
+        result = vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice,
+                                                           _surface,
+                                                           &presentModeCount,
+                                                           NULL);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to get Physical Device Surface Present Modes!");
 
         if (presentModeCount != 0)
         {
@@ -596,10 +610,12 @@ namespace SolEngine
             }
 
             VkBool32 isPresentSupported = false;
-            vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, 
-                                                 i,
-                                                 _surface, 
-                                                 &isPresentSupported);
+
+            DBG_ASSERT_VULKAN_MSG(vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, 
+                                                                       i,
+                                                                       _surface, 
+                                                                       &isPresentSupported), 
+                                  "Failed to get Physical Device Surface Support!");
 
             if (queueFamilyProperties.queueCount > 0 && 
                 isPresentSupported)

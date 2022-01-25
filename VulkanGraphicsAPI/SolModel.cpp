@@ -98,6 +98,7 @@ namespace SolEngine
     {
         _indexCount = static_cast<uint32_t>(indices.size());
 
+        // Does the model only contain Vertex data?
         if (_indexCount == 0)
         {
             _hasIndexBuffer = false;
