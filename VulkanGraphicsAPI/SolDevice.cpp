@@ -166,7 +166,7 @@ namespace SolEngine
     {
         // Staging buffers act as a "middle man" in the Device 
         // when copying data from Host to Device Local Memory
-        //   Host (CPU))             |              Device (GPU)
+        //   Host (CPU)              |              Device (GPU)
         //                   Copy to temp 
         // ===============  Staging Buffer -> =========================
         // | void *pData |oooooooooooooooooooo| Staging Buffer Memory |
