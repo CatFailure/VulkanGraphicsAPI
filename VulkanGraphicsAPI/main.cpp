@@ -7,7 +7,7 @@ int main()
 {
 	ApplicationData appData
 	{
-		.windowTitle	  = "[Dev] SolClock deltaTime",
+		.windowTitle	  = "[Dev] Passing Vertex/Index data via Staging Buffers",
 		.windowClassName  = L"VulkanWindowClass",
 		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",
