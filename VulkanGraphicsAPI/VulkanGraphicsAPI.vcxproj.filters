@@ -48,9 +48,6 @@
     <ClCompile Include="SolDevice.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>SolEngine</Filter>
-    </ClCompile>
     <ClCompile Include="SolSwapchain.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
@@ -90,6 +87,9 @@
     <ClCompile Include="SolEvent.cpp">
       <Filter>SolEngine\Events</Filter>
     </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -103,9 +103,6 @@
     </ClInclude>
     <ClInclude Include="Singleton.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.hpp">
-      <Filter>SolEngine</Filter>
     </ClInclude>
     <ClInclude Include="Vector.hpp">
       <Filter>SolEngine\Math</Filter>
@@ -172,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="SolEvent.hpp">
       <Filter>SolEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

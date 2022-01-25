@@ -1,11 +1,9 @@
 #include "pch.hpp"
 #include "Application.hpp"
 
-using namespace SolEngine;
-
 int main()
 {
-	ApplicationData appData
+	const ApplicationData appData
 	{
 		.windowTitle	  = "[Dev] Passing Vertex/Index data via Staging Buffers",
 		.windowClassName  = L"VulkanWindowClass",
