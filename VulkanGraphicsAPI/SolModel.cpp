@@ -82,20 +82,24 @@ namespace SolEngine
 
         DBG_ASSERT_MSG(!(_vertexCount < 3), "Vertex count must be at least 3.");
 
+        const VkDevice    &device     = _rSolDevice.GetDevice();
         const VkDeviceSize bufferSize = sizeof(vertices.at(0)) * _vertexCount;
 
+        VkBuffer stagingBuffer;
+        VkDeviceMemory stagingBufferMemory;
+
         _rSolDevice.CreateBuffer(bufferSize, 
-                                 VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,                                           // Create a buffer that will hold Vertex Input Data
+                                 VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
                                  VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,  // Host = CPU, Device = GPU
-                                 _vertexBuffer,
-                                 _vertexBufferMemory);
+                                 stagingBuffer,
+                                 stagingBufferMemory);
 
         // Create a region of host memory mapped to device memory
         // and point pBufferData to beginning of mapped memory range
         void *pBufferData;
 
         vkMapMemory(_rSolDevice.GetDevice(), 
-                    _vertexBufferMemory,
+                    stagingBufferMemory,
                     0,
                     bufferSize, 
                     0,
@@ -107,7 +111,18 @@ namespace SolEngine
                static_cast<uint32_t>(bufferSize));
 
         vkUnmapMemory(_rSolDevice.GetDevice(), 
-                      _vertexBufferMemory);
+                      stagingBufferMemory);
+
+        _rSolDevice.CreateBuffer(bufferSize, 
+                                 VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+                                 VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+                                 _vertexBuffer,
+                                 _vertexBufferMemory);
+
+        _rSolDevice.CopyBuffer(stagingBuffer, _vertexBuffer, bufferSize);
+
+        vkDestroyBuffer(device, stagingBuffer, NULL);
+        vkFreeMemory(device, stagingBufferMemory, NULL);
     }
 
     void SolModel::CreateIndexBuffer(const std::vector<Index_t> &indices)
@@ -123,7 +138,13 @@ namespace SolEngine
 
         _hasIndexBuffer = true;
 
+        const VkDevice    &device     = _rSolDevice.GetDevice();
         const VkDeviceSize bufferSize = sizeof(indices.at(0)) * _indexCount;
+
+        VkBuffer stagingBuffer;
+        VkDeviceMemory stagingBufferMemory;
+
+        // TODO: copy staging buffer into index buffer like in vertex buffer.
 
         _rSolDevice.CreateBuffer(bufferSize, 
                                  VK_BUFFER_USAGE_INDEX_BUFFER_BIT,                                            // Create a buffer that will hold Index Input Data

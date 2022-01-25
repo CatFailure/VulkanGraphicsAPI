@@ -29,37 +29,39 @@ namespace SolEngine
         ~SolDevice();
 
         // Public Accessors
-        VkInstance       GetInstance()		        const { return _vkInstance; }
-        VkDevice         GetDevice()		        const { return _vkDevice; }
-        VkPhysicalDevice GetPhysicalDevice()        const { return _vkPhysicalDevice; }
-        VkSurfaceKHR     GetSurface()		        const { return _vkSurface; }
-        VkCommandPool    GetCommandPool()	        const { return _vkCommandPool; }
-        VkQueue          GetGraphicsQueue()         const { return _vkGraphicsQueue; }
-        VkQueue          GetPresentQueue()          const { return _vkPresentQueue; }
+        VkInstance       GetInstance()		        const { return _instance; }
+        VkDevice         GetDevice()		        const { return _device; }
+        VkPhysicalDevice GetPhysicalDevice()        const { return _physicalDevice; }
+        VkSurfaceKHR     GetSurface()		        const { return _surface; }
+        VkCommandPool    GetCommandPool()	        const { return _commandPool; }
+        VkQueue          GetGraphicsQueue()         const { return _graphicsQueue; }
+        VkQueue          GetPresentQueue()          const { return _presentQueue; }
         uint32_t         GetEnabledLayerCount()	    const { return static_cast<uint32_t>(_enabledLayerNames.size()); }
         uint32_t         GetEnabledExtensionCount() const { return static_cast<uint32_t>(_enabledExtensionNames.size()); }
         uint32_t         GetDeviceExtensionCount()  const { return static_cast<uint32_t>(_logicalDeviceExtensions.size()); }
 
         void CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, VkMemoryPropertyFlags properties, VkImage &rImage, VkDeviceMemory &rImageMemory);
 
-        SwapchainSupportDetails QueryPhysicalDeviceSwapchainSupport() { return QuerySwapchainSupport(_vkPhysicalDevice); }
-        QueueFamilyIndices      QueryPhysicalDeviceQueueFamilies()    { return QueryQueueFamilies(_vkPhysicalDevice); }
+        SwapchainSupportDetails QueryPhysicalDeviceSwapchainSupport() { return QuerySwapchainSupport(_physicalDevice); }
+        QueueFamilyIndices      QueryPhysicalDeviceQueueFamilies()    { return QueryQueueFamilies(_physicalDevice); }
         uint32_t                FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
         VkFormat                FindSupportedFormat(const std::vector<VkFormat> &candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
 
         // Buffer Helper Functions
         void CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
-
-        
+        void CopyBuffer(const VkBuffer srcBuffer, VkBuffer dstBuffer, const VkDeviceSize size);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
         void CreateVulkanInstance();
-        void CreateVulkanSurface() { _rSolWindow.CreateWindowSurface(_vkInstance, &_vkSurface); };
+        void CreateVulkanSurface() { _rSolWindow.CreateWindowSurface(_instance, &_surface); };
         void CreateVulkanPhysicalDevice();
         void CreateVulkanDevice();
         void CreateVulkanCommandPool();
+
+        VkCommandBuffer BeginOneTimeCommandBuffer();
+        void            EndOneTimeCommandBuffer(VkCommandBuffer commandBuffer);
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
         void CreateVulkanDebugCallback();
@@ -75,13 +77,13 @@ namespace SolEngine
         SolWindow       &_rSolWindow;
         ApplicationData &_rAppData;
 
-        VkInstance       _vkInstance      { NULL };
-        VkDevice         _vkDevice        { NULL };
-        VkPhysicalDevice _vkPhysicalDevice{ NULL };
-        VkSurfaceKHR     _vkSurface       { NULL };
-        VkCommandPool    _vkCommandPool   { NULL };
-        VkQueue          _vkGraphicsQueue { NULL };
-        VkQueue          _vkPresentQueue  { NULL };
+        VkInstance       _instance      { NULL };
+        VkDevice         _device        { NULL };
+        VkPhysicalDevice _physicalDevice{ NULL };
+        VkSurfaceKHR     _surface       { NULL };
+        VkCommandPool    _commandPool   { NULL };
+        VkQueue          _graphicsQueue { NULL };
+        VkQueue          _presentQueue  { NULL };
 
 #if  _DEBUG_LAPTOP
         std::vector<const char*> _enabledLayerNames{};                           // Laptop

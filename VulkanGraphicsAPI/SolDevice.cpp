@@ -32,7 +32,7 @@ namespace SolEngine
                                         VkImage &rImage, 
                                         VkDeviceMemory &rImageMemory)
     {
-        VkResult result = vkCreateImage(_vkDevice, 
+        VkResult result = vkCreateImage(_device, 
                                         &imageCreateInfo,
                                         NULL, 
                                         &rImage);
@@ -41,7 +41,7 @@ namespace SolEngine
 
         VkMemoryRequirements imageMemoryRequirements{};
 
-        vkGetImageMemoryRequirements(_vkDevice, 
+        vkGetImageMemoryRequirements(_device, 
                                      rImage,
                                      &imageMemoryRequirements);
 
@@ -53,14 +53,14 @@ namespace SolEngine
                                               properties)
         };
 
-        result = vkAllocateMemory(_vkDevice, 
+        result = vkAllocateMemory(_device, 
                                   &memoryAllocateInfo,
                                   NULL,
                                   &rImageMemory);
 
         DBG_ASSERT_VULKAN_MSG(result, "Failed to allocate Image Memory.");
 
-        result = vkBindImageMemory(_vkDevice, 
+        result = vkBindImageMemory(_device, 
                                    rImage,
                                    rImageMemory,
                                    0);
@@ -72,7 +72,7 @@ namespace SolEngine
     {
         VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties{};
 
-        vkGetPhysicalDeviceMemoryProperties(_vkPhysicalDevice,
+        vkGetPhysicalDeviceMemoryProperties(_physicalDevice,
                                             &physicalDeviceMemoryProperties);
 
         for (uint32_t i(0); i < physicalDeviceMemoryProperties.memoryTypeCount; ++i)
@@ -95,7 +95,7 @@ namespace SolEngine
         {
             VkFormatProperties properties{};
 
-            vkGetPhysicalDeviceFormatProperties(_vkPhysicalDevice, 
+            vkGetPhysicalDeviceFormatProperties(_physicalDevice, 
                                                 format, 
                                                 &properties);
 
@@ -125,13 +125,13 @@ namespace SolEngine
             .sharingMode = VK_SHARING_MODE_EXCLUSIVE
         };
 
-        VkResult result = vkCreateBuffer(_vkDevice, &bufferCreateInfo, NULL, &rBuffer);
+        VkResult result = vkCreateBuffer(_device, &bufferCreateInfo, NULL, &rBuffer);
 
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Buffer.");
 
         VkMemoryRequirements memoryRequirements{};
 
-        vkGetBufferMemoryRequirements(_vkDevice,
+        vkGetBufferMemoryRequirements(_device,
                                       rBuffer, 
                                       &memoryRequirements);
 
@@ -143,7 +143,7 @@ namespace SolEngine
                                               properties)
         };
 
-        result = vkAllocateMemory(_vkDevice, 
+        result = vkAllocateMemory(_device, 
                                   &memoryAllocateInfo, 
                                   NULL,
                                   &rBufferMemory);
@@ -151,18 +151,36 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Allocate Buffer Memory.");
 
         // Bind buffer to allocated memory
-        vkBindBufferMemory(_vkDevice, 
+        vkBindBufferMemory(_device, 
                            rBuffer,
                            rBufferMemory,
                            0);
     }
 
+    void SolDevice::CopyBuffer(const VkBuffer srcBuffer, 
+                               VkBuffer dstBuffer, 
+                               const VkDeviceSize size)
+    {
+        const VkCommandBuffer oneTimeCommandBuffer = BeginOneTimeCommandBuffer();
+
+        const VkBufferCopy copyRegion
+        {
+            .srcOffset = 0,
+            .dstOffset = 0,
+            .size = size
+        };
+
+        vkCmdCopyBuffer(oneTimeCommandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
+
+        EndOneTimeCommandBuffer(oneTimeCommandBuffer);
+    }
+
     void SolDevice::Dispose()
     {
-        vkDestroyCommandPool(_vkDevice, _vkCommandPool, NULL);
-        vkDestroyDevice(_vkDevice, NULL);
-        vkDestroySurfaceKHR(_vkInstance, _vkSurface, NULL);
-        vkDestroyInstance(_vkInstance, NULL);
+        vkDestroyCommandPool(_device, _commandPool, NULL);
+        vkDestroyDevice(_device, NULL);
+        vkDestroySurfaceKHR(_instance, _surface, NULL);
+        vkDestroyInstance(_instance, NULL);
     }
 
     void SolDevice::CreateVulkanInstance()
@@ -205,13 +223,13 @@ namespace SolEngine
 
         const VkResult result = vkCreateInstance(&instanceCreateInfo,
                                                  NULL,
-                                                 &_vkInstance);
+                                                 &_instance);
 
         // Was creation successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Vulkan instance.");
 
         // Is instance handle valid?
-        DBG_ASSERT(_vkInstance != NULL);
+        DBG_ASSERT(_instance != NULL);
     }
 
     void SolDevice::CreateVulkanPhysicalDevice()
@@ -219,7 +237,7 @@ namespace SolEngine
         uint32_t physicalDeviceCount = 0;
 
         // Query how many devices are present
-        VkResult result = vkEnumeratePhysicalDevices(_vkInstance,
+        VkResult result = vkEnumeratePhysicalDevices(_instance,
                                                      &physicalDeviceCount,
                                                      NULL);
 
@@ -231,7 +249,7 @@ namespace SolEngine
 
         std::vector<VkPhysicalDevice> physicalDevices(physicalDeviceCount);
 
-        result = vkEnumeratePhysicalDevices(_vkInstance,
+        result = vkEnumeratePhysicalDevices(_instance,
                                             &physicalDeviceCount,
                                             &physicalDevices.at(0));
 
@@ -244,7 +262,7 @@ namespace SolEngine
         DBG_ASSERT(isOneDevicePresent);
 
         // Use the first available device.
-        _vkPhysicalDevice = physicalDevices.at(0);
+        _physicalDevice = physicalDevices.at(0);
 
         // Print out details of all found devices.
         for (VkPhysicalDevice &rDevice : physicalDevices)
@@ -272,7 +290,7 @@ namespace SolEngine
         std::vector<VkDeviceQueueCreateInfo> deviceQueueCreateInfos;
 
         const float queuePriority(1.0f);
-        const QueueFamilyIndices queueFamilyIndices = QueryQueueFamilies(_vkPhysicalDevice);
+        const QueueFamilyIndices queueFamilyIndices = QueryQueueFamilies(_physicalDevice);
         const std::set<uint32_t> uniqueQueueFamilies
         {
             queueFamilyIndices.graphicsFamily, 
@@ -312,16 +330,16 @@ namespace SolEngine
 
         // Ideally, want to enumerate to find best device.
         // Just use the first for now.
-        const VkResult result = vkCreateDevice(_vkPhysicalDevice,
+        const VkResult result = vkCreateDevice(_physicalDevice,
                                                &deviceCreateInfo,
                                                NULL,
-                                               &_vkDevice);
+                                               &_device);
 
         // Was it successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Logical Device!");
 
-        vkGetDeviceQueue(_vkDevice, queueFamilyIndices.graphicsFamily, 0, &_vkGraphicsQueue);
-        vkGetDeviceQueue(_vkDevice, queueFamilyIndices.presentFamily, 0, &_vkPresentQueue);
+        vkGetDeviceQueue(_device, queueFamilyIndices.graphicsFamily, 0, &_graphicsQueue);
+        vkGetDeviceQueue(_device, queueFamilyIndices.presentFamily, 0, &_presentQueue);
     }
 
     void SolDevice::CreateVulkanCommandPool()
@@ -331,7 +349,7 @@ namespace SolEngine
         const uint32_t queueFamilyIndex = 0;
 
         // Request the device queue to submit work to
-        vkGetDeviceQueue(_vkDevice,
+        vkGetDeviceQueue(_device,
                          queueFamilyIndex,
                          0,
                          &logicalDeviceQueue);
@@ -344,13 +362,52 @@ namespace SolEngine
             .queueFamilyIndex = queueFamilyIndex
         };
 
-        VkResult result = vkCreateCommandPool(_vkDevice,
+        VkResult result = vkCreateCommandPool(_device,
                                               &commandPoolCreateInfo,
                                               NULL,
-                                              &_vkCommandPool);
+                                              &_commandPool);
 
         // Was is successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Command Pool.");
+    }
+
+    VkCommandBuffer SolDevice::BeginOneTimeCommandBuffer()
+    {
+        const VkCommandBufferAllocateInfo allocateInfo
+        {
+            .sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+            .commandPool        = _commandPool,
+            .level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+            .commandBufferCount = 1
+        };
+
+        VkCommandBuffer commandBuffer;
+        vkAllocateCommandBuffers(_device, &allocateInfo, &commandBuffer);
+
+        const VkCommandBufferBeginInfo beginInfo
+        {
+            .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+            .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT
+        };
+
+        return commandBuffer;
+    }
+
+    void SolDevice::EndOneTimeCommandBuffer(VkCommandBuffer commandBuffer)
+    {
+        vkEndCommandBuffer(commandBuffer);
+
+        const VkSubmitInfo submitInfo
+        {
+            .sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+            .commandBufferCount = 1,
+            .pCommandBuffers    = &commandBuffer
+        };
+
+        vkQueueSubmit(_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+        vkQueueWaitIdle(_graphicsQueue);
+
+        vkFreeCommandBuffers(_device, _commandPool, 1, &commandBuffer);
     }
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
@@ -360,7 +417,7 @@ namespace SolEngine
         VkDebugReportCallbackEXT warningCallback{ VK_NULL_HANDLE }, errorCallback{ VK_NULL_HANDLE };
         PFN_vkCreateDebugReportCallbackEXT vkCreateDebugReportCallbackEXT{ NULL };
 
-        *(void **)&vkCreateDebugReportCallbackEXT = vkGetInstanceProcAddr(_vkInstance, 
+        *(void **)&vkCreateDebugReportCallbackEXT = vkGetInstanceProcAddr(_instance, 
                                                                           "vkCreateDebugReportCallbackEXT");
 
         DBG_ASSERT(vkCreateDebugReportCallbackEXT);
@@ -375,7 +432,7 @@ namespace SolEngine
             .pfnCallback = (PFN_vkDebugReportCallbackEXT)&pVulkanDebugReportCallback
         };
 
-        VkResult result = vkCreateDebugReportCallbackEXT(_vkInstance,
+        VkResult result = vkCreateDebugReportCallbackEXT(_instance,
                                                          &callbackCreateInfo,
                                                          nullptr,
                                                          &errorCallback);
@@ -386,7 +443,7 @@ namespace SolEngine
         callbackCreateInfo.flags = VK_DEBUG_REPORT_WARNING_BIT_EXT | VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT;
         callbackCreateInfo.pfnCallback = (PFN_vkDebugReportCallbackEXT)&pVulkanDebugReportCallback;
 
-        result = vkCreateDebugReportCallbackEXT(_vkInstance,
+        result = vkCreateDebugReportCallbackEXT(_instance,
                                                 &callbackCreateInfo,
                                                 nullptr,
                                                 &warningCallback);
@@ -420,12 +477,12 @@ namespace SolEngine
         uint32_t surfaceFormatCount, presentModeCount;
 
         vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice,
-                                                  _vkSurface,
+                                                  _surface,
                                                   &supportDetails.surfaceCapabilities);
 
         // Query for surface format count
         vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice,
-                                             _vkSurface,
+                                             _surface,
                                              &surfaceFormatCount,
                                              NULL);
 
@@ -434,14 +491,14 @@ namespace SolEngine
             supportDetails.imageFormats.resize(surfaceFormatCount);
 
             vkGetPhysicalDeviceSurfaceFormatsKHR(physicalDevice,
-                                                 _vkSurface,
+                                                 _surface,
                                                  &surfaceFormatCount,
                                                  supportDetails.imageFormats.data());
         }
 
         // Query for present mode count
         vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice,
-                                                  _vkSurface,
+                                                  _surface,
                                                   &presentModeCount,
                                                   NULL);
 
@@ -450,7 +507,7 @@ namespace SolEngine
             supportDetails.presentModes.resize(presentModeCount);
 
             vkGetPhysicalDeviceSurfacePresentModesKHR(physicalDevice,
-                                                      _vkSurface,
+                                                      _surface,
                                                       &presentModeCount,
                                                       supportDetails.presentModes.data());
         }
@@ -494,7 +551,7 @@ namespace SolEngine
             VkBool32 isPresentSupported = false;
             vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, 
                                                  i,
-                                                 _vkSurface, 
+                                                 _surface, 
                                                  &isPresentSupported);
 
             if (queueFamilyProperties.queueCount > 0 && 
