@@ -4,9 +4,9 @@
 namespace SolEngine
 {
     SolDevice::SolDevice(SolWindow &rSolWindow,
-                         ApplicationData &rAppData)
+                         const ApplicationData &appData)
         : _rSolWindow(rSolWindow),
-          _rAppData(rAppData)
+          _appData(appData)
     {
         CreateVulkanInstance();
         CreateVulkanSurface();
@@ -28,7 +28,7 @@ namespace SolEngine
     }
 
     void SolDevice::CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, 
-                                        VkMemoryPropertyFlags properties, 
+                                        const VkMemoryPropertyFlags properties, 
                                         VkImage &rImage, 
                                         VkDeviceMemory &rImageMemory)
     {
@@ -68,7 +68,7 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Bind Image Memory.");
     }
 
-    uint32_t SolDevice::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
+    uint32_t SolDevice::FindMemoryType(const uint32_t typeFilter, const VkMemoryPropertyFlags properties) const
     {
         VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties{};
 
@@ -88,8 +88,8 @@ namespace SolEngine
     }
 
     VkFormat SolDevice::FindSupportedFormat(const std::vector<VkFormat> &candidates,
-                                            VkImageTiling tiling, 
-                                            VkFormatFeatureFlags features)
+                                            const VkImageTiling tiling, 
+                                            const VkFormatFeatureFlags features) const
     {
         for (const VkFormat &format : candidates)
         {
@@ -244,8 +244,8 @@ namespace SolEngine
         {
             .sType            = VK_STRUCTURE_TYPE_APPLICATION_INFO,	    // Mandatory, describes type of structure
             .pNext            = NULL,								    // Mandatory, stores pointers to extension-specific structures
-            .pApplicationName = _rAppData.appName,					    // Name of the application
-            .pEngineName      = _rAppData.engineName,					// Name of the engine
+            .pApplicationName = _appData.appName,					    // Name of the application
+            .pEngineName      = _appData.engineName,					// Name of the engine
             .engineVersion    = 1,									    // Version of the engine
             .apiVersion       = VK_API_VERSION_1_2					    // Version of Vulkan used by application
         };
@@ -527,7 +527,7 @@ namespace SolEngine
     }
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
-    SwapchainSupportDetails SolDevice::QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice)
+    SwapchainSupportDetails SolDevice::QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice) const
     {
         VkResult result;
         SwapchainSupportDetails supportDetails{};
@@ -576,7 +576,7 @@ namespace SolEngine
         return supportDetails;
     }
 
-    QueueFamilyIndices SolDevice::QueryQueueFamilies(const VkPhysicalDevice &physicalDevice)
+    QueueFamilyIndices SolDevice::QueryQueueFamilies(const VkPhysicalDevice &physicalDevice) const
     {
         QueueFamilyIndices queueFamilyIndices{};
         uint32_t queueFamilyCount;
