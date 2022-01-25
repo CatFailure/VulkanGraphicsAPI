@@ -81,34 +81,6 @@ namespace SolEngine
                                         &stagingBufferMemory,    
                                         bufferSize,
                                         vertices.data());
-
-        // Create Staging Buffer for Vertex Data
-        //{
-        //    _rSolDevice.CreateBuffer(bufferSize, 
-        //                             VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-        //                             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,  // Host = CPU, Device = GPU
-        //                             stagingBuffer,
-        //                             stagingBufferMemory);
-
-        //    // Create a region of host memory mapped to device (staging buffer) memory
-        //    // and point pBufferData to beginning of mapped memory range
-        //    void *pBufferData;
-
-        //    vkMapMemory(_rSolDevice.GetDevice(), 
-        //                stagingBufferMemory,
-        //                0,
-        //                bufferSize, 
-        //                0,
-        //                &pBufferData);
-
-        //    // Copy vertices data into the host mapped memory region
-        //    memcpy(pBufferData, 
-        //           vertices.data(), 
-        //           static_cast<uint32_t>(bufferSize));
-
-        //    vkUnmapMemory(_rSolDevice.GetDevice(), 
-        //                  stagingBufferMemory);
-        //}
         
         // Create buffer in Device Local Memory
         _rSolDevice.CreateBuffer(bufferSize, 
@@ -148,32 +120,6 @@ namespace SolEngine
                                         &stagingBufferMemory,
                                         bufferSize, 
                                         indices.data());
-        //{
-        //    _rSolDevice.CreateBuffer(bufferSize, 
-        //                             VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-        //                             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,  // Host = CPU, Device = GPU
-        //                             stagingBuffer,
-        //                             stagingBufferMemory);
-
-        //    // Create a region of host memory mapped to device (staging buffer) memory
-        //    // and point pBufferData to beginning of mapped memory range
-        //    void *pBufferData;
-
-        //    vkMapMemory(_rSolDevice.GetDevice(), 
-        //                stagingBufferMemory,
-        //                0,
-        //                bufferSize, 
-        //                0,
-        //                &pBufferData);
-
-        //    // Copy indices data into the host mapped memory region
-        //    memcpy(pBufferData, 
-        //           indices.data(), 
-        //           static_cast<uint32_t>(bufferSize));
-
-        //    vkUnmapMemory(_rSolDevice.GetDevice(), 
-        //                  stagingBufferMemory);
-        //}
 
         // Create buffer in Device Local Memory
         _rSolDevice.CreateBuffer(bufferSize, 

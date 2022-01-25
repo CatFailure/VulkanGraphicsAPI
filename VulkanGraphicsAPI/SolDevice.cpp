@@ -151,10 +151,12 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Allocate Buffer Memory.");
 
         // Bind buffer to allocated memory
-        vkBindBufferMemory(_device, 
-                           rBuffer,
-                           rBufferMemory,
-                           0);
+        result = vkBindBufferMemory(_device, 
+                                    rBuffer,
+                                    rBufferMemory,
+                                    0);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Bind Buffer Memory!");
     }
 
     void SolDevice::CreateStagingBuffer(VkBuffer *pOutBuffer, 
@@ -172,12 +174,13 @@ namespace SolEngine
         // - and point pBufferData to beginning of mapped memory range
         void *pBufferData;
 
-        vkMapMemory(_device, 
-                    *pOutBufferMemory,
-                    0,
-                    bufferSize, 
-                    0,
-                    &pBufferData);
+        DBG_ASSERT_VULKAN_MSG(vkMapMemory(_device, 
+                                          *pOutBufferMemory,
+                                          0,
+                                          bufferSize, 
+                                          0,
+                                          &pBufferData),
+                              "Failed to map memory to buffer!");
 
         // Copy vertices data into the host mapped memory region
         memcpy(pBufferData, 
