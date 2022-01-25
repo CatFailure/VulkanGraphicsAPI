@@ -162,8 +162,21 @@ namespace SolEngine
     void SolDevice::CreateStagingBuffer(VkBuffer *pOutBuffer, 
                                         VkDeviceMemory *pOutBufferMemory, 
                                         const VkDeviceSize bufferSize,
-                                        const void* pSrcData)
+                                        const void *pSrcData)
     {
+        // Staging buffers act as a "middle man" in the Device 
+        // when copying data from Host to Device Local Memory
+        //   Host (CPU))             |              Device (GPU)
+        //                   Copy to temp 
+        // ===============  Staging Buffer -> =========================
+        // | void *pData |oooooooooooooooooooo| Staging Buffer Memory |
+        // ===============                    =========================
+        //                                                | CopyBuffer()
+        //                                                V
+        //                                  ==============================
+        //                                  | Vertex/Index Buffer Memory |
+        //                                  ==============================
+
         CreateBuffer(bufferSize, 
                      VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
                      VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
