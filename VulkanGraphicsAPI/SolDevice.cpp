@@ -361,9 +361,9 @@ namespace SolEngine
         {
             const VkDeviceQueueCreateInfo deviceQueueCreateInfo
             {
-                .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+                .sType            = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
                 .queueFamilyIndex = queueFamily,
-                .queueCount = 1,
+                .queueCount       = 1,
                 .pQueuePriorities = &queuePriority
             };
 
@@ -372,7 +372,7 @@ namespace SolEngine
 
         const VkPhysicalDeviceFeatures deviceFeatures
         {
-            .shaderClipDistance = VK_TRUE,
+            .shaderClipDistance = VK_TRUE
         };
 
         const VkDeviceCreateInfo deviceCreateInfo
