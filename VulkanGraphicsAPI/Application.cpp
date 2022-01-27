@@ -12,6 +12,8 @@ Application::Application(const ApplicationData &appData)
         _appData(appData)
 {
     LoadGameObjects();
+
+    _solCamera.SetPosition({ 0, 0, -2.5f });
 }
 
 Application::~Application()
@@ -95,7 +97,17 @@ void Application::Dispose()
 
 void Application::Update(const float deltaTime)
 {
+    const float aspectRatio = _solRenderer.GetAspectRatio();
+    const PerspectiveProjectionInfo projectionInfo
+    {
+        .fovDeg = 50.f,
+        .aspect = aspectRatio
+    };
+
+    _solCamera.SetPerspectiveProjection(projectionInfo);
     _solCamera.Update(deltaTime);
+
+    //_solCamera.SetPosition(_solCamera.GetPosition() + (glm::vec3{ 1.f, 0, 0 } * deltaTime));
 
     for (SolGameObject &rGameObject : _gameObjects)
     {
@@ -103,6 +115,8 @@ void Application::Update(const float deltaTime)
 
         //rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
         //rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
+
+        rGameObject.transform.position.y += 0.1f * deltaTime;
 
         // Camera will look at the cube
         //_solCamera.LookAt(rGameObject.transform.position);
@@ -113,12 +127,6 @@ void Application::Draw()
 {
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
     const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
-    const float aspectRatio = _solRenderer.GetAspectRatio();
-    const PerspectiveProjectionInfo projectionInfo
-    {
-        .fovDeg = 50.f,
-        .aspect = aspectRatio
-    };
 
     if (commandBuffer == nullptr)
     {

@@ -36,6 +36,9 @@ namespace SolEngine
         void SetPerspectiveProjection(const PerspectiveProjectionInfo &projInfo);
 
         glm::vec3 GetPosition()             const { return _position; }
+        glm::vec3 GetRight()                const;
+        glm::vec3 GetUp()                   const;
+        glm::vec3 GetForward()              const;
         glm::mat4 GetProjectionMatrix()     const { return _projectionMatrix; }
         glm::mat4 GetViewMatrix()           const { return _viewMatrix; }
         glm::mat4 GetProjectionViewMatrix() const { return _projectionMatrix * _viewMatrix; }

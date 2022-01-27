@@ -5,6 +5,8 @@ namespace SolEngine
 {
     void SolCamera::Update(const float deltaTime)
     {
+        UpdateViewMatrix();
+
         //if (_isViewMatrixDirty)
         //{
         //    UpdateViewMatrix();
@@ -69,6 +71,21 @@ namespace SolEngine
     {
         SetPerspectiveProjection(projInfo.fovDeg, projInfo.aspect, projInfo.near, projInfo.far);
     }
+
+    glm::vec3 SolCamera::GetRight() const
+    {
+        return glm::vec3(_viewMatrix[0].x, _viewMatrix[1].x, _viewMatrix[2].x);
+    }
+
+    glm::vec3 SolCamera::GetUp() const
+    {
+        return glm::vec3(_viewMatrix[0].y, _viewMatrix[1].y, _viewMatrix[2].y);
+    }
+
+    glm::vec3 SolCamera::GetForward() const
+    {
+        return glm::vec3(_viewMatrix[0].z, _viewMatrix[1].z, _viewMatrix[2].z);
+    }
     
     void SolCamera::UpdateViewMatrix()
     {
@@ -78,5 +95,13 @@ namespace SolEngine
         const glm::vec3 axisX{ yawCos, 0, -yawSin };
         const glm::vec3 axisY{ yawSin * pitchSin, pitchCos, yawCos * pitchSin };
         const glm::vec3 axisZ{ yawSin * pitchCos, -pitchSin, pitchCos * yawCos };
+
+        _viewMatrix =
+        {
+            { axisX.x, axisY.x, axisZ.x, 0 },
+            { axisX.y, axisY.y, axisZ.y, 0 },
+            { axisX.z, axisY.z, axisZ.z, 0 },
+            { -dot(axisX, _position), -dot(axisY, _position), -dot(axisZ, _position), 1 },
+        };
     }
 }
