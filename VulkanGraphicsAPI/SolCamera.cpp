@@ -103,14 +103,21 @@ namespace SolEngine
     void SolCamera::SetViewYXZ(const glm::vec3 &position, 
                                const glm::vec3 &rotation)
     {
+        const glm::vec3 rotRad
+        {
+            glm::radians(-rotation.x),
+            glm::radians(rotation.y),
+            glm::radians(rotation.z),
+        };
+
         // Construct inverse rotation matrix.
         // Combine with translation back to origin for view matrix.
-        const float cosRotX = glm::cos(rotation.x);
-        const float sinRotX = glm::sin(rotation.x);
-        const float cosRotY = glm::cos(rotation.y);
-        const float sinRotY = glm::sin(rotation.y);
-        const float cosRotZ = glm::cos(rotation.z);
-        const float sinRotZ = glm::sin(rotation.z);
+        const float cosRotX = glm::cos(rotRad.x);
+        const float sinRotX = glm::sin(rotRad.x);
+        const float cosRotY = glm::cos(rotRad.y);
+        const float sinRotY = glm::sin(rotRad.y);
+        const float cosRotZ = glm::cos(rotRad.z);
+        const float sinRotZ = glm::sin(rotRad.z);
 
         const glm::vec3 u
         { 

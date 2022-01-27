@@ -12,6 +12,8 @@ Application::Application(const ApplicationData &appData)
         _appData(appData)
 {
     LoadGameObjects();
+
+    _solCamera.SetViewYXZ({ .5f, -1.f, -2.5f }, { 10.f, 0, 0 });
 }
 
 Application::~Application()
@@ -89,12 +91,13 @@ void Application::Update(const float deltaTime)
     {
         const float scaledTwoPi = deltaTime * glm::two_pi<float>();
 
-        rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
-        rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
+        //rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
+        //rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
         // Camera will look at the cube
-        _solCamera.LookAt(glm::vec3{ -1.f, -2.f, 2.f }, 
-                            rGameObject.transform.position);
+
+        //_solCamera.LookAt(glm::vec3{ 0.f, -2.f, -0.f }, 
+        //                    rGameObject.transform.position);
     }
 }
 
@@ -127,7 +130,7 @@ void Application::LoadGameObjects()
     cubeGameObject.SetModel(cubeModel);
 
     cubeGameObject.transform.position = { 0, 0, 2.5f };
-    cubeGameObject.transform.scale    = { .5f, .5f, .5f };
+    //cubeGameObject.transform.scale    = { .5f, .5f, .5f };
 
     _gameObjects.push_back(std::move(cubeGameObject));
 }
