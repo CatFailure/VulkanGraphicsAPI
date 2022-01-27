@@ -60,10 +60,11 @@ namespace SolEngine
         // Inherited from IMonoBehaviour
         virtual void Update(const float deltaTime) override;
 
-        glm::vec3 GetPosition()         const { return _position; }
-        glm::vec3 GetRotation()         const { return _rotation; }
-        glm::mat4 GetProjectionMatrix() const { return _projectionMatrix; }
-        glm::mat4 GetViewMatrix()       const { return _viewMatrix; }
+        glm::vec3 GetPosition()             const { return _position; }
+        glm::vec3 GetRotation()             const { return _rotation; }
+        glm::mat4 GetProjectionMatrix()     const { return _projectionMatrix; }
+        glm::mat4 GetViewMatrix()           const { return _viewMatrix; }
+        glm::mat4 GetProjectionViewMatrix() const { return _projectionMatrix * _viewMatrix; }
 
         void SetOrthographicProjection(const float left, const float right, const float top, const float bottom, const float near = CAM_NEAR_DEFAULT, const float far = CAM_FAR_DEFAULT);
         void SetOrthographicProjection(const OrthographicProjectionInfo &projInfo);
@@ -73,9 +74,12 @@ namespace SolEngine
 
         void SetPosition(const glm::vec3 &position);
         void SetRotation(const glm::vec3 &rotation);
+        void LookAt(const glm::vec3 target, const glm::vec3 &up = VECTOR3_AXIS_Y);
+        void LookAtDirection(const glm::vec3& direction, const glm::vec3 &up = VECTOR3_AXIS_Y);
 
     private:
         void UpdateViewMatrix();
+        void SetViewMatrixUVW(const glm::vec3 &u, const glm::vec3 &v, const glm::vec3 &w);
 
         bool _isViewMatrixDirty{ true };
 
