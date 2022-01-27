@@ -47,7 +47,7 @@ namespace SolEngine
         /// <summary>
         /// Sets camera transform - Rotation follows Tait-Bryan Y(1), X(2), Z(3)
         /// </summary>
-        void SetViewYXZ(const glm::vec3& position, const glm::vec3& rotation);
+        void SetView(const glm::vec3& position, const glm::vec3& rotation);
 
         glm::mat4 GetProjection()     const { return _projectionMatrix; }
         glm::mat4 GetView()		      const { return _viewMatrix; }

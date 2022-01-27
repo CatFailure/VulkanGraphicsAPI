@@ -3,17 +3,18 @@
 
 Application::Application(const ApplicationData &appData)
     : _solRenderer(_appData,
-                    _solWindow, 
-                    _solDevice),
+                   _solWindow, 
+                   _solDevice),
         _solDevice(_solWindow,
-                    _appData),
+                   _appData),
         _solWindow(_appData.windowTitle,
-                    _appData.windowDimensions),
+                   _appData.windowDimensions),
         _appData(appData)
 {
     LoadGameObjects();
 
-    _solCamera.SetViewYXZ({ .5f, -1.f, -2.5f }, { 10.f, 0, 0 });
+    _solCamera.SetView({ .5f, -1.f, -2.5f }, 
+                       { 10.f, 0, 0 });
 }
 
 Application::~Application()
@@ -91,8 +92,8 @@ void Application::Update(const float deltaTime)
     {
         const float scaledTwoPi = deltaTime * glm::two_pi<float>();
 
-        //rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
-        //rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
+        rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
+        rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
         // Camera will look at the cube
 

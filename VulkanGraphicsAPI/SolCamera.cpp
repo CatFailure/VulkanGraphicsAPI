@@ -100,8 +100,8 @@ namespace SolEngine
                          up);
     }
 
-    void SolCamera::SetViewYXZ(const glm::vec3 &position, 
-                               const glm::vec3 &rotation)
+    void SolCamera::SetView(const glm::vec3 &position, 
+                            const glm::vec3 &rotation)
     {
         const glm::vec3 rotRad
         {
