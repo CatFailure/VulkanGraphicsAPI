@@ -53,7 +53,7 @@ namespace SolEngine
                 .rasterizerDiscardEnable = VK_FALSE,
                 .polygonMode             = VK_POLYGON_MODE_FILL,
                 .cullMode                = VK_CULL_MODE_BACK_BIT,       // Face-culling
-                .frontFace               = VK_FRONT_FACE_CLOCKWISE,
+                .frontFace               = VK_FRONT_FACE_COUNTER_CLOCKWISE,
                 .depthBiasEnable         = VK_FALSE,                    // Used to ensure that shadows in a scene are displayed properly
                 .depthBiasConstantFactor = 0.0f,                        // Optional
                 .depthBiasClamp          = 0.0f,                        // Optional
