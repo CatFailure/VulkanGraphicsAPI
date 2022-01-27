@@ -69,11 +69,14 @@ std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice,
         4, 6, 5,
     };
 
-    for (Vertex &rVertex : vertices) 
+    if (offset != glm::vec3(0, 0, 0))
     {
-        rVertex.position += offset;
+        for (Vertex &rVertex : vertices) 
+        {
+            rVertex.position += offset;
+        }
     }
-
+    
     return std::make_shared<SolModel>(rDevice, vertices, indices);
 }
 
