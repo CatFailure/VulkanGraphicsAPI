@@ -1,4 +1,5 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
 #define VK_USE_PLATFORM_WIN32_KHR
 #define GLFW_INCLUDE_VULKAN
 #define GLM_FORCE_RADIANS	// Make glm functions expect angles in radians instead of degrees
@@ -35,6 +36,9 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <deque>
+
+#undef near
+#undef far
 
 // Interfaces
 #include "IDisposable.hpp"
