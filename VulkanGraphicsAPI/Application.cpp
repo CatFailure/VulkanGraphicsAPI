@@ -12,9 +12,6 @@ Application::Application(const ApplicationData &appData)
         _appData(appData)
 {
     LoadGameObjects();
-
-    _solCamera.SetPosition({ .5f, -1.5f, -2.5f });
-    _solCamera.SetRotation({ 0.f, 0, 0 });
 }
 
 Application::~Application()
@@ -41,33 +38,43 @@ void Application::Run()
 }
 
 std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
-                                                        const glm::vec3 &offset)
+                                                       const glm::vec3 &offset)
 {
     std::vector<Vertex> vertices
     {
-        { { 0, 0, 0 }, { .9f, .9f, .9f } },
-        { { 1.f, 0, 0 }, { .8f, .8f, .1f } },
-        { { 1.f, 0, -1.f }, { 1.f, .6f, .1f } },
-        { { 0, 0, -1.f }, { .8f, .1f, .1f } },
-        { { 0, -1.f, 0 }, { .1f, .1f, .8f } },
-        { { 1.f, -1.f, 0 }, { .98f, .27f, .41f } },
-        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },
-        { { 0, -1.f, -1.f }, { .13f, .02f, .3f } },
+        { { -.5f, .5f, .5f }, { .9f, .9f, .9f } },      // 0
+        { { .5f, .5f, .5f }, { .8f, .8f, .1f } },       // 1
+        { { .5f, .5f, -.5f }, { 1.f, .6f, .1f } },      // 2
+        { { -.5f, .5f, -.5f }, { .8f, .1f, .1f } },     // 3
+        { { -.5f, -.5f, .5f }, { .1f, .1f, .8f } },     // 4
+        { { .5f, -.5f, .5f }, { .98f, .27f, .41f } },   // 5
+        { { .5f, -.5f, -.5f }, { .24f, .36f, .98f } },  // 6
+        { { -.5f, -.5f, -.5f }, { .13f, .02f, .3f } },  // 7
     };
 
     const std::vector<Index_t> indices
     {
-        // Bottom
+        // Bottom-Face
         0, 1, 2,
         0, 2, 3,
+
+        // Back-Face
         0, 4, 5,
         0, 5, 1,
+
+        // Right-Face
         1, 5, 6,
         1, 6, 2,
+
+        // Front-Face
         2, 6, 7,
         2, 7, 3,
+
+        // Left-Face
         3, 7, 4,
         3, 4, 0,
+
+        // Top-Face
         4, 7, 6,
         4, 6, 5,
     };
@@ -98,7 +105,7 @@ void Application::Update(const float deltaTime)
         //rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
         // Camera will look at the cube
-        _solCamera.LookAt(rGameObject.transform.position);
+        //_solCamera.LookAt(rGameObject.transform.position);
     }
 }
 
@@ -112,8 +119,6 @@ void Application::Draw()
         .fovDeg = 50.f,
         .aspect = aspectRatio
     };
-
-    _solCamera.SetPerspectiveProjection(projectionInfo);
 
     if (commandBuffer == nullptr)
     {
@@ -135,7 +140,7 @@ void Application::LoadGameObjects()
 
     cubeGameObject.SetModel(cubeModel);
 
-    cubeGameObject.transform.position = { 0, 0, 2.5f };
+    cubeGameObject.transform.position = { 0, 0, 0 };
     //cubeGameObject.transform.scale    = { .5f, .5f, .5f };
 
     _gameObjects.push_back(std::move(cubeGameObject));
