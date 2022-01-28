@@ -187,8 +187,8 @@ namespace SolEngine
     }
 
     void SolSwapchain::CreateSwapchainImages(uint32_t &rImageCount, 
-                                                   const VkSurfaceFormatKHR &surfaceImageFormat, 
-                                                   const VkExtent2D &swapchainExtent)
+                                             const VkSurfaceFormatKHR &surfaceImageFormat, 
+                                             const VkExtent2D &swapchainExtent)
     {
         // We only specified a minimum number of images in the swapchain, so the implementation is
         // allowed to create a swapchain with more. That's why we'll first query the final number of
@@ -358,7 +358,6 @@ namespace SolEngine
             .attachment = 0,
             .layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
         };
-
 
         // Subpass
         const VkSubpassDescription subpassDescription

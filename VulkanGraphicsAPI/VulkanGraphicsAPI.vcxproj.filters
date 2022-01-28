@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -31,6 +31,12 @@
     <Filter Include="SolEngine\Interface">
       <UniqueIdentifier>{1957ed1c-9a5d-46fb-8d8b-5ed4c83881fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\Rendering">
+      <UniqueIdentifier>{ce079ae5-79af-486c-bcdd-02284c9a3d77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SolEngine\Events">
+      <UniqueIdentifier>{bbfb351e-fa11-421b-bd12-c61f318a6c64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -40,9 +46,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolDevice.cpp">
-      <Filter>SolEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
     <ClCompile Include="SolSwapchain.cpp">
@@ -66,9 +69,6 @@
     <ClCompile Include="SolRenderer.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
-    <ClCompile Include="SimpleRenderSystem.cpp">
-      <Filter>SolEngine</Filter>
-    </ClCompile>
     <ClCompile Include="MatrixUtility.cpp">
       <Filter>SolEngine\Math</Filter>
     </ClCompile>
@@ -77,6 +77,18 @@
     </ClCompile>
     <ClCompile Include="Rect.cpp">
       <Filter>SolEngine\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="SolClock.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleRenderSystem.cpp">
+      <Filter>SolEngine\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SolEvent.cpp">
+      <Filter>SolEngine\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,9 +103,6 @@
     </ClInclude>
     <ClInclude Include="Singleton.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.hpp">
-      <Filter>SolEngine</Filter>
     </ClInclude>
     <ClInclude Include="Vector.hpp">
       <Filter>SolEngine\Math</Filter>
@@ -140,9 +149,6 @@
     <ClInclude Include="SolRenderer.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleRenderSystem.hpp">
-      <Filter>SolEngine</Filter>
-    </ClInclude>
     <ClInclude Include="Constants.hpp">
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
@@ -154,6 +160,21 @@
     </ClInclude>
     <ClInclude Include="Rect.hpp">
       <Filter>SolEngine\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SolClock.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleRenderSystem.hpp">
+      <Filter>SolEngine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SolEvent.hpp">
+      <Filter>SolEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraProjectionInfo.hpp">
+      <Filter>SolEngine\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

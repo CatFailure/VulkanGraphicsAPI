@@ -344,6 +344,7 @@
     <ClCompile Include="SimpleRenderSystem.cpp" />
     <ClCompile Include="SolCamera.cpp" />
     <ClCompile Include="SolDevice.cpp" />
+    <ClCompile Include="SolEvent.cpp" />
     <ClCompile Include="SolGameObject.cpp" />
     <ClCompile Include="SolModel.cpp" />
     <ClCompile Include="SolPipeline.cpp" />
@@ -354,6 +355,7 @@
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
     <ClInclude Include="ApplicationData.hpp" />
+    <ClInclude Include="CameraProjectionInfo.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="IDisposable.hpp" />
@@ -368,6 +370,7 @@
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolCamera.hpp" />
     <ClInclude Include="SolDevice.hpp" />
+    <ClInclude Include="SolEvent.hpp" />
     <ClInclude Include="SolGameObject.hpp" />
     <ClInclude Include="SolModel.hpp" />
     <ClInclude Include="SolPipeline.hpp" />

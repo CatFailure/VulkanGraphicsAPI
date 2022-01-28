@@ -1,13 +1,11 @@
 #include "pch.hpp"
 #include "Application.hpp"
 
-using namespace SolEngine;
-
 int main()
 {
-	ApplicationData appData
+	const ApplicationData appData
 	{
-		.windowTitle	  = "Hello Vulkan!",
+		.windowTitle	  = "[Master] Simple Camera",
 		.windowClassName  = L"VulkanWindowClass",
 		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",

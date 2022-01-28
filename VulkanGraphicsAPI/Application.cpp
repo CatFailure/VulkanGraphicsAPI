@@ -1,155 +1,150 @@
 #include "pch.hpp"
 #include "Application.hpp"
 
-namespace SolEngine
+Application::Application(const ApplicationData &appData)
+    : _solCamera(_solRenderer),
+      _solRenderer(_appData,
+                   _solWindow, 
+                   _solDevice),
+      _solDevice(_solWindow,
+                 _appData),
+      _solWindow(_appData.windowTitle,
+                 _appData.windowDimensions),
+      _appData(appData)
 {
-    Application::Application(const ApplicationData &appData)
-        : _solRenderer(_appData,
-                       _solWindow, 
-                       _solDevice),
-          _solDevice(_solWindow,
-                     _appData),
-          _solWindow(_appData.windowTitle,
-                     _appData.windowDimensions),
-         _appData(appData)
+    const PerspectiveProjectionInfo projInfo
     {
-        LoadGameObjects();
+        .fovDeg = 50.f
+    };
+
+    _solCamera.SetProjectionInfo(projInfo);
+    _solCamera.SetPosition({ 0, 0, -2.5f });
+    _solCamera.LookAt(_solCamera.GetPosition() + VECTOR3_AXIS_Z);   // Look forwards
+
+    LoadGameObjects();
+}
+
+Application::~Application()
+{
+    Dispose();
+}
+
+void Application::Run()
+{
+    SolClock clock{};
+
+    while (!_solWindow.ShouldClose())
+    {
+        glfwPollEvents();   // Poll Window Events
+
+        const float deltaTime = clock.Restart();
+        _totalTime += deltaTime;
+
+        Update(deltaTime);
+        Draw();
     }
 
-    Application::~Application()
+    // Make CPU wait until all GPU operations have completed.
+    vkDeviceWaitIdle(_solDevice.GetDevice());
+}
+
+std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
+                                                       const glm::vec3 &offset)
+{
+    std::vector<Vertex> vertices
     {
-        Dispose();
-    }
+        { { -.5f, .5f, .5f }, { .9f, .9f, .9f } },      // 0
+        { { .5f, .5f, .5f }, { .8f, .8f, .1f } },       // 1
+        { { .5f, .5f, -.5f }, { 1.f, .6f, .1f } },      // 2
+        { { -.5f, .5f, -.5f }, { .8f, .1f, .1f } },     // 3
+        { { -.5f, -.5f, .5f }, { .1f, .1f, .8f } },     // 4
+        { { .5f, -.5f, .5f }, { .98f, .27f, .41f } },   // 5
+        { { .5f, -.5f, -.5f }, { .24f, .36f, .98f } },  // 6
+        { { -.5f, -.5f, -.5f }, { .13f, .02f, .3f } },  // 7
+    };
 
-    void Application::Run()
+    const std::vector<Index_t> indices
     {
-        // TEMP
-        const float deltaTime = 1 / 60.f;
+        // Bottom-Face
+        0, 1, 2,
+        0, 2, 3,
 
-        while (!_solWindow.ShouldClose())
-        {
-            glfwPollEvents();   // Poll Window Events
+        // Back-Face
+        0, 4, 5,
+        0, 5, 1,
 
-            Update(deltaTime);
-            Draw();
-        }
+        // Right-Face
+        1, 5, 6,
+        1, 6, 2,
 
-        // Make CPU wait until all GPU operations have completed.
-        vkDeviceWaitIdle(_solDevice.Device());
-    }
+        // Front-Face
+        2, 6, 7,
+        2, 7, 3,
 
-    std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
-                                                           const glm::vec3 &offset)
+        // Left-Face
+        3, 7, 4,
+        3, 4, 0,
+
+        // Top-Face
+        4, 7, 6,
+        4, 6, 5,
+    };
+
+    if (offset != glm::vec3(0, 0, 0))
     {
-        std::vector<Vertex> vertices
-        {
-            // left face (white)
-            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
-            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
-            {{-.5f, -.5f, .5f}, {.9f, .9f, .9f}},
-            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
-            {{-.5f, .5f, -.5f}, {.9f, .9f, .9f}},
-            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
-
-            // right face (yellow)
-            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
-            {{.5f, -.5f, .5f}, {.8f, .8f, .1f}},
-            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
-            {{.5f, .5f, -.5f}, {.8f, .8f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
-
-            // top face (orange, remember y axis points down)
-            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-            {{-.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-            {{.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-
-            // bottom face (red)
-            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
-            {{-.5f, .5f, .5f}, {.8f, .1f, .1f}},
-            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-            {{.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
-
-            // nose face (blue)
-            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-            {{-.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-            {{.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-
-            // tail face (green)
-            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-            {{-.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-            {{.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-
-        };
-
         for (Vertex &rVertex : vertices) 
         {
             rVertex.position += offset;
         }
-
-        return std::make_shared<SolModel>(rDevice, vertices);
     }
+    
+    return std::make_shared<SolModel>(rDevice, vertices, indices);
+}
 
-    void Application::Dispose()
-    {}
+void Application::Dispose()
+{}
 
-    void Application::Update(const float deltaTime)
+void Application::Update(const float deltaTime)
+{
+    _solCamera.Update(deltaTime);
+
+    for (SolGameObject &rGameObject : _gameObjects)
     {
-        for (SolGameObject &rGameObject : _gameObjects)
-        {
-            const float scaledTwoPi = deltaTime * glm::two_pi<float>();
+        const float scaledTwoPi = deltaTime * glm::two_pi<float>();
 
-            rGameObject.transform.rotation.y += 0.01f * scaledTwoPi;
-            rGameObject.transform.rotation.x += 0.005f * scaledTwoPi;
+        rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
+        rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
-            // Camera will look at the cube
-            _solCamera.LookAt(glm::vec3{ -1.f, -2.f, 2.f }, 
-                              rGameObject.transform.position);
-        }
+        rGameObject.transform.position.y = sinf(_totalTime);
     }
+}
 
-    void Application::Draw()
+void Application::Draw()
+{
+    const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
+    const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
+
+    if (commandBuffer == nullptr)
     {
-        const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
-        const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
-        const float aspectRatio = _solRenderer.GetAspectRatio();
-
-        _solCamera.SetPerspectiveProjection(50.f, aspectRatio, CAM_NEAR, CAM_FAR);
-
-        if (commandBuffer == nullptr)
-        {
-            return;
-        }
-
-        _solRenderer.BeginSwapchainRenderPass(commandBuffer);
-
-        renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
-
-        _solRenderer.EndSwapchainRenderPass(commandBuffer);
-        _solRenderer.EndFrame();
+        return;
     }
 
-    void Application::LoadGameObjects()
-    {
-        std::shared_ptr<SolModel> cubeModel = CreateCubeModel(_solDevice, { 0,0,0 });
-        SolGameObject cubeGameObject = SolGameObject::CreateGameObject();
+    _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-        cubeGameObject.SetModel(cubeModel);
+    renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
 
-        cubeGameObject.transform.position = { 0, 0, 2.5f };
-        cubeGameObject.transform.scale    = { .5f, .5f, .5f };
+    _solRenderer.EndSwapchainRenderPass(commandBuffer);
+    _solRenderer.EndFrame();
+}
 
-        _gameObjects.push_back(std::move(cubeGameObject));
-    }
+void Application::LoadGameObjects()
+{
+    std::shared_ptr<SolModel> cubeModel = CreateCubeModel(_solDevice, { 0,0,0 });
+    SolGameObject cubeGameObject = SolGameObject::CreateGameObject();
+
+    cubeGameObject.SetModel(cubeModel);
+
+    cubeGameObject.transform.position = { 0, 0, 0 };
+
+    _gameObjects.push_back(std::move(cubeGameObject));
 }
