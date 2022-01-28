@@ -34,5 +34,6 @@ namespace SolEngine
         VkBuffer	   _indexBuffer;
         VkDeviceMemory _indexBufferMemory;
         uint32_t	   _indexCount;
+        uint32_t       _instanceCount{ 1U };
     };
 }
