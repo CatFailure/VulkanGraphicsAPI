@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SolClock.hpp"
 #include "SolWindow.hpp"
 #include "SolModel.hpp"
 #include "SolGameObject.hpp"
@@ -10,7 +9,6 @@
 using namespace SolEngine;
 using namespace SolEngine::Data;
 using namespace SolEngine::Interface;
-using namespace SolEngine::Rendering;
 
 class Application : private IDisposable, public IMonoBehaviour
 {

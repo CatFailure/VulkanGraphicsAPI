@@ -350,7 +350,6 @@
     <ClCompile Include="SolPipeline.cpp" />
     <ClCompile Include="SolRenderer.cpp" />
     <ClCompile Include="SolSwapchain.cpp" />
-    <ClCompile Include="SolClock.cpp" />
     <ClCompile Include="SolWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -377,7 +376,6 @@
     <ClInclude Include="SolPipeline.hpp" />
     <ClInclude Include="SolRenderer.hpp" />
     <ClInclude Include="SolSwapchain.hpp" />
-    <ClInclude Include="SolClock.hpp" />
     <ClInclude Include="SolWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
     <ClInclude Include="Vector.hpp" />

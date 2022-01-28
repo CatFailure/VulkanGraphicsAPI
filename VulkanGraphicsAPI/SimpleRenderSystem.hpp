@@ -4,7 +4,7 @@
 #include "SolPipeline.hpp"
 #include "SolCamera.hpp"
 
-namespace SolEngine::Rendering
+namespace SolEngine
 {
     class SimpleRenderSystem : private IDisposable
     {

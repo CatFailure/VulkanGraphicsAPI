@@ -1,7 +1,7 @@
 #include "pch.hpp"
 #include "SimpleRenderSystem.hpp"
 
-namespace SolEngine::Rendering
+namespace SolEngine
 {
     SimpleRenderSystem::SimpleRenderSystem(SolDevice& rSolDevice, 
                                            VkRenderPass renderPass)
@@ -49,7 +49,7 @@ namespace SolEngine::Rendering
 
     void SimpleRenderSystem::Dispose()
     {
-        vkDestroyPipelineLayout(_rSolDevice.GetDevice(), 
+        vkDestroyPipelineLayout(_rSolDevice.Device(), 
                                 _pipelineLayout, 
                                 nullptr);
     }
@@ -72,7 +72,7 @@ namespace SolEngine::Rendering
             .pPushConstantRanges    = &pushConstantRange
         };
 
-        const VkResult result = vkCreatePipelineLayout(_rSolDevice.GetDevice(),
+        const VkResult result = vkCreatePipelineLayout(_rSolDevice.Device(),
                                                        &pipelineLayoutCreateInfo,
                                                        NULL,
                                                        &_pipelineLayout);
