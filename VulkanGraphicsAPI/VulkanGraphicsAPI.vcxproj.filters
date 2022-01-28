@@ -78,9 +78,6 @@
     <ClCompile Include="Rect.cpp">
       <Filter>SolEngine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="SolClock.cpp">
-      <Filter>SolEngine</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClCompile>
@@ -89,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolClock.cpp">
+      <Filter>SolEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +161,6 @@
     <ClInclude Include="Rect.hpp">
       <Filter>SolEngine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="SolClock.hpp">
-      <Filter>SolEngine</Filter>
-    </ClInclude>
     <ClInclude Include="SimpleRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClInclude>
@@ -175,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="CameraProjectionInfo.hpp">
       <Filter>SolEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="SolClock.hpp">
+      <Filter>SolEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

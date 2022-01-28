@@ -343,6 +343,7 @@
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="SimpleRenderSystem.cpp" />
     <ClCompile Include="SolCamera.cpp" />
+    <ClCompile Include="SolClock.cpp" />
     <ClCompile Include="SolDevice.cpp" />
     <ClCompile Include="SolEvent.cpp" />
     <ClCompile Include="SolGameObject.cpp" />
@@ -369,6 +370,7 @@
     <ClInclude Include="SimpleRenderSystem.hpp" />
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolCamera.hpp" />
+    <ClInclude Include="SolClock.hpp" />
     <ClInclude Include="SolDevice.hpp" />
     <ClInclude Include="SolEvent.hpp" />
     <ClInclude Include="SolGameObject.hpp" />

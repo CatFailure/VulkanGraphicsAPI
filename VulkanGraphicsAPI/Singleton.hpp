@@ -10,7 +10,7 @@ namespace Utility
 		void operator=(const Singleton &) = delete;
 		void operator=(Singleton &&) = delete;
 
-		static Singleton &Get()
+		static Singleton &GetInstance()
 		{
 			static Singleton instance;
 
