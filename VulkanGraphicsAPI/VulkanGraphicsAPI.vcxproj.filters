@@ -173,6 +173,9 @@
     <ClInclude Include="Application.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CameraProjectionInfo.hpp">
+      <Filter>SolEngine\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">

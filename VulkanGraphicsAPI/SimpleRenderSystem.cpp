@@ -20,7 +20,7 @@ namespace SolEngine::Rendering
                                                const VkCommandBuffer commandBuffer, 
                                                const std::vector<SolGameObject> &gameObjects) const
     {
-        const glm::mat4 projectionView = solCamera.GetProjectionView();
+        const glm::mat4 projectionView = solCamera.GetProjectionViewMatrix();
 
         _pSolPipeline->Bind(commandBuffer);
 

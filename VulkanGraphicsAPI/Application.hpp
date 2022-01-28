@@ -35,12 +35,14 @@ private:
 
     ApplicationData _appData;
 
-    SolCamera   _solCamera{};
+    SolCamera   _solCamera;
     SolWindow   _solWindow;
     SolDevice   _solDevice;
     SolRenderer _solRenderer;
 
     std::vector<SolGameObject> _gameObjects;
+
+    float _totalTime{ 0 };
 
     static constexpr float CAM_NEAR{ 0.01f };
     static constexpr float CAM_FAR { 100.f };
