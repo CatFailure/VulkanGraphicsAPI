@@ -2,18 +2,26 @@
 #include "Application.hpp"
 
 Application::Application(const ApplicationData &appData)
-    : _solRenderer(_appData,
+    : _solCamera(_solRenderer),
+      _solRenderer(_appData,
                    _solWindow, 
                    _solDevice),
-        _solDevice(_solWindow,
-                   _appData),
-        _solWindow(_appData.windowTitle,
-                   _appData.windowDimensions),
-        _appData(appData)
+      _solDevice(_solWindow,
+                 _appData),
+      _solWindow(_appData.windowTitle,
+                 _appData.windowDimensions),
+      _appData(appData)
 {
-    LoadGameObjects();
+    const PerspectiveProjectionInfo projInfo
+    {
+        .fovDeg = 50.f
+    };
 
+    _solCamera.SetProjectionInfo(projInfo);
     _solCamera.SetPosition({ 0, 0, -2.5f });
+    _solCamera.LookAt(_solCamera.GetPosition() + VECTOR3_AXIS_Z);   // Look forwards
+
+    LoadGameObjects();
 }
 
 Application::~Application()
@@ -30,6 +38,7 @@ void Application::Run()
         glfwPollEvents();   // Poll Window Events
 
         const float deltaTime = clock.Restart();
+        _totalTime += deltaTime;
 
         Update(deltaTime);
         Draw();
@@ -97,29 +106,16 @@ void Application::Dispose()
 
 void Application::Update(const float deltaTime)
 {
-    const float aspectRatio = _solRenderer.GetAspectRatio();
-    const PerspectiveProjectionInfo projectionInfo
-    {
-        .fovDeg = 50.f,
-        .aspect = aspectRatio
-    };
-
-    _solCamera.SetPerspectiveProjection(projectionInfo);
     _solCamera.Update(deltaTime);
-
-    //_solCamera.SetPosition(_solCamera.GetPosition() + (glm::vec3{ 1.f, 0, 0 } * deltaTime));
 
     for (SolGameObject &rGameObject : _gameObjects)
     {
         const float scaledTwoPi = deltaTime * glm::two_pi<float>();
 
-        //rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
-        //rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
+        rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
+        rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
-        rGameObject.transform.position.y += 0.1f * deltaTime;
-
-        // Camera will look at the cube
-        //_solCamera.LookAt(rGameObject.transform.position);
+        rGameObject.transform.position.y = sinf(_totalTime);
     }
 }
 
@@ -149,7 +145,6 @@ void Application::LoadGameObjects()
     cubeGameObject.SetModel(cubeModel);
 
     cubeGameObject.transform.position = { 0, 0, 0 };
-    //cubeGameObject.transform.scale    = { .5f, .5f, .5f };
 
     _gameObjects.push_back(std::move(cubeGameObject));
 }
