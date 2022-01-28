@@ -306,8 +306,8 @@ namespace SolEngine
             std::shared_ptr<SolSwapchain> pOldSwapchain = std::move(_pSolSwapchain);
 
             _pSolSwapchain = std::make_unique<SolSwapchain>(_rSolDevice,
-                                                                  winExtent,
-                                                                  pOldSwapchain);
+                                                            winExtent,
+                                                            pOldSwapchain);
 
             // Ensure re-created swapchain is compatible...
             DBG_ASSERT_MSG((pOldSwapchain->CompareSwapchanFormats(*_pSolSwapchain)), 
