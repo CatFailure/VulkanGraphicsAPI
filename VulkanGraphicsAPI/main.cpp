@@ -5,7 +5,7 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[Dev] Passing Vertex/Index data via Staging Buffers",
+		.windowTitle	  = "[Dev] Simple Camera",
 		.windowClassName  = L"VulkanWindowClass",
 		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",
