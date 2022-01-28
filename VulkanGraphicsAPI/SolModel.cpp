@@ -40,12 +40,12 @@ namespace SolEngine
     {
         if (_hasIndexBuffer)
         {
-            vkCmdDrawIndexed(commandBuffer, _indexCount, 1, 0, 0, 0);
+            vkCmdDrawIndexed(commandBuffer, _indexCount, _instanceCount, 0, 0, 0);
 
             return;
         }
 
-        vkCmdDraw(commandBuffer, _vertexCount, 1, 0, 0);
+        vkCmdDraw(commandBuffer, _vertexCount, _instanceCount, 0, 0);
     }
 
     void SolModel::Dispose()
