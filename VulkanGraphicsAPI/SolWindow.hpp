@@ -1,6 +1,9 @@
 #pragma once
 #include "ApplicationData.hpp"
 #include "Vector.hpp"
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_vulkan.h>
 
 using namespace SolEngine::Interface;
 using namespace SolEngine::Math;
