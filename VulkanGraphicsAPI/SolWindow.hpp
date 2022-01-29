@@ -1,9 +1,6 @@
 #pragma once
 #include "ApplicationData.hpp"
 #include "Vector.hpp"
-#include <imgui.h>
-#include <backends/imgui_impl_glfw.h>
-#include <backends/imgui_impl_vulkan.h>
 
 using namespace SolEngine::Interface;
 using namespace SolEngine::Math;
@@ -21,8 +18,9 @@ namespace SolEngine
         bool WasWindowResized() const { return _isFramebufferResized; }
         void ResetWindowResizedFlag() { _isFramebufferResized = false; }
 
-        void       CreateWindowSurface(const VkInstance &vkInstance, VkSurfaceKHR *pSurface);
-        VkExtent2D GetWindowExtent() const { return { _winDimensions._x, _winDimensions._y }; }
+        void        CreateWindowSurface(const VkInstance &vkInstance, VkSurfaceKHR *pSurface);
+        VkExtent2D  GetWindowExtent() const { return { _winDimensions._x, _winDimensions._y }; }
+        GLFWwindow *GetWindow()       const { return _pWindow; }
 
         // Inherited via IDisposable
         virtual void Dispose() override;

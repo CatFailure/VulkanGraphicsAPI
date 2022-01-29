@@ -148,3 +148,13 @@ void Application::LoadGameObjects()
 
     _gameObjects.push_back(std::move(cubeGameObject));
 }
+
+void Application::InitImGUI()
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO &rIo = ImGui::GetIO(); (void)rIo;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForVulkan(_solWindow.GetWindow(), true);
+    ImGui_ImplVulkan_Init()
+}

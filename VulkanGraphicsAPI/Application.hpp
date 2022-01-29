@@ -1,5 +1,9 @@
 #pragma once
 
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_vulkan.h>
+
 #include "SolClock.hpp"
 #include "SolWindow.hpp"
 #include "SolModel.hpp"
@@ -32,6 +36,7 @@ private:
     void Draw();
 
     void LoadGameObjects();
+    void InitImGUI();
 
     ApplicationData _appData;
 
