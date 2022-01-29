@@ -111,21 +111,22 @@ namespace SolEngine
 
     void SolBuffer::WriteToIndex(void *pData, const size_t index)
     {
+        WriteToBuffer(pData, _instanceSize, index * _alignmentSize);
     }
 
     VkResult SolBuffer::FlushIndex(const size_t index)
     {
-        return FlushBuffer(_instanceSize, index * _instanceSize);
+        return FlushBuffer(_instanceSize, index * _alignmentSize);
     }
 
     VkDescriptorBufferInfo SolBuffer::DescriptorIndexInfo(const size_t index)
     {
-        return DescriptorBufferInfo(_instanceSize, index * _instanceSize);
+        return DescriptorBufferInfo(_instanceSize, index * _alignmentSize);
     }
 
     VkResult SolBuffer::InvalidateIndex(const size_t index)
     {
-        return InvalidateBuffer(_instanceSize, index * _instanceSize);
+        return InvalidateBuffer(_instanceSize, index * _alignmentSize);
     }
 
     VkDeviceSize SolBuffer::GetMinimumAlignmentSize(const VkDeviceSize instanceSize, 
