@@ -9,10 +9,12 @@
 #include "SolModel.hpp"
 #include "SolGameObject.hpp"
 #include "SolRenderer.hpp"
+#include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 
 using namespace SolEngine;
 using namespace SolEngine::Data;
+using namespace SolEngine::Descriptors;
 using namespace SolEngine::Interface;
 using namespace SolEngine::Rendering;
 
@@ -44,6 +46,7 @@ private:
     SolWindow   _solWindow;
     SolDevice   _solDevice;
     SolRenderer _solRenderer;
+    std::unique_ptr<SolDescriptorPool> _pSolDescriptorPool;
 
     std::vector<SolGameObject> _gameObjects;
 

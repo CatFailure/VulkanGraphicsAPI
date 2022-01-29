@@ -12,6 +12,11 @@ Application::Application(const ApplicationData &appData)
                  _appData.windowDimensions),
       _appData(appData)
 {
+    _pSolDescriptorPool = SolDescriptorPool::Builder(_solDevice).SetMaxDescriptorSets(SolSwapchain::MAX_FRAMES_IN_FLIGHT)
+                                                                .AddPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 
+                                                                             SolSwapchain::MAX_FRAMES_IN_FLIGHT)
+                                                                .Build();
+
     const PerspectiveProjectionInfo projInfo
     {
         .fovDeg = 50.f
@@ -103,7 +108,10 @@ std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice,
 
 void Application::Dispose()
 {
-    ImGui::DestroyContext();
+    // Guarantee Descriptor Pool is destructed before Device
+    _pSolDescriptorPool = nullptr;
+
+    //ImGui::DestroyContext();
 }
 
 void Application::Update(const float deltaTime)
@@ -153,9 +161,12 @@ void Application::LoadGameObjects()
 
 void Application::InitImGUI()
 {
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &rIo = ImGui::GetIO(); (void)rIo;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForVulkan(_solWindow.GetWindow(), true);
+    //IMGUI_CHECKVERSION();
+
+    //ImGui::CreateContext();
+    //ImGuiIO &rIo = ImGui::GetIO(); (void)rIo;
+
+    //ImGui::StyleColorsDark();
+
+    //ImGui_ImplGlfw_InitForVulkan(_solWindow.GetWindow(), true);
 }
