@@ -33,19 +33,31 @@ namespace SolEngine
         // Right now index buffers are a 32-bit number, 
         // but since this will only be rendering cubes - 
         // we may be able to reduce this to a smaller data type.
-        vkCmdBindIndexBuffer(commandBuffer, _pIndexBuffer->GetBuffer(), 0, VK_INDEX_TYPE_UINT32);
+        vkCmdBindIndexBuffer(commandBuffer, 
+                             _pIndexBuffer->GetBuffer(),
+                             0, 
+                             VK_INDEX_TYPE_UINT32);
     }
 
     void SolModel::Draw(const VkCommandBuffer commandBuffer)
     {
         if (_hasIndexBuffer)
         {
-            vkCmdDrawIndexed(commandBuffer, _indexCount, _instanceCount, 0, 0, 0);
+            vkCmdDrawIndexed(commandBuffer, 
+                             _indexCount, 
+                             _instanceCount, 
+                             0,
+                             0,
+                             0);
 
             return;
         }
 
-        vkCmdDraw(commandBuffer, _vertexCount, _instanceCount, 0, 0);
+        vkCmdDraw(commandBuffer, 
+                  _vertexCount, 
+                  _instanceCount, 
+                  0,
+                  0);
     }
 
     void SolModel::Dispose()
@@ -55,7 +67,8 @@ namespace SolEngine
     {
         _vertexCount = static_cast<uint32_t>(vertices.size());
 
-        DBG_ASSERT_MSG(!(_vertexCount < 3), "Vertex count must be at least 3.");
+        DBG_ASSERT_MSG(!(_vertexCount < 3), 
+                       "Vertex count must be at least 3.");
 
         const size_t vertexSize = sizeof(vertices.at(0));
         const VkDeviceSize bufferSize = vertexSize * _vertexCount;
@@ -79,15 +92,7 @@ namespace SolEngine
         //   Memory directly                ==============================
         //   to Device Local Memory!         (Optimal Device Local Memory)
 
-        //VkBuffer stagingBuffer;
-        //VkDeviceMemory stagingBufferMemory;
-
         // Create Staging Buffer for Vertex Data
-        //_rSolDevice.CreateStagingBuffer(&stagingBuffer, 
-        //                                &stagingBufferMemory,    
-        //                                bufferSize,
-        //                                vertices.data());
-
         SolBuffer stagingBuffer(_rSolDevice, 
                                 vertexSize, 
                                 _vertexCount, 
@@ -97,21 +102,17 @@ namespace SolEngine
         stagingBuffer.Map();
         stagingBuffer.WriteToBuffer((void *)vertices.data());
 
+        // Create buffer in Device Local Memory
         _pVertexBuffer = std::make_unique<SolBuffer>(_rSolDevice,
                                                      vertexSize, 
                                                      _vertexCount,
                                                      VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,  // Create a buffer to hold Vertex Input data
                                                      VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);                                  // Use Device Local Memory
-        
-        // Create buffer in Device Local Memory
-        //_rSolDevice.CreateBuffer(bufferSize, 
-        //                         VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,  // Create a buffer to hold Vertex Input data
-        //                         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,                                   // Use Device Local Memory
-        //                         _vertexBuffer,
-        //                         _vertexBufferMemory);
 
         // Copy over data in the staging buffer to device local memory...
-        _rSolDevice.CopyBuffer(stagingBuffer.GetBuffer(), _pVertexBuffer->GetBuffer(), bufferSize);
+        _rSolDevice.CopyBuffer(stagingBuffer.GetBuffer(), 
+                               _pVertexBuffer->GetBuffer(), 
+                               bufferSize);
     }
 
     void SolModel::CreateIndexBuffer(const std::vector<Index_t> &indices)
@@ -134,15 +135,23 @@ namespace SolEngine
         // We can't directly map from Host memory to Device Local Memory
         // So copy the Host data to a temp Staging Buffer on Device,
         // then copy this buffer to Device Local memory.
-        //VkBuffer stagingBuffer;
-        //VkDeviceMemory stagingBufferMemory;
+        // 
+        // Staging buffers act as a "middle man" in the Device 
+        // when copying data from Host to Device Local Memory
+        //   Host (CPU)              |              Device (GPU)
+        // 
+        //                    Copy to temp 
+        // ===============   Staging Buffer   =========================
+        // | void *pData | -----------------> | Staging Buffer Memory |
+        // ===============                    =========================
+        //          \                                     | CopyBuffer()
+        //           ----XX----                           V
+        //              ¬      \            ==============================
+        //   Can't map Host      ---------> | Vertex/Index Buffer Memory |
+        //   Memory directly                ==============================
+        //   to Device Local Memory!         (Optimal Device Local Memory)
 
-        //// Create Staging Buffer for Index Data
-        //_rSolDevice.CreateStagingBuffer(&stagingBuffer, 
-        //                                &stagingBufferMemory,
-        //                                bufferSize, 
-        //                                indices.data());
-
+        // Create Staging Buffer for Index Data
         SolBuffer stagingBuffer(_rSolDevice,
                                 indexSize, 
                                 _indexCount, 
@@ -153,12 +162,6 @@ namespace SolEngine
         stagingBuffer.WriteToBuffer((void *)indices.data());
 
         // Create buffer in Device Local Memory
-        //_rSolDevice.CreateBuffer(bufferSize, 
-        //                         VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,   // Create a buffer that will hold Index Input Data
-        //                         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,                                   // Use Device (GPU) Local Memory
-        //                         _indexBuffer,
-        //                         _indexBufferMemory);
-
         _pIndexBuffer = std::make_unique<SolBuffer>(_rSolDevice,
                                                     indexSize, 
                                                     _indexCount,
@@ -166,7 +169,8 @@ namespace SolEngine
                                                     VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);                                 // Use Device Local Memory
 
         // Copy over data in the staging buffer to device local memory...
-        _rSolDevice.CopyBuffer(stagingBuffer.GetBuffer(), _pIndexBuffer->GetBuffer(), bufferSize);
-        //_rSolDevice.DisposeBuffer(stagingBuffer, stagingBufferMemory);
+        _rSolDevice.CopyBuffer(stagingBuffer.GetBuffer(),
+                               _pIndexBuffer->GetBuffer(), 
+                               bufferSize);
     }
 }
