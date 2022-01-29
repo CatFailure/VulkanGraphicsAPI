@@ -8,23 +8,25 @@ namespace SolEngine
     class SolBuffer : private IDisposable
     {
     public:
-        SolBuffer(SolDevice &rDevice, const VkDeviceSize &instanceSize, const uint32_t instanceCount, const VkBufferUsageFlags usageFlags, const VkMemoryPropertyFlags memPropertyFlags, const VkDeviceSize minOffsetAlignment = 1);
+        SolBuffer(SolDevice &rDevice, const VkDeviceSize &instanceSize, const uint32_t instanceCount, 
+                  const VkBufferUsageFlags usageFlags, const VkMemoryPropertyFlags memPropertyFlags, const VkDeviceSize minOffsetAlignment = 1);
+
         ~SolBuffer();
 
         VkResult Map(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0);
         void Unmap();
 
         // Buffer
-        void				   WriteToBuffer(void *pData, const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0);
-        VkResult			   FlushBuffer(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0);
-        VkDescriptorBufferInfo DescriptorBufferInfo(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0);
-        VkResult			   InvalidateBuffer(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0);
+        void				   WriteToBuffer(void *pData, const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0) const;
+        VkResult			   FlushBuffer(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0) const;
+        VkDescriptorBufferInfo DescriptorBufferInfo(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0) const;
+        VkResult			   InvalidateBuffer(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0) const;
 
         // Index
-        void                   WriteToIndex(void *pData, const size_t index);
-        VkResult               FlushIndex(const size_t index);
-        VkDescriptorBufferInfo DescriptorIndexInfo(const size_t index);
-        VkResult               InvalidateIndex(const size_t index);
+        void                   WriteToIndex(void *pData, const size_t index) const;
+        VkResult               FlushIndex(const size_t index) const;
+        VkDescriptorBufferInfo DescriptorIndexInfo(const size_t index) const;
+        VkResult               InvalidateIndex(const size_t index) const;
 
         VkBuffer               GetBuffer()              const { return _buffer; }
         void *                 GetMappedMemory()        const { return _pMappedData; }

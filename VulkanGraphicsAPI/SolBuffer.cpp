@@ -35,7 +35,12 @@ namespace SolEngine
         DBG_ASSERT_MSG(_buffer && _bufferMemory,
                        "Map invoked on before before creation!");
 
-        return vkMapMemory(_rDevice.GetDevice(), _bufferMemory, offset, size, 0, &_pMappedData);
+        return vkMapMemory(_rDevice.GetDevice(),
+                           _bufferMemory, 
+                           offset, 
+                           size, 
+                           0, 
+                           &_pMappedData);
     }
 
     void SolBuffer::Unmap()
@@ -51,7 +56,7 @@ namespace SolEngine
 
     void SolBuffer::WriteToBuffer(void *pData, 
                                   const VkDeviceSize size, 
-                                  const VkDeviceSize offset)
+                                  const VkDeviceSize offset) const
     {
         if (size == VK_WHOLE_SIZE)
         {
@@ -67,7 +72,7 @@ namespace SolEngine
         memcpy(pMemOffset, pData, size);
     }
 
-    VkResult SolBuffer::FlushBuffer(const VkDeviceSize size, const VkDeviceSize offset)
+    VkResult SolBuffer::FlushBuffer(const VkDeviceSize size, const VkDeviceSize offset) const
     {
         const uint32_t memoryRangeCount{ 1U };
         const VkMappedMemoryRange mappedMemRange
@@ -83,7 +88,7 @@ namespace SolEngine
                                          &mappedMemRange);
     }
 
-    VkDescriptorBufferInfo SolBuffer::DescriptorBufferInfo(const VkDeviceSize size, const VkDeviceSize offset)
+    VkDescriptorBufferInfo SolBuffer::DescriptorBufferInfo(const VkDeviceSize size, const VkDeviceSize offset) const
     {
         return VkDescriptorBufferInfo
         {
@@ -93,7 +98,7 @@ namespace SolEngine
         };
     }
 
-    VkResult SolBuffer::InvalidateBuffer(const VkDeviceSize size, const VkDeviceSize offset)
+    VkResult SolBuffer::InvalidateBuffer(const VkDeviceSize size, const VkDeviceSize offset) const
     {
         const uint32_t memoryRangeCount{ 1U };
         const VkMappedMemoryRange mappedMemRange
@@ -109,22 +114,22 @@ namespace SolEngine
                                               &mappedMemRange);
     }
 
-    void SolBuffer::WriteToIndex(void *pData, const size_t index)
+    void SolBuffer::WriteToIndex(void *pData, const size_t index) const
     {
         WriteToBuffer(pData, _instanceSize, index * _alignmentSize);
     }
 
-    VkResult SolBuffer::FlushIndex(const size_t index)
+    VkResult SolBuffer::FlushIndex(const size_t index) const
     {
         return FlushBuffer(_instanceSize, index * _alignmentSize);
     }
 
-    VkDescriptorBufferInfo SolBuffer::DescriptorIndexInfo(const size_t index)
+    VkDescriptorBufferInfo SolBuffer::DescriptorIndexInfo(const size_t index) const
     {
         return DescriptorBufferInfo(_instanceSize, index * _alignmentSize);
     }
 
-    VkResult SolBuffer::InvalidateIndex(const size_t index)
+    VkResult SolBuffer::InvalidateIndex(const size_t index) const
     {
         return InvalidateBuffer(_instanceSize, index * _alignmentSize);
     }
