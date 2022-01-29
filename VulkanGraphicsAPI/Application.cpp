@@ -102,7 +102,9 @@ std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice,
 }
 
 void Application::Dispose()
-{}
+{
+    ImGui::DestroyContext();
+}
 
 void Application::Update(const float deltaTime)
 {
@@ -156,5 +158,4 @@ void Application::InitImGUI()
     ImGuiIO &rIo = ImGui::GetIO(); (void)rIo;
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForVulkan(_solWindow.GetWindow(), true);
-    ImGui_ImplVulkan_Init()
 }

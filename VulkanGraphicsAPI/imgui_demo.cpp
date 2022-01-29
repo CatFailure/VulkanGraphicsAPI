@@ -70,6 +70,7 @@ Index of this file:
 // [SECTION] Example App: Documents Handling / ShowExampleAppDocuments()
 
 */
+#include "pch.hpp"
 
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS
