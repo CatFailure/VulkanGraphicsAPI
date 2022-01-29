@@ -27,6 +27,7 @@ Application::Application(const ApplicationData &appData)
     _solCamera.LookAt(_solCamera.GetPosition() + VECTOR3_AXIS_Z);   // Look forwards
 
     LoadGameObjects();
+    InitImGUI();
 }
 
 Application::~Application()
@@ -161,12 +162,31 @@ void Application::LoadGameObjects()
 
 void Application::InitImGUI()
 {
-    //IMGUI_CHECKVERSION();
+    IMGUI_CHECKVERSION();
 
-    //ImGui::CreateContext();
-    //ImGuiIO &rIo = ImGui::GetIO(); (void)rIo;
+    ImGui::CreateContext();
+    ImGuiIO &rIo = ImGui::GetIO(); (void)rIo;
 
-    //ImGui::StyleColorsDark();
+    ImGui::StyleColorsDark();
 
-    //ImGui_ImplGlfw_InitForVulkan(_solWindow.GetWindow(), true);
+    ImGui_ImplGlfw_InitForVulkan(_solWindow.GetWindow(), true);
+
+    ImGui_ImplVulkan_InitInfo initInfo
+    {
+        .Instance        = _solDevice.GetInstance(),
+        .PhysicalDevice  = _solDevice.GetPhysicalDevice(),
+        .Device          = _solDevice.GetDevice(),
+        .QueueFamily     = _solDevice.QueryPhysicalDeviceQueueFamilies().graphicsFamily,
+        .Queue           = _solDevice.GetGraphicsQueue(),
+        .PipelineCache   = VK_NULL_HANDLE,
+        .DescriptorPool  = _pSolDescriptorPool->GetDescriptorPool(),
+        .Subpass         = 0,
+        .MinImageCount   = SolSwapchain::MAX_FRAMES_IN_FLIGHT,
+        .ImageCount      = SolSwapchain::MAX_FRAMES_IN_FLIGHT,
+        .MSAASamples     = VK_SAMPLE_COUNT_1_BIT,
+        .Allocator       = VK_NULL_HANDLE,
+        .CheckVkResultFn = DebugHelpers::CheckVkResult
+    };
+
+    ImGui_ImplVulkan_Init(&initInfo, _solRenderer.GetSwapchainRenderPass());
 }
