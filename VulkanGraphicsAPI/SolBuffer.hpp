@@ -1,6 +1,8 @@
 #pragma once
 #include "SolDevice.hpp"
 
+// Based on: https://github.com/SaschaWillems/Vulkan/blob/master/base/VulkanBuffer.h
+
 namespace SolEngine
 {
     class SolBuffer : private IDisposable

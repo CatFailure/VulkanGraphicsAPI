@@ -40,6 +40,13 @@ namespace SolEngine
 
     void SolBuffer::Unmap()
     {
+        if (_pMappedData == nullptr)
+        {
+            return;
+        }
+
+        vkUnmapMemory(_rDevice.GetDevice(), _bufferMemory);
+        _pMappedData = nullptr;
     }
 
     void SolBuffer::WriteToBuffer(void *pData, 
@@ -78,7 +85,12 @@ namespace SolEngine
 
     VkDescriptorBufferInfo SolBuffer::DescriptorBufferInfo(const VkDeviceSize size, const VkDeviceSize offset)
     {
-        return VkDescriptorBufferInfo();
+        return VkDescriptorBufferInfo
+        {
+            .buffer = _buffer,
+            .offset = offset,
+            .range  = size
+        };
     }
 
     VkResult SolBuffer::InvalidateBuffer(const VkDeviceSize size, const VkDeviceSize offset)
