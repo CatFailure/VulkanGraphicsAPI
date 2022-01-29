@@ -1,5 +1,5 @@
 #pragma once
-#include "SolDevice.hpp"
+#include "SolBuffer.hpp"
 
 using namespace SolEngine::Data;
 
@@ -26,14 +26,18 @@ namespace SolEngine
 
         SolDevice &_rSolDevice;
 
-        VkBuffer	   _vertexBuffer;
-        VkDeviceMemory _vertexBufferMemory;
+        /*VkBuffer	   _vertexBuffer;
+        VkDeviceMemory _vertexBufferMemory;*/
+        std::unique_ptr<SolBuffer> _pVertexBuffer;
         uint32_t	   _vertexCount;
 
         bool           _hasIndexBuffer{ false };    // Allows a model to only contain vertex info with no indices
-        VkBuffer	   _indexBuffer;
-        VkDeviceMemory _indexBufferMemory;
+        std::unique_ptr<SolBuffer> _pIndexBuffer;
+        /*VkBuffer	   _indexBuffer;
+        VkDeviceMemory _indexBufferMemory;*/
+
         uint32_t	   _indexCount;
-        uint32_t       _instanceCount{ 1U };
+
+        uint32_t _instanceCount{ 1U };
     };
 }

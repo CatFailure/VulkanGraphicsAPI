@@ -159,55 +159,6 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Bind Buffer Memory!");
     }
 
-    void SolDevice::CreateStagingBuffer(VkBuffer *pOutBuffer, 
-                                        VkDeviceMemory *pOutBufferMemory, 
-                                        const VkDeviceSize bufferSize,
-                                        const void *pSrcData)
-    {
-        // Staging buffers act as a "middle man" in the Device 
-        // when copying data from Host to Device Local Memory
-        //   Host (CPU)              |              Device (GPU)
-        // 
-        //                    Copy to temp 
-        // ===============   Staging Buffer   =========================
-        // | void *pData | -----------------> | Staging Buffer Memory |
-        // ===============                    =========================
-        //          \                                     | CopyBuffer()
-        //           ----XX----                           V
-        //              ¬      \            ==============================
-        //   Can't map Host      ---------> | Vertex/Index Buffer Memory |
-        //   Memory directly                ==============================
-        //   to Device Local Memory!         (Optimal Device Local Memory)
-
-        // Create the Staging Buffer...
-        CreateBuffer(bufferSize, 
-                     VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
-                     VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                     *pOutBuffer, 
-                     *pOutBufferMemory);
-
-        // Create a region of host memory mapped to device (staging buffer) memory
-        // - and point pBufferData to beginning of mapped memory range
-        void *pBufferData;
-
-        DBG_ASSERT_VULKAN_MSG(vkMapMemory(_device, 
-                                          *pOutBufferMemory,
-                                          0,
-                                          bufferSize, 
-                                          0,
-                                          &pBufferData),
-                              "Failed to map memory to Staging Buffer!");
-
-        // Copy data into the Host mapped memory region (Staging Buffer)
-        memcpy(pBufferData, 
-               pSrcData, 
-               static_cast<uint32_t>(bufferSize));
-
-        // Clean up...
-        vkUnmapMemory(_device, 
-                      *pOutBufferMemory);
-    }
-
     void SolDevice::CopyBuffer(const VkBuffer srcBuffer, 
                                const VkBuffer dstBuffer, 
                                const VkDeviceSize size)

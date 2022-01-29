@@ -90,6 +90,9 @@
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SolBuffer.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -176,6 +179,9 @@
     <ClInclude Include="CameraProjectionInfo.hpp">
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
+    <ClInclude Include="SolBuffer.hpp">
+      <Filter>SolEngine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">
@@ -184,5 +190,6 @@
     <None Include="Shaders\SimpleShader.vert">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
