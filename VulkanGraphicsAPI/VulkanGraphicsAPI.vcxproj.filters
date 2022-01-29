@@ -129,6 +129,9 @@
     <ClCompile Include="SolDescriptorPool.cpp">
       <Filter>SolEngine\Descriptors</Filter>
     </ClCompile>
+    <ClCompile Include="SolDescriptorWriter.cpp">
+      <Filter>SolEngine\Descriptors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -246,6 +249,9 @@
       <Filter>SolEngine\Descriptors</Filter>
     </ClInclude>
     <ClInclude Include="SolDescriptorPool.hpp">
+      <Filter>SolEngine\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="SolDescriptorWriter.hpp">
       <Filter>SolEngine\Descriptors</Filter>
     </ClInclude>
   </ItemGroup>

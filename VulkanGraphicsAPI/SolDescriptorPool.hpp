@@ -32,9 +32,12 @@ namespace SolEngine::Descriptors
         void ResetPool();
 
     private:
-        SolDevice &_rSolDevice;
-
         // Inherited via IDisposable
         virtual void Dispose() override;
+
+        SolDevice &      _rSolDevice;
+        VkDescriptorPool _descriptorPool;
+
+        friend class SolDescriptorWriter;
     };
 }

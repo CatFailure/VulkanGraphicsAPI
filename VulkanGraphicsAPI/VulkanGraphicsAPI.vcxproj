@@ -353,6 +353,7 @@
     <ClCompile Include="SolCamera.cpp" />
     <ClCompile Include="SolDescriptorPool.cpp" />
     <ClCompile Include="SolDescriptorSetLayout.cpp" />
+    <ClCompile Include="SolDescriptorWriter.cpp" />
     <ClCompile Include="SolDevice.cpp" />
     <ClCompile Include="SolEvent.cpp" />
     <ClCompile Include="SolGameObject.cpp" />
@@ -391,6 +392,7 @@
     <ClInclude Include="SolCamera.hpp" />
     <ClInclude Include="SolDescriptorPool.hpp" />
     <ClInclude Include="SolDescriptorSetLayout.hpp" />
+    <ClInclude Include="SolDescriptorWriter.hpp" />
     <ClInclude Include="SolDevice.hpp" />
     <ClInclude Include="SolEvent.hpp" />
     <ClInclude Include="SolGameObject.hpp" />

@@ -32,6 +32,7 @@ namespace SolEngine::Descriptors
 			/// </summary>
 			/// <returns></returns>
 			std::unique_ptr<SolDescriptorSetLayout> Build() const;
+
 		private:
 			SolDevice &_rSolDevice;
 			DescSetLayoutBindingsUMap_t _descSetLayoutBindings;
