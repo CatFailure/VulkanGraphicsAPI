@@ -15,7 +15,8 @@ namespace SolEngine::Descriptors
         DBG_ASSERT_MSG(_rSolDescSetLayout._descSetLayoutBindings.count(binding) == 1,
                        "Layout does not contain specified binding!");
 
-        const VkDescriptorSetLayoutBinding &descSetLayoutBinding = _rSolDescSetLayout._descSetLayoutBindings[binding];
+        const VkDescriptorSetLayoutBinding &descSetLayoutBinding = 
+            _rSolDescSetLayout._descSetLayoutBindings[binding];
 
         DBG_ASSERT_MSG(descSetLayoutBinding.descriptorCount == 1, 
                        "Binding single Descriptor Info, but Binding excepts multiple!");
@@ -40,7 +41,8 @@ namespace SolEngine::Descriptors
         DBG_ASSERT_MSG(_rSolDescSetLayout._descSetLayoutBindings.count(binding) == 1,
                        "Layout does not contain specified binding!");
 
-        const VkDescriptorSetLayoutBinding &descSetLayoutBinding = _rSolDescSetLayout._descSetLayoutBindings[binding];
+        const VkDescriptorSetLayoutBinding &descSetLayoutBinding = 
+            _rSolDescSetLayout._descSetLayoutBindings[binding];
 
         DBG_ASSERT_MSG(descSetLayoutBinding.descriptorCount == 1, 
                        "Binding single Descriptor Info, but Binding excepts multiple!");
@@ -61,7 +63,9 @@ namespace SolEngine::Descriptors
 
     bool SolDescriptorWriter::Build(VkDescriptorSet &rDescSet)
     {
-        const bool isSuccess = _rSolDescPool.AllocateDescriptorSet(_rSolDescSetLayout.GetDescriptorSetLayout(), rDescSet);
+        const bool isSuccess = 
+            _rSolDescPool.AllocateDescriptorSet(_rSolDescSetLayout.GetDescriptorSetLayout(), 
+                                                rDescSet);
 
         if (!isSuccess)
         {
@@ -81,7 +85,7 @@ namespace SolEngine::Descriptors
         }
 
         vkUpdateDescriptorSets(_rSolDescPool._rSolDevice.GetDevice(), 
-                               _writeDescSets.size(), 
+                               static_cast<uint32_t>(_writeDescSets.size()), 
                                _writeDescSets.data(), 
                                0,
                                NULL);

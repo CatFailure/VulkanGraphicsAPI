@@ -27,6 +27,8 @@ namespace SolEngine::Descriptors
         SolDescriptorPool(SolDevice &rSolDevice, const uint32_t maxDescriptorSets, const VkDescriptorPoolCreateFlags poolFlags, const std::vector<VkDescriptorPoolSize> &poolSizes);
         ~SolDescriptorPool();
 
+        VkDescriptorPool GetDescriptorPool() const { return _descriptorPool; }
+
         /// <summary>
         /// Allocates a single Descriptor Set from the Descriptor Pool.
         /// </summary>
