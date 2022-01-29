@@ -342,6 +342,7 @@
     </ClCompile>
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="SimpleRenderSystem.cpp" />
+    <ClCompile Include="SolBuffer.cpp" />
     <ClCompile Include="SolCamera.cpp" />
     <ClCompile Include="SolDevice.cpp" />
     <ClCompile Include="SolEvent.cpp" />
@@ -369,6 +370,7 @@
     <ClInclude Include="SimplePushConstantData.hpp" />
     <ClInclude Include="SimpleRenderSystem.hpp" />
     <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="SolBuffer.hpp" />
     <ClInclude Include="SolCamera.hpp" />
     <ClInclude Include="SolDevice.hpp" />
     <ClInclude Include="SolEvent.hpp" />
@@ -384,6 +386,7 @@
     <ClInclude Include="Vertex.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="Shaders\SimpleShader.frag" />
     <None Include="Shaders\SimpleShader.vert" />
   </ItemGroup>
