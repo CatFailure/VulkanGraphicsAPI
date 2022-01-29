@@ -112,7 +112,7 @@ void Application::Dispose()
     // Guarantee Descriptor Pool is destructed before Device
     _pSolDescriptorPool = nullptr;
 
-    //ImGui::DestroyContext();
+    ImGui::DestroyContext();
 }
 
 void Application::Update(const float deltaTime)
