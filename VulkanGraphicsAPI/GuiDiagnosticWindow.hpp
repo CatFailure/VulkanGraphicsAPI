@@ -19,7 +19,7 @@ namespace SolEngine::GUI
 		void OnUpdate_Method();
 		void PushBackDeltaTime();
 
-		static constexpr size_t MAX_BACKLOGGED_DELTA_TIMES{ 10 };
+		static constexpr size_t MAX_BACKLOGGED_DELTA_TIMES{ 20 };
 		static constexpr float TO_MILLISECONDS{ 1000.f };
 		static constexpr float MIN_DELTA_TIME_SCALE{ 0.5f }, MAX_DELTA_TIME_SCALE{ 2.f };
 

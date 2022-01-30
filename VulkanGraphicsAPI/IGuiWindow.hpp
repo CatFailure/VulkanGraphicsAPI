@@ -36,16 +36,16 @@ namespace SolEngine::Interface
 		virtual void RenderWindowContents() = 0;
 
 	protected:
-		void TickUpdateDelayRemaining(const float deltaTime) { _updateDelayRemaning -= deltaTime; }
-		bool ShouldUpdate() const { return !(_updateDelayRemaning > 0.f); }
-		void ResetUpdateDelayRemaining() { _updateDelayRemaning = _updateFrequency; }
+		void TickUpdateDelayRemaining(const float deltaTime) { _updateDelayRemaining -= deltaTime; }
+		bool ShouldUpdate() const { return !(_updateDelayRemaining > 0.f); }
+		void ResetUpdateDelayRemaining() { _updateDelayRemaining = 1.f / _updateFrequency; }
 
 		const char *_windowTitle{ "ImGui Window" };
 		bool _isActive{ true };
 		ImGuiWindowFlags _windowFlags{ 0 };
 
 		float _updateFrequency{ 1.f };
-		float _updateDelayRemaning{ 0.f };
+		float _updateDelayRemaining{ 0.f };
 
 		SolEvent<> _onUpdateEvent;
 	};

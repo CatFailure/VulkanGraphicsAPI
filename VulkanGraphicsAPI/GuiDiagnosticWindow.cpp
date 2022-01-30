@@ -11,6 +11,8 @@ namespace SolEngine::GUI
           _rRealTimeDiagnosticData(rDiagnosticData),
           IGuiWindow(windowTitle, isActive, windowFlags)
     {
+        _updateFrequency = 5.f;
+
         _onUpdateEvent.AddListener([this]() { OnUpdate_Method(); });
     }
 
@@ -18,7 +20,7 @@ namespace SolEngine::GUI
     {
         ImGui::Begin(_windowTitle, &_isActive, _windowFlags);
 
-        ImGui::Text("Framerate: %F2", 1.f / _diagnosticData.deltaTimeSeconds);
+        ImGui::Text("Framerate: %.3f", 1.f / _diagnosticData.deltaTimeSeconds);
         ImGui::PlotLines("Frame Delta (ms)",
                          _deltaTimeBacklog, 
                          MAX_BACKLOGGED_DELTA_TIMES,
