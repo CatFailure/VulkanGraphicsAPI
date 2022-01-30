@@ -38,14 +38,11 @@ Application::~Application()
 
 void Application::Run()
 {
-    SolClock clock{};
-
     while (!_solWindow.ShouldClose())
     {
         glfwPollEvents();   // Poll Window Events
 
-        const float deltaTime = clock.Restart();
-        _totalTime += deltaTime;
+        const float deltaTime = _solClock.Restart();
 
         // Start Dear ImGui frame...
         ImGui_ImplVulkan_NewFrame();
@@ -138,7 +135,7 @@ void Application::Update(const float deltaTime)
         rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
         rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
-        rGameObject.transform.position.y = sinf(_totalTime);
+        rGameObject.transform.position.y = sinf(_solClock.GetTotalTime());
     }
 }
 
@@ -154,12 +151,15 @@ void Application::Draw()
 
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-    renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
+    if (_drawGameObjects)
+    {
+        renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
+    }
 
     // Render Dear ImGui...
-
     ImGui::Begin("Hello ImGui Window!");
     ImGui::Text("Hello World!");
+    ImGui::Checkbox("Draw GameObjects?", &_drawGameObjects);
     ImGui::End();
 
     ImGui::Render();

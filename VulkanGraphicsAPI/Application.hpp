@@ -43,6 +43,7 @@ private:
 
     ApplicationData _appData;
 
+    SolClock    _solClock;
     SolCamera   _solCamera;
     SolWindow   _solWindow;
     SolDevice   _solDevice;
@@ -51,7 +52,7 @@ private:
 
     std::vector<SolGameObject> _gameObjects;
 
-    float _totalTime{ 0 };
+    bool _drawGameObjects{ true };
 
     static constexpr float CAM_NEAR{ 0.01f };
     static constexpr float CAM_FAR { 100.f };
