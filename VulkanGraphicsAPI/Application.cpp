@@ -157,7 +157,13 @@ void Application::Draw()
     renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
 
     // Render Dear ImGui...
+
+    ImGui::Begin("Hello ImGui Window!");
+    ImGui::Text("Hello World!");
+    ImGui::End();
+
     ImGui::Render();
+    ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
