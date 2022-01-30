@@ -39,6 +39,7 @@ private:
 
     void LoadGameObjects();
     void InitImGUI();
+    void InitImGUIFont();
 
     ApplicationData _appData;
 

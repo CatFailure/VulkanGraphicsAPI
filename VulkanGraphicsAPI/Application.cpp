@@ -28,6 +28,7 @@ Application::Application(const ApplicationData &appData)
 
     LoadGameObjects();
     InitImGUI();
+    InitImGUIFont();
 }
 
 Application::~Application()
@@ -46,12 +47,20 @@ void Application::Run()
         const float deltaTime = clock.Restart();
         _totalTime += deltaTime;
 
+        // Start Dear ImGui frame...
+        ImGui_ImplVulkan_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
         Update(deltaTime);
         Draw();
     }
 
     // Make CPU wait until all GPU operations have completed.
     vkDeviceWaitIdle(_solDevice.GetDevice());
+
+    // Destroy ImGui fonts...
+    ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
 std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
@@ -112,6 +121,9 @@ void Application::Dispose()
     // Guarantee Descriptor Pool is destructed before Device
     _pSolDescriptorPool = nullptr;
 
+    // ImGui Cleanup...
+    ImGui_ImplVulkan_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
 
@@ -143,6 +155,9 @@ void Application::Draw()
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
     renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
+
+    // Render Dear ImGui...
+    ImGui::Render();
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -189,4 +204,15 @@ void Application::InitImGUI()
     };
 
     ImGui_ImplVulkan_Init(&initInfo, _solRenderer.GetSwapchainRenderPass());
+}
+
+void Application::InitImGUIFont()
+{
+    const VkCommandBuffer commandBuffer = _solDevice.BeginOneTimeCommandBuffer();
+
+    ImGui_ImplVulkan_CreateFontsTexture(commandBuffer);
+
+    _solDevice.EndOneTimeCommandBuffer(commandBuffer);
+
+    ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
