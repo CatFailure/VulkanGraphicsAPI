@@ -272,6 +272,9 @@
     <ClInclude Include="GuiWindowManager.hpp">
       <Filter>SolEngine\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="DiagnosticData.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">

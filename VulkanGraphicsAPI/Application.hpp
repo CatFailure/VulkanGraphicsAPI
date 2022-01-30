@@ -35,6 +35,7 @@ private:
     void LoadGameObjects();
 
     ApplicationData _appData;
+    DiagnosticData _diagnosticData{};
 
     SolClock    _solClock;
     SolCamera   _solCamera;

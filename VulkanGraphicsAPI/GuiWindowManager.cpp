@@ -10,8 +10,6 @@ namespace SolEngine::GUI
 	{
         InitialiseImGui(rSolDevice, solWindow, solRenderer, descriptorPool);
         InitialiseImGuiFont(rSolDevice);
-
-        _guiWindows.push_back(std::make_unique<GuiDiagnosticWindow>("Diagnostic Window"));
 	}
 
 	GuiWindowManager::~GuiWindowManager()
@@ -31,7 +29,7 @@ namespace SolEngine::GUI
     {
         for (std::unique_ptr<IGuiWindow> &rGuiWindow : _guiWindows)
         {
-            rGuiWindow->UpdateWindowContents();
+            rGuiWindow->RenderWindowContents();
         }
 
         ImGui::Render();
@@ -40,6 +38,10 @@ namespace SolEngine::GUI
 
 	void GuiWindowManager::Update(const float deltaTime)
 	{
+        for (std::unique_ptr<IGuiWindow> &rGuiWindow : _guiWindows)
+        {
+            rGuiWindow->Update(deltaTime);
+        }
 	}
 
 	void GuiWindowManager::InitialiseImGui(SolDevice &rSolDevice,

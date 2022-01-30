@@ -8,28 +8,40 @@ using namespace SolEngine::Interface;
 
 namespace SolEngine::GUI
 {
-	class GuiWindowManager : public IMonoBehaviour, private IDisposable
-	{
-	public:
-		GuiWindowManager() = default;
-		GuiWindowManager(SolDevice &rSolDevice, const SolWindow &solWindow, const SolRenderer &solRenderer, const VkDescriptorPool &descriptorPool);
-		~GuiWindowManager();
+    class GuiWindowManager : public IMonoBehaviour, private IDisposable
+    {
+    public:
+        GuiWindowManager() = default;
+        GuiWindowManager(SolDevice &rSolDevice, const SolWindow &solWindow, const SolRenderer &solRenderer, const VkDescriptorPool &descriptorPool);
+        ~GuiWindowManager();
 
-		void NewFrame();
-		void Render(const VkCommandBuffer commandBuffer);
+        void NewFrame();
+        void Render(const VkCommandBuffer commandBuffer);
 
-		// Inherited via IMonoBehaviour
-		virtual void Update(const float deltaTime) override;
+        // Inherited via IMonoBehaviour
+        virtual void Update(const float deltaTime) override;
 
-	private:
-		void InitialiseImGui(SolDevice &rSolDevice, const SolWindow &solWindow, const SolRenderer &solRenderer, const VkDescriptorPool &descriptorPool);
-		void InitialiseImGuiFont(SolDevice &rSolDevice);
+        template<typename _TyWindow, typename ...TyArgs>
+        void CreateGuiWindow(const char *windowTitle, 
+                             const bool isActive = true, 
+                             const ImGuiWindowFlags flags = 0, 
+                             TyArgs&&... args)
+        {
+            _guiWindows.push_back(std::make_unique<_TyWindow>(windowTitle, 
+                                                              isActive, 
+                                                              flags,
+                                                              args...));
+        }
 
-		// Inherited via IDisposable
-		virtual void Dispose() override;
+    private:
+        void InitialiseImGui(SolDevice &rSolDevice, const SolWindow &solWindow, const SolRenderer &solRenderer, const VkDescriptorPool &descriptorPool);
+        void InitialiseImGuiFont(SolDevice &rSolDevice);
 
-		std::vector<std::unique_ptr<IGuiWindow>> _guiWindows;
-	};
+        // Inherited via IDisposable
+        virtual void Dispose() override;
+
+        std::vector<std::unique_ptr<IGuiWindow>> _guiWindows;
+    };
 }
 
 

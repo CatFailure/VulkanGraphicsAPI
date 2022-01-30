@@ -372,6 +372,7 @@
     <ClInclude Include="CameraProjectionInfo.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
+    <ClInclude Include="DiagnosticData.hpp" />
     <ClInclude Include="GuiDiagnosticWindow.hpp" />
     <ClInclude Include="GuiWindowManager.hpp" />
     <ClInclude Include="IDisposable.hpp" />

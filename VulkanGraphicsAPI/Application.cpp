@@ -22,6 +22,8 @@ Application::Application(const ApplicationData &appData)
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
+    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _diagnosticData);
+
     const PerspectiveProjectionInfo projInfo
     {
         .fovDeg = 50.f
@@ -46,6 +48,7 @@ void Application::Run()
         glfwPollEvents();   // Poll Window Events
 
         const float deltaTime = _solClock.Restart();
+        _diagnosticData.deltaTime = deltaTime;
 
         // Start Dear ImGui frame...
         _pGuiWindowManager->NewFrame();
