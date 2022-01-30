@@ -131,7 +131,7 @@ void Application::Update(const float deltaTime)
     for (SolGameObject &rGameObject : _gameObjects)
     {
         const float scaledTwoPi = deltaTime * glm::two_pi<float>();
-
+        rGameObject.transform.scale = glm::vec3(_gameObjectScale);
         rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
         rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
@@ -156,10 +156,11 @@ void Application::Draw()
         renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
     }
 
-    // Render Dear ImGui...
+    // Render Dear ImGui... (TEMP)
     ImGui::Begin("Hello ImGui Window!");
     ImGui::Text("Hello World!");
     ImGui::Checkbox("Draw GameObjects?", &_drawGameObjects);
+    ImGui::SliderFloat("GameObject Scale", &_gameObjectScale, .1f, 5.f);
     ImGui::End();
 
     ImGui::Render();

@@ -48,11 +48,14 @@ private:
     SolWindow   _solWindow;
     SolDevice   _solDevice;
     SolRenderer _solRenderer;
+
     std::unique_ptr<SolDescriptorPool> _pSolDescriptorPool;
 
     std::vector<SolGameObject> _gameObjects;
 
+    // TEMP: Testing out ImGUI
     bool _drawGameObjects{ true };
+    float _gameObjectScale{ 1.f };
 
     static constexpr float CAM_NEAR{ 0.01f };
     static constexpr float CAM_FAR { 100.f };
