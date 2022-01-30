@@ -17,6 +17,11 @@ Application::Application(const ApplicationData &appData)
                                                                              SolSwapchain::MAX_FRAMES_IN_FLIGHT)
                                                                 .Build();
 
+    _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,  
+                                                            _solWindow,
+                                                            _solRenderer, 
+                                                            _pSolDescriptorPool->GetDescriptorPool());
+
     const PerspectiveProjectionInfo projInfo
     {
         .fovDeg = 50.f
@@ -27,8 +32,6 @@ Application::Application(const ApplicationData &appData)
     _solCamera.LookAt(_solCamera.GetPosition() + VECTOR3_AXIS_Z);   // Look forwards
 
     LoadGameObjects();
-    InitImGUI();
-    InitImGUIFont();
 }
 
 Application::~Application()
@@ -45,9 +48,7 @@ void Application::Run()
         const float deltaTime = _solClock.Restart();
 
         // Start Dear ImGui frame...
-        ImGui_ImplVulkan_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        _pGuiWindowManager->NewFrame();
 
         Update(deltaTime);
         Draw();
@@ -55,9 +56,6 @@ void Application::Run()
 
     // Make CPU wait until all GPU operations have completed.
     vkDeviceWaitIdle(_solDevice.GetDevice());
-
-    // Destroy ImGui fonts...
-    ImGui_ImplVulkan_DestroyFontUploadObjects();
 }
 
 std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
@@ -115,24 +113,20 @@ std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice,
 
 void Application::Dispose()
 {
-    // Guarantee Descriptor Pool is destructed before Device
+    // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
     _pSolDescriptorPool = nullptr;
-
-    // ImGui Cleanup...
-    ImGui_ImplVulkan_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    _pGuiWindowManager = nullptr;
 }
 
 void Application::Update(const float deltaTime)
 {
     _solCamera.Update(deltaTime);
+    _pGuiWindowManager->Update(deltaTime);
 
     for (SolGameObject &rGameObject : _gameObjects)
     {
         const float scaledTwoPi = deltaTime * glm::two_pi<float>();
 
-        rGameObject.transform.scale = glm::vec3(_gameObjectScale);
         rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
         rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
@@ -152,20 +146,10 @@ void Application::Draw()
 
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-    if (_drawGameObjects)
-    {
-        renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
-    }
+    renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
 
-    // Render Dear ImGui... (TEMP)
-    ImGui::Begin("Hello ImGui Window!");
-    ImGui::Text("Hello World!");
-    ImGui::Checkbox("Draw GameObjects?", &_drawGameObjects);
-    ImGui::SliderFloat("GameObject Scale", &_gameObjectScale, .1f, 2.5f);
-    ImGui::End();
-
-    ImGui::Render();
-    ImGui_ImplVulkan_RenderDrawData(ImGui::GetDrawData(), commandBuffer);
+    // Render Dear ImGui...
+    _pGuiWindowManager->Render(commandBuffer);
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -181,46 +165,4 @@ void Application::LoadGameObjects()
     cubeGameObject.transform.position = { 0, 0, 0 };
 
     _gameObjects.push_back(std::move(cubeGameObject));
-}
-
-void Application::InitImGUI()
-{
-    IMGUI_CHECKVERSION();
-
-    ImGui::CreateContext();
-    ImGuiIO &rIo = ImGui::GetIO(); (void)rIo;
-
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplGlfw_InitForVulkan(_solWindow.GetWindow(), true);
-
-    ImGui_ImplVulkan_InitInfo initInfo
-    {
-        .Instance        = _solDevice.GetInstance(),
-        .PhysicalDevice  = _solDevice.GetPhysicalDevice(),
-        .Device          = _solDevice.GetDevice(),
-        .QueueFamily     = _solDevice.QueryPhysicalDeviceQueueFamilies().graphicsFamily,
-        .Queue           = _solDevice.GetGraphicsQueue(),
-        .PipelineCache   = VK_NULL_HANDLE,
-        .DescriptorPool  = _pSolDescriptorPool->GetDescriptorPool(),
-        .Subpass         = 0,
-        .MinImageCount   = SolSwapchain::MAX_FRAMES_IN_FLIGHT,
-        .ImageCount      = SolSwapchain::MAX_FRAMES_IN_FLIGHT,
-        .MSAASamples     = VK_SAMPLE_COUNT_1_BIT,
-        .Allocator       = VK_NULL_HANDLE,
-        .CheckVkResultFn = DebugHelpers::CheckVkResult
-    };
-
-    ImGui_ImplVulkan_Init(&initInfo, _solRenderer.GetSwapchainRenderPass());
-}
-
-void Application::InitImGUIFont()
-{
-    const VkCommandBuffer commandBuffer = _solDevice.BeginOneTimeCommandBuffer();
-
-    ImGui_ImplVulkan_CreateFontsTexture(commandBuffer);
-
-    _solDevice.EndOneTimeCommandBuffer(commandBuffer);
-
-    ImGui_ImplVulkan_DestroyFontUploadObjects();
 }

@@ -46,6 +46,9 @@
     <Filter Include="SolEngine\Descriptors">
       <UniqueIdentifier>{0add9c7d-c5ca-4625-b876-7de24d2dce2a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\GUI">
+      <UniqueIdentifier>{d5712963-e0e8-44e2-aaab-2542669ad924}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -131,6 +134,12 @@
     </ClCompile>
     <ClCompile Include="SolDescriptorWriter.cpp">
       <Filter>SolEngine\Descriptors</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiDiagnosticWindow.cpp">
+      <Filter>SolEngine\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiWindowManager.cpp">
+      <Filter>SolEngine\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -253,6 +262,15 @@
     </ClInclude>
     <ClInclude Include="SolDescriptorWriter.hpp">
       <Filter>SolEngine\Descriptors</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiDiagnosticWindow.hpp">
+      <Filter>SolEngine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IGuiWindow.hpp">
+      <Filter>SolEngine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiWindowManager.hpp">
+      <Filter>SolEngine\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

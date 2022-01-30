@@ -312,6 +312,8 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="DebugHelpers.cpp" />
+    <ClCompile Include="GuiDiagnosticWindow.cpp" />
+    <ClCompile Include="GuiWindowManager.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
@@ -370,7 +372,10 @@
     <ClInclude Include="CameraProjectionInfo.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
+    <ClInclude Include="GuiDiagnosticWindow.hpp" />
+    <ClInclude Include="GuiWindowManager.hpp" />
     <ClInclude Include="IDisposable.hpp" />
+    <ClInclude Include="IGuiWindow.hpp" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_glfw.h" />
