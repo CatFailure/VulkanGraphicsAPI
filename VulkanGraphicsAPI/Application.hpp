@@ -38,6 +38,8 @@ private:
     void Draw();
 
     void LoadGameObjects();
+
+    // TEMP
     void InitImGUI();
     void InitImGUIFont();
 
