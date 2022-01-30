@@ -46,6 +46,7 @@ namespace SolEngine::Interface
 
 		float _updateFrequency{ 1.f };
 		float _updateDelayRemaning{ 0.f };
+
 		SolEvent<> _onUpdateEvent;
 	};
 }

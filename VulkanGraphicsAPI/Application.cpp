@@ -48,7 +48,8 @@ void Application::Run()
         glfwPollEvents();   // Poll Window Events
 
         const float deltaTime = _solClock.Restart();
-        _diagnosticData.deltaTime = deltaTime;
+        _diagnosticData.deltaTimeSeconds = deltaTime;
+        _diagnosticData.totalTimeSeconds = _solClock.GetTotalTime();
 
         // Start Dear ImGui frame...
         _pGuiWindowManager->NewFrame();

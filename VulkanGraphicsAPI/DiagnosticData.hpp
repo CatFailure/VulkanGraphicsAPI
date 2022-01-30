@@ -1,6 +1,9 @@
 #pragma once
+#include <vector>
+
 struct DiagnosticData
 {
-	float deltaTime;
+	float deltaTimeSeconds;
+	float totalTimeSeconds;
 };
 
