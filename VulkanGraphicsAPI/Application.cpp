@@ -161,7 +161,7 @@ void Application::Draw()
     ImGui::Begin("Hello ImGui Window!");
     ImGui::Text("Hello World!");
     ImGui::Checkbox("Draw GameObjects?", &_drawGameObjects);
-    ImGui::SliderFloat("GameObject Scale", &_gameObjectScale, .1f, 5.f);
+    ImGui::SliderFloat("GameObject Scale", &_gameObjectScale, .1f, 2.5f);
     ImGui::End();
 
     ImGui::Render();
