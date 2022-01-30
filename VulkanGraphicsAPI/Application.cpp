@@ -131,6 +131,7 @@ void Application::Update(const float deltaTime)
     for (SolGameObject &rGameObject : _gameObjects)
     {
         const float scaledTwoPi = deltaTime * glm::two_pi<float>();
+
         rGameObject.transform.scale = glm::vec3(_gameObjectScale);
         rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
         rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
