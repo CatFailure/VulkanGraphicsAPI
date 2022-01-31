@@ -6,7 +6,7 @@
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
 
-#if _DEBUG_LAPTOP
+#if _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
 #endif  // _DEBUG_LAPTOP
 

@@ -95,7 +95,7 @@ namespace SolEngine
         VkQueue          _graphicsQueue { NULL };
         VkQueue          _presentQueue  { NULL };
 
-#if  _DEBUG_LAPTOP
+#if  _DEBUG_LAPTOP || NDEBUG_LAPTOP
         std::vector<const char*> _enabledLayerNames{};                          // Laptop
 #else
         std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop
