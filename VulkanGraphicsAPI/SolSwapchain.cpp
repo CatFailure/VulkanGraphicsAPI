@@ -11,9 +11,9 @@ namespace SolEngine
     SolSwapchain::SolSwapchain(SolDevice &rSolDevice, 
                                            const VkExtent2D &windowExtent, 
                                            std::shared_ptr<SolSwapchain> pOldSwapchain)
-        : _rSolDevice(rSolDevice),
+        : _rSolVulkanDevice(rSolDevice),
           _windowExtent(windowExtent),
-          _pOldSwapchain(pOldSwapchain)
+          _pVkOldSwapchain(pOldSwapchain)
     {
         uint32_t imageCount;
         VkSurfaceFormatKHR surfaceImageFormat;
@@ -28,7 +28,7 @@ namespace SolEngine
         CreateSyncObjects();
 
         // Old Swapchain no longer needed
-        _pOldSwapchain = nullptr;
+        _pVkOldSwapchain = nullptr;
     }
 
     SolSwapchain::~SolSwapchain()
@@ -38,7 +38,7 @@ namespace SolEngine
 
     void SolSwapchain::Dispose()
     {
-        const VkDevice vkDevice = _rSolDevice.GetDevice();
+        const VkDevice vkDevice = _rSolVulkanDevice.GetDevice();
 
         // Image Views
         {
@@ -54,13 +54,13 @@ namespace SolEngine
 
         // Swapchain, if possible
         {
-            if (_swapchain != nullptr)
+            if (_vkSwapchain != nullptr)
             {
                 vkDestroySwapchainKHR(vkDevice, 
-                                      _swapchain,
+                                      _vkSwapchain,
                                       NULL);
 
-                _swapchain = nullptr;
+                _vkSwapchain = nullptr;
             }
         }
         
@@ -126,8 +126,8 @@ namespace SolEngine
                                              VkSurfaceFormatKHR *pOutSurfaceImageFormat, 
                                              VkExtent2D *pOutSwapchainExtent)
     {
-        const SwapchainSupportDetails swapchainSupportDetails = _rSolDevice.QueryPhysicalDeviceSwapchainSupport();
-        QueueFamilyIndices            queueFamilies           = _rSolDevice.QueryPhysicalDeviceQueueFamilies();
+        const SwapchainSupportDetails swapchainSupportDetails = _rSolVulkanDevice.QueryPhysicalDeviceSwapchainSupport();
+        QueueFamilyIndices            queueFamilies           = _rSolVulkanDevice.QueryPhysicalDeviceQueueFamilies();
         const std::vector<uint32_t>   queueFamilyIndices
         {
             queueFamilies.graphicsFamily, 
@@ -149,7 +149,7 @@ namespace SolEngine
         VkSwapchainCreateInfoKHR swapchainCreateInfo
         {
             .sType            = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
-            .surface          = _rSolDevice.GetSurface(),
+            .surface          = _rSolVulkanDevice.GetSurface(),
             .minImageCount    = *pOutImageCount,
             .imageFormat      = pOutSurfaceImageFormat->format,
             .imageColorSpace  = pOutSurfaceImageFormat->colorSpace,
@@ -160,8 +160,8 @@ namespace SolEngine
             .compositeAlpha   = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
             .presentMode      = presentMode,
             .clipped          = VK_TRUE,                                            // Clipping outside of extents?
-            .oldSwapchain     = _pOldSwapchain == nullptr ?                         // Provide old swapchain if possible
-                                    VK_NULL_HANDLE : _pOldSwapchain->_swapchain
+            .oldSwapchain     = _pVkOldSwapchain == nullptr ?                         // Provide old swapchain if possible
+                                    VK_NULL_HANDLE : _pVkOldSwapchain->_vkSwapchain
         };
 
         if (queueFamilies.AreFamiliesEqual())
@@ -177,10 +177,10 @@ namespace SolEngine
             swapchainCreateInfo.pQueueFamilyIndices   = queueFamilyIndices.data();                         // Optional
         }
 
-        const VkResult result = vkCreateSwapchainKHR(_rSolDevice.GetDevice(),
+        const VkResult result = vkCreateSwapchainKHR(_rSolVulkanDevice.GetDevice(),
                                                      &swapchainCreateInfo,
                                                      NULL,
-                                                     &_swapchain);
+                                                     &_vkSwapchain);
 
         // Was this successful?
         DBG_ASSERT_VULKAN_MSG(result, "Failed to create Swapchain.");
@@ -194,8 +194,8 @@ namespace SolEngine
         // allowed to create a swapchain with more. That's why we'll first query the final number of
         // images with vkGetSwapchainImagesKHR, then resize the container and finally call it again to
         // retrieve the handles.
-        VkResult result = vkGetSwapchainImagesKHR(_rSolDevice.GetDevice(),
-                                                  _swapchain,
+        VkResult result = vkGetSwapchainImagesKHR(_rSolVulkanDevice.GetDevice(),
+                                                  _vkSwapchain,
                                                   &rImageCount,
                                                   NULL);
 
@@ -203,8 +203,8 @@ namespace SolEngine
 
         _swapchainImages.resize(rImageCount);
 
-        result = vkGetSwapchainImagesKHR(_rSolDevice.GetDevice(),
-                                         _swapchain,
+        result = vkGetSwapchainImagesKHR(_rSolVulkanDevice.GetDevice(),
+                                         _vkSwapchain,
                                          &rImageCount,
                                          _swapchainImages.data());
 
@@ -245,7 +245,7 @@ namespace SolEngine
                 }
             };
 
-            const VkResult result = vkCreateImageView(_rSolDevice.GetDevice(),
+            const VkResult result = vkCreateImageView(_rSolVulkanDevice.GetDevice(),
                                                       &imageViewCreateInfo, 
                                                       NULL,
                                                       &_swapchainImageViews.at(i));
@@ -289,7 +289,7 @@ namespace SolEngine
 
             VkImage& rCurrentDepthImage = _depthImages.at(i);
 
-            _rSolDevice.CreateImageWithInfo(imageCreateInfo, 
+            _rSolVulkanDevice.CreateImageWithInfo(imageCreateInfo, 
                                             VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
                                             rCurrentDepthImage,
                                             _depthImageMemories.at(i));
@@ -310,7 +310,7 @@ namespace SolEngine
                 }
             };
 
-            const VkResult result = vkCreateImageView(_rSolDevice.GetDevice(),
+            const VkResult result = vkCreateImageView(_rSolVulkanDevice.GetDevice(),
                                                       &imageViewCreateInfo, 
                                                       NULL, 
                                                       &_depthImageViews.at(i));
@@ -395,7 +395,7 @@ namespace SolEngine
             .pDependencies   = &subpassDependency
         };
 
-        const VkResult result = vkCreateRenderPass(_rSolDevice.GetDevice(), 
+        const VkResult result = vkCreateRenderPass(_rSolVulkanDevice.GetDevice(), 
                                                    &renderPassCreateInfo, 
                                                    NULL, 
                                                    &_renderPass);
@@ -428,7 +428,7 @@ namespace SolEngine
                 .layers          = 1
             };
 
-            const VkResult result = vkCreateFramebuffer(_rSolDevice.GetDevice(), 
+            const VkResult result = vkCreateFramebuffer(_rSolVulkanDevice.GetDevice(), 
                                                         &framebufferCreateInfo, 
                                                         NULL, 
                                                         &_swapchainFrameBuffers.at(i));
@@ -439,7 +439,7 @@ namespace SolEngine
 
     void SolSwapchain::CreateSyncObjects()
     {
-        const VkDevice &vkDevice = _rSolDevice.GetDevice();
+        const VkDevice &vkDevice = _rSolVulkanDevice.GetDevice();
 
         _imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
         _renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
@@ -553,14 +553,14 @@ namespace SolEngine
 
     VkFormat SolSwapchain::FindDepthFormat()
     {
-        return _rSolDevice.FindSupportedFormat(_depthFormatCandidates,
+        return _rSolVulkanDevice.FindSupportedFormat(_depthFormatCandidates,
                                                _depthImageTiling, 
                                                _depthFormatFeatureFlags);
     }
 
     VkResult SolSwapchain::AcquireNextImage(uint32_t *pImageIndex)
     {
-        const VkDevice &device = _rSolDevice.GetDevice();
+        const VkDevice &device = _rSolVulkanDevice.GetDevice();
         const uint32_t fenceCount(1);
 
         VkResult result = vkWaitForFences(device, 
@@ -572,7 +572,7 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Wait For Fences Failed.");
 
         result = vkAcquireNextImageKHR(device, 
-                                       _swapchain,
+                                       _vkSwapchain,
                                        _timeoutDuration, 
                                        _imageAvailableSemaphores.at(_currentFrame),   // Must be a non-signaled semaphore
                                        VK_NULL_HANDLE, 
@@ -584,7 +584,7 @@ namespace SolEngine
     VkResult SolSwapchain::SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, 
                                                       const uint32_t *pImageIndex)
     {
-        const VkDevice &device  = _rSolDevice.GetDevice();
+        const VkDevice &device  = _rSolVulkanDevice.GetDevice();
         VkFence &rInFlightImage = _inFlightImages.at(*pImageIndex);
         VkFence &rInFlightFence = _inFlightFences.at(_currentFrame);
 
@@ -602,7 +602,7 @@ namespace SolEngine
         const VkSemaphore          waitSemaphores[]  { _imageAvailableSemaphores.at(_currentFrame) };
         const VkPipelineStageFlags waitStageFlags[]  { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
         const VkSemaphore          signalSemaphores[]{ _renderFinishedSemaphores.at(_currentFrame) };
-        const VkSwapchainKHR       swapChains[]      { _swapchain };
+        const VkSwapchainKHR       swapChains[]      { _vkSwapchain };
 
         const VkSubmitInfo submitInfo
         {
@@ -618,7 +618,7 @@ namespace SolEngine
 
         vkResetFences(device, 1, &rInFlightFence);
 
-        VkResult result = vkQueueSubmit(_rSolDevice.GetGraphicsQueue(), 
+        VkResult result = vkQueueSubmit(_rSolVulkanDevice.GetGraphicsQueue(), 
                                         1,
                                         &submitInfo,
                                         rInFlightFence);
@@ -635,7 +635,7 @@ namespace SolEngine
             .pImageIndices      = pImageIndex
         };
 
-        result = vkQueuePresentKHR(_rSolDevice.GetPresentQueue(), 
+        result = vkQueuePresentKHR(_rSolVulkanDevice.GetPresentQueue(), 
                                    &presentInfo);
 
         // Flip current frame

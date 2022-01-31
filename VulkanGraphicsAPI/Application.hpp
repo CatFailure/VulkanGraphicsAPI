@@ -1,19 +1,14 @@
 #pragma once
+
 #include "SolClock.hpp"
+#include "SolWindow.hpp"
 #include "SolModel.hpp"
 #include "SolGameObject.hpp"
-#include "SolDescriptorWriter.hpp"
+#include "SolRenderer.hpp"
 #include "SimpleRenderSystem.hpp"
-#include "GuiWindowManager.hpp"
-
-#if _DEBUG_LAPTOP || NDEBUG_LAPTOP
-#define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
-#endif  // _DEBUG_LAPTOP
 
 using namespace SolEngine;
 using namespace SolEngine::Data;
-using namespace SolEngine::Descriptors;
-using namespace SolEngine::GUI;
 using namespace SolEngine::Interface;
 using namespace SolEngine::Rendering;
 
@@ -36,31 +31,18 @@ private:
     virtual void Update(const float deltaTime) override;
     void Draw();
 
-    void CreateDescriptorPool();
-    void SetupCamera();
-
-#ifndef DISABLE_IM_GUI
-    void CreateGuiWindowManager();
-#endif  // !DISABLE_IM_GUI
-
     void LoadGameObjects();
 
     ApplicationData _appData;
-    DiagnosticData _diagnosticData{};
 
-    SolClock    _solClock;
     SolCamera   _solCamera;
     SolWindow   _solWindow;
     SolDevice   _solDevice;
     SolRenderer _solRenderer;
 
-    std::unique_ptr<SolDescriptorPool> _pSolDescriptorPool;
-
-#ifndef DISABLE_IM_GUI
-    std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;
-#endif  // !DISABLE_IM_GUI
-
     std::vector<SolGameObject> _gameObjects;
+
+    float _totalTime{ 0 };
 
     static constexpr float CAM_NEAR{ 0.01f };
     static constexpr float CAM_FAR { 100.f };

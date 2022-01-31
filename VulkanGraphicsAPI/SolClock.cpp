@@ -18,7 +18,7 @@ namespace SolEngine
 	float SolClock::Restart()
 	{
 		_resetTime = std::chrono::high_resolution_clock::now();
-		_deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(_resetTime - _currentTime).count();
+		_deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(_currentTime - _resetTime).count();
 		_totalTime += _deltaTime;
 		_currentTime = _resetTime;
 

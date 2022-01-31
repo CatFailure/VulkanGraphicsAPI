@@ -23,9 +23,9 @@ namespace SolEngine
 
         SolDevice &_rSolDevice;
         
-        VkPipeline _graphicsPipeline;
+        VkPipeline _vkGraphicsPipeline;
 
-        VkShaderModule _vertexShaderModule;
-        VkShaderModule _fragmentShaderModule;
+        VkShaderModule _vkVertexShaderModule;
+        VkShaderModule _vkFragmentShaderModule;
     };
 }

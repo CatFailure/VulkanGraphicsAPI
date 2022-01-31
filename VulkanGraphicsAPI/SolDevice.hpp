@@ -49,14 +49,15 @@ namespace SolEngine
         VkFormat FindSupportedFormat(const std::vector<VkFormat> &candidates, const VkImageTiling tiling, const VkFormatFeatureFlags features) const;
 
         // Buffer Helper Functions
-        // TEMP BEGIN: THESE BEING IN THE GLOBAL SCOPE IS TEMP WHILST
-        // FIGURING OUT IMGUI.
-        VkCommandBuffer BeginOneTimeCommandBuffer();
-        void            EndOneTimeCommandBuffer(const VkCommandBuffer commandBuffer);
-        // TEMP END
+        void CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
 
-        void            CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
-        void            CopyBuffer(const VkBuffer srcBuffer, const VkBuffer dstBuffer, const VkDeviceSize size);
+        /// <summary>
+        /// Creates a Staging Buffer in Device Memory for copying data to Device Local Memory.
+        /// Best for data that is set once and doesn't change.
+        /// </summary>
+        void CreateStagingBuffer(VkBuffer *pOutBuffer, VkDeviceMemory *pOutBufferMemory, const VkDeviceSize bufferSize, const void *pSrcData);
+
+        void CopyBuffer(const VkBuffer srcBuffer, const VkBuffer dstBuffer, const VkDeviceSize size);
 
         /// <summary>
         /// Destroys the buffer and frees it's memory.
@@ -72,6 +73,9 @@ namespace SolEngine
         void CreateVulkanPhysicalDevice();
         void CreateVulkanDevice();
         void CreateVulkanCommandPool();
+
+        VkCommandBuffer BeginOneTimeCommandBuffer();
+        void            EndOneTimeCommandBuffer(const VkCommandBuffer commandBuffer);
 
 #ifdef ENABLE_VULKAN_DEBUG_CALLBACK
         void CreateVulkanDebugCallback();
@@ -95,7 +99,7 @@ namespace SolEngine
         VkQueue          _graphicsQueue { NULL };
         VkQueue          _presentQueue  { NULL };
 
-#if  _DEBUG_LAPTOP || NDEBUG_LAPTOP
+#if  _DEBUG_LAPTOP
         std::vector<const char*> _enabledLayerNames{};                          // Laptop
 #else
         std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop

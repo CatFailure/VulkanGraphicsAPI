@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -36,18 +36,6 @@
     </Filter>
     <Filter Include="SolEngine\Events">
       <UniqueIdentifier>{bbfb351e-fa11-421b-bd12-c61f318a6c64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui">
-      <UniqueIdentifier>{1536d602-6cc4-4550-b96f-afa6bff4d28c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ImGui\Backends">
-      <UniqueIdentifier>{6c0105b6-091f-477a-a11d-383e4888411b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SolEngine\Descriptors">
-      <UniqueIdentifier>{0add9c7d-c5ca-4625-b876-7de24d2dce2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SolEngine\GUI">
-      <UniqueIdentifier>{d5712963-e0e8-44e2-aaab-2542669ad924}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,9 +78,6 @@
     <ClCompile Include="Rect.cpp">
       <Filter>SolEngine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="SolClock.cpp">
-      <Filter>SolEngine</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClCompile>
@@ -102,44 +87,8 @@
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolBuffer.cpp">
+    <ClCompile Include="SolClock.cpp">
       <Filter>SolEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_tables.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_glfw.cpp">
-      <Filter>ImGui\Backends</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_vulkan.cpp">
-      <Filter>ImGui\Backends</Filter>
-    </ClCompile>
-    <ClCompile Include="SolDescriptorSetLayout.cpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="SolDescriptorPool.cpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="SolDescriptorWriter.cpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="GuiDiagnosticWindow.cpp">
-      <Filter>SolEngine\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GuiWindowManager.cpp">
-      <Filter>SolEngine\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,9 +161,6 @@
     <ClInclude Include="Rect.hpp">
       <Filter>SolEngine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="SolClock.hpp">
-      <Filter>SolEngine</Filter>
-    </ClInclude>
     <ClInclude Include="SimpleRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClInclude>
@@ -227,53 +173,8 @@
     <ClInclude Include="CameraProjectionInfo.hpp">
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
-    <ClInclude Include="SolBuffer.hpp">
+    <ClInclude Include="SolClock.hpp">
       <Filter>SolEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="imconfig.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_internal.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imstb_rectpack.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imstb_textedit.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imstb_truetype.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_impl_glfw.h">
-      <Filter>ImGui\Backends</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui_impl_vulkan.h">
-      <Filter>ImGui\Backends</Filter>
-    </ClInclude>
-    <ClInclude Include="SolDescriptorSetLayout.hpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="SolDescriptorPool.hpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="SolDescriptorWriter.hpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="GuiDiagnosticWindow.hpp">
-      <Filter>SolEngine\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="IGuiWindow.hpp">
-      <Filter>SolEngine\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="GuiWindowManager.hpp">
-      <Filter>SolEngine\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="DiagnosticData.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +184,5 @@
     <None Include="Shaders\SimpleShader.vert">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

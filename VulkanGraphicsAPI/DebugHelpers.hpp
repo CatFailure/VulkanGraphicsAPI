@@ -47,6 +47,5 @@ namespace Utility
     {
     public:
         static void DPrintf(const char *format, ...);
-        static void CheckVkResult(VkResult result) { DBG_ASSERT_VULKAN_MSG(result, "[vulkan] Error"); }
     };
 }
