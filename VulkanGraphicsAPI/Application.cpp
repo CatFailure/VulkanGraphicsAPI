@@ -54,54 +54,7 @@ void Application::Run()
 
 std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
                                                        const glm::vec3 &offset)
-{
-    //std::vector<Vertex> vertices
-    //{
-    //    { { -.5f, .5f, .5f }, { .9f, .9f, .9f } },      // 0
-    //    { { .5f, .5f, .5f }, { .8f, .8f, .1f } },       // 1
-    //    { { .5f, .5f, -.5f }, { 1.f, .6f, .1f } },      // 2
-    //    { { -.5f, .5f, -.5f }, { .8f, .1f, .1f } },     // 3
-    //    { { -.5f, -.5f, .5f }, { .1f, .1f, .8f } },     // 4
-    //    { { .5f, -.5f, .5f }, { .98f, .27f, .41f } },   // 5
-    //    { { .5f, -.5f, -.5f }, { .24f, .36f, .98f } },  // 6
-    //    { { -.5f, -.5f, -.5f }, { .13f, .02f, .3f } },  // 7
-    //};
-
-    //const std::vector<Index_t> indices
-    //{
-    //    // Bottom-Face
-    //    0, 1, 2,
-    //    0, 2, 3,
-
-    //    // Back-Face
-    //    0, 4, 5,
-    //    0, 5, 1,
-
-    //    // Right-Face
-    //    1, 5, 6,
-    //    1, 6, 2,
-
-    //    // Front-Face
-    //    2, 6, 7,
-    //    2, 7, 3,
-
-    //    // Left-Face
-    //    3, 7, 4,
-    //    3, 4, 0,
-
-    //    // Top-Face
-    //    4, 7, 6,
-    //    4, 6, 5,
-    //};
-
-    //if (offset != glm::vec3(0, 0, 0))
-    //{
-    //    for (Vertex &rVertex : vertices) 
-    //    {
-    //        rVertex.position += offset;
-    //    }
-    //}
-    
+{    
     return std::make_shared<SolModel>(rDevice, CUBE_VERTICES, CUBE_INDICES);
 }
 

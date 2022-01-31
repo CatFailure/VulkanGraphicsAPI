@@ -144,6 +144,12 @@
     <ClCompile Include="SolClock.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
+    <ClCompile Include="GridSystem.cpp">
+      <Filter>SolEngine\DOD</Filter>
+    </ClCompile>
+    <ClCompile Include="MarchingCubesHelpers.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -280,6 +286,12 @@
     </ClInclude>
     <ClInclude Include="GridNodes.hpp">
       <Filter>SolEngine\DOD</Filter>
+    </ClInclude>
+    <ClInclude Include="GridSystem.hpp">
+      <Filter>SolEngine\DOD</Filter>
+    </ClInclude>
+    <ClInclude Include="MarchingCubesHelpers.hpp">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
