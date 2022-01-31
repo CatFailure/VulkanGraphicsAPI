@@ -18,8 +18,9 @@ namespace SolEngine
         bool WasWindowResized() const { return _isFramebufferResized; }
         void ResetWindowResizedFlag() { _isFramebufferResized = false; }
 
-        void       CreateWindowSurface(const VkInstance &vkInstance, VkSurfaceKHR *pSurface);
-        VkExtent2D GetWindowExtent() const { return { _winDimensions._x, _winDimensions._y }; }
+        void        CreateWindowSurface(const VkInstance &vkInstance, VkSurfaceKHR *pSurface);
+        VkExtent2D  GetWindowExtent() const { return { _winDimensions._x, _winDimensions._y }; }
+        GLFWwindow *GetWindow()       const { return _pWindow; }
 
         // Inherited via IDisposable
         virtual void Dispose() override;

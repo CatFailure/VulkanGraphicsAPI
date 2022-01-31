@@ -12,14 +12,13 @@ Application::Application(const ApplicationData &appData)
                  _appData.windowDimensions),
       _appData(appData)
 {
-    const PerspectiveProjectionInfo projInfo
-    {
-        .fovDeg = 50.f
-    };
+    CreateDescriptorPool();
 
-    _solCamera.SetProjectionInfo(projInfo);
-    _solCamera.SetPosition({ 0, 0, -2.5f });
-    _solCamera.LookAt(_solCamera.GetPosition() + VECTOR3_AXIS_Z);   // Look forwards
+#ifndef DISABLE_IM_GUI
+    CreateGuiWindowManager();
+#endif  // !DISABLE_IM_GUI
+
+    SetupCamera();
 
     LoadGameObjects();
 }
@@ -31,14 +30,19 @@ Application::~Application()
 
 void Application::Run()
 {
-    SolClock clock{};
-
     while (!_solWindow.ShouldClose())
     {
         glfwPollEvents();   // Poll Window Events
 
-        const float deltaTime = clock.Restart();
-        _totalTime += deltaTime;
+        const float deltaTime = _solClock.Restart();
+
+#ifndef DISABLE_IM_GUI
+        _diagnosticData.deltaTimeSeconds = deltaTime;
+        _diagnosticData.totalTimeSeconds = _solClock.GetTotalTime();
+
+        // Start Dear ImGui frame...
+        _pGuiWindowManager->NewFrame();
+#endif  // !DISABLE_IM_GUI
 
         Update(deltaTime);
         Draw();
@@ -102,11 +106,22 @@ std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice,
 }
 
 void Application::Dispose()
-{}
+{
+    // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
+    _pSolDescriptorPool = nullptr;
+
+#ifndef DISABLE_IM_GUI
+    _pGuiWindowManager = nullptr;
+#endif
+}
 
 void Application::Update(const float deltaTime)
 {
     _solCamera.Update(deltaTime);
+
+#ifndef DISABLE_IM_GUI
+    _pGuiWindowManager->Update(deltaTime);
+#endif  // !DISABLE_IM_GUI
 
     for (SolGameObject &rGameObject : _gameObjects)
     {
@@ -115,7 +130,7 @@ void Application::Update(const float deltaTime)
         rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
         rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
 
-        rGameObject.transform.position.y = sinf(_totalTime);
+        rGameObject.transform.position.y = sinf(_solClock.GetTotalTime());
     }
 }
 
@@ -133,9 +148,46 @@ void Application::Draw()
 
     renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
 
+#ifndef DISABLE_IM_GUI
+    // Render Dear ImGui...
+    _pGuiWindowManager->Render(commandBuffer);
+#endif  // !DISABLE_IM_GUI
+
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
 }
+
+void Application::CreateDescriptorPool()
+{
+    _pSolDescriptorPool = SolDescriptorPool::Builder(_solDevice).SetMaxDescriptorSets(SolSwapchain::MAX_FRAMES_IN_FLIGHT)
+                                                                .AddPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 
+                                                                             SolSwapchain::MAX_FRAMES_IN_FLIGHT)
+                                                                .Build();
+}
+
+void Application::SetupCamera()
+{
+    const PerspectiveProjectionInfo projInfo
+    {
+        .fovDeg = 50.f
+    };
+
+    _solCamera.SetProjectionInfo(projInfo);
+    _solCamera.SetPosition({ 0, 0, -2.5f });
+    _solCamera.LookAt(_solCamera.GetPosition() + VECTOR3_AXIS_Z);   // Look forwards
+}
+
+#ifndef DISABLE_IM_GUI
+void Application::CreateGuiWindowManager()
+{
+    _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,  
+                                                            _solWindow,
+                                                            _solRenderer, 
+                                                            _pSolDescriptorPool->GetDescriptorPool());
+
+    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _diagnosticData);
+}
+#endif // !DISABLE_IM_GUI
 
 void Application::LoadGameObjects()
 {
