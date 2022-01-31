@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -90,9 +90,6 @@
     <ClCompile Include="Rect.cpp">
       <Filter>SolEngine\Math</Filter>
     </ClCompile>
-    <ClCompile Include="SolClock.cpp">
-      <Filter>SolEngine</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClCompile>
@@ -140,6 +137,9 @@
     </ClCompile>
     <ClCompile Include="GuiWindowManager.cpp">
       <Filter>SolEngine\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SolClock.cpp">
+      <Filter>SolEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -212,9 +212,6 @@
     <ClInclude Include="Rect.hpp">
       <Filter>SolEngine\Math</Filter>
     </ClInclude>
-    <ClInclude Include="SolClock.hpp">
-      <Filter>SolEngine</Filter>
-    </ClInclude>
     <ClInclude Include="SimpleRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClInclude>
@@ -274,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="DiagnosticData.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolClock.hpp">
+      <Filter>SolEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

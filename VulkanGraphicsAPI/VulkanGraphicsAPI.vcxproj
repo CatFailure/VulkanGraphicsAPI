@@ -361,6 +361,7 @@
     <ClCompile Include="SolDescriptorPool.cpp" />
     <ClCompile Include="SolDescriptorSetLayout.cpp" />
     <ClCompile Include="SolDescriptorWriter.cpp" />
+    <ClCompile Include="SolClock.cpp" />
     <ClCompile Include="SolDevice.cpp" />
     <ClCompile Include="SolEvent.cpp" />
     <ClCompile Include="SolGameObject.cpp" />
@@ -368,7 +369,6 @@
     <ClCompile Include="SolPipeline.cpp" />
     <ClCompile Include="SolRenderer.cpp" />
     <ClCompile Include="SolSwapchain.cpp" />
-    <ClCompile Include="SolClock.cpp" />
     <ClCompile Include="SolWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -404,6 +404,7 @@
     <ClInclude Include="SolDescriptorPool.hpp" />
     <ClInclude Include="SolDescriptorSetLayout.hpp" />
     <ClInclude Include="SolDescriptorWriter.hpp" />
+    <ClInclude Include="SolClock.hpp" />
     <ClInclude Include="SolDevice.hpp" />
     <ClInclude Include="SolEvent.hpp" />
     <ClInclude Include="SolGameObject.hpp" />
@@ -411,7 +412,6 @@
     <ClInclude Include="SolPipeline.hpp" />
     <ClInclude Include="SolRenderer.hpp" />
     <ClInclude Include="SolSwapchain.hpp" />
-    <ClInclude Include="SolClock.hpp" />
     <ClInclude Include="SolWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
     <ClInclude Include="Vector.hpp" />
