@@ -13,6 +13,7 @@ namespace SolEngine
     {
     public:
         SolModel(SolDevice &rSolDevice, const std::vector<Vertex> &vertices, const std::vector<Index_t> &indices);
+        SolModel(SolDevice &rSolDevice, const Vertex *pVertices, const Index_t *pIndices);
         ~SolModel();
 
         void Bind(const VkCommandBuffer commandBuffer);
@@ -22,7 +23,9 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         void CreateVertexBuffers(const std::vector<Vertex> &vertices);
+        void CreateVertexBuffers(const Vertex *pVertices);
         void CreateIndexBuffer(const std::vector<Index_t> &indices);
+        void CreateIndexBuffer(const Index_t *pIndices);
 
         SolDevice &_rSolDevice;
 
