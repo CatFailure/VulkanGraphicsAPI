@@ -6,6 +6,10 @@
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
 
+#if _DEBUG_LAPTOP
+#define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
+#endif  // _DEBUG_LAPTOP
+
 using namespace SolEngine;
 using namespace SolEngine::Data;
 using namespace SolEngine::Descriptors;
@@ -32,6 +36,13 @@ private:
     virtual void Update(const float deltaTime) override;
     void Draw();
 
+    void CreateDescriptorPool();
+    void SetupCamera();
+
+#ifndef DISABLE_IM_GUI
+    void CreateGuiWindowManager();
+#endif  // !DISABLE_IM_GUI
+
     void LoadGameObjects();
 
     ApplicationData _appData;
@@ -44,7 +55,10 @@ private:
     SolRenderer _solRenderer;
 
     std::unique_ptr<SolDescriptorPool> _pSolDescriptorPool;
+
+#ifndef DISABLE_IM_GUI
     std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;
+#endif  // !DISABLE_IM_GUI
 
     std::vector<SolGameObject> _gameObjects;
 
