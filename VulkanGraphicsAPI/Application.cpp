@@ -174,7 +174,7 @@ void Application::SetupCamera()
 
     _solCamera.SetProjectionInfo(projInfo);
     _solCamera.SetPosition({ 0, 0, -2.5f });
-    _solCamera.LookAt(_solCamera.GetPosition() + VECTOR3_AXIS_Z);   // Look forwards
+    _solCamera.LookAt(_solCamera.GetPosition() + VEC3_AXIS_Z);   // Look forwards
 }
 
 #ifndef DISABLE_IM_GUI
