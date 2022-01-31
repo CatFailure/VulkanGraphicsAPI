@@ -23,7 +23,7 @@ namespace SolEngine
     {
         vkCmdBindPipeline(commandBuffer, 
                           VK_PIPELINE_BIND_POINT_GRAPHICS, 
-                          _vkGraphicsPipeline);
+                          _graphicsPipeline);
     }
 
     void SolPipeline::DefaultPipelineConfigInfo(PipelineConfigInfo &rConfigInfo)
@@ -138,15 +138,15 @@ namespace SolEngine
         const VkDevice &device = _rSolDevice.GetDevice();
 
         vkDestroyShaderModule(device, 
-                              _vkVertexShaderModule, 
+                              _vertexShaderModule, 
                               NULL);
 
         vkDestroyShaderModule(device, 
-                              _vkFragmentShaderModule,
+                              _fragmentShaderModule,
                               NULL);
 
         vkDestroyPipeline(device, 
-                          _vkGraphicsPipeline, 
+                          _graphicsPipeline, 
                           NULL);
     }
 
@@ -187,8 +187,8 @@ namespace SolEngine
         const std::vector<char> fragShaderCode = ReadFile(fragShaderFilePath);
         const char *shaderStageName = "main";
 
-        CreateShaderModule(vertexShaderCode, &_vkVertexShaderModule);
-        CreateShaderModule(fragShaderCode, &_vkFragmentShaderModule);
+        CreateShaderModule(vertexShaderCode, &_vertexShaderModule);
+        CreateShaderModule(fragShaderCode, &_fragmentShaderModule);
 
         const std::array<VkPipelineShaderStageCreateInfo, 2> shaderStageCreateInfos
         {
@@ -199,7 +199,7 @@ namespace SolEngine
                 .pNext               = NULL,
                 .flags               = 0,
                 .stage               = VK_SHADER_STAGE_VERTEX_BIT,
-                .module              = _vkVertexShaderModule,
+                .module              = _vertexShaderModule,
                 .pName               = shaderStageName,
                 .pSpecializationInfo = NULL             // Customise Shader functionality
             },
@@ -210,7 +210,7 @@ namespace SolEngine
                 .pNext               = NULL,
                 .flags               = 0,
                 .stage               = VK_SHADER_STAGE_FRAGMENT_BIT,
-                .module              = _vkFragmentShaderModule,
+                .module              = _fragmentShaderModule,
                 .pName               = shaderStageName,
                 .pSpecializationInfo = NULL             // Customise Shader functionality
             }
@@ -255,7 +255,7 @@ namespace SolEngine
                                                           1,
                                                           &graphicsPipelineCreateInfo, 
                                                           NULL, 
-                                                          &_vkGraphicsPipeline);
+                                                          &_graphicsPipeline);
 
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Graphics Pipeline.");
     }

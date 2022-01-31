@@ -277,6 +277,8 @@
       <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -293,12 +295,15 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;NDEBUG_LAPTOP;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
+      <Optimization>MaxSpeed</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -312,6 +317,15 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="DebugHelpers.cpp" />
+    <ClCompile Include="GuiDiagnosticWindow.cpp" />
+    <ClCompile Include="GuiWindowManager.cpp" />
+    <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="imgui_demo.cpp" />
+    <ClCompile Include="imgui_draw.cpp" />
+    <ClCompile Include="imgui_impl_glfw.cpp" />
+    <ClCompile Include="imgui_impl_vulkan.cpp" />
+    <ClCompile Include="imgui_tables.cpp" />
+    <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MatrixUtility.cpp" />
     <ClCompile Include="pch.cpp">
@@ -342,8 +356,11 @@
     </ClCompile>
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="SimpleRenderSystem.cpp" />
+    <ClCompile Include="SolBuffer.cpp" />
     <ClCompile Include="SolCamera.cpp" />
-    <ClCompile Include="SolClock.cpp" />
+    <ClCompile Include="SolDescriptorPool.cpp" />
+    <ClCompile Include="SolDescriptorSetLayout.cpp" />
+    <ClCompile Include="SolDescriptorWriter.cpp" />
     <ClCompile Include="SolDevice.cpp" />
     <ClCompile Include="SolEvent.cpp" />
     <ClCompile Include="SolGameObject.cpp" />
@@ -351,6 +368,7 @@
     <ClCompile Include="SolPipeline.cpp" />
     <ClCompile Include="SolRenderer.cpp" />
     <ClCompile Include="SolSwapchain.cpp" />
+    <ClCompile Include="SolClock.cpp" />
     <ClCompile Include="SolWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -359,8 +377,20 @@
     <ClInclude Include="CameraProjectionInfo.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
+    <ClInclude Include="DiagnosticData.hpp" />
+    <ClInclude Include="GuiDiagnosticWindow.hpp" />
+    <ClInclude Include="GuiWindowManager.hpp" />
     <ClInclude Include="IDisposable.hpp" />
+    <ClInclude Include="IGuiWindow.hpp" />
+    <ClInclude Include="imconfig.h" />
+    <ClInclude Include="imgui.h" />
+    <ClInclude Include="imgui_impl_glfw.h" />
+    <ClInclude Include="imgui_impl_vulkan.h" />
+    <ClInclude Include="imgui_internal.h" />
     <ClInclude Include="IMonoBehaviour.hpp" />
+    <ClInclude Include="imstb_rectpack.h" />
+    <ClInclude Include="imstb_textedit.h" />
+    <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="MatrixUtility.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
@@ -369,8 +399,11 @@
     <ClInclude Include="SimplePushConstantData.hpp" />
     <ClInclude Include="SimpleRenderSystem.hpp" />
     <ClInclude Include="Singleton.hpp" />
+    <ClInclude Include="SolBuffer.hpp" />
     <ClInclude Include="SolCamera.hpp" />
-    <ClInclude Include="SolClock.hpp" />
+    <ClInclude Include="SolDescriptorPool.hpp" />
+    <ClInclude Include="SolDescriptorSetLayout.hpp" />
+    <ClInclude Include="SolDescriptorWriter.hpp" />
     <ClInclude Include="SolDevice.hpp" />
     <ClInclude Include="SolEvent.hpp" />
     <ClInclude Include="SolGameObject.hpp" />
@@ -378,12 +411,14 @@
     <ClInclude Include="SolPipeline.hpp" />
     <ClInclude Include="SolRenderer.hpp" />
     <ClInclude Include="SolSwapchain.hpp" />
+    <ClInclude Include="SolClock.hpp" />
     <ClInclude Include="SolWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
     <ClInclude Include="Vector.hpp" />
     <ClInclude Include="Vertex.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="Shaders\SimpleShader.frag" />
     <None Include="Shaders\SimpleShader.vert" />
   </ItemGroup>
