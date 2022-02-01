@@ -9,7 +9,7 @@ namespace SolEngine::DOD
     {
         GridNodes() = default;
 
-        GridNodes(const glm::vec3 dimensions)
+        GridNodes(const glm::uvec3 dimensions)
         {
             for (size_t x = 0; x < dimensions.x; ++x)
             {
