@@ -5,11 +5,11 @@ typedef uint32_t Index_t;
 
 namespace SolEngine::Data
 {
-	static constexpr glm::vec3 VEC3_AXIS_X{ 1.f, 0.f, 0.f };
-	static constexpr glm::vec3 VEC3_AXIS_Y{ 0.f, -1.f, 0.f };
-	static constexpr glm::vec3 VEC3_AXIS_Z{ 0.f, 0.f, 1.f };
+	static constexpr glm::vec3 VEC3_RIGHT  { 1.f, 0.f, 0.f };
+	static constexpr glm::vec3 VEC3_UP     { 0.f, -1.f, 0.f };
+	static constexpr glm::vec3 VEC3_FORWARD{ 0.f, 0.f, 1.f };
 
-	static constexpr size_t MAX_GRID_NODES{ 1 << 8 };
+	static constexpr size_t MAX_AXIS_NODE_COUNT{ 1 << 8 };
 
     static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
     static constexpr uint32_t CUBE_INDEX_COUNT{ 36U };

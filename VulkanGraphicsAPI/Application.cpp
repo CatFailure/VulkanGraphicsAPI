@@ -82,8 +82,6 @@ void Application::Update(const float deltaTime)
 
         rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
         rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
-
-        rGameObject.transform.position.y = sinf(_solClock.GetTotalTime());
     }
 }
 
@@ -127,7 +125,7 @@ void Application::SetupCamera()
 
     _solCamera.SetProjectionInfo(projInfo);
     _solCamera.SetPosition({ 0, 0, -2.5f });
-    _solCamera.LookAt(_solCamera.GetPosition() + VEC3_AXIS_Z);   // Look forwards
+    _solCamera.LookAt(_solCamera.GetPosition() + VEC3_FORWARD);   // Look forwards
 }
 
 #ifndef DISABLE_IM_GUI
