@@ -36,11 +36,16 @@ namespace SolEngine
 
     void SolModel::Draw(const VkCommandBuffer commandBuffer)
     {
+        /* TODO:
+        * Right now, a model is drawn one mesh at a time with each mesh owning it's vertices and indices.
+        * However, using a large Grid of vertices, we can manipulate the Vertex offset to draw multiple meshes 
+        * from a massive shared array of vertices with the indices determined by the TriTable!
+        */
         vkCmdDrawIndexed(commandBuffer, 
                          CUBE_INDEX_COUNT, 
                          _instanceCount, 
                          0,
-                         0,
+                         0,     // Vertex offset - VERY IMPORTANT FOR MARCHING CUBES.
                          0);
     }
 

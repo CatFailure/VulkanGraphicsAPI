@@ -19,6 +19,7 @@ Application::Application(const ApplicationData &appData)
 #endif  // !DISABLE_IM_GUI
 
     SetupCamera();
+    SetupGrid();
 
     LoadGameObjects();
 }
