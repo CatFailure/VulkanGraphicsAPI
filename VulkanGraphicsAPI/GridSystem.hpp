@@ -18,7 +18,7 @@ namespace SolEngine::DOD
     private:
         bool IsWithinAxisNodeCountLimit(const size_t count) const { return !(count > MAX_AXIS_NODE_COUNT); }
 
-        glm::uvec3 _dimensions{ 0.f };
+        glm::uvec3 _dimensions{ 0 };
         GridNodes _gridNodes{};
     };
 }

@@ -13,17 +13,17 @@ namespace SolEngine::DOD
         {
             for (size_t x = 0; x < dimensions.x; ++x)
             {
-                xPositions[x] = x;
+                xPositions[x] = (float)x;
             }
 
             for (size_t y = 0; y < dimensions.y; ++y)
             {
-                yPositions[y] = -y;
+                yPositions[y] = -(float)y;
             }
 
             for (size_t z = 0; z < dimensions.z; ++z)
             {
-                zPositions[z] = z;
+                zPositions[z] = (float)z;
             }
         }
 
@@ -31,9 +31,9 @@ namespace SolEngine::DOD
         {
             for (size_t i = 0; i < scalarDimensions; ++i)
             {
-                xPositions[i] = i;
-                yPositions[i] = -i; 
-                zPositions[i] = i;
+                xPositions[i] = (float)i;
+                yPositions[i] = -(float)i; 
+                zPositions[i] = (float)i;
             }
         }
 

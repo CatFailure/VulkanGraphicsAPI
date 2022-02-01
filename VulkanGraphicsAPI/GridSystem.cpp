@@ -33,7 +33,7 @@ namespace SolEngine::DOD
         DBG_ASSERT_MSG(IsWithinAxisNodeCountLimit(scalarDimensions), 
                        "Too many Nodes!");
 
-        _dimensions = glm::uvec3(scalarDimensions);
+        _dimensions = glm::uvec3((glm::uint)scalarDimensions);
         _gridNodes  = GridNodes(scalarDimensions);
     }
 }
