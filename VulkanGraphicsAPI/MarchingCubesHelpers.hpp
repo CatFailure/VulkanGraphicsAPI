@@ -2,7 +2,7 @@
 
 namespace Utility
 {
-    static std::tuple<size_t, size_t> VerticesIndexFromEdgeIndex(const size_t edgeIndex)
+    static std::tuple<size_t, size_t> CornerIndicesFromEdgeIndex(const size_t edgeIndex)
     {
         switch (edgeIndex)
         {
