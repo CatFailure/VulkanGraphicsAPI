@@ -5,6 +5,16 @@ namespace SolEngine::DOD
 {
     GridSystem::GridSystem(const glm::uvec3 &dimensions)
     {
+        SetDimensions(dimensions);
+    }
+
+    GridSystem::GridSystem(const size_t scalarDimensions)
+    {
+        SetDimensions(scalarDimensions);
+    }
+
+    void GridSystem::SetDimensions(const glm::uvec3 &dimensions)
+    {
         DBG_ASSERT_MSG(IsWithinAxisNodeCountLimit(dimensions.x), 
                        "Too many Nodes!");
 
@@ -18,7 +28,7 @@ namespace SolEngine::DOD
         _gridNodes  = GridNodes(dimensions);
     }
 
-    GridSystem::GridSystem(const size_t scalarDimensions)
+    void GridSystem::SetDimensions(const size_t scalarDimensions)
     {
         DBG_ASSERT_MSG(IsWithinAxisNodeCountLimit(scalarDimensions), 
                        "Too many Nodes!");

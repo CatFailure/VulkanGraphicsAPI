@@ -8,9 +8,12 @@ namespace SolEngine::DOD
     class GridSystem
     {
     public:
-        GridSystem() = delete;
+        GridSystem() = default;
         GridSystem(const glm::uvec3 &dimensions);
         GridSystem(const size_t scalarDimensions);
+
+        void SetDimensions(const glm::uvec3 &dimensions);
+        void SetDimensions(const size_t scalarDimensions);
 
     private:
         bool IsWithinAxisNodeCountLimit(const size_t count) const { return !(count > MAX_AXIS_NODE_COUNT); }

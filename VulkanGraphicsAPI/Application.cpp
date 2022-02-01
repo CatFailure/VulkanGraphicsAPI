@@ -128,6 +128,12 @@ void Application::SetupCamera()
     _solCamera.LookAt(_solCamera.GetPosition() + VEC3_FORWARD);   // Look forwards
 }
 
+void Application::SetupGrid()
+{
+    // Create a 5x5x5 grid for testing...
+    _gridSystem = GridSystem(5);
+}
+
 #ifndef DISABLE_IM_GUI
 void Application::CreateGuiWindowManager()
 {
