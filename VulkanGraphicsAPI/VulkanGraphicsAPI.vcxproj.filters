@@ -49,6 +49,9 @@
     <Filter Include="SolEngine\GUI">
       <UniqueIdentifier>{d5712963-e0e8-44e2-aaab-2542669ad924}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\DOD">
+      <UniqueIdentifier>{ad079547-8b04-47ad-aa75-ed6a3cd4c320}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="SolClock.cpp">
       <Filter>SolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="GridSystem.cpp">
+      <Filter>SolEngine\DOD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +280,12 @@
     </ClInclude>
     <ClInclude Include="SolClock.hpp">
       <Filter>SolEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="GridNodes.hpp">
+      <Filter>SolEngine\DOD</Filter>
+    </ClInclude>
+    <ClInclude Include="GridSystem.hpp">
+      <Filter>SolEngine\DOD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
