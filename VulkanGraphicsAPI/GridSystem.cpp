@@ -25,18 +25,9 @@ namespace SolEngine::DOD
                        "Too many Nodes!");
 
         _dimensions = dimensions;
-        _gridNodes  = GridNodes(dimensions);
+        _nodes  = GridNodes(dimensions);
 
-        TraverseGridNodes([this](const glm::int32 x, 
-                                 const glm::int32 y,
-                                 const glm::int32 z) 
-        {
-            const size_t isoValueIndex = CoordTo1DArrayIndex(x, y, z, _dimensions);
-
-            CoordToIsoValue(x, y, z, 
-                            &_gridNodes.isoValues[isoValueIndex], 
-                            _dimensions);
-        });
+        CalculateIsoValues();
     }
 
     void GridSystem::SetDimensions(const glm::uint scalarDimensions)
@@ -44,16 +35,18 @@ namespace SolEngine::DOD
         SetDimensions(glm::uvec3(scalarDimensions));
     }
 
-    float GridSystem::GetIsoValueAtCoord(const glm::int32 x, 
-                                         const glm::int32 y, 
-                                         const glm::int32 z) const
+    float GridSystem::GetIsoValueAtCoord(const float x, 
+                                         const float y, 
+                                         const float z) const
     {
-        const size_t index = CoordTo1DArrayIndex(x, y, z, _dimensions);
+        const size_t index = CoordTo1DArrayIndex(x, y, z, 
+                                                 _dimensions, 
+                                                 _nodes.step);
 
-        return _gridNodes.isoValues[index];
+        return _nodes.isoValues[index];
     }
 
-    void GridSystem::TraverseGridNodes(const TraverseNodesCallback_t &callback)
+    void GridSystem::TraverseGridNodes(const TraverseNodesCallback_t& callback)
     {
         // Currently dimensions and coordinates are 1:1.
         // In the future we could adjust the "resolution" of the grid,
@@ -64,9 +57,27 @@ namespace SolEngine::DOD
             {
                 for (glm::uint x = 0; x < _dimensions.x; ++x)
                 {
-                    callback(x, y, z);
+                    callback(_nodes.xPositions[x], 
+                             _nodes.yPositions[y],
+                             _nodes.zPositions[z]);
                 }
             }
         }
+    }
+
+    void GridSystem::CalculateIsoValues()
+    {
+        TraverseGridNodes([this](const float x, 
+                                 const float y,
+                                 const float z) 
+                          {
+                              const size_t isoValueIndex = CoordTo1DArrayIndex(x, y, z,
+                                                                               _dimensions, 
+                                                                               _nodes.step);
+
+                              CoordToIsoValue(x, y, z, 
+                                              &_nodes.isoValues[isoValueIndex], 
+                                              _dimensions);
+                          });
     }
 }

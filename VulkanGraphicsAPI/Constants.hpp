@@ -15,18 +15,6 @@ namespace SolEngine::Data
     static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
     static constexpr uint32_t CUBE_INDEX_COUNT{ 36U };
 
-    //static constexpr Vertex CUBE_VERTICES[CUBE_VERTEX_COUNT]
-    //{
-    //    { { -.5f, .5f, .5f }, { .9f, .9f, .9f } },      // 0
-    //    { { .5f, .5f, .5f }, { .8f, .8f, .1f } },       // 1
-    //    { { .5f, .5f, -.5f }, { 1.f, .6f, .1f } },      // 2
-    //    { { -.5f, .5f, -.5f }, { .8f, .1f, .1f } },     // 3
-    //    { { -.5f, -.5f, .5f }, { .1f, .1f, .8f } },     // 4
-    //    { { .5f, -.5f, .5f }, { .98f, .27f, .41f } },   // 5
-    //    { { .5f, -.5f, -.5f }, { .24f, .36f, .98f } },  // 6
-    //    { { -.5f, -.5f, -.5f }, { .13f, .02f, .3f } },  // 7
-    //};
-
     static constexpr Vertex CUBE_VERTICES[CUBE_VERTEX_COUNT]
     {
         { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0

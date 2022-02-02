@@ -11,35 +11,51 @@ namespace SolEngine::DOD
 
         GridNodes(const glm::vec3 dimensions)
         {
-            for (glm::int32 x = 0; x < dimensions.x; ++x)
+            size_t index(0);
+
+            for (float xPos = 0; xPos < dimensions.x; xPos += step)
             {
-                xPositions[x] = x;
+                xPositions[index] = (float)xPos;
+
+                ++index;
             }
 
-            for (glm::int32 y = 0; y < dimensions.y; ++y)
+            index = 0;
+            for (float yPos = 0; yPos < dimensions.y; yPos += step)
             {
-                yPositions[y] = -y;
+                yPositions[index] = -(float)yPos;
+
+                ++index;
             }
 
-            for (glm::int32 z = 0; z < dimensions.z; ++z)
+            index = 0;
+            for (float zPos = 0; zPos < dimensions.z; zPos += step)
             {
-                zPositions[z] = z;
+                zPositions[index] = (float)zPos;
+
+                ++index;
             }
         }
 
         GridNodes(const glm::int32 scalarDimensions)
         {
-            for (glm::int32 i = 0; i < scalarDimensions; ++i)
+            size_t index(0);
+
+            for (float pos = 0; pos < scalarDimensions; pos += step)
             {
-                xPositions[i] = i;
-                yPositions[i] = -i; 
-                zPositions[i] = i;
+                xPositions[index] = pos;
+                yPositions[index] = -pos; 
+                zPositions[index] = pos;
+
+                ++index;
             }
         }
 
-        alignas(16) glm::int32 xPositions[MAX_AXIS_NODE_COUNT]{ 0 };
-        alignas(16) glm::int32 yPositions[MAX_AXIS_NODE_COUNT]{ 0 };
-        alignas(16) glm::int32 zPositions[MAX_AXIS_NODE_COUNT]{ 0 };
+        float step{ .5f };  // Adjusts the resolution of the nodes
+
+        alignas(16) float xPositions[MAX_AXIS_NODE_COUNT]{ 0 };
+        alignas(16) float yPositions[MAX_AXIS_NODE_COUNT]{ 0 };
+        alignas(16) float zPositions[MAX_AXIS_NODE_COUNT]{ 0 };
 
         alignas(16) float isoValues[MAX_NODE_COUNT]{ 0 };
         alignas(16) bool  isAlives[MAX_NODE_COUNT];

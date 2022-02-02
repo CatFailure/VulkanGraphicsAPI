@@ -5,50 +5,38 @@ namespace Utility
 {
     static constexpr float SPHERE_RADIUS{ 2.5f };
 
-    static size_t CoordTo1DArrayIndex(const glm::int32 x, 
-                                      const glm::int32 y, 
-                                      const glm::int32 z,
-                                      const glm::uvec3 &dimensions)
+    static glm::uint32 CoordTo1DArrayIndex(const float x, 
+                                           const float y, 
+                                           const float z,
+                                           const glm::uvec3 &dimensions,
+                                           const float step)
     {
-        const glm::uvec3 sqrDimensions = dimensions * dimensions;
+        if (x == 0 && 
+            y == 0 && 
+            z == 0)
+        {
+            return 0;
+        }
 
-        return (z * sqrDimensions.x) + (y * dimensions.y) + x;
+        const glm::uvec3 sqrDimensions = dimensions * dimensions;
+        const glm::uint32 scaledX      = (glm::uint32)(x / step);
+        const glm::uint32 scaledAbsY   = (glm::uint32)(fabs(y) / step);
+        const glm::uint32 scaledZ      = (glm::uint32)(z / step);
+
+        return (scaledZ * sqrDimensions.x) + (scaledAbsY * dimensions.y) + scaledX;
     }
 
-    static void CoordToIsoValue(const glm::int32 x, 
-                                const glm::int32 y, 
-                                const glm::int32 z, 
+    static void CoordToIsoValue(const float x, 
+                                const float y, 
+                                const float z, 
                                 float *pOutIsoValue, 
                                 const glm::uvec3 &dimensions)
     {
-        const float sqrX = (float)x * x;
-        const float sqrY = (float)y * y;
-        const float sqrZ = (float)z * z;
+        const float sqrX = x * x;
+        const float sqrY = y * y;
+        const float sqrZ = z * z;
 
         *pOutIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
-    }
-
-    static void CoordsToIsoValues(const glm::int32 *pXPositions, 
-                                  const glm::int32 *pYPositions, 
-                                  const glm::int32 *pZPositions, 
-                                  float *pOutIsoValues,
-                                  const glm::uvec3 &dimensions)
-    {
-        for (glm::uint32 z = 0; z < dimensions.z; ++z)
-        {
-            for (glm::uint32 y = 0; y < dimensions.y; ++y)
-            {
-                for (glm::uint32 x = 0; x < dimensions.x; ++x)
-                {
-                    const float sqrX = (float)x * x;
-                    const float sqrY = (float)y * y;
-                    const float sqrZ = (float)z * z;
-                    const size_t isoValueIndex = CoordTo1DArrayIndex(x, y, z, dimensions);
-
-                    pOutIsoValues[isoValueIndex] = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
-                }
-            }
-        }
     }
 
     static std::tuple<size_t, size_t> CornerIndicesFromEdgeIndex(const size_t edgeIndex)
