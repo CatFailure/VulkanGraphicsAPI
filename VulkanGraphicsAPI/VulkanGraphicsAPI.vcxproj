@@ -319,7 +319,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="DebugHelpers.cpp" />
-    <ClCompile Include="GridSystem.cpp" />
+    <ClCompile Include="MarchingCubesManager.cpp" />
     <ClCompile Include="GuiDiagnosticWindow.cpp" />
     <ClCompile Include="GuiWindowManager.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -382,7 +382,7 @@
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="DiagnosticData.hpp" />
     <ClInclude Include="GridNodes.hpp" />
-    <ClInclude Include="GridSystem.hpp" />
+    <ClInclude Include="MarchingCubesManager.hpp" />
     <ClInclude Include="GuiDiagnosticWindow.hpp" />
     <ClInclude Include="GuiWindowManager.hpp" />
     <ClInclude Include="IDisposable.hpp" />

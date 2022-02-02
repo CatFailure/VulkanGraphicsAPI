@@ -1,19 +1,19 @@
 #include "pch.hpp"
-#include "GridSystem.hpp"
+#include "MarchingCubesManager.hpp"
 
-namespace SolEngine::DOD
+namespace SolEngine::Manager
 {
-    GridSystem::GridSystem(const glm::uvec3 &dimensions)
+    MarchingCubesManager::MarchingCubesManager(const glm::uvec3 &dimensions)
     {
         SetDimensions(dimensions);
     }
 
-    GridSystem::GridSystem(const glm::uint scalarDimensions)
+    MarchingCubesManager::MarchingCubesManager(const glm::uint scalarDimensions)
     {
         SetDimensions(scalarDimensions);
     }
 
-    void GridSystem::SetDimensions(const glm::uvec3 &dimensions)
+    void MarchingCubesManager::SetDimensions(const glm::uvec3 &dimensions)
     {
         DBG_ASSERT_MSG(IsWithinAxisNodeCountLimit(dimensions.x), 
                        "Too many Nodes!");
@@ -30,12 +30,12 @@ namespace SolEngine::DOD
         CalculateIsoValues();
     }
 
-    void GridSystem::SetDimensions(const glm::uint scalarDimensions)
+    void MarchingCubesManager::SetDimensions(const glm::uint scalarDimensions)
     {
         SetDimensions(glm::uvec3(scalarDimensions));
     }
 
-    float GridSystem::GetIsoValueAtCoord(const float x, 
+    float MarchingCubesManager::GetIsoValueAtCoord(const float x, 
                                          const float y, 
                                          const float z) const
     {
@@ -46,7 +46,7 @@ namespace SolEngine::DOD
         return _nodes.isoValues[index];
     }
 
-    void GridSystem::TraverseGridNodes(const TraverseNodesCallback_t& callback)
+    void MarchingCubesManager::TraverseGridNodes(const TraverseNodesCallback_t& callback)
     {
         const float step = _nodes.step;
 
@@ -73,7 +73,7 @@ namespace SolEngine::DOD
         }
     }
 
-    void GridSystem::CalculateIsoValues()
+    void MarchingCubesManager::CalculateIsoValues()
     {
         TraverseGridNodes([this](const float x, 
                                  const float y,
@@ -89,7 +89,7 @@ namespace SolEngine::DOD
                           });
     }
 
-    void GridSystem::Update(const float deltaTime)
+    void MarchingCubesManager::Update(const float deltaTime)
     {
     }
 }

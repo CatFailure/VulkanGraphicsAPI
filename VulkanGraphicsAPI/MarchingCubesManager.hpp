@@ -1,6 +1,7 @@
 #pragma once
 #include "GridNodes.hpp"
 
+using namespace SolEngine::DOD;
 using namespace SolEngine::Interface;
 using namespace Utility;
 
@@ -9,16 +10,16 @@ using namespace Utility;
 * Create a "cube" at a node to generate the isoSurface, draw it, then move onto the next node.
 */
 
-namespace SolEngine::DOD
+namespace SolEngine::Manager
 {
-    class GridSystem : public IMonoBehaviour
+    class MarchingCubesManager : public IMonoBehaviour
     {
     public:
         typedef std::function<void(const float, const float, const float)> TraverseNodesCallback_t;
 
-        GridSystem() = default;
-        GridSystem(const glm::uvec3 &dimensions);
-        GridSystem(const glm::uint scalarDimensions);
+        MarchingCubesManager() = default;
+        MarchingCubesManager(const glm::uvec3 &dimensions);
+        MarchingCubesManager(const glm::uint scalarDimensions);
 
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);

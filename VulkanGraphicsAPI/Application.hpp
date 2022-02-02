@@ -5,7 +5,7 @@
 #include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
-#include "GridSystem.hpp"
+#include "MarchingCubesManager.hpp"
 
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
@@ -16,7 +16,7 @@ using namespace SolEngine::Data;
 using namespace SolEngine::Descriptors;
 using namespace SolEngine::GUI;
 using namespace SolEngine::Interface;
-using namespace SolEngine::DOD;
+using namespace SolEngine::Manager;
 using namespace SolEngine::Rendering;
 
 class Application : private IDisposable, public IMonoBehaviour
@@ -63,7 +63,7 @@ private:
     std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;
 #endif  // !DISABLE_IM_GUI
 
-    GridSystem _marchingCubesManager;
+    MarchingCubesManager _marchingCubesManager;
     std::vector<SolGameObject> _gameObjects;
 
     static constexpr float CAM_NEAR{ 0.01f };
