@@ -27,11 +27,16 @@ namespace SolEngine::DOD
         _dimensions = dimensions;
         _gridNodes  = GridNodes(dimensions);
 
-        CoordsToIsoValues(_gridNodes.xPositions,
-                          _gridNodes.yPositions, 
-                          _gridNodes.zPositions, 
-                          _gridNodes.isoValues,
-                          _dimensions);
+        TraverseGridNodes([this](const glm::uint x, 
+                                 const glm::uint y,
+                                 const glm::uint z) 
+        {
+            const size_t isoValueIndex = CoordTo1DArrayIndex(x, y, z, _dimensions);
+
+            CoordToIsoValue(x, y, z, 
+                            &_gridNodes.isoValues[isoValueIndex], 
+                            _dimensions);
+        });
     }
 
     void GridSystem::SetDimensions(const glm::uint scalarDimensions)
@@ -39,12 +44,29 @@ namespace SolEngine::DOD
         SetDimensions(glm::uvec3(scalarDimensions));
     }
 
-    float GridSystem::GetIsoValueAtCoord(const size_t &x, 
-                                         const size_t &y, 
-                                         const size_t &z) const
+    float GridSystem::GetIsoValueAtCoord(const glm::uint x, 
+                                         const glm::uint y, 
+                                         const glm::uint z) const
     {
         const size_t index = CoordTo1DArrayIndex(x, y, z, _dimensions);
 
         return _gridNodes.isoValues[index];
+    }
+
+    void GridSystem::TraverseGridNodes(const TraverseNodesCallback_t &callback)
+    {
+        // Currently dimensions and coordinates are 1:1.
+        // In the future we could adjust the "resolution" of the grid,
+        // allowing for floating point coordinates that aren't 1:1
+        for (glm::uint z = 0; z < _dimensions.z; ++z)
+        {
+            for (glm::uint y = 0; y < _dimensions.y; ++y)
+            {
+                for (glm::uint x = 0; x < _dimensions.x; ++x)
+                {
+                    callback(x, y, z);
+                }
+            }
+        }
     }
 }

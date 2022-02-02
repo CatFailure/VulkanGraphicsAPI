@@ -8,6 +8,8 @@ namespace SolEngine::DOD
     class GridSystem
     {
     public:
+        typedef std::function<void(const glm::uint, const glm::uint, const glm::uint)> TraverseNodesCallback_t;
+
         GridSystem() = default;
         GridSystem(const glm::uvec3 &dimensions);
         GridSystem(const glm::uint scalarDimensions);
@@ -15,7 +17,8 @@ namespace SolEngine::DOD
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
 
-        float GetIsoValueAtCoord(const size_t &x, const size_t &y, const size_t &z) const;
+        float GetIsoValueAtCoord(const glm::uint x, const glm::uint y, const glm::uint z) const;
+        void TraverseGridNodes(const TraverseNodesCallback_t &callback);
 
     private:
         bool IsWithinAxisNodeCountLimit(const size_t count) const { return !(count > MAX_AXIS_NODE_COUNT); }

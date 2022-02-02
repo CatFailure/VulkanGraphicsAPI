@@ -132,7 +132,7 @@ void Application::SetupCamera()
 void Application::SetupGrid()
 {
     // Create a 5x5x5 grid for testing...
-    _gridSystem = GridSystem(5);
+    _marchingCubesManager = MarchingCubesManager(5);
 }
 
 #ifndef DISABLE_IM_GUI

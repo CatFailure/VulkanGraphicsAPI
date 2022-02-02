@@ -5,19 +5,32 @@ namespace Utility
 {
     static constexpr float SPHERE_RADIUS{ 2.5f };
 
-    static size_t CoordTo1DArrayIndex(const size_t &x, 
-                                      const size_t &y, 
-                                      const size_t &z,
+    static size_t CoordTo1DArrayIndex(const glm::uint x, 
+                                      const glm::uint y, 
+                                      const glm::uint z,
                                       const glm::uvec3 &dimensions)
     {
         const glm::uvec3 sqrDimensions = dimensions * dimensions;
 
-        return (z * sqrDimensions.x) + (y * dimensions.y) + x;
+        return ((float)z * sqrDimensions.x) + (y * dimensions.y) + x;
     }
 
-    static void CoordsToIsoValues(const float *pXPositions, 
-                                  const float *pYPositions, 
-                                  const float *pZPositions, 
+    static void CoordToIsoValue(const glm::uint x, 
+                                const glm::uint y, 
+                                const glm::uint z, 
+                                float *pOutIsoValue, 
+                                const glm::uvec3 &dimensions)
+    {
+        const float sqrX = (float)x * x;
+        const float sqrY = (float)y * y;
+        const float sqrZ = (float)z * z;
+
+        *pOutIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
+    }
+
+    static void CoordsToIsoValues(const glm::uint *pXPositions, 
+                                  const glm::uint *pYPositions, 
+                                  const glm::uint *pZPositions, 
                                   float *pOutIsoValues,
                                   const glm::uvec3 &dimensions)
     {
@@ -30,7 +43,7 @@ namespace Utility
                     const float sqrX = (float)x * x;
                     const float sqrY = (float)y * y;
                     const float sqrZ = (float)z * z;
-                    const size_t isoValueIndex = CoordTo1DArrayIndex(x, y, z, dimensions);
+                    const size_t isoValueIndex = CoordTo1DArrayIndex((float)x, (float)y, (float)z, dimensions);
 
                     pOutIsoValues[isoValueIndex] = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
                 }
