@@ -5,11 +5,11 @@ namespace Utility
 {
     static constexpr float SPHERE_RADIUS{ 2.5f };
 
-    static glm::uint32 CoordTo1DArrayIndex(const float x, 
-                                           const float y, 
-                                           const float z,
-                                           const glm::uvec3 &dimensions,
-                                           const float step)
+    static glm::uint32 _3DTo1DIndex(const float x, 
+                                    const float y, 
+                                    const float z,
+                                    const glm::uvec3 &dimensions,
+                                    const float step)
     {
         // Always 0
         if (x == 0 && 

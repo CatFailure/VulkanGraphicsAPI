@@ -39,9 +39,9 @@ namespace SolEngine::DOD
                                          const float y, 
                                          const float z) const
     {
-        const size_t index = CoordTo1DArrayIndex(x, y, z, 
-                                                 _dimensions, 
-                                                 _nodes.step);
+        const size_t index = _3DTo1DIndex(x, y, z, 
+                                          _dimensions, 
+                                          _nodes.step);
 
         return _nodes.isoValues[index];
     }
@@ -79,9 +79,9 @@ namespace SolEngine::DOD
                                  const float y,
                                  const float z) 
                           {
-                              const size_t isoValueIndex = CoordTo1DArrayIndex(x, y, z,
-                                                                               _dimensions, 
-                                                                               _nodes.step);
+                              const size_t isoValueIndex = _3DTo1DIndex(x, y, z,
+                                                                        _dimensions, 
+                                                                        _nodes.step);
 
                               CoordToIsoValue(x, y, z, 
                                               &_nodes.isoValues[isoValueIndex], 
