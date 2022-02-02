@@ -71,6 +71,7 @@ void Application::Dispose()
 
 void Application::Update(const float deltaTime)
 {
+    _marchingCubesManager.Update(deltaTime);
     _solCamera.Update(deltaTime);
 
 #ifndef DISABLE_IM_GUI
@@ -132,7 +133,7 @@ void Application::SetupCamera()
 void Application::SetupGrid()
 {
     // Create a 5x5x5 grid for testing...
-    _marchingCubesManager = MarchingCubesManager(5);
+    _marchingCubesManager = GridSystem(5);
 }
 
 #ifndef DISABLE_IM_GUI
