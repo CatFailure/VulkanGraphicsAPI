@@ -21,7 +21,7 @@ namespace SolEngine
         size_t        GetImageCount()                    const { return _swapchainImages.size(); }
         VkFormat      GetImageFormat()                   const { return _swapchainImageFormat; }
         VkExtent2D    GetExtent()                        const { return _swapchainExtent; }
-        Vector2u      GetExtentDimensions()              const { return { _swapchainExtent.width, _swapchainExtent.height }; }
+        glm::uvec2    GetExtentDimensions()              const { return { _swapchainExtent.width, _swapchainExtent.height }; }
         float         GetExtentAspectRatio()             const { return static_cast<float>(_swapchainExtent.width) / static_cast<float>(_swapchainExtent.height); }
 
         VkFormat FindDepthFormat();

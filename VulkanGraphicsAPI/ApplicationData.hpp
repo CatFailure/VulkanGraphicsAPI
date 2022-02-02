@@ -1,7 +1,4 @@
 #pragma once
-#include "Vector.hpp"
-
-using namespace SolEngine::Math;
 
 namespace SolEngine::Data
 {
@@ -12,8 +9,8 @@ namespace SolEngine::Data
         const char		  *engineName;
         const char		  *appName;
 
-        Vector2u windowDimensions;
+        glm::uvec2 windowDimensions;
 
-        VkExtent2D GetExtent() const { return { windowDimensions._x, windowDimensions._y }; }
+        VkExtent2D GetExtent() const { return { windowDimensions.x, windowDimensions.y }; }
     };
 }

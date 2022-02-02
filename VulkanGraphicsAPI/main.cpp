@@ -9,7 +9,7 @@ int main()
 		.windowClassName  = L"VulkanWindowClass",
 		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",
-		.windowDimensions = Vector2u(800, 600)
+		.windowDimensions = glm::uvec2(800, 600)
 	};
 
 	Application application(appData);

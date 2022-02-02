@@ -1,9 +1,7 @@
 #pragma once
 #include "ApplicationData.hpp"
-#include "Vector.hpp"
 
 using namespace SolEngine::Interface;
-using namespace SolEngine::Math;
 using namespace Utility;
 
 namespace SolEngine
@@ -11,7 +9,7 @@ namespace SolEngine
     class SolWindow : public IDisposable
     {
     public:
-        SolWindow(const std::string &winTitle, const Vector2u &winDimensions);
+        SolWindow(const std::string &winTitle, const glm::uvec2 &winDimensions);
         ~SolWindow();
 
         bool ShouldClose()      const { return glfwWindowShouldClose(_pWindow); }
@@ -19,7 +17,7 @@ namespace SolEngine
         void ResetWindowResizedFlag() { _isFramebufferResized = false; }
 
         void        CreateWindowSurface(const VkInstance &vkInstance, VkSurfaceKHR *pSurface);
-        VkExtent2D  GetWindowExtent() const { return { _winDimensions._x, _winDimensions._y }; }
+        VkExtent2D  GetWindowExtent() const { return { _winDimensions.x, _winDimensions.y }; }
         GLFWwindow *GetWindow()       const { return _pWindow; }
 
         // Inherited via IDisposable
@@ -29,8 +27,8 @@ namespace SolEngine
 
         void CreateGLFWWindow();
 
-        Vector2u _winDimensions;                    // Window Dimensions
-        bool     _isFramebufferResized{ false };    // Was the window resized?
+        glm::uvec2 _winDimensions;                    // Window Dimensions
+        bool       _isFramebufferResized{ false };    // Was the window resized?
 
         std::string _winTitle{ NULL };  // Application Window Title
         GLFWwindow *_pWindow{ NULL };   // Application Window

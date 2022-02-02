@@ -161,9 +161,6 @@
     <ClInclude Include="Singleton.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.hpp">
-      <Filter>SolEngine\Math</Filter>
-    </ClInclude>
     <ClInclude Include="SolSwapchain.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
