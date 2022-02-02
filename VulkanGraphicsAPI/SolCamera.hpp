@@ -27,7 +27,7 @@ namespace SolEngine
         void SetPerspectiveProjection(const float fovDeg, const float aspect, const float near = CAM_NEAR_DEFAULT, const float far = CAM_FAR_DEFAULT);
         void SetPerspectiveProjection(const PerspectiveProjectionInfo &projInfo);
 
-        void LookAt(const glm::vec3 &target, const glm::vec3 &up = VEC3_UP);
+        void LookAt(const glm::vec3 &target, const glm::vec3 &up = VECTOR3_AXIS_Y);
 
         glm::vec3 GetPosition()             const { return _position; }
         glm::mat4 GetProjectionMatrix()     const { return _projectionMatrix; }
