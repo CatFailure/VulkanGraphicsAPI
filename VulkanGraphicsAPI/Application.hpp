@@ -5,6 +5,7 @@
 #include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
+#include "GridSystem.hpp"
 
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
@@ -13,6 +14,7 @@
 using namespace SolEngine;
 using namespace SolEngine::Data;
 using namespace SolEngine::Descriptors;
+using namespace SolEngine::DOD;
 using namespace SolEngine::GUI;
 using namespace SolEngine::Interface;
 using namespace SolEngine::Rendering;
@@ -38,6 +40,7 @@ private:
 
     void CreateDescriptorPool();
     void SetupCamera();
+    void SetupGrid();
 
 #ifndef DISABLE_IM_GUI
     void CreateGuiWindowManager();
@@ -60,6 +63,7 @@ private:
     std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;
 #endif  // !DISABLE_IM_GUI
 
+    GridSystem _gridSystem{};
     std::vector<SolGameObject> _gameObjects;
 
     static constexpr float CAM_NEAR{ 0.01f };
