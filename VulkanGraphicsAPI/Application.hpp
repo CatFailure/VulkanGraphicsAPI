@@ -5,7 +5,7 @@
 #include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
-#include "MarchingCubesManager.hpp"
+#include "GridSystem.hpp"
 
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
@@ -16,7 +16,7 @@ using namespace SolEngine::Data;
 using namespace SolEngine::Descriptors;
 using namespace SolEngine::GUI;
 using namespace SolEngine::Interface;
-using namespace SolEngine::Manager;
+using namespace SolEngine::DOD;
 using namespace SolEngine::Rendering;
 
 class Application : private IDisposable, public IMonoBehaviour

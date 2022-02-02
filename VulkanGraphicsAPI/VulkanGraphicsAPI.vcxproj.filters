@@ -52,9 +52,6 @@
     <Filter Include="SolEngine\DOD">
       <UniqueIdentifier>{ad079547-8b04-47ad-aa75-ed6a3cd4c320}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SolEngine\Manager">
-      <UniqueIdentifier>{efc4840f-dae4-48ff-bf79-f59930e927a6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -149,9 +146,6 @@
     </ClCompile>
     <ClCompile Include="GridSystem.cpp">
       <Filter>SolEngine\DOD</Filter>
-    </ClCompile>
-    <ClCompile Include="MarchingCubesManager.cpp">
-      <Filter>SolEngine\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,9 +286,6 @@
     </ClInclude>
     <ClInclude Include="MarchingCubesHelpers.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="MarchingCubesManager.hpp">
-      <Filter>SolEngine\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
