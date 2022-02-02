@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 
-typedef uint32_t Index_t;
+typedef uint8_t Index_t;   // We're only drawing cubes so 0-255 is more than necessary
 
 namespace SolEngine::Data
 {

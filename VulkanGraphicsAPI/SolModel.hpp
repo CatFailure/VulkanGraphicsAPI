@@ -5,8 +5,6 @@ using namespace SolEngine::Data;
 
 namespace SolEngine
 {
-    typedef uint32_t Index_t;
-
     // Takes vertex data created by or read in a file on the CPU
     // Then allocate and copy the data over to the GPU to be rendered
     class SolModel : public IDisposable

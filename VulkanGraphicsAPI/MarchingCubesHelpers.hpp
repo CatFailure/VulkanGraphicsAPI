@@ -11,6 +11,7 @@ namespace Utility
                                            const glm::uvec3 &dimensions,
                                            const float step)
     {
+        // Always 0
         if (x == 0 && 
             y == 0 && 
             z == 0)
@@ -18,11 +19,15 @@ namespace Utility
             return 0;
         }
 
-        const glm::uvec3 sqrDimensions = dimensions * dimensions;
+        // Coordinates need to be scaled to their step to point to the correct index
+        // (Will always resolve to integer types - No data will be lost!)
         const glm::uint32 scaledX      = (glm::uint32)(x / step);
-        const glm::uint32 scaledAbsY   = (glm::uint32)(fabs(y) / step);
+        const glm::uint32 scaledAbsY   = (glm::uint32)(fabs(y) / step); // Y needs to be positive for correct index
         const glm::uint32 scaledZ      = (glm::uint32)(z / step);
 
+        const glm::uvec3 sqrDimensions = dimensions * dimensions;
+
+        // Convert 3D array indexes into a 1D array index
         return (scaledZ * sqrDimensions.x) + (scaledAbsY * dimensions.y) + scaledX;
     }
 
