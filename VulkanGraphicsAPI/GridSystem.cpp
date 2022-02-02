@@ -88,4 +88,8 @@ namespace SolEngine::DOD
                                               _dimensions);
                           });
     }
+
+    void GridSystem::Update(const float deltaTime)
+    {
+    }
 }

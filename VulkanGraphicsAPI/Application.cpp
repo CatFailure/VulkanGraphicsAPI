@@ -46,7 +46,7 @@ void Application::Run()
 #endif  // !DISABLE_IM_GUI
 
         Update(deltaTime);
-        Draw();
+        Render();
     }
 
     // Make CPU wait until all GPU operations have completed.
@@ -86,7 +86,7 @@ void Application::Update(const float deltaTime)
     }
 }
 
-void Application::Draw()
+void Application::Render()
 {
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
     const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());

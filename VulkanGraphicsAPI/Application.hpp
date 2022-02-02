@@ -36,7 +36,7 @@ private:
 
     // Inherited via IMonoBehaviour
     virtual void Update(const float deltaTime) override;
-    void Draw();
+    void Render();
 
     void CreateDescriptorPool();
     void SetupCamera();
