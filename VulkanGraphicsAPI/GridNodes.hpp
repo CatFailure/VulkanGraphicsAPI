@@ -12,7 +12,6 @@ namespace SolEngine::DOD
         GridNodes(const glm::vec3 dimensions)
         {
             size_t index(0);
-
             for (float xPos = 0; xPos < dimensions.x; xPos += step)
             {
                 xPositions[index] = (float)xPos;
@@ -40,7 +39,6 @@ namespace SolEngine::DOD
         GridNodes(const glm::int32 scalarDimensions)
         {
             size_t index(0);
-
             for (float pos = 0; pos < scalarDimensions; pos += step)
             {
                 xPositions[index] = pos;
@@ -51,7 +49,7 @@ namespace SolEngine::DOD
             }
         }
 
-        float step{ .5f };  // Adjusts the resolution of the nodes
+        float step{ 1.f };  // Adjusts the resolution of the nodes
 
         alignas(16) float xPositions[MAX_AXIS_NODE_COUNT]{ 0 };
         alignas(16) float yPositions[MAX_AXIS_NODE_COUNT]{ 0 };

@@ -48,20 +48,28 @@ namespace SolEngine::DOD
 
     void GridSystem::TraverseGridNodes(const TraverseNodesCallback_t& callback)
     {
-        // Currently dimensions and coordinates are 1:1.
-        // In the future we could adjust the "resolution" of the grid,
-        // allowing for floating point coordinates that aren't 1:1
-        for (glm::uint z = 0; z < _dimensions.z; ++z)
+        const float step = _nodes.step;
+
+        size_t zIndex(0);
+        for (float z = 0; z < _dimensions.z; z += step)
         {
-            for (glm::uint y = 0; y < _dimensions.y; ++y)
+            size_t yIndex(0);
+            for (float y = 0; y < _dimensions.y; y += step)
             {
-                for (glm::uint x = 0; x < _dimensions.x; ++x)
+                size_t xIndex(0);
+                for (float x = 0; x < _dimensions.x; x += step)
                 {
-                    callback(_nodes.xPositions[x], 
-                             _nodes.yPositions[y],
-                             _nodes.zPositions[z]);
+                    callback(_nodes.xPositions[xIndex], 
+                             _nodes.yPositions[yIndex],
+                             _nodes.zPositions[zIndex]);
+
+                    ++xIndex;
                 }
+
+                ++yIndex;
             }
+
+            ++zIndex;
         }
     }
 
