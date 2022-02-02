@@ -5,19 +5,19 @@ namespace Utility
 {
     static constexpr float SPHERE_RADIUS{ 2.5f };
 
-    static size_t CoordTo1DArrayIndex(const glm::uint x, 
-                                      const glm::uint y, 
-                                      const glm::uint z,
+    static size_t CoordTo1DArrayIndex(const glm::int32 x, 
+                                      const glm::int32 y, 
+                                      const glm::int32 z,
                                       const glm::uvec3 &dimensions)
     {
         const glm::uvec3 sqrDimensions = dimensions * dimensions;
 
-        return ((float)z * sqrDimensions.x) + (y * dimensions.y) + x;
+        return (z * sqrDimensions.x) + (y * dimensions.y) + x;
     }
 
-    static void CoordToIsoValue(const glm::uint x, 
-                                const glm::uint y, 
-                                const glm::uint z, 
+    static void CoordToIsoValue(const glm::int32 x, 
+                                const glm::int32 y, 
+                                const glm::int32 z, 
                                 float *pOutIsoValue, 
                                 const glm::uvec3 &dimensions)
     {
@@ -28,22 +28,22 @@ namespace Utility
         *pOutIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
     }
 
-    static void CoordsToIsoValues(const glm::uint *pXPositions, 
-                                  const glm::uint *pYPositions, 
-                                  const glm::uint *pZPositions, 
+    static void CoordsToIsoValues(const glm::int32 *pXPositions, 
+                                  const glm::int32 *pYPositions, 
+                                  const glm::int32 *pZPositions, 
                                   float *pOutIsoValues,
                                   const glm::uvec3 &dimensions)
     {
-        for (size_t z = 0; z < dimensions.z; ++z)
+        for (glm::uint32 z = 0; z < dimensions.z; ++z)
         {
-            for (size_t y = 0; y < dimensions.y; ++y)
+            for (glm::uint32 y = 0; y < dimensions.y; ++y)
             {
-                for (size_t x = 0; x < dimensions.x; ++x)
+                for (glm::uint32 x = 0; x < dimensions.x; ++x)
                 {
                     const float sqrX = (float)x * x;
                     const float sqrY = (float)y * y;
                     const float sqrZ = (float)z * z;
-                    const size_t isoValueIndex = CoordTo1DArrayIndex((float)x, (float)y, (float)z, dimensions);
+                    const size_t isoValueIndex = CoordTo1DArrayIndex(x, y, z, dimensions);
 
                     pOutIsoValues[isoValueIndex] = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
                 }

@@ -9,37 +9,37 @@ namespace SolEngine::DOD
     {
         GridNodes() = default;
 
-        GridNodes(const glm::uvec3 dimensions)
+        GridNodes(const glm::vec3 dimensions)
         {
-            for (glm::uint x = 0; x < dimensions.x; ++x)
+            for (glm::int32 x = 0; x < dimensions.x; ++x)
             {
                 xPositions[x] = x;
             }
 
-            for (glm::uint y = 0; y < dimensions.y; ++y)
+            for (glm::int32 y = 0; y < dimensions.y; ++y)
             {
-                yPositions[y] = y;
+                yPositions[y] = -y;
             }
 
-            for (glm::uint z = 0; z < dimensions.z; ++z)
+            for (glm::int32 z = 0; z < dimensions.z; ++z)
             {
                 zPositions[z] = z;
             }
         }
 
-        GridNodes(const glm::uint scalarDimensions)
+        GridNodes(const glm::int32 scalarDimensions)
         {
-            for (glm::uint i = 0; i < scalarDimensions; ++i)
+            for (glm::int32 i = 0; i < scalarDimensions; ++i)
             {
                 xPositions[i] = i;
-                yPositions[i] = i; 
+                yPositions[i] = -i; 
                 zPositions[i] = i;
             }
         }
 
-        alignas(16) glm::uint xPositions[MAX_AXIS_NODE_COUNT]{ 0 };
-        alignas(16) glm::uint yPositions[MAX_AXIS_NODE_COUNT]{ 0 };
-        alignas(16) glm::uint zPositions[MAX_AXIS_NODE_COUNT]{ 0 };
+        alignas(16) glm::int32 xPositions[MAX_AXIS_NODE_COUNT]{ 0 };
+        alignas(16) glm::int32 yPositions[MAX_AXIS_NODE_COUNT]{ 0 };
+        alignas(16) glm::int32 zPositions[MAX_AXIS_NODE_COUNT]{ 0 };
 
         alignas(16) float isoValues[MAX_NODE_COUNT]{ 0 };
         alignas(16) bool  isAlives[MAX_NODE_COUNT];

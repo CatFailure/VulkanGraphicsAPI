@@ -27,9 +27,9 @@ namespace SolEngine::DOD
         _dimensions = dimensions;
         _gridNodes  = GridNodes(dimensions);
 
-        TraverseGridNodes([this](const glm::uint x, 
-                                 const glm::uint y,
-                                 const glm::uint z) 
+        TraverseGridNodes([this](const glm::int32 x, 
+                                 const glm::int32 y,
+                                 const glm::int32 z) 
         {
             const size_t isoValueIndex = CoordTo1DArrayIndex(x, y, z, _dimensions);
 
@@ -44,9 +44,9 @@ namespace SolEngine::DOD
         SetDimensions(glm::uvec3(scalarDimensions));
     }
 
-    float GridSystem::GetIsoValueAtCoord(const glm::uint x, 
-                                         const glm::uint y, 
-                                         const glm::uint z) const
+    float GridSystem::GetIsoValueAtCoord(const glm::int32 x, 
+                                         const glm::int32 y, 
+                                         const glm::int32 z) const
     {
         const size_t index = CoordTo1DArrayIndex(x, y, z, _dimensions);
 

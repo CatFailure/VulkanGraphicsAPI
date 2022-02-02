@@ -8,7 +8,7 @@ namespace SolEngine::DOD
     class GridSystem
     {
     public:
-        typedef std::function<void(const glm::uint, const glm::uint, const glm::uint)> TraverseNodesCallback_t;
+        typedef std::function<void(const glm::int32, const glm::int32, const glm::int32)> TraverseNodesCallback_t;
 
         GridSystem() = default;
         GridSystem(const glm::uvec3 &dimensions);
@@ -17,7 +17,7 @@ namespace SolEngine::DOD
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
 
-        float GetIsoValueAtCoord(const glm::uint x, const glm::uint y, const glm::uint z) const;
+        float GetIsoValueAtCoord(const glm::int32 x, const glm::int32 y, const glm::int32 z) const;
         void TraverseGridNodes(const TraverseNodesCallback_t &callback);
 
     private:
