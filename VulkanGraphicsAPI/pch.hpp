@@ -44,7 +44,9 @@
 #include "IDisposable.hpp"
 #include "IMonoBehaviour.hpp"
 
+// Utility
 #include "DebugHelpers.hpp"
+#include "MarchingCubesHelpers.hpp"
 #include "Singleton.hpp"
 #include "SimplePushConstantData.hpp"
 #include "PipelineConfigInfo.hpp"

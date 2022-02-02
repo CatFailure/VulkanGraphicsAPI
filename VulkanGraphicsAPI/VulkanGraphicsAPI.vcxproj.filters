@@ -287,6 +287,9 @@
     <ClInclude Include="GridSystem.hpp">
       <Filter>SolEngine\DOD</Filter>
     </ClInclude>
+    <ClInclude Include="MarchingCubesHelpers.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">

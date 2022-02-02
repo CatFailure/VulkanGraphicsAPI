@@ -8,7 +8,7 @@ namespace SolEngine::DOD
         SetDimensions(dimensions);
     }
 
-    GridSystem::GridSystem(const size_t scalarDimensions)
+    GridSystem::GridSystem(const glm::uint scalarDimensions)
     {
         SetDimensions(scalarDimensions);
     }
@@ -26,14 +26,25 @@ namespace SolEngine::DOD
 
         _dimensions = dimensions;
         _gridNodes  = GridNodes(dimensions);
+
+        CoordsToIsoValues(_gridNodes.xPositions,
+                          _gridNodes.yPositions, 
+                          _gridNodes.zPositions, 
+                          _gridNodes.isoValues,
+                          _dimensions);
     }
 
-    void GridSystem::SetDimensions(const size_t scalarDimensions)
+    void GridSystem::SetDimensions(const glm::uint scalarDimensions)
     {
-        DBG_ASSERT_MSG(IsWithinAxisNodeCountLimit(scalarDimensions), 
-                       "Too many Nodes!");
+        SetDimensions(glm::uvec3(scalarDimensions));
+    }
 
-        _dimensions = glm::uvec3((glm::uint)scalarDimensions);
-        _gridNodes  = GridNodes(scalarDimensions);
+    float GridSystem::GetIsoValueAtCoord(const size_t &x, 
+                                         const size_t &y, 
+                                         const size_t &z) const
+    {
+        const size_t index = CoordTo1DArrayIndex(x, y, z, _dimensions);
+
+        return _gridNodes.isoValues[index];
     }
 }

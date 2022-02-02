@@ -1,7 +1,43 @@
 #pragma once
+#include <glm/glm.hpp>
 
 namespace Utility
 {
+    static constexpr float SPHERE_RADIUS{ 2.5f };
+
+    static size_t CoordTo1DArrayIndex(const size_t &x, 
+                                      const size_t &y, 
+                                      const size_t &z,
+                                      const glm::uvec3 &dimensions)
+    {
+        const glm::uvec3 sqrDimensions = dimensions * dimensions;
+
+        return (z * sqrDimensions.x) + (y * dimensions.y) + x;
+    }
+
+    static void CoordsToIsoValues(const float *pXPositions, 
+                                  const float *pYPositions, 
+                                  const float *pZPositions, 
+                                  float *pOutIsoValues,
+                                  const glm::uvec3 &dimensions)
+    {
+        for (size_t z = 0; z < dimensions.z; ++z)
+        {
+            for (size_t y = 0; y < dimensions.y; ++y)
+            {
+                for (size_t x = 0; x < dimensions.x; ++x)
+                {
+                    const float sqrX = (float)x * x;
+                    const float sqrY = (float)y * y;
+                    const float sqrZ = (float)z * z;
+                    const size_t isoValueIndex = CoordTo1DArrayIndex(x, y, z, dimensions);
+
+                    pOutIsoValues[isoValueIndex] = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
+                }
+            }
+        }
+    }
+
     static std::tuple<size_t, size_t> CornerIndicesFromEdgeIndex(const size_t edgeIndex)
     {
         switch (edgeIndex)
