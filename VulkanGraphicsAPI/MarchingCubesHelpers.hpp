@@ -41,6 +41,7 @@ namespace Utility
         const float sqrY = y * y;
         const float sqrZ = z * z;
 
+        // Creates a sphere
         *pOutIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
     }
 

@@ -25,7 +25,7 @@ namespace SolEngine::Manager
                        "Too many Nodes!");
 
         _dimensions = dimensions;
-        _nodes  = GridNodes(dimensions);
+        _nodes      = GridNodes(dimensions);
 
         CalculateIsoValues();
     }

@@ -56,6 +56,6 @@ namespace SolEngine::DOD
         alignas(16) float zPositions[MAX_AXIS_NODE_COUNT]{ 0 };
 
         alignas(16) float isoValues[MAX_NODE_COUNT]{ 0 };
-        alignas(16) bool  isAlives[MAX_NODE_COUNT];
+        alignas(16) bool  isAlives[MAX_NODE_COUNT]{ false };
     };
 }
