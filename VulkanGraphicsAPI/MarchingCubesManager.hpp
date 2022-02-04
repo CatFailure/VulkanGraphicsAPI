@@ -18,9 +18,9 @@ namespace SolEngine::Manager
     {
     public:
         /// <summary>
-        /// Arg0 = X-Vertices
-        /// Arg1 = Y-Vertices
-        /// Arg2 = Z-Vertices
+        /// Arg0 = X-Index
+        /// Arg1 = Y-Index
+        /// Arg2 = Z-Index
         /// </summary>
         typedef std::function<void(const size_t, const size_t, const size_t)> TraverseCubesCallback_t;
 
