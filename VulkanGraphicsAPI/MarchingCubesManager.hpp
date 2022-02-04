@@ -1,5 +1,6 @@
 #pragma once
 #include "GridNodes.hpp"
+#include "SolDevice.hpp"
 
 using namespace SolEngine::DOD;
 using namespace SolEngine::Interface;
@@ -17,9 +18,9 @@ namespace SolEngine::Manager
     public:
         typedef std::function<void(const float, const float, const float)> TraverseNodesCallback_t;
 
-        MarchingCubesManager() = default;
-        MarchingCubesManager(const glm::uvec3 &dimensions);
-        MarchingCubesManager(const glm::uint scalarDimensions);
+        MarchingCubesManager(SolDevice &rDevice);
+        MarchingCubesManager(SolDevice &rDevice, const glm::uvec3 &dimensions);
+        MarchingCubesManager(SolDevice &rDevice, const glm::uint scalarDimensions);
 
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
@@ -34,6 +35,8 @@ namespace SolEngine::Manager
 
     private:
         bool IsWithinAxisNodeCountLimit(const size_t count) const { return !((count / _nodes.step) > MAX_AXIS_NODE_COUNT); }
+
+        SolDevice &_rSolDevice;
 
         glm::uvec3 _dimensions{ 0 };
         GridNodes _nodes{};

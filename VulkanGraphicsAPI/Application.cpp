@@ -56,7 +56,11 @@ void Application::Run()
 std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
                                                        const glm::vec3 &offset)
 {    
-    return std::make_shared<SolModel>(rDevice, CUBE_VERTICES, CUBE_INDICES);
+    return std::make_shared<SolModel>(rDevice, 
+                                      CUBE_VERTICES, 
+                                      CUBE_VERTEX_COUNT, 
+                                      CUBE_INDICES, 
+                                      CUBE_INDEX_COUNT);
 }
 
 std::shared_ptr<SolModel> Application::CreateModel(SolDevice &rDevice, 
@@ -79,7 +83,7 @@ void Application::Dispose()
 
 void Application::Update(const float deltaTime)
 {
-    _marchingCubesManager.Update(deltaTime);
+    _pMarchingCubesManager->Update(deltaTime);
     _solCamera.Update(deltaTime);
 
 #ifndef DISABLE_IM_GUI
@@ -141,7 +145,7 @@ void Application::SetupCamera()
 void Application::SetupGrid()
 {
     // Create a 5x5x5 grid for testing...
-    _marchingCubesManager = MarchingCubesManager(5);
+    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice, 5);
 }
 
 #ifndef DISABLE_IM_GUI

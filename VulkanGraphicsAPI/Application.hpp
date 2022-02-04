@@ -64,7 +64,8 @@ private:
     std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;
 #endif  // !DISABLE_IM_GUI
 
-    MarchingCubesManager _marchingCubesManager;
+    std::unique_ptr<MarchingCubesManager> _pMarchingCubesManager;
+
     std::vector<SolGameObject> _gameObjects;
 
     static constexpr float CAM_NEAR{ 0.01f };

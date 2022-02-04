@@ -3,12 +3,20 @@
 
 namespace SolEngine::Manager
 {
-    MarchingCubesManager::MarchingCubesManager(const glm::uvec3 &dimensions)
+    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice)
+        : _rSolDevice(rDevice)
+    {}
+
+    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
+                                               const glm::uvec3 &dimensions)
+        : _rSolDevice(rDevice)
     {
         SetDimensions(dimensions);
     }
 
-    MarchingCubesManager::MarchingCubesManager(const glm::uint scalarDimensions)
+    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
+                                               const glm::uint scalarDimensions)
+        : _rSolDevice(rDevice)
     {
         SetDimensions(scalarDimensions);
     }

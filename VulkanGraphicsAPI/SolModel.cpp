@@ -5,13 +5,13 @@ namespace SolEngine
 {
     SolModel::SolModel(SolDevice &rSolDevice, 
                        const Vertex *pVertices, 
-                       const size_t vertexCount, 
+                       const uint32_t vertexCount, 
                        const Index_t *pIndices, 
-                       const size_t indexCount)
+                       const uint32_t indexCount)
         : _rSolDevice(rSolDevice)
     {
         CreateVertexBuffers(pVertices, vertexCount);
-        CreateIndexBuffer(pIndices, vertexCount);
+        CreateIndexBuffer(pIndices, indexCount);
     }
 
     SolModel::~SolModel()
@@ -54,7 +54,7 @@ namespace SolEngine
     void SolModel::Dispose()
     {}
 
-    void SolModel::CreateVertexBuffers(const Vertex *pVertices, const size_t vertexCount)
+    void SolModel::CreateVertexBuffers(const Vertex *pVertices, const uint32_t vertexCount)
     {
         const size_t vertexSize = sizeof(Vertex);
         const VkDeviceSize bufferSize = vertexSize * vertexCount;
@@ -101,7 +101,7 @@ namespace SolEngine
                                bufferSize);
     }
 
-    void SolModel::CreateIndexBuffer(const Index_t *pIndices, const size_t indexCount)
+    void SolModel::CreateIndexBuffer(const Index_t *pIndices, const uint32_t indexCount)
     {
         const size_t indexSize = sizeof(Index_t);
         const VkDeviceSize bufferSize = indexSize * indexCount;
