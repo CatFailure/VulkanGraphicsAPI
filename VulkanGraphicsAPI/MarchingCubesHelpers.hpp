@@ -1,6 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
 
+#include "Constants.hpp"
+
+using namespace SolEngine::Data;
+
 namespace Utility
 {
     static constexpr float SPHERE_RADIUS{ 2.5f };
@@ -49,7 +53,7 @@ namespace Utility
         *pOutIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
     }
 
-    static std::tuple<size_t, size_t> CornerIndicesFromEdgeIndex(const size_t edgeIndex)
+    static std::pair<Index_t, Index_t> CornerIndicesFromEdgeIndex(const Index_t edgeIndex)
     {
         switch (edgeIndex)
         {

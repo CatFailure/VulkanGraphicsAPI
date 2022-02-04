@@ -1,7 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
 
-typedef uint8_t Index_t;   // We're only drawing cubes so 0-255 is more than necessary
+#include "Vertex.hpp"
+
+typedef uint8_t UIndex_t;   // We're only drawing cubes so 0->255 is more than necessary
+typedef int8_t  Index_t;    // We're only drawing cubes so -128->127 is more than necessary
 
 namespace SolEngine::Data
 {
@@ -15,19 +18,73 @@ namespace SolEngine::Data
     static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
     static constexpr uint32_t CUBE_INDEX_COUNT{ 36U };
 
-    static constexpr Vertex CUBE_VERTICES[CUBE_VERTEX_COUNT]
+    static constexpr size_t TRI_TABLE_COUNT{ 256 };
+    static constexpr size_t TRI_TABLE_INDEX_COUNT{ 16 };
+
+    //static constexpr Vertex CUBE_VERTICES[CUBE_VERTEX_COUNT]
+    //{
+    //    { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
+    //    { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
+    //    { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
+    //    { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
+    //    { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
+    //    { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
+    //    { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
+    //    { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
+    //};
+
+    static constexpr Vertex CUBE_VERTICES[CUBE_VERTEX_COUNT * CUBE_INDEX_COUNT]
     {
         { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
         { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
         { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
+
+        { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
+        { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
         { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
+
+        { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
         { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
         { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
+
+        { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
+        { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
+        { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
+
+        { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
+        { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
+        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
+
+        { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
+        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
+        { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
+
+        { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
         { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
         { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
+
+        { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
+        { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
+        { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
+
+        { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
+        { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
+        { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
+
+        { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
+        { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
+        { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
+
+        { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
+        { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
+        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
+
+        { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
+        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
+        { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
     };
 
-	static constexpr Index_t CUBE_INDICES[CUBE_INDEX_COUNT]
+	static constexpr UIndex_t CUBE_INDICES[CUBE_INDEX_COUNT]
 	{
         // Bottom-Face
         0, 1, 2,
@@ -54,7 +111,7 @@ namespace SolEngine::Data
         4, 6, 5,
 	};
 
-    static constexpr Index_t TRI_TABLE[256][16]
+    static constexpr Index_t TRI_TABLE[TRI_TABLE_COUNT][TRI_TABLE_INDEX_COUNT]
     {
         { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
         { 0, 8, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },

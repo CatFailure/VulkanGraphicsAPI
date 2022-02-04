@@ -46,7 +46,7 @@ namespace SolEngine::Data
 			return vertexInputAttributeDescriptions;
 		}
 
-		glm::vec3 position;
-		glm::vec3 colour;
+		glm::vec3 position{ 0, 0, 0 };
+		glm::vec3 colour{ 0, 0, 0 };
 	};
 }

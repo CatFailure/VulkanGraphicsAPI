@@ -53,22 +53,11 @@ void Application::Run()
     vkDeviceWaitIdle(_solDevice.GetDevice());
 }
 
-std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice, 
-                                                       const glm::vec3 &offset)
+std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice)
 {    
     return std::make_shared<SolModel>(rDevice, 
                                       CUBE_VERTICES, 
-                                      CUBE_VERTEX_COUNT, 
-                                      CUBE_INDICES, 
-                                      CUBE_INDEX_COUNT);
-}
-
-std::shared_ptr<SolModel> Application::CreateModel(SolDevice &rDevice, 
-                                                   const Vertex *pVertices, 
-                                                   const Index_t *pIndices, 
-                                                   const glm::vec3 &offset)
-{
-    return std::shared_ptr<SolModel>();
+                                      CUBE_VERTEX_COUNT * CUBE_VERTEX_COUNT);
 }
 
 void Application::Dispose()
@@ -162,7 +151,7 @@ void Application::CreateGuiWindowManager()
 
 void Application::LoadGameObjects()
 {
-    std::shared_ptr<SolModel> cubeModel = CreateCubeModel(_solDevice, { 0,0,0 });
+    std::shared_ptr<SolModel> cubeModel = CreateCubeModel(_solDevice);
     SolGameObject cubeGameObject = SolGameObject::CreateGameObject();
 
     cubeGameObject.SetModel(cubeModel);

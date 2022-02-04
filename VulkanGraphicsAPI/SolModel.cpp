@@ -6,7 +6,7 @@ namespace SolEngine
     SolModel::SolModel(SolDevice &rSolDevice, 
                        const Vertex *pVertices, 
                        const uint32_t vertexCount, 
-                       const Index_t *pIndices, 
+                       const UIndex_t *pIndices, 
                        const uint32_t indexCount)
         : _rSolDevice(rSolDevice)
     {
@@ -26,6 +26,11 @@ namespace SolEngine
 
         vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
 
+        if (!_hasIndexBuffer)
+        {
+            return;
+        }
+
         // TODO:
         // Right now index buffers are a 32-bit number, 
         // but since this will only be rendering cubes - 
@@ -38,13 +43,24 @@ namespace SolEngine
 
     void SolModel::Draw(const VkCommandBuffer commandBuffer)
     {
+        if (!_hasIndexBuffer)
+        {
+            vkCmdDraw(commandBuffer, 
+                      _vertexCount,
+                      _instanceCount, 
+                      0,
+                      0);
+
+            return;
+        }
+        
         /* TODO:
         * Right now, a model is drawn one mesh at a time with each mesh owning it's vertices and indices.
         * However, using a large Grid of vertices, we can manipulate the Vertex offset to draw multiple meshes 
         * from a massive shared array of vertices with the indices determined by the TriTable!
         */
         vkCmdDrawIndexed(commandBuffer, 
-                         CUBE_INDEX_COUNT, 
+                         _indexCount, 
                          _instanceCount, 
                          0,
                          0,     // Vertex offset - VERY IMPORTANT FOR MARCHING CUBES.
@@ -56,6 +72,8 @@ namespace SolEngine
 
     void SolModel::CreateVertexBuffers(const Vertex *pVertices, const uint32_t vertexCount)
     {
+        _vertexCount = vertexCount;
+
         const size_t vertexSize = sizeof(Vertex);
         const VkDeviceSize bufferSize = vertexSize * vertexCount;
 
@@ -101,9 +119,16 @@ namespace SolEngine
                                bufferSize);
     }
 
-    void SolModel::CreateIndexBuffer(const Index_t *pIndices, const uint32_t indexCount)
+    void SolModel::CreateIndexBuffer(const UIndex_t *pIndices, const uint32_t indexCount)
     {
-        const size_t indexSize = sizeof(Index_t);
+        if (pIndices == nullptr)
+        {
+            return;
+        }
+
+        _indexCount = indexCount;
+
+        const size_t indexSize = sizeof(UIndex_t);
         const VkDeviceSize bufferSize = indexSize * indexCount;
 
         // We can't directly map from Host memory to Device Local Memory
@@ -146,5 +171,7 @@ namespace SolEngine
         _rSolDevice.CopyBuffer(stagingBuffer.GetBuffer(),
                                _pIndexBuffer->GetBuffer(), 
                                bufferSize);
+
+        _hasIndexBuffer = true;
     }
 }

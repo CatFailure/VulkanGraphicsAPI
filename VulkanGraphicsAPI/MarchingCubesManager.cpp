@@ -36,6 +36,7 @@ namespace SolEngine::Manager
         _nodes      = GridNodes(dimensions);
 
         CalculateIsoValues();
+        GenerateIsoSurfaces();
     }
 
     void MarchingCubesManager::SetDimensions(const glm::uint scalarDimensions)
@@ -44,14 +45,44 @@ namespace SolEngine::Manager
     }
 
     float MarchingCubesManager::GetIsoValueAtCoord(const float x, 
-                                         const float y, 
-                                         const float z) const
+                                                   const float y, 
+                                                   const float z) const
     {
         const size_t index = _3DTo1DIndex(x, y, z, 
                                           _dimensions, 
                                           _nodes.step);
 
         return _nodes.isoValues[index];
+    }
+
+    void MarchingCubesManager::GetCubeIsoValuesAtCoord(const float x, 
+                                                       const float y, 
+                                                       const float z, 
+                                                       float *pOutIsoValues,
+                                                       Vertex *pOutCubeVertices) const
+    {
+        // This is definitely not the most efficient way to do this, but it'll do for now
+        const float adjX = x + 1;
+        const float adjY = y - 1;
+        const float adjZ = z + 1;
+
+        pOutCubeVertices[0] = {{x,    y,    z}};
+        pOutCubeVertices[1] = {{adjX, y,    z}};
+        pOutCubeVertices[2] = {{adjX, y,    adjZ}};
+        pOutCubeVertices[3] = {{x,    y,    adjZ}};
+        pOutCubeVertices[4] = {{x,    adjY, z}};
+        pOutCubeVertices[5] = {{adjX, adjY, z}};
+        pOutCubeVertices[6] = {{adjX, adjY, adjZ}};
+        pOutCubeVertices[7] = {{x,    adjY, adjZ}};
+
+        pOutIsoValues[0] = GetIsoValueAtCoord(x,    y,    z);
+        pOutIsoValues[1] = GetIsoValueAtCoord(adjX, y,    z);
+        pOutIsoValues[2] = GetIsoValueAtCoord(adjX, y,    adjZ);
+        pOutIsoValues[3] = GetIsoValueAtCoord(x,    y,    adjZ);
+        pOutIsoValues[4] = GetIsoValueAtCoord(x,    adjY, z);
+        pOutIsoValues[5] = GetIsoValueAtCoord(adjX, adjY, z);
+        pOutIsoValues[6] = GetIsoValueAtCoord(adjX, adjY, adjZ);
+        pOutIsoValues[7] = GetIsoValueAtCoord(x,    adjY, adjZ);
     }
 
     void MarchingCubesManager::TraverseGridNodes(const TraverseNodesCallback_t& callback)
@@ -107,7 +138,41 @@ namespace SolEngine::Manager
                                  const float y,
                                  const float z)
             {
+                float cubeIsoValues[CUBE_VERTEX_COUNT];
+                Vertex cubeVertices[CUBE_VERTEX_COUNT];
 
+                GetCubeIsoValuesAtCoord(x, y, z, cubeIsoValues, cubeVertices);
+
+                const uint32_t cubeIndex = GetCubeIndex(cubeIsoValues);
+                const Index_t *cubeEdgeIndices = TRI_TABLE[cubeIndex];
+
+                for (size_t i = 0; i < TRI_TABLE_INDEX_COUNT; ++i)
+                {
+                    const Index_t edgeIndex = cubeEdgeIndices[i];
+                    const std::pair<Index_t, Index_t> cornerIndices = CornerIndicesFromEdgeIndex(edgeIndex);
+                    const glm::vec3 vertexPos = (cubeVertices[cornerIndices.first].position + cubeVertices[cornerIndices.second].position) * .5f;
+                }
             });
+    }
+
+    void MarchingCubesManager::CreateIsoModel()
+    {
+    }
+
+    uint32_t MarchingCubesManager::GetCubeIndex(const float *pIsoCubeValues) const
+    {
+        uint32_t cubeIndex = 0;
+
+        for (uint32_t i = 0; i < CUBE_VERTEX_COUNT; ++i)
+        {
+            if (!(pIsoCubeValues[i] < _isoLevel))
+            {
+                continue;
+            }
+
+            cubeIndex |= 1 << i;
+        }
+
+        return cubeIndex;
     }
 }
