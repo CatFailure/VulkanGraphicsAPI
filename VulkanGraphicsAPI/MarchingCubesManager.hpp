@@ -1,5 +1,5 @@
 #pragma once
-#include "GridNodes.hpp"
+#include "Cubes.hpp"
 #include "SolDevice.hpp"
 #include "SolModel.hpp"
 

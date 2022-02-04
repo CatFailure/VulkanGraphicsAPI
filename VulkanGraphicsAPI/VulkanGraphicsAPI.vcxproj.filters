@@ -281,7 +281,7 @@
     <ClInclude Include="SolClock.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
-    <ClInclude Include="GridNodes.hpp">
+    <ClInclude Include="Cubes.hpp">
       <Filter>SolEngine\DOD</Filter>
     </ClInclude>
     <ClInclude Include="MarchingCubesHelpers.hpp">
