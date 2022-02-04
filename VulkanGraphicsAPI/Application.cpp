@@ -134,7 +134,7 @@ void Application::SetupCamera()
 void Application::SetupGrid()
 {
     // Create a 5x5x5 grid for testing...
-    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice, 1);
+    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice, 2);
 }
 
 #ifndef DISABLE_IM_GUI

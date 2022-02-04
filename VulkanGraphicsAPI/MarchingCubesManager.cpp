@@ -88,6 +88,7 @@ namespace SolEngine::Manager
     {
         const float step = _cubes.step;
 
+        // We have to index this way to account for resolution (step)
         size_t zIndex(0);
         for (float z(0); z < _dimensions.z; z += step)
         {
