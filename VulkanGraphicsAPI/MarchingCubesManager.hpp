@@ -32,7 +32,7 @@ namespace SolEngine::Manager
         virtual void Update(const float deltaTime) override;
 
     private:
-        bool IsWithinAxisNodeCountLimit(const size_t count) const { return !((count / _cubes.step) > MAX_AXIS_NODE_COUNT); }
+        bool IsWithinMaxCubeCount(const size_t count) const { return !((count / _cubes.step) > MAX_CUBE_COUNT); }
 
         SolDevice &_rSolDevice;
 

@@ -23,14 +23,14 @@ namespace SolEngine::Manager
 
     void MarchingCubesManager::SetDimensions(const glm::uvec3 &dimensions)
     {
-        DBG_ASSERT_MSG(IsWithinAxisNodeCountLimit(dimensions.x), 
-                       "Too many Nodes!");
+        DBG_ASSERT_MSG(IsWithinMaxCubeCount(dimensions.x), 
+                       "Too many Cubes!");
 
-        DBG_ASSERT_MSG(IsWithinAxisNodeCountLimit(dimensions.y), 
-                       "Too many Nodes!");
+        DBG_ASSERT_MSG(IsWithinMaxCubeCount(dimensions.y), 
+                       "Too many Cubes!");
 
-        DBG_ASSERT_MSG(IsWithinAxisNodeCountLimit(dimensions.z), 
-                       "Too many Nodes!");
+        DBG_ASSERT_MSG(IsWithinMaxCubeCount(dimensions.z), 
+                       "Too many Cubes!");
 
         _dimensions = dimensions;
         _cubes      = Cubes(dimensions);
