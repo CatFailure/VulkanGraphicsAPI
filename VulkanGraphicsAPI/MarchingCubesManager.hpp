@@ -26,7 +26,7 @@ namespace SolEngine::Manager
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
 
-        void GetCubeAt(const glm::uvec3 &position, float *pOutXVertices, float *pOutYVertices, float *pOutZVertices);
+        void GetCubeVerticesAt(const glm::uvec3 &position, float *pOutXVertices, float *pOutYVertices, float *pOutZVertices) const;
 
         // Inherited via IMonoBehaviour
         virtual void Update(const float deltaTime) override;
