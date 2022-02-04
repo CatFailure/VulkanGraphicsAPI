@@ -26,25 +26,18 @@ namespace SolEngine::Manager
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
 
-        float GetIsoValueAtCoord(const float x, const float y, const float z) const;
-        void GetCubeIsoValuesAtCoord(const float x, const float y, const float z, float *pOutIsoValues, Vertex *pOutCubeVertices) const;
-        void TraverseGridNodes(const TraverseNodesCallback_t &callback);
-        void CalculateIsoValues();
-
         // Inherited via IMonoBehaviour
         virtual void Update(const float deltaTime) override;
 
     private:
-        bool IsWithinAxisNodeCountLimit(const size_t count) const { return !((count / _nodes.step) > MAX_AXIS_NODE_COUNT); }
-        void GenerateIsoSurfaces();
-        void CreateIsoModel();
-        uint32_t GetCubeIndex(const float *pIsoCubeValues) const;
+        bool IsWithinAxisNodeCountLimit(const size_t count) const { return !((count / _cubes.step) > MAX_AXIS_NODE_COUNT); }
 
         SolDevice &_rSolDevice;
 
         float _isoLevel{ 2.5f };
 
         glm::uvec3 _dimensions{ 0 };
-        GridNodes _nodes{};
+        //GridNodes _nodes{};
+        Cubes _cubes{};
     };
 }

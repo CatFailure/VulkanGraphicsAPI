@@ -15,6 +15,8 @@ namespace SolEngine::Data
 	static constexpr size_t MAX_AXIS_NODE_COUNT{ 1 << 4 };
     static constexpr size_t MAX_NODE_COUNT     { MAX_AXIS_NODE_COUNT * MAX_AXIS_NODE_COUNT * MAX_AXIS_NODE_COUNT };
 
+    static constexpr uint32_t MAX_CUBE_COUNT{ 1 << 4 };
+
     static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
     static constexpr uint32_t CUBE_INDEX_COUNT{ 36U };
 
