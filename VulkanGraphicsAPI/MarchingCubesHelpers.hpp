@@ -35,6 +35,15 @@ namespace Utility
         return (scaledZ * sqrDimensions.x) + (scaledAbsY * dimensions.y) + scaledX;
     }
 
+    static void CopyArray(const float *pSrc, 
+                          float *pDst, 
+                          const size_t size)
+    {
+        for (size_t i = 0; i < size; ++i)
+        {
+            pDst[i] = pSrc[i];
+        }
+    }
 
     /// <summary>
     /// Converts a 3D coordinate in world space into an isoValue.

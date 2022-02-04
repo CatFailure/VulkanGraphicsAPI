@@ -17,7 +17,12 @@ namespace SolEngine::Manager
     class MarchingCubesManager : public IMonoBehaviour
     {
     public:
-        typedef std::function<void(const float, const float, const float)> TraverseNodesCallback_t;
+        /// <summary>
+        /// Arg0 = X-Vertices
+        /// Arg1 = Y-Vertices
+        /// Arg2 = Z-Vertices
+        /// </summary>
+        typedef std::function<void(const float *, const float *, const float *)> TraverseCubesCallback_t;
 
         MarchingCubesManager(SolDevice &rDevice);
         MarchingCubesManager(SolDevice &rDevice, const glm::uvec3 &dimensions);
@@ -33,6 +38,7 @@ namespace SolEngine::Manager
 
     private:
         bool IsWithinMaxCubeCount(const size_t count) const { return !((count / _cubes.step) > MAX_CUBE_COUNT); }
+        void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
         SolDevice &_rSolDevice;
 

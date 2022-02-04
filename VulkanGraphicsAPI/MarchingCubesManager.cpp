@@ -34,6 +34,21 @@ namespace SolEngine::Manager
 
         _dimensions = dimensions;
         _cubes      = Cubes(dimensions);
+
+        TraverseAllCubes([this](const float *pXVertices, 
+                                const float *pYVertices, 
+                                const float *pZVertices) 
+            {
+                float xVertices[CUBE_VERTEX_COUNT];
+                float yVertices[CUBE_VERTEX_COUNT];
+                float zVertices[CUBE_VERTEX_COUNT];
+
+                CopyArray(pXVertices, xVertices, CUBE_VERTEX_COUNT);
+                CopyArray(pYVertices, yVertices, CUBE_VERTEX_COUNT);
+                CopyArray(pZVertices, zVertices, CUBE_VERTEX_COUNT);
+
+                float *pVert = xVertices;
+            });
     }
 
     void MarchingCubesManager::SetDimensions(const glm::uint scalarDimensions)
@@ -62,5 +77,34 @@ namespace SolEngine::Manager
     void MarchingCubesManager::Update(const float deltaTime)
     {
 
+    }
+
+    void MarchingCubesManager::TraverseAllCubes(const TraverseCubesCallback_t &callback)
+    {
+        const float step = _cubes.step;
+
+        size_t zIndex(0);
+        for (float z(0); z < _dimensions.z; z += step)
+        {
+            size_t yIndex(0);
+            for (float y(0); y < _dimensions.y; y += step)
+            {
+                size_t xIndex(0);
+                for (float x(0); x < _dimensions.x; x += step)
+                {
+                    float *test = _cubes.xPositions[xIndex];
+
+                    callback(_cubes.xPositions[xIndex], 
+                             _cubes.yPositions[yIndex], 
+                             _cubes.zPositions[zIndex]);
+
+                    ++xIndex;
+                }
+
+                ++yIndex;
+            }
+
+            ++zIndex;
+        }
     }
 }

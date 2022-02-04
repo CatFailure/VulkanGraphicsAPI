@@ -128,5 +128,9 @@ namespace SolEngine::DOD
         alignas(16) float xPositions[MAX_CUBE_COUNT][CUBE_VERTEX_COUNT]{ 0 };
         alignas(16) float yPositions[MAX_CUBE_COUNT][CUBE_VERTEX_COUNT]{ 0 };
         alignas(16) float zPositions[MAX_CUBE_COUNT][CUBE_VERTEX_COUNT]{ 0 };
+
+        alignas(16) float xIsoValues[MAX_CUBE_COUNT]{ 0 };
+        alignas(16) float yIsoValues[MAX_CUBE_COUNT]{ 0 };
+        alignas(16) float zIsoValues[MAX_CUBE_COUNT]{ 0 };
     };
 }
