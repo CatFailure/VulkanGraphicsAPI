@@ -97,6 +97,10 @@ namespace SolEngine::Manager
                           });
     }
 
+    void MarchingCubesManager::Update(const float deltaTime)
+    {
+    }
+
     void MarchingCubesManager::GenerateIsoSurfaces()
     {
         TraverseGridNodes([this](const float x, 
@@ -105,9 +109,5 @@ namespace SolEngine::Manager
             {
 
             });
-    }
-
-    void MarchingCubesManager::Update(const float deltaTime)
-    {
     }
 }

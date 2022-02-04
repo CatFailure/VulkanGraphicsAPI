@@ -1,6 +1,7 @@
 #pragma once
 #include "GridNodes.hpp"
 #include "SolDevice.hpp"
+#include "SolModel.hpp"
 
 using namespace SolEngine::DOD;
 using namespace SolEngine::Interface;
@@ -28,13 +29,14 @@ namespace SolEngine::Manager
         float GetIsoValueAtCoord(const float x, const float y, const float z) const;
         void TraverseGridNodes(const TraverseNodesCallback_t &callback);
         void CalculateIsoValues();
-        void GenerateIsoSurfaces();
 
         // Inherited via IMonoBehaviour
         virtual void Update(const float deltaTime) override;
 
     private:
         bool IsWithinAxisNodeCountLimit(const size_t count) const { return !((count / _nodes.step) > MAX_AXIS_NODE_COUNT); }
+        void GenerateIsoSurfaces();
+        void CreateIsoModel();
 
         SolDevice &_rSolDevice;
 
