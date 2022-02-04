@@ -29,6 +29,7 @@ public:
     void Run();
 
     std::shared_ptr<SolModel> CreateCubeModel(SolDevice &rDevice, const glm::vec3 &offset);
+    std::shared_ptr<SolModel> CreateModel(SolDevice &rDevice, const Vertex *pVertices, const Index_t *pIndices, const glm::vec3 &offset);
 
 private:
     // Inherited via IDisposable

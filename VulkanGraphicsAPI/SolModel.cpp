@@ -3,13 +3,15 @@
 
 namespace SolEngine
 {
-    SolModel::SolModel(SolDevice &rSolDevice,
+    SolModel::SolModel(SolDevice &rSolDevice, 
                        const Vertex *pVertices, 
-                       const Index_t *pIndices)
+                       const size_t vertexCount, 
+                       const Index_t *pIndices, 
+                       const size_t indexCount)
         : _rSolDevice(rSolDevice)
     {
-        CreateVertexBuffers(pVertices);
-        CreateIndexBuffer(pIndices);
+        CreateVertexBuffers(pVertices, vertexCount);
+        CreateIndexBuffer(pIndices, vertexCount);
     }
 
     SolModel::~SolModel()
@@ -52,10 +54,10 @@ namespace SolEngine
     void SolModel::Dispose()
     {}
 
-    void SolModel::CreateVertexBuffers(const Vertex *pVertices)
+    void SolModel::CreateVertexBuffers(const Vertex *pVertices, const size_t vertexCount)
     {
         const size_t vertexSize = sizeof(Vertex);
-        const VkDeviceSize bufferSize = vertexSize * CUBE_VERTEX_COUNT;
+        const VkDeviceSize bufferSize = vertexSize * vertexCount;
 
         // We can't directly map from Host memory to Device Local Memory
         // So copy the Host data to a temp Staging Buffer on Device,
@@ -79,7 +81,7 @@ namespace SolEngine
         // Create Staging Buffer for Vertex Data
         SolBuffer stagingBuffer(_rSolDevice, 
                                 vertexSize, 
-                                CUBE_VERTEX_COUNT, 
+                                vertexCount, 
                                 VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
                                 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
@@ -89,7 +91,7 @@ namespace SolEngine
         // Create buffer in Device Local Memory
         _pVertexBuffer = std::make_unique<SolBuffer>(_rSolDevice,
                                                      vertexSize, 
-                                                     CUBE_VERTEX_COUNT,
+                                                     vertexCount,
                                                      VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,  // Create a buffer to hold Vertex Input data
                                                      VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);                                  // Use Device Local Memory
 
@@ -99,10 +101,10 @@ namespace SolEngine
                                bufferSize);
     }
 
-    void SolModel::CreateIndexBuffer(const Index_t *pIndices)
+    void SolModel::CreateIndexBuffer(const Index_t *pIndices, const size_t indexCount)
     {
         const size_t indexSize = sizeof(Index_t);
-        const VkDeviceSize bufferSize = indexSize * CUBE_INDEX_COUNT;
+        const VkDeviceSize bufferSize = indexSize * indexCount;
 
         // We can't directly map from Host memory to Device Local Memory
         // So copy the Host data to a temp Staging Buffer on Device,
@@ -126,7 +128,7 @@ namespace SolEngine
         // Create Staging Buffer for Index Data
         SolBuffer stagingBuffer(_rSolDevice,
                                 indexSize, 
-                                CUBE_INDEX_COUNT, 
+                                indexCount, 
                                 VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
                                 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
@@ -136,7 +138,7 @@ namespace SolEngine
         // Create buffer in Device Local Memory
         _pIndexBuffer = std::make_unique<SolBuffer>(_rSolDevice,
                                                     indexSize, 
-                                                    CUBE_INDEX_COUNT,
+                                                    indexCount,
                                                     VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,  // Create a buffer to hold Vertex Input data
                                                     VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);                                 // Use Device Local Memory
 

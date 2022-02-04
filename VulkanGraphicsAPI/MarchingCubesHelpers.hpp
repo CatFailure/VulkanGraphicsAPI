@@ -31,6 +31,10 @@ namespace Utility
         return (scaledZ * sqrDimensions.x) + (scaledAbsY * dimensions.y) + scaledX;
     }
 
+
+    /// <summary>
+    /// Converts a 3D coordinate in world space into an isoValue.
+    /// </summary>
     static void CoordToIsoValue(const float x, 
                                 const float y, 
                                 const float z, 

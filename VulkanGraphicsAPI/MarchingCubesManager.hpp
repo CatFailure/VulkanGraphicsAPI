@@ -27,6 +27,7 @@ namespace SolEngine::Manager
         float GetIsoValueAtCoord(const float x, const float y, const float z) const;
         void TraverseGridNodes(const TraverseNodesCallback_t &callback);
         void CalculateIsoValues();
+        void GenerateIsoSurfaces();
 
         // Inherited via IMonoBehaviour
         virtual void Update(const float deltaTime) override;

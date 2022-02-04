@@ -10,7 +10,7 @@ namespace SolEngine
     class SolModel : public IDisposable
     {
     public:
-        SolModel(SolDevice &rSolDevice, const Vertex *pVertices, const Index_t *pIndices);
+        SolModel(SolDevice &rSolDevice, const Vertex *pVertices, const size_t vertexCount, const Index_t *pIndices, const size_t indexCount);
         ~SolModel();
 
         void Bind(const VkCommandBuffer commandBuffer);
@@ -20,9 +20,9 @@ namespace SolEngine
         virtual void Dispose() override;
 
     private:
-        void CreateVertexBuffers(const Vertex *pVertices);
+        void CreateVertexBuffers(const Vertex *pVertices, const size_t vertexCount);
 
-        void CreateIndexBuffer(const Index_t *pIndices);
+        void CreateIndexBuffer(const Index_t *pIndices, const size_t indexCount);
 
         SolDevice &_rSolDevice;
 

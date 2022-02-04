@@ -59,6 +59,14 @@ std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice,
     return std::make_shared<SolModel>(rDevice, CUBE_VERTICES, CUBE_INDICES);
 }
 
+std::shared_ptr<SolModel> Application::CreateModel(SolDevice &rDevice, 
+                                                   const Vertex *pVertices, 
+                                                   const Index_t *pIndices, 
+                                                   const glm::vec3 &offset)
+{
+    return std::shared_ptr<SolModel>();
+}
+
 void Application::Dispose()
 {
     // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
