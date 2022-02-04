@@ -41,6 +41,24 @@ namespace SolEngine::Manager
         SetDimensions(glm::uvec3(scalarDimensions));
     }
 
+    void MarchingCubesManager::GetCubeAt(const glm::uvec3 &position, 
+                                         float *pOutXVertices, 
+                                         float *pOutYVertices, 
+                                         float *pOutZVertices)
+    {
+        std::copy(std::begin(_cubes.xPositions[position.x]),
+                  std::end(_cubes.xPositions[position.x]), 
+                  pOutXVertices);
+
+        std::copy(std::begin(_cubes.yPositions[position.y]),
+                  std::end(_cubes.yPositions[position.y]), 
+                  pOutYVertices);
+
+        std::copy(std::begin(_cubes.zPositions[position.z]),
+                  std::end(_cubes.zPositions[position.z]), 
+                  pOutZVertices);
+    }
+
     void MarchingCubesManager::Update(const float deltaTime)
     {
 

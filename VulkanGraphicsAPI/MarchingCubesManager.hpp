@@ -26,6 +26,8 @@ namespace SolEngine::Manager
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
 
+        void GetCubeAt(const glm::uvec3 &position, float *pOutXVertices, float *pOutYVertices, float *pOutZVertices);
+
         // Inherited via IMonoBehaviour
         virtual void Update(const float deltaTime) override;
 
@@ -37,7 +39,6 @@ namespace SolEngine::Manager
         float _isoLevel{ 2.5f };
 
         glm::uvec3 _dimensions{ 0 };
-        //GridNodes _nodes{};
         Cubes _cubes{};
     };
 }
