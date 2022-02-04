@@ -22,7 +22,7 @@ namespace SolEngine::Manager
         /// Arg1 = Y-Vertices
         /// Arg2 = Z-Vertices
         /// </summary>
-        typedef std::function<void(const float *, const float *, const float *)> TraverseCubesCallback_t;
+        typedef std::function<void(const size_t, const size_t, const size_t)> TraverseCubesCallback_t;
 
         MarchingCubesManager(SolDevice &rDevice);
         MarchingCubesManager(SolDevice &rDevice, const glm::uvec3 &dimensions);
@@ -37,7 +37,10 @@ namespace SolEngine::Manager
         virtual void Update(const float deltaTime) override;
 
     private:
-        bool IsWithinMaxCubeCount(const size_t count) const { return !((count / _cubes.step) > MAX_CUBE_COUNT); }
+        bool IsWithinMaxCubeCount(const size_t count) const { return !((count / _cubes.step) > MAX_CUBES_COUNT); }
+
+        void GenerateIsoValues();
+
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
         SolDevice &_rSolDevice;

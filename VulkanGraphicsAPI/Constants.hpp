@@ -12,7 +12,8 @@ namespace SolEngine::Data
 	static constexpr glm::vec3 VEC3_UP     { 0.f, -1.f, 0.f };
 	static constexpr glm::vec3 VEC3_FORWARD{ 0.f, 0.f, 1.f };
 
-    static constexpr uint32_t MAX_CUBE_COUNT{ 1 << 4 };
+    static constexpr uint32_t MAX_CUBES_PER_AXIS_COUNT{ 1 << 2 };
+    static constexpr uint32_t MAX_CUBES_COUNT{ MAX_CUBES_PER_AXIS_COUNT * MAX_CUBES_PER_AXIS_COUNT * MAX_CUBES_PER_AXIS_COUNT };
     static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
     static constexpr uint32_t CUBE_INDEX_COUNT{ 36U };
 
