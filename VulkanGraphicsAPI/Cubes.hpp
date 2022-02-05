@@ -1,4 +1,6 @@
 #pragma once
+#include <stdlib.h>
+
 #include "Constants.hpp"
 
 using namespace SolEngine::Data;
@@ -7,14 +9,17 @@ namespace SolEngine::DOD
 {
     struct Cubes
     {
-        Cubes() = default;
+        Cubes() = delete;
+
         Cubes(const glm::vec3 &dimensions)
         {
+            InitializePositionsArrays();
+
             size_t index(0);
-            for (float x = 0; x < dimensions.x; x += step)
+            for (float x = 0; x < dimensions.x; x += STEP)
             {
-                const float adjX = x + 1.f;
-                float *pXVertices = xPositions[index];
+                const float adjX  = x + 1.f;
+                float *pXVertices = ppXPositions[index];
 
                 pXVertices[0] = x;
                 pXVertices[1] = adjX;
@@ -29,10 +34,10 @@ namespace SolEngine::DOD
             }
 
             index = 0;
-            for (float y = 0; y < dimensions.y; y += step)
+            for (float y = 0; y < dimensions.y; y += STEP)
             {
-                const float adjY = -y - 1.f;
-                float *pYVertices = yPositions[index];
+                const float adjY  = -y - 1.f;
+                float *pYVertices = ppYPositions[index];
 
                 pYVertices[0] = -y;
                 pYVertices[1] = -y;
@@ -47,10 +52,10 @@ namespace SolEngine::DOD
             }
 
             index = 0;
-            for (float z = 0; z < dimensions.z; z += step)
+            for (float z = 0; z < dimensions.z; z += STEP)
             {
-                const float adjZ = z + 1.f;
-                float *pZVertices = zPositions[index];
+                const float adjZ  = z + 1.f;
+                float *pZVertices = ppZPositions[index];
 
                 pZVertices[0] = z;
                 pZVertices[1] = z;
@@ -69,12 +74,76 @@ namespace SolEngine::DOD
             : Cubes({scalarDimensions, scalarDimensions, scalarDimensions})
         {}
 
-        float step{ 1.f };  // Adjusts the resolution of the nodes
+        ~Cubes()
+        {
+            Dispose();
+        }
 
-        alignas(16) float xPositions[MAX_CUBES_PER_AXIS_COUNT][CUBE_VERTEX_COUNT]{ 0 };
-        alignas(16) float yPositions[MAX_CUBES_PER_AXIS_COUNT][CUBE_VERTEX_COUNT]{ 0 };
-        alignas(16) float zPositions[MAX_CUBES_PER_AXIS_COUNT][CUBE_VERTEX_COUNT]{ 0 };
+        void InitializePositionsArrays()
+        {
+            // https://stackoverflow.com/a/29375830
+            ppXPositions    = new float *[MAX_CUBES_PER_AXIS_COUNT];
+            ppXPositions[0] = new float[MAX_CUBES_PER_AXIS_COUNT * CUBE_VERTEX_COUNT];
 
-        alignas(16) float isoValues[MAX_CUBES_COUNT][CUBE_VERTEX_COUNT]{ 0 };   // Index using _3DTo1DIndex
+            ppYPositions    = new float *[MAX_CUBES_PER_AXIS_COUNT];
+            ppYPositions[0] = new float[MAX_CUBES_PER_AXIS_COUNT * CUBE_VERTEX_COUNT];
+
+            ppZPositions    = new float *[MAX_CUBES_PER_AXIS_COUNT];
+            ppZPositions[0] = new float[MAX_CUBES_PER_AXIS_COUNT * CUBE_VERTEX_COUNT];
+
+            ppIsoValues     = new float *[MAX_CUBES_COUNT];
+            ppIsoValues[0]  = new float[MAX_CUBES_COUNT * CUBE_VERTEX_COUNT];
+
+            for (size_t i = 1; i < MAX_CUBES_PER_AXIS_COUNT; ++i)
+            {
+                ppXPositions[i] = ppXPositions[i - 1] + CUBE_VERTEX_COUNT;
+                ppYPositions[i] = ppYPositions[i - 1] + CUBE_VERTEX_COUNT;
+                ppZPositions[i] = ppZPositions[i - 1] + CUBE_VERTEX_COUNT;
+            }
+
+            for (size_t i = 1; i < MAX_CUBES_COUNT; ++i)
+            {
+                ppIsoValues[i] = ppIsoValues[i - 1] + CUBE_VERTEX_COUNT;
+            }
+        }
+
+        void Dispose()
+        {
+            // X-Positions
+            delete[] ppXPositions[0];
+            ppXPositions[0] = nullptr;
+
+            delete[] ppXPositions;
+            ppXPositions = nullptr;
+
+            // Y-Positions
+            delete[] ppYPositions[0];
+            ppYPositions[0] = nullptr;
+
+            delete[] ppYPositions;
+            ppYPositions = nullptr;
+
+            // Z-Positions
+            delete[] ppZPositions[0];
+            ppZPositions[0] = nullptr;
+
+            delete[] ppZPositions;
+            ppZPositions = nullptr;
+
+            // Iso Values
+            delete[] ppIsoValues[0];
+            ppIsoValues[0] = nullptr;
+
+            delete[] ppIsoValues;
+            ppIsoValues = nullptr;
+        }
+
+        static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
+
+        // https://stackoverflow.com/a/29375830
+        alignas(16) float **ppXPositions;
+        alignas(16) float **ppYPositions;
+        alignas(16) float **ppZPositions;
+        alignas(16) float **ppIsoValues;    // Index first subscript using _3DTo1DIndex
     };
 }

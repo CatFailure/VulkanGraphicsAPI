@@ -33,7 +33,7 @@ namespace SolEngine::Manager
                        "Too many Cubes!");
 
         _dimensions = dimensions;
-        _cubes      = Cubes(dimensions);
+        _pCubes      = std::make_unique<Cubes>(dimensions);
 
         GenerateIsoValues();
         March();
@@ -44,23 +44,27 @@ namespace SolEngine::Manager
         SetDimensions(glm::uvec3(scalarDimensions));
     }
 
-    void MarchingCubesManager::GetCubeVerticesAt(const glm::uvec3 &position, 
-                                                 float *pOutXVertices, 
-                                                 float *pOutYVertices, 
-                                                 float *pOutZVertices) const
-    {
-        std::copy(std::begin(_cubes.xPositions[position.x]),
-                  std::end(_cubes.xPositions[position.x]), 
-                  pOutXVertices);
+    //void MarchingCubesManager::GetCubeVerticesAt(const glm::uvec3 &position, 
+    //                                             float *pOutXVertices, 
+    //                                             float *pOutYVertices, 
+    //                                             float *pOutZVertices) const
+    //{
+    //    auto test = *_pCubes->ppXPositions[position.x];
 
-        std::copy(std::begin(_cubes.yPositions[position.y]),
-                  std::end(_cubes.yPositions[position.y]), 
-                  pOutYVertices);
+    //    memcpy_s(pOutXVertices, CUBE_VERTEX_COUNT, _pCubes->ppXPositions[position.x], CUBE_VERTEX_COUNT);
 
-        std::copy(std::begin(_cubes.zPositions[position.z]),
-                  std::end(_cubes.zPositions[position.z]), 
-                  pOutZVertices);
-    }
+    //    //std::copy(std::begin(_cubes.ppHeapXPositions[position.x]),
+    //    //          std::end(_cubes.pXPositions[position.x]), 
+    //    //          *pOutXVertices);
+
+    //    //std::copy(std::begin(_cubes.pYPositions[position.y]),
+    //    //          std::end(_cubes.pYPositions[position.y]), 
+    //    //          pOutYVertices);
+
+    //    //std::copy(std::begin(_cubes.pZPositions[position.z]),
+    //    //          std::end(_cubes.pZPositions[position.z]), 
+    //    //          pOutZVertices);
+    //}
 
     std::shared_ptr<SolModel> MarchingCubesManager::CreateModel()
     {
@@ -85,10 +89,10 @@ namespace SolEngine::Manager
                                                                         zIndex, 
                                                                         _dimensions);
                          
-                             VerticesToIsoValues(_cubes.xPositions[xIndex], 
-                                                 _cubes.yPositions[yIndex], 
-                                                 _cubes.zPositions[zIndex], 
-                                                 _cubes.isoValues[isoValuesIndex]);
+                             VerticesToIsoValues(_pCubes->ppXPositions[xIndex], 
+                                                 _pCubes->ppYPositions[yIndex], 
+                                                 _pCubes->ppZPositions[zIndex], 
+                                                 _pCubes->ppIsoValues[isoValuesIndex]);
                          });
     }
 
@@ -104,7 +108,7 @@ namespace SolEngine::Manager
                                                                         zIndex, 
                                                                         _dimensions);
 
-                             const float *pIsoValues = _cubes.isoValues[isoValuesIndex];
+                             const float *pIsoValues = _pCubes->ppIsoValues[isoValuesIndex];
 
                              // Calculate the cube index to pull from the Tri-table
                              const uint32_t cubeIndex = GetCubeIndex(pIsoValues);
@@ -182,9 +186,9 @@ namespace SolEngine::Manager
                                                           const size_t zIndex, 
                                                           const std::pair<Index_t, Index_t> &cornerIndices)
     {
-        const float *pXVertices = _cubes.xPositions[xIndex];
-        const float *pYVertices = _cubes.yPositions[yIndex];
-        const float *pZVertices = _cubes.zPositions[zIndex];
+        const float *pXVertices = _pCubes->ppXPositions[xIndex];
+        const float *pYVertices = _pCubes->ppYPositions[yIndex];
+        const float *pZVertices = _pCubes->ppZPositions[zIndex];
         const Index_t indexA    = cornerIndices.first;
         const Index_t indexB    = cornerIndices.second;
 
@@ -222,7 +226,7 @@ namespace SolEngine::Manager
 
     void MarchingCubesManager::TraverseAllCubes(const TraverseCubesCallback_t &callback)
     {
-        const float step = _cubes.step;
+        const float step = Cubes::STEP;
 
         // We have to index this way to account for resolution (step)
         size_t zIndex(0);

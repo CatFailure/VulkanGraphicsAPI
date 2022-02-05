@@ -31,30 +31,31 @@ namespace SolEngine::Manager
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
 
-        void GetCubeVerticesAt(const glm::uvec3 &position, float *pOutXVertices, float *pOutYVertices, float *pOutZVertices) const;
+        //void GetCubeVerticesAt(const glm::uvec3 &position, float *pOutXVertices, float *pOutYVertices, float *pOutZVertices) const;
         std::shared_ptr<SolModel> CreateModel();
 
         // Inherited via IMonoBehaviour
         virtual void Update(const float deltaTime) override;
 
     private:
-        bool IsWithinMaxCubeCount(const size_t count) const { return !((count / _cubes.step) > MAX_CUBES_COUNT); }
+        bool IsWithinMaxCubeCount(const size_t count) const { return !((count / Cubes::STEP) > MAX_CUBES_COUNT); }
 
         void GenerateIsoValues();
         void March();
         uint32_t GetCubeIndex(const float *pIsoValues);
         void CreateVertices(const Index_t *pEdgeIndices, const float *pIsoValues, const size_t xIndex, const size_t yIndex, const size_t zIndex);
-        glm::vec3 GetEdgeVertexPosition(const bool isInterpolated, const float *pIsoValues, const size_t xIndex, const size_t yIndex, const size_t zIndex, const std::pair<Index_t, Index_t> &cornerIndices);
+        glm::vec3 GetEdgeVertexPosition(const bool isInterpolated, const float *pIsoValues, const size_t xIndex, const size_t yIndex, 
+                                        const size_t zIndex, const std::pair<Index_t, Index_t> &cornerIndices);
 
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
         SolDevice &_rSolDevice;
 
-        float _isoLevel{ 2.5f };
-        bool _isInterpolated{ true };
+        float _isoLevel      { 2.5f };
+        bool  _isInterpolated{ true };
 
-        glm::uvec3 _dimensions{ 0 };
-        Cubes _cubes{};
-        std::vector<Vertex> _vertices;  // TEMP
+        glm::uvec3             _dimensions{ 0 };
+        std::unique_ptr<Cubes> _pCubes{ nullptr };
+        std::vector<Vertex>    _vertices;  // TEMP
     };
 }
