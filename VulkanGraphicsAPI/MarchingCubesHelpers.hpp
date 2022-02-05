@@ -7,7 +7,7 @@ using namespace SolEngine::Data;
 
 namespace Utility
 {
-    static constexpr float SPHERE_RADIUS{ 2.5f };
+    static constexpr float SPHERE_RADIUS{ 7.5f };
 
     static size_t _3DTo1DIndex(const size_t xIndex, 
                                const size_t yIndex, 
@@ -46,9 +46,13 @@ namespace Utility
                                 const float z, 
                                 float *pOutIsoValue)
     {
-        const float sqrX = x * x;
-        const float sqrY = y * y;
-        const float sqrZ = z * z;
+        const float centreX = SPHERE_RADIUS * 0.75f;
+        const float centreY = -SPHERE_RADIUS * 0.75f;
+        const float centreZ = centreX;
+
+        const float sqrX = (x - centreX) * (x - centreX);
+        const float sqrY = (y - centreY) * (y - centreY);
+        const float sqrZ = (z - centreZ) * (z - centreZ);
 
         // Creates a sphere
         *pOutIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);

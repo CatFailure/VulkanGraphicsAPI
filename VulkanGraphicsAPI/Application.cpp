@@ -19,7 +19,7 @@ Application::Application(const ApplicationData &appData)
 #endif  // !DISABLE_IM_GUI
 
     SetupCamera();
-    SetupGrid();
+    SetupMarchingCubesManager();
 
     LoadGameObjects();
 }
@@ -81,10 +81,7 @@ void Application::Update(const float deltaTime)
 
     for (SolGameObject &rGameObject : _gameObjects)
     {
-        const float scaledTwoPi = deltaTime * glm::two_pi<float>();
-
-        rGameObject.transform.rotation.y += 0.1f * scaledTwoPi;
-        rGameObject.transform.rotation.x += 0.05f * scaledTwoPi;
+        rGameObject.transform.rotation.y += 1.f * deltaTime;
     }
 }
 
@@ -127,14 +124,14 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo);
-    _solCamera.SetPosition({ 0, 0, -2.5f });
+    _solCamera.SetPosition({ 0, 0, -15.f });
     _solCamera.LookAt(_solCamera.GetPosition() + VEC3_FORWARD);   // Look forwards
 }
 
-void Application::SetupGrid()
+void Application::SetupMarchingCubesManager()
 {
     // Create a 5x5x5 grid for testing...
-    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice, 2);
+    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice, 20);
 }
 
 #ifndef DISABLE_IM_GUI
@@ -151,12 +148,10 @@ void Application::CreateGuiWindowManager()
 
 void Application::LoadGameObjects()
 {
-    std::shared_ptr<SolModel> cubeModel = CreateCubeModel(_solDevice);
-    SolGameObject cubeGameObject = SolGameObject::CreateGameObject();
+    std::shared_ptr<SolModel> marchingCubeModel = _pMarchingCubesManager->CreateModel();
+    SolGameObject marchingCubeGameObject = SolGameObject::CreateGameObject();
+    marchingCubeGameObject.SetModel(marchingCubeModel);
+    marchingCubeGameObject.transform.position = { -2.5f, 5.f, 5.f };
 
-    cubeGameObject.SetModel(cubeModel);
-
-    cubeGameObject.transform.position = { 0, 0, 0 };
-
-    _gameObjects.push_back(std::move(cubeGameObject));
+    _gameObjects.push_back(std::move(marchingCubeGameObject));
 }
