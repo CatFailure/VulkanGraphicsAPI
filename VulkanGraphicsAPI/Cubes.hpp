@@ -1,6 +1,4 @@
 #pragma once
-#include <stdlib.h>
-
 #include "Constants.hpp"
 
 using namespace SolEngine::Data;
