@@ -72,6 +72,14 @@ namespace Utility
         }
     }
 
+
+    static float CalculateInterpolationScalar(const float isoValueA, 
+                                              const float isoValueB, 
+                                              const float isoLevel)
+    {
+        return (isoLevel - isoValueA) / (isoValueB - isoValueA);
+    }
+
     static std::pair<Index_t, Index_t> CornerIndicesFromEdgeIndex(const Index_t edgeIndex)
     {
         switch (edgeIndex)

@@ -48,6 +48,7 @@ namespace SolEngine::Manager
         SolDevice &_rSolDevice;
 
         float _isoLevel{ 2.5f };
+        bool _isInterpolated{ true };
 
         glm::uvec3 _dimensions{ 0 };
         Cubes _cubes{};

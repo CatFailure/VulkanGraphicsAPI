@@ -107,10 +107,12 @@ namespace SolEngine::Manager
                                                                         zIndex, 
                                                                         _dimensions);
 
+                             const float *isoValues = _cubes.isoValues[isoValuesIndex];
+
                              uint32_t cubeIndex(0);
                              for (uint32_t i(0); i < CUBE_VERTEX_COUNT; ++i)
                              {
-                                 if (!(_cubes.isoValues[isoValuesIndex][i] < _isoLevel))
+                                 if (!(isoValues[i] < _isoLevel))
                                  {
                                      continue;
                                  }
@@ -128,15 +130,32 @@ namespace SolEngine::Manager
                                      return;
                                  }
 
+                                 // Find edge midpoint
                                  const std::pair<Index_t, Index_t> cornerIndices = 
                                      CornerIndicesFromEdgeIndex(pEdgeIndices[i]);
 
-                                 // Find edge midpoint
-                                 const float xMidpoint = (pXVertices[cornerIndices.first] + pXVertices[cornerIndices.second]) * half;
-                                 const float yMidpoint = (pYVertices[cornerIndices.first] + pYVertices[cornerIndices.second]) * half;
-                                 const float zMidpoint = (pZVertices[cornerIndices.first] + pZVertices[cornerIndices.second]) * half;
+                                 glm::vec3 midpoint;
 
-                                 _vertices.push_back({ {xMidpoint, yMidpoint, zMidpoint} });
+                                 if (_isInterpolated)
+                                 {
+                                     const glm::vec3 vertexA{ pXVertices[cornerIndices.first], pYVertices[cornerIndices.first], pZVertices[cornerIndices.first] };
+                                     const glm::vec3 vertexB{ pXVertices[cornerIndices.second], pYVertices[cornerIndices.second], pZVertices[cornerIndices.second] };
+                                     const glm::vec3 vertexDistance = vertexB - vertexA;
+
+                                     const float interpScalar = CalculateInterpolationScalar(isoValues[cornerIndices.first], 
+                                                                                             isoValues[cornerIndices.second], 
+                                                                                             _isoLevel);
+
+                                     midpoint = vertexA + (vertexDistance * interpScalar);
+                                 }
+                                 else
+                                 {
+                                     midpoint = glm::vec3((pXVertices[cornerIndices.first] + pXVertices[cornerIndices.second]) * half,
+                                                          (pYVertices[cornerIndices.first] + pYVertices[cornerIndices.second]) * half, 
+                                                          (pZVertices[cornerIndices.first] + pZVertices[cornerIndices.second]) * half);
+                                 }
+
+                                 _vertices.push_back({ midpoint });
                              }
                          });
     }
