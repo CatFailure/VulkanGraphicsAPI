@@ -36,7 +36,7 @@ namespace SolEngine::Manager
         _cubes      = Cubes(dimensions);
 
         GenerateIsoValues();
-        CalculateCubeIndex();
+        March();
     }
 
     void MarchingCubesManager::SetDimensions(const glm::uint scalarDimensions)
@@ -92,81 +92,130 @@ namespace SolEngine::Manager
                          });
     }
 
-    void MarchingCubesManager::CalculateCubeIndex()
+    void MarchingCubesManager::March()
     {
         // Function is currently doing too much - needs splitting up
         TraverseAllCubes([this](const size_t xIndex, 
                                 const size_t yIndex, 
                                 const size_t zIndex) 
                          {
-                             const float half = 0.5f;
-                             const float *pXVertices = _cubes.xPositions[xIndex];
-                             const float *pYVertices = _cubes.yPositions[yIndex];
-                             const float *pZVertices = _cubes.zPositions[zIndex];
                              const size_t isoValuesIndex = _3DTo1DIndex(xIndex, 
                                                                         yIndex, 
                                                                         zIndex, 
                                                                         _dimensions);
 
-                             const float *isoValues = _cubes.isoValues[isoValuesIndex];
+                             const float *pIsoValues = _cubes.isoValues[isoValuesIndex];
 
                              // Calculate the cube index to pull from the Tri-table
-                             uint32_t cubeIndex(0);
-                             for (uint32_t i(0); i < CUBE_VERTEX_COUNT; ++i)
-                             {
-                                 if (!(isoValues[i] < _isoLevel))
-                                 {
-                                     continue;
-                                 }
-
-                                 cubeIndex |= 1 << i;
-                             }
+                             const uint32_t cubeIndex = GetCubeIndex(pIsoValues);
 
                              // Look up the triangulation for the cubeIndex
                              const Index_t *pEdgeIndices = TRI_TABLE[cubeIndex];
 
-                             for (uint32_t i(0); i < TRI_TABLE_INDEX_COUNT; ++i)
-                             {
-                                 if (pEdgeIndices[i] == -1)
-                                 {
-                                     return;
-                                 }
-
-                                 // Find the 2 corners that create the edge
-                                 const std::pair<Index_t, Index_t> cornerIndices = 
-                                     CornerIndicesFromEdgeIndex(pEdgeIndices[i]);
-
-                                 // Find edge midpoint
-                                 glm::vec3 midpoint;
-
-                                 if (_isInterpolated)
-                                 {
-                                     const glm::vec3 vertexA{ pXVertices[cornerIndices.first], pYVertices[cornerIndices.first], pZVertices[cornerIndices.first] };
-                                     const glm::vec3 vertexB{ pXVertices[cornerIndices.second], pYVertices[cornerIndices.second], pZVertices[cornerIndices.second] };
-                                     const glm::vec3 vertexDistance = vertexB - vertexA;
-
-                                     const float interpScalar = CalculateInterpolationScalar(isoValues[cornerIndices.first], 
-                                                                                             isoValues[cornerIndices.second], 
-                                                                                             _isoLevel);
-
-                                     midpoint = vertexA + (vertexDistance * interpScalar);
-                                 }
-                                 else
-                                 {
-                                     midpoint = glm::vec3((pXVertices[cornerIndices.first] + pXVertices[cornerIndices.second]) * half,
-                                                          (pYVertices[cornerIndices.first] + pYVertices[cornerIndices.second]) * half, 
-                                                          (pZVertices[cornerIndices.first] + pZVertices[cornerIndices.second]) * half);
-                                 }
-
-                                 // Push back vertex...
-                                 _vertices.push_back({ midpoint, 
-                                                       { 
-                                                           (float)xIndex / zIndex, 
-                                                           (float)yIndex / xIndex, 
-                                                           (float)zIndex / yIndex 
-                                                       } });
-                             }
+                             CreateVertices(pEdgeIndices, 
+                                            pIsoValues, 
+                                            xIndex, 
+                                            yIndex, 
+                                            zIndex);
                          });
+    }
+
+    uint32_t MarchingCubesManager::GetCubeIndex(const float *pIsoValues)
+    {
+        uint32_t cubeIndex(0);
+
+        for (uint32_t i(0); i < CUBE_VERTEX_COUNT; ++i)
+        {
+            if (!(pIsoValues[i] < _isoLevel))
+            {
+                continue;
+            }
+
+            cubeIndex |= 1 << i;
+        }
+
+        return cubeIndex;
+    }
+
+    void MarchingCubesManager::CreateVertices(const Index_t *pEdgeIndices, 
+                                              const float *pIsoValues, 
+                                              const size_t xIndex,
+                                              const size_t yIndex,
+                                              const size_t zIndex)
+    {
+        for (uint32_t i(0); i < TRI_TABLE_INDEX_COUNT; ++i)
+        {
+            if (pEdgeIndices[i] == -1)
+            {
+                return;
+            }
+
+            // Find the 2 corners that create the edge
+            const std::pair<Index_t, Index_t> cornerIndices = 
+                CornerIndicesFromEdgeIndex(pEdgeIndices[i]);
+
+            // Find edge midpoint
+            const glm::vec3 vertex = GetEdgeVertexPosition(_isInterpolated,
+                                                           pIsoValues,
+                                                           xIndex,
+                                                           yIndex,
+                                                           zIndex, 
+                                                           cornerIndices);
+
+            // Push back vertex...
+            _vertices.push_back(
+                {
+                    vertex, 
+                    { 
+                        (float)xIndex / zIndex, 
+                        (float)yIndex / xIndex, 
+                        (float)zIndex / yIndex 
+                    } 
+                });
+        }
+    }
+
+    glm::vec3 MarchingCubesManager::GetEdgeVertexPosition(bool isInterpolated, 
+                                                  const float *pIsoValues, 
+                                                  const size_t xIndex, 
+                                                  const size_t yIndex, 
+                                                  const size_t zIndex, 
+                                                  const std::pair<Index_t, Index_t> &cornerIndices)
+    {
+        const float *pXVertices = _cubes.xPositions[xIndex];
+        const float *pYVertices = _cubes.yPositions[yIndex];
+        const float *pZVertices = _cubes.zPositions[zIndex];
+
+        if (_isInterpolated)
+        {
+            const glm::vec3 vertexA
+            {
+                pXVertices[cornerIndices.first],
+                pYVertices[cornerIndices.first], 
+                pZVertices[cornerIndices.first] 
+            };
+
+            const glm::vec3 vertexB
+            {
+                pXVertices[cornerIndices.second],
+                pYVertices[cornerIndices.second],
+                pZVertices[cornerIndices.second] 
+            };
+
+            const glm::vec3 vertexDistance = vertexB - vertexA;
+
+            const float interpScalar = CalculateInterpolationScalar(pIsoValues[cornerIndices.first], 
+                                                                    pIsoValues[cornerIndices.second], 
+                                                                    _isoLevel);
+
+            return vertexA + (vertexDistance * interpScalar);
+        }
+
+        const float half = 0.5f;
+
+        return glm::vec3((pXVertices[cornerIndices.first] + pXVertices[cornerIndices.second]) * half,
+                         (pYVertices[cornerIndices.first] + pYVertices[cornerIndices.second]) * half, 
+                         (pZVertices[cornerIndices.first] + pZVertices[cornerIndices.second]) * half);
     }
 
     void MarchingCubesManager::TraverseAllCubes(const TraverseCubesCallback_t &callback)

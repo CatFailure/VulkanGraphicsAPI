@@ -53,9 +53,9 @@ void Application::Run()
     vkDeviceWaitIdle(_solDevice.GetDevice());
 }
 
-std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rDevice)
+std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rSolDevice)
 {    
-    return std::make_shared<SolModel>(rDevice, 
+    return std::make_shared<SolModel>(rSolDevice, 
                                       CUBE_VERTICES, 
                                       CUBE_VERTEX_COUNT * CUBE_VERTEX_COUNT);
 }

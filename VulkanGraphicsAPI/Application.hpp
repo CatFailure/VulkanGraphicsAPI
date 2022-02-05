@@ -29,7 +29,7 @@ public:
         
     void Run();
 
-    std::shared_ptr<SolModel> CreateCubeModel(SolDevice &rDevice);
+    std::shared_ptr<SolModel> CreateCubeModel(SolDevice &rSolDevice);
 
 private:
     // Inherited via IDisposable

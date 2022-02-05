@@ -41,7 +41,10 @@ namespace SolEngine::Manager
         bool IsWithinMaxCubeCount(const size_t count) const { return !((count / _cubes.step) > MAX_CUBES_COUNT); }
 
         void GenerateIsoValues();
-        void CalculateCubeIndex();
+        void March();
+        uint32_t GetCubeIndex(const float *pIsoValues);
+        void CreateVertices(const Index_t *pEdgeIndices, const float *pIsoValues, const size_t xIndex, const size_t yIndex, const size_t zIndex);
+        glm::vec3 GetEdgeVertexPosition(bool isInterpolated, const float *pIsoValues, const size_t xIndex, const size_t yIndex, const size_t zIndex, const std::pair<Index_t, Index_t> &cornerIndices);
 
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
