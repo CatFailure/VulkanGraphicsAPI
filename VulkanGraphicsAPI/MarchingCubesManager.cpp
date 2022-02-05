@@ -94,6 +94,7 @@ namespace SolEngine::Manager
 
     void MarchingCubesManager::CalculateCubeIndex()
     {
+        // Function is currently doing too much - needs splitting up
         TraverseAllCubes([this](const size_t xIndex, 
                                 const size_t yIndex, 
                                 const size_t zIndex) 
@@ -109,6 +110,7 @@ namespace SolEngine::Manager
 
                              const float *isoValues = _cubes.isoValues[isoValuesIndex];
 
+                             // Calculate the cube index to pull from the Tri-table
                              uint32_t cubeIndex(0);
                              for (uint32_t i(0); i < CUBE_VERTEX_COUNT; ++i)
                              {
@@ -120,7 +122,7 @@ namespace SolEngine::Manager
                                  cubeIndex |= 1 << i;
                              }
 
-                             // Loop up the triangulation for the cubeIndex
+                             // Look up the triangulation for the cubeIndex
                              const Index_t *pEdgeIndices = TRI_TABLE[cubeIndex];
 
                              for (uint32_t i(0); i < TRI_TABLE_INDEX_COUNT; ++i)
@@ -130,10 +132,11 @@ namespace SolEngine::Manager
                                      return;
                                  }
 
-                                 // Find edge midpoint
+                                 // Find the 2 corners that create the edge
                                  const std::pair<Index_t, Index_t> cornerIndices = 
                                      CornerIndicesFromEdgeIndex(pEdgeIndices[i]);
 
+                                 // Find edge midpoint
                                  glm::vec3 midpoint;
 
                                  if (_isInterpolated)
@@ -155,7 +158,13 @@ namespace SolEngine::Manager
                                                           (pZVertices[cornerIndices.first] + pZVertices[cornerIndices.second]) * half);
                                  }
 
-                                 _vertices.push_back({ midpoint });
+                                 // Push back vertex...
+                                 _vertices.push_back({ midpoint, 
+                                                       { 
+                                                           (float)xIndex / zIndex, 
+                                                           (float)yIndex / xIndex, 
+                                                           (float)zIndex / yIndex 
+                                                       } });
                              }
                          });
     }
