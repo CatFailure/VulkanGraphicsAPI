@@ -1,60 +1,29 @@
 #include "pch.hpp"
-#include "SimpleRenderSystem.hpp"
+#include "GenericRenderSystem.hpp"
 
 namespace SolEngine::Rendering
 {
-    SimpleRenderSystem::SimpleRenderSystem(SolDevice& rSolDevice, 
-                                           VkRenderPass renderPass)
+    GenericRenderSystem::GenericRenderSystem(SolDevice &rSolDevice, 
+                                             const VkRenderPass renderPass)
         : _rSolDevice(rSolDevice)
     {
         CreatePipelineLayout();
         CreatePipeline(renderPass);
     }
 
-    SimpleRenderSystem::~SimpleRenderSystem()
+    GenericRenderSystem::~GenericRenderSystem()
     {
         Dispose();
     }
 
-    void SimpleRenderSystem::RenderGameObjects(const SolCamera &solCamera,
-                                               const VkCommandBuffer commandBuffer, 
-                                               const std::vector<SolGameObject> &gameObjects) const
-    {
-        const glm::mat4 projectionView = solCamera.GetProjectionViewMatrix();
-
-        _pSolPipeline->Bind(commandBuffer);
-
-        for (const SolGameObject& gameObject : gameObjects)
-        {
-            const std::shared_ptr<SolModel>& pGameObjectModel = gameObject.GetModel();
-
-            const SimplePushConstantData pushConstantData
-            {
-                .transform = projectionView * gameObject.transform.TransformMatrix(),
-                .colour    = gameObject.GetColour()
-            };
-
-            vkCmdPushConstants(commandBuffer,
-                               _pipelineLayout,
-                               VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
-                               0,
-                               sizeof(SimplePushConstantData),
-                               &pushConstantData);
-
-
-            pGameObjectModel->Bind(commandBuffer);
-            pGameObjectModel->Draw(commandBuffer);
-        }
-    }
-
-    void SimpleRenderSystem::Dispose()
+    void GenericRenderSystem::Dispose()
     {
         vkDestroyPipelineLayout(_rSolDevice.GetDevice(), 
                                 _pipelineLayout, 
                                 nullptr);
     }
 
-    void SimpleRenderSystem::CreatePipelineLayout()
+    void GenericRenderSystem::CreatePipelineLayout()
     {
         const VkPushConstantRange pushConstantRange
         {
@@ -77,10 +46,11 @@ namespace SolEngine::Rendering
                                                        NULL,
                                                        &_pipelineLayout);
 
-        DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Pipeline Layout.");
+        DBG_ASSERT_VULKAN_MSG(result, 
+                              "Failed to Create Pipeline Layout.");
     }
 
-    void SimpleRenderSystem::CreatePipeline(VkRenderPass renderPass)
+    void GenericRenderSystem::CreatePipeline(const VkRenderPass renderPass)
     {
         DBG_ASSERT_MSG((_pipelineLayout != nullptr), 
                        "Cannot create Pipeline before Pipeline Layout.");

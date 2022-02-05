@@ -32,6 +32,7 @@ namespace SolEngine::Manager
         void SetDimensions(const glm::uint scalarDimensions);
 
         void GetCubeVerticesAt(const glm::uvec3 &position, float *pOutXVertices, float *pOutYVertices, float *pOutZVertices) const;
+        std::shared_ptr<SolModel> CreateModel();
 
         // Inherited via IMonoBehaviour
         virtual void Update(const float deltaTime) override;
@@ -40,6 +41,7 @@ namespace SolEngine::Manager
         bool IsWithinMaxCubeCount(const size_t count) const { return !((count / _cubes.step) > MAX_CUBES_COUNT); }
 
         void GenerateIsoValues();
+        void CalculateCubeIndex();
 
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
@@ -49,5 +51,6 @@ namespace SolEngine::Manager
 
         glm::uvec3 _dimensions{ 0 };
         Cubes _cubes{};
+        std::vector<Vertex> _vertices;  // TEMP
     };
 }

@@ -36,6 +36,7 @@ namespace SolEngine::Manager
         _cubes      = Cubes(dimensions);
 
         GenerateIsoValues();
+        CalculateCubeIndex();
     }
 
     void MarchingCubesManager::SetDimensions(const glm::uint scalarDimensions)
@@ -61,6 +62,13 @@ namespace SolEngine::Manager
                   pOutZVertices);
     }
 
+    std::shared_ptr<SolModel> MarchingCubesManager::CreateModel()
+    {
+        return std::make_shared<SolModel>(_rSolDevice, 
+                                          _vertices.data(), 
+                                          (uint32_t)_vertices.size());
+    }
+
     void MarchingCubesManager::Update(const float deltaTime)
     {
 
@@ -81,6 +89,55 @@ namespace SolEngine::Manager
                                                  _cubes.yPositions[yIndex], 
                                                  _cubes.zPositions[zIndex], 
                                                  _cubes.isoValues[isoValuesIndex]);
+                         });
+    }
+
+    void MarchingCubesManager::CalculateCubeIndex()
+    {
+        TraverseAllCubes([this](const size_t xIndex, 
+                                const size_t yIndex, 
+                                const size_t zIndex) 
+                         {
+                             const float half = 0.5f;
+                             const float *pXVertices = _cubes.xPositions[xIndex];
+                             const float *pYVertices = _cubes.yPositions[yIndex];
+                             const float *pZVertices = _cubes.zPositions[zIndex];
+                             const size_t isoValuesIndex = _3DTo1DIndex(xIndex, 
+                                                                        yIndex, 
+                                                                        zIndex, 
+                                                                        _dimensions);
+
+                             uint32_t cubeIndex(0);
+                             for (uint32_t i(0); i < CUBE_VERTEX_COUNT; ++i)
+                             {
+                                 if (!(_cubes.isoValues[isoValuesIndex][i] < _isoLevel))
+                                 {
+                                     continue;
+                                 }
+
+                                 cubeIndex |= 1 << i;
+                             }
+
+                             // Loop up the triangulation for the cubeIndex
+                             const Index_t *pEdgeIndices = TRI_TABLE[cubeIndex];
+
+                             for (uint32_t i(0); i < TRI_TABLE_INDEX_COUNT; ++i)
+                             {
+                                 if (pEdgeIndices[i] == -1)
+                                 {
+                                     return;
+                                 }
+
+                                 const std::pair<Index_t, Index_t> cornerIndices = 
+                                     CornerIndicesFromEdgeIndex(pEdgeIndices[i]);
+
+                                 // Find edge midpoint
+                                 const float xMidpoint = (pXVertices[cornerIndices.first] + pXVertices[cornerIndices.second]) * half;
+                                 const float yMidpoint = (pYVertices[cornerIndices.first] + pYVertices[cornerIndices.second]) * half;
+                                 const float zMidpoint = (pZVertices[cornerIndices.first] + pZVertices[cornerIndices.second]) * half;
+
+                                 _vertices.push_back({ {xMidpoint, yMidpoint, zMidpoint} });
+                             }
                          });
     }
 
