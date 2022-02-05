@@ -175,37 +175,39 @@ namespace SolEngine::Manager
         }
     }
 
-    glm::vec3 MarchingCubesManager::GetEdgeVertexPosition(bool isInterpolated, 
-                                                  const float *pIsoValues, 
-                                                  const size_t xIndex, 
-                                                  const size_t yIndex, 
-                                                  const size_t zIndex, 
-                                                  const std::pair<Index_t, Index_t> &cornerIndices)
+    glm::vec3 MarchingCubesManager::GetEdgeVertexPosition(const bool isInterpolated, 
+                                                          const float *pIsoValues, 
+                                                          const size_t xIndex, 
+                                                          const size_t yIndex, 
+                                                          const size_t zIndex, 
+                                                          const std::pair<Index_t, Index_t> &cornerIndices)
     {
         const float *pXVertices = _cubes.xPositions[xIndex];
         const float *pYVertices = _cubes.yPositions[yIndex];
         const float *pZVertices = _cubes.zPositions[zIndex];
+        const Index_t indexA    = cornerIndices.first;
+        const Index_t indexB    = cornerIndices.second;
 
         if (_isInterpolated)
         {
             const glm::vec3 vertexA
             {
-                pXVertices[cornerIndices.first],
-                pYVertices[cornerIndices.first], 
-                pZVertices[cornerIndices.first] 
+                pXVertices[indexA],
+                pYVertices[indexA], 
+                pZVertices[indexA] 
             };
 
             const glm::vec3 vertexB
             {
-                pXVertices[cornerIndices.second],
-                pYVertices[cornerIndices.second],
-                pZVertices[cornerIndices.second] 
+                pXVertices[indexB],
+                pYVertices[indexB],
+                pZVertices[indexB] 
             };
 
             const glm::vec3 vertexDistance = vertexB - vertexA;
 
-            const float interpScalar = CalculateInterpolationScalar(pIsoValues[cornerIndices.first], 
-                                                                    pIsoValues[cornerIndices.second], 
+            const float interpScalar = CalculateInterpolationScalar(pIsoValues[indexA], 
+                                                                    pIsoValues[indexB], 
                                                                     _isoLevel);
 
             return vertexA + (vertexDistance * interpScalar);
@@ -213,9 +215,9 @@ namespace SolEngine::Manager
 
         const float half = 0.5f;
 
-        return glm::vec3((pXVertices[cornerIndices.first] + pXVertices[cornerIndices.second]) * half,
-                         (pYVertices[cornerIndices.first] + pYVertices[cornerIndices.second]) * half, 
-                         (pZVertices[cornerIndices.first] + pZVertices[cornerIndices.second]) * half);
+        return glm::vec3((pXVertices[indexA] + pXVertices[indexB]) * half,
+                         (pYVertices[indexA] + pYVertices[indexB]) * half, 
+                         (pZVertices[indexA] + pZVertices[indexB]) * half);
     }
 
     void MarchingCubesManager::TraverseAllCubes(const TraverseCubesCallback_t &callback)
