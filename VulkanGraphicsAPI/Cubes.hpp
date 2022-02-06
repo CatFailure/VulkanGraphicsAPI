@@ -9,14 +9,15 @@ namespace SolEngine::DOD
     {
         Cubes() = delete;
 
-        Cubes(const glm::vec3 &dimensions)
+        Cubes(const glm::vec3 &minBounds, 
+              const glm::vec3 &maxBounds)
         {
             InitializePositionsArrays();
 
-            size_t index(0);
-            for (float x = 0; x < dimensions.x; x += STEP)
+            uint32_t index(0);
+            for (float x = minBounds.x; x < maxBounds.x; x += STEP)
             {
-                const float adjX  = x + 1.f;
+                const float adjX  = x + STEP;
                 float *pXVertices = ppXPositions[index];
 
                 pXVertices[0] = x;
@@ -31,16 +32,18 @@ namespace SolEngine::DOD
                 ++index;
             }
 
+            printf_s("Generated %u X-Positions.\n", index);
+
             index = 0;
-            for (float y = 0; y < dimensions.y; y += STEP)
+            for (float y = minBounds.y; y > maxBounds.y; y -= STEP)
             {
-                const float adjY  = -y - 1.f;
+                const float adjY  = y - STEP;
                 float *pYVertices = ppYPositions[index];
 
-                pYVertices[0] = -y;
-                pYVertices[1] = -y;
-                pYVertices[2] = -y;
-                pYVertices[3] = -y;
+                pYVertices[0] = y;
+                pYVertices[1] = y;
+                pYVertices[2] = y;
+                pYVertices[3] = y;
                 pYVertices[4] = adjY;
                 pYVertices[5] = adjY;
                 pYVertices[6] = adjY;
@@ -49,10 +52,12 @@ namespace SolEngine::DOD
                 ++index;
             }
 
+            printf_s("Generated %u Y-Positions.\n", index);
+
             index = 0;
-            for (float z = 0; z < dimensions.z; z += STEP)
+            for (float z = minBounds.z; z < maxBounds.z; z += STEP)
             {
-                const float adjZ  = z + 1.f;
+                const float adjZ  = z + STEP;
                 float *pZVertices = ppZPositions[index];
 
                 pZVertices[0] = z;
@@ -66,7 +71,16 @@ namespace SolEngine::DOD
 
                 ++index;
             }
+
+            printf_s("Generated %u Z-Positions.\n", index);
         }
+
+        Cubes(const glm::vec3 &dimensions)
+            : Cubes(glm::vec3(0, 0, 0), 
+                    glm::vec3(dimensions.x, 
+                              -dimensions.y, 
+                              dimensions.z))
+        {}
 
         Cubes(const float scalarDimensions)
             : Cubes({scalarDimensions, scalarDimensions, scalarDimensions})
@@ -136,12 +150,12 @@ namespace SolEngine::DOD
             ppIsoValues = nullptr;
         }
 
-        static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
+        static constexpr float STEP{ .5f };  // Adjusts the resolution of the nodes
 
         // https://stackoverflow.com/a/29375830
-        alignas(16) float **ppXPositions;
-        alignas(16) float **ppYPositions;
-        alignas(16) float **ppZPositions;
-        alignas(16) float **ppIsoValues;    // Index first subscript using _3DTo1DIndex
+        float **ppXPositions;
+        float **ppYPositions;
+        float **ppZPositions;
+        float **ppIsoValues;    // Index first subscript using _3DTo1DIndex
     };
 }

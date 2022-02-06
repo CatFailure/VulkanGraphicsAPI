@@ -151,7 +151,6 @@ void Application::LoadGameObjects()
     std::shared_ptr<SolModel> marchingCubeModel = _pMarchingCubesManager->CreateModel();
     SolGameObject marchingCubeGameObject = SolGameObject::CreateGameObject();
     marchingCubeGameObject.SetModel(marchingCubeModel);
-    marchingCubeGameObject.transform.position = { -2.5f, 5.f, 5.f };
 
     _gameObjects.push_back(std::move(marchingCubeGameObject));
 }

@@ -32,8 +32,12 @@ namespace SolEngine::Manager
         DBG_ASSERT_MSG(IsWithinMaxCubeCount(dimensions.z), 
                        "Too many Cubes!");
 
+        DimensionsToBounds(dimensions, 
+                           &_minBounds, 
+                           &_maxBounds);
+
         _dimensions = dimensions;
-        _pCubes      = std::make_unique<Cubes>(dimensions);
+        _pCubes      = std::make_unique<Cubes>(_minBounds, _maxBounds);
 
         GenerateIsoValues();
         March();
@@ -80,9 +84,11 @@ namespace SolEngine::Manager
 
     void MarchingCubesManager::GenerateIsoValues()
     {
-        TraverseAllCubes([this](const size_t xIndex, 
-                                const size_t yIndex, 
-                                const size_t zIndex) 
+        uint32_t isoValuesGeneratedCount(0);
+        TraverseAllCubes([this, &isoValuesGeneratedCount]
+                         (const size_t xIndex, 
+                          const size_t yIndex, 
+                          const size_t zIndex) 
                          {
                              const size_t isoValuesIndex = _3DTo1DIndex(xIndex, 
                                                                         yIndex, 
@@ -93,12 +99,16 @@ namespace SolEngine::Manager
                                                  _pCubes->ppYPositions[yIndex], 
                                                  _pCubes->ppZPositions[zIndex], 
                                                  _pCubes->ppIsoValues[isoValuesIndex]);
+
+                             ++isoValuesGeneratedCount;
                          });
+
+        printf_s("Generated: %u Iso Values\n", 
+                 isoValuesGeneratedCount);
     }
 
     void MarchingCubesManager::March()
     {
-        // Function is currently doing too much - needs splitting up
         TraverseAllCubes([this](const size_t xIndex, 
                                 const size_t yIndex, 
                                 const size_t zIndex) 
@@ -226,17 +236,15 @@ namespace SolEngine::Manager
 
     void MarchingCubesManager::TraverseAllCubes(const TraverseCubesCallback_t &callback)
     {
-        const float step = Cubes::STEP;
-
         // We have to index this way to account for resolution (step)
         size_t zIndex(0);
-        for (float z(0); z < _dimensions.z; z += step)
+        for (float z(_minBounds.z); z < _maxBounds.z; z += Cubes::STEP)
         {
             size_t yIndex(0);
-            for (float y(0); y < _dimensions.y; y += step)
+            for (float y(_minBounds.y); y > _maxBounds.y; y -= Cubes::STEP)
             {
                 size_t xIndex(0);
-                for (float x(0); x < _dimensions.x; x += step)
+                for (float x(_minBounds.x); x < _maxBounds.x; x += Cubes::STEP)
                 {
                     callback(xIndex, 
                              yIndex, 

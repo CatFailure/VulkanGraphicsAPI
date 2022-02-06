@@ -7,8 +7,6 @@ using namespace SolEngine::Data;
 
 namespace Utility
 {
-    static constexpr float SPHERE_RADIUS{ 7.5f };
-
     static size_t _3DTo1DIndex(const size_t xIndex, 
                                const size_t yIndex, 
                                const size_t zIndex,
@@ -28,16 +26,6 @@ namespace Utility
         return (zIndex * sqrDimensions.x) + (yIndex * dimensions.y) + xIndex;
     }
 
-    static void CopyArray(const float *pSrc, 
-                          float *pDst, 
-                          const size_t size)
-    {
-        for (size_t i = 0; i < size; ++i)
-        {
-            pDst[i] = pSrc[i];
-        }
-    }
-
     /// <summary>
     /// Converts a 3D coordinate in world space into an isoValue.
     /// </summary>
@@ -46,13 +34,9 @@ namespace Utility
                                 const float z, 
                                 float *pOutIsoValue)
     {
-        const float centreX = SPHERE_RADIUS * 0.75f;
-        const float centreY = -SPHERE_RADIUS * 0.75f;
-        const float centreZ = centreX;
-
-        const float sqrX = (x - centreX) * (x - centreX);
-        const float sqrY = (y - centreY) * (y - centreY);
-        const float sqrZ = (z - centreZ) * (z - centreZ);
+        const float sqrX = x * x;
+        const float sqrY = y * y;
+        const float sqrZ = z * z;
 
         // Creates a sphere
         *pOutIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
@@ -111,5 +95,15 @@ namespace Utility
         default:
             return { -1, -1 };
         }
+    }
+
+    static void DimensionsToBounds(const glm::vec3 &dimensions, 
+                                   glm::vec3 *pOutMinBounds, 
+                                   glm::vec3 *pOutMaxBounds)
+    {
+        const glm::vec3 halfExtents = dimensions * 0.5f;    // Get half dimensions
+
+        *pOutMinBounds = glm::vec3(-halfExtents.x, halfExtents.y, -halfExtents.z);
+        *pOutMaxBounds = glm::vec3(halfExtents.x, -halfExtents.y, halfExtents.z);
     }
 }

@@ -51,10 +51,13 @@ namespace SolEngine::Manager
 
         SolDevice &_rSolDevice;
 
-        float _isoLevel      { 2.5f };
+        float _isoLevel      { 5.f };
         bool  _isInterpolated{ true };
 
         glm::uvec3             _dimensions{ 0 };
+        glm::vec3              _minBounds { 0 };
+        glm::vec3              _maxBounds { 0 };
+
         std::unique_ptr<Cubes> _pCubes{ nullptr };
         std::vector<Vertex>    _vertices;  // TEMP
     };
