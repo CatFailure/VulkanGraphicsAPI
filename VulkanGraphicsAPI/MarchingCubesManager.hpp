@@ -51,7 +51,7 @@ namespace SolEngine::Manager
 
         SolDevice &_rSolDevice;
 
-        float _isoLevel      { 5.f };
+        float _isoLevel      { 2.f };
         bool  _isInterpolated{ true };
 
         glm::uvec3             _dimensions{ 0 };

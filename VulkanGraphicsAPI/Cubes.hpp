@@ -150,7 +150,7 @@ namespace SolEngine::DOD
             ppIsoValues = nullptr;
         }
 
-        static constexpr float STEP{ .5f };  // Adjusts the resolution of the nodes
+        static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
 
         // https://stackoverflow.com/a/29375830
         float **ppXPositions;
