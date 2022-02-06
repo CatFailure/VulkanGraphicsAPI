@@ -2,20 +2,26 @@
 
 namespace SolEngine::Manager
 {
-    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice)
-        : _rSolDevice(rDevice)
+    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
+                                               DiagnosticData &rDiagnosticData)
+        : _rSolDevice(rDevice),
+          _rDiagnosticData(rDiagnosticData)
     {}
 
-    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
+    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice,
+                                               DiagnosticData &rDiagnosticData, 
                                                const glm::vec3 &dimensions)
-        : _rSolDevice(rDevice)
+        : _rSolDevice(rDevice),
+          _rDiagnosticData(rDiagnosticData)
     {
         SetDimensions(dimensions);
     }
 
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
+                                               DiagnosticData &rDiagnosticData, 
                                                const int scalarDimensions)
-        : _rSolDevice(rDevice)
+        : _rSolDevice(rDevice),
+          _rDiagnosticData(rDiagnosticData)
     {
         SetDimensions(scalarDimensions);
     }
@@ -43,6 +49,9 @@ namespace SolEngine::Manager
 
         GenerateIsoValues();
         March();
+
+        _rDiagnosticData.vertexCount = _vertices.size();
+        _rDiagnosticData.triCount = _rDiagnosticData.vertexCount / 3;
     }
 
     void MarchingCubesManager::SetDimensions(const int scalarDimensions)
