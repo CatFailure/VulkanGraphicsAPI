@@ -7,34 +7,24 @@ using namespace SolEngine::Data;
 
 namespace Utility
 {
-    static constexpr float SPHERE_RADIUS{ 2.5f };
-
-    static glm::uint32 _3DTo1DIndex(const float x, 
-                                    const float y, 
-                                    const float z,
-                                    const glm::uvec3 &dimensions,
-                                    const float step)
+    static size_t _3DTo1DIndex(const size_t xIndex, 
+                               const size_t yIndex, 
+                               const size_t zIndex,
+                               const glm::uvec3 &dimensions)
     {
         // Always 0
-        if (x == 0 && 
-            y == 0 && 
-            z == 0)
+        if (xIndex == 0 && 
+            yIndex == 0 && 
+            zIndex == 0)
         {
             return 0;
         }
 
-        // Coordinates need to be scaled to their step to point to the correct index
-        // (Will always resolve to integer types - No data will be lost!)
-        const glm::uint32 scaledX      = (glm::uint32)(x / step);
-        const glm::uint32 scaledAbsY   = (glm::uint32)(fabs(y) / step); // Y needs to be positive for correct index
-        const glm::uint32 scaledZ      = (glm::uint32)(z / step);
-
         const glm::uvec3 sqrDimensions = dimensions * dimensions;
 
         // Convert 3D array indexes into a 1D array index
-        return (scaledZ * sqrDimensions.x) + (scaledAbsY * dimensions.y) + scaledX;
+        return (zIndex * sqrDimensions.x) + (yIndex * dimensions.y) + xIndex;
     }
-
 
     /// <summary>
     /// Converts a 3D coordinate in world space into an isoValue.
@@ -42,8 +32,7 @@ namespace Utility
     static void CoordToIsoValue(const float x, 
                                 const float y, 
                                 const float z, 
-                                float *pOutIsoValue, 
-                                const glm::uvec3 &dimensions)
+                                float *pOutIsoValue)
     {
         const float sqrX = x * x;
         const float sqrY = y * y;
@@ -51,6 +40,28 @@ namespace Utility
 
         // Creates a sphere
         *pOutIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
+    }
+
+    static void VerticesToIsoValues(const float *pXVertices, 
+                                    const float *pYVertices, 
+                                    const float *pZVertices,
+                                    float *pOutIsoValues)
+    {
+        for (size_t i = 0; i < CUBE_VERTEX_COUNT; ++i)
+        {
+            CoordToIsoValue(pXVertices[i], 
+                            pYVertices[i], 
+                            pZVertices[i], 
+                            &pOutIsoValues[i]);
+        }
+    }
+
+
+    static float CalculateInterpolationScalar(const float isoValueA, 
+                                              const float isoValueB, 
+                                              const float isoLevel)
+    {
+        return (isoLevel - isoValueA) / (isoValueB - isoValueA);
     }
 
     static std::pair<Index_t, Index_t> CornerIndicesFromEdgeIndex(const Index_t edgeIndex)
@@ -84,5 +95,15 @@ namespace Utility
         default:
             return { -1, -1 };
         }
+    }
+
+    static void DimensionsToBounds(const glm::vec3 &dimensions, 
+                                   glm::vec3 *pOutMinBounds, 
+                                   glm::vec3 *pOutMaxBounds)
+    {
+        const glm::vec3 halfExtents = dimensions * 0.5f;    // Get half dimensions
+
+        *pOutMinBounds = glm::vec3(-halfExtents.x, halfExtents.y, -halfExtents.z);
+        *pOutMaxBounds = glm::vec3(halfExtents.x, -halfExtents.y, halfExtents.z);
     }
 }

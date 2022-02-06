@@ -47,6 +47,6 @@ namespace SolEngine::Data
 		}
 
 		glm::vec3 position{ 0, 0, 0 };
-		glm::vec3 colour{ 0, 0, 0 };
+		glm::vec3 colour{ 1.f, 1.f, 1.f };
 	};
 }

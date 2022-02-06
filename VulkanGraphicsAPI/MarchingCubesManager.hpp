@@ -1,5 +1,5 @@
 #pragma once
-#include "GridNodes.hpp"
+#include "Cubes.hpp"
 #include "SolDevice.hpp"
 #include "SolModel.hpp"
 
@@ -17,7 +17,12 @@ namespace SolEngine::Manager
     class MarchingCubesManager : public IMonoBehaviour
     {
     public:
-        typedef std::function<void(const float, const float, const float)> TraverseNodesCallback_t;
+        /// <summary>
+        /// Arg0 = X-Index
+        /// Arg1 = Y-Index
+        /// Arg2 = Z-Index
+        /// </summary>
+        typedef std::function<void(const size_t, const size_t, const size_t)> TraverseCubesCallback_t;
 
         MarchingCubesManager(SolDevice &rDevice);
         MarchingCubesManager(SolDevice &rDevice, const glm::uvec3 &dimensions);
@@ -26,25 +31,34 @@ namespace SolEngine::Manager
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
 
-        float GetIsoValueAtCoord(const float x, const float y, const float z) const;
-        void GetCubeIsoValuesAtCoord(const float x, const float y, const float z, float *pOutIsoValues, Vertex *pOutCubeVertices) const;
-        void TraverseGridNodes(const TraverseNodesCallback_t &callback);
-        void CalculateIsoValues();
+        //void GetCubeVerticesAt(const glm::uvec3 &position, float *pOutXVertices, float *pOutYVertices, float *pOutZVertices) const;
+        std::shared_ptr<SolModel> CreateModel();
 
         // Inherited via IMonoBehaviour
         virtual void Update(const float deltaTime) override;
 
     private:
-        bool IsWithinAxisNodeCountLimit(const size_t count) const { return !((count / _nodes.step) > MAX_AXIS_NODE_COUNT); }
-        void GenerateIsoSurfaces();
-        void CreateIsoModel();
-        uint32_t GetCubeIndex(const float *pIsoCubeValues) const;
+        bool IsWithinMaxCubeCount(const size_t count) const { return !((count / Cubes::STEP) > MAX_CUBES_COUNT); }
+
+        void GenerateIsoValues();
+        void March();
+        uint32_t GetCubeIndex(const float *pIsoValues);
+        void CreateVertices(const Index_t *pEdgeIndices, const float *pIsoValues, const size_t xIndex, const size_t yIndex, const size_t zIndex);
+        glm::vec3 GetEdgeVertexPosition(const bool isInterpolated, const float *pIsoValues, const size_t xIndex, const size_t yIndex, 
+                                        const size_t zIndex, const std::pair<Index_t, Index_t> &cornerIndices);
+
+        void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
         SolDevice &_rSolDevice;
 
-        float _isoLevel{ 2.5f };
+        float _isoLevel      { 2.f };
+        bool  _isInterpolated{ true };
 
-        glm::uvec3 _dimensions{ 0 };
-        GridNodes _nodes{};
+        glm::uvec3             _dimensions{ 0 };
+        glm::vec3              _minBounds { 0 };
+        glm::vec3              _maxBounds { 0 };
+
+        std::unique_ptr<Cubes> _pCubes{ nullptr };
+        std::vector<Vertex>    _vertices;  // TEMP
     };
 }

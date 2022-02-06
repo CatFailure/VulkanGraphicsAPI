@@ -3,8 +3,8 @@
 
 #include "Vertex.hpp"
 
-typedef uint8_t UIndex_t;   // We're only drawing cubes so 0->255 is more than necessary
-typedef int8_t  Index_t;    // We're only drawing cubes so -128->127 is more than necessary
+typedef uint32_t UIndex_t;
+typedef int32_t  Index_t; 
 
 namespace SolEngine::Data
 {
@@ -12,26 +12,15 @@ namespace SolEngine::Data
 	static constexpr glm::vec3 VEC3_UP     { 0.f, -1.f, 0.f };
 	static constexpr glm::vec3 VEC3_FORWARD{ 0.f, 0.f, 1.f };
 
-	static constexpr size_t MAX_AXIS_NODE_COUNT{ 1 << 4 };
-    static constexpr size_t MAX_NODE_COUNT     { MAX_AXIS_NODE_COUNT * MAX_AXIS_NODE_COUNT * MAX_AXIS_NODE_COUNT };
+    static constexpr float SPHERE_RADIUS{ 7.5f };
 
+    static constexpr uint32_t MAX_CUBES_PER_AXIS_COUNT{ 1 << 6 };   // Currently can only go upto 6 (262144 Cubes)
+    static constexpr uint32_t MAX_CUBES_COUNT{ MAX_CUBES_PER_AXIS_COUNT * MAX_CUBES_PER_AXIS_COUNT * MAX_CUBES_PER_AXIS_COUNT };
     static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
     static constexpr uint32_t CUBE_INDEX_COUNT{ 36U };
 
     static constexpr size_t TRI_TABLE_COUNT{ 256 };
     static constexpr size_t TRI_TABLE_INDEX_COUNT{ 16 };
-
-    //static constexpr Vertex CUBE_VERTICES[CUBE_VERTEX_COUNT]
-    //{
-    //    { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
-    //    { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
-    //    { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
-    //    { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
-    //    { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
-    //    { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
-    //    { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
-    //    { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
-    //};
 
     static constexpr Vertex CUBE_VERTICES[CUBE_VERTEX_COUNT * CUBE_INDEX_COUNT]
     {
