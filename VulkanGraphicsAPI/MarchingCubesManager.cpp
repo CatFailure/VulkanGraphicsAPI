@@ -50,8 +50,9 @@ namespace SolEngine::Manager
         GenerateIsoValues();
         March();
 
-        _rDiagnosticData.vertexCount = _vertices.size();
-        _rDiagnosticData.triCount = _rDiagnosticData.vertexCount / 3;
+        // Vertices aren't shared currently, so just div by 3 for tris
+        _rDiagnosticData.vertexCount    = _vertices.size();
+        _rDiagnosticData.triCount       = _rDiagnosticData.vertexCount / 3;
     }
 
     void MarchingCubesManager::SetDimensions(const int scalarDimensions)
