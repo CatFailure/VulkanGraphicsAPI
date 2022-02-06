@@ -150,9 +150,6 @@
     <ClCompile Include="MarchingCubesManager.cpp">
       <Filter>SolEngine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="MarchingCubesRenderSystem.cpp">
-      <Filter>SolEngine\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="GenericRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClCompile>
@@ -295,9 +292,6 @@
     </ClInclude>
     <ClInclude Include="MarchingCubesManager.hpp">
       <Filter>SolEngine\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="MarchingCubesRenderSystem.hpp">
-      <Filter>SolEngine\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="GenericRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>

@@ -6,7 +6,6 @@
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
 #include "MarchingCubesManager.hpp"
-#include "MarchingCubesRenderSystem.hpp"
 
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)

@@ -337,7 +337,6 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MarchingCubesRenderSystem.cpp" />
     <ClCompile Include="MatrixUtility.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -406,7 +405,6 @@
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
     <ClInclude Include="MarchingCubesHelpers.hpp" />
-    <ClInclude Include="MarchingCubesRenderSystem.hpp" />
     <ClInclude Include="MatrixUtility.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
