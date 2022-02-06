@@ -4,7 +4,7 @@
 namespace SolEngine
 {
     SolWindow::SolWindow(const std::string &winTitle, 
-                                     const Vector2u &winDimensions)
+                         const glm::uvec2 &winDimensions)
         : _winTitle(winTitle),
           _winDimensions(winDimensions)
     {
@@ -30,13 +30,13 @@ namespace SolEngine
     }
 
     void SolWindow::FramebufferResizeCallback(GLFWwindow *pWindow, 
-                                                    const int width, 
-                                                    const int height)
+                                              const int width, 
+                                              const int height)
     {
-        SolWindow *pVulkanWindow = reinterpret_cast<SolWindow *>(glfwGetWindowUserPointer(pWindow));
+        SolWindow *pSolWindow = reinterpret_cast<SolWindow *>(glfwGetWindowUserPointer(pWindow));
 
-        pVulkanWindow->_isFramebufferResized = true;
-        pVulkanWindow->_winDimensions = { static_cast<uint32_t>(width), static_cast<uint32_t>(height) };
+        pSolWindow->_isFramebufferResized = true;
+        pSolWindow->_winDimensions = { width, height };
     }
 
     void SolWindow::CreateGLFWWindow()
@@ -45,8 +45,8 @@ namespace SolEngine
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);  // Don't create OpenGL Context
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);     // Allow window resizing
 
-        _pWindow = glfwCreateWindow(_winDimensions._x,
-                                    _winDimensions._y, 
+        _pWindow = glfwCreateWindow(_winDimensions.x,
+                                    _winDimensions.y, 
                                     _winTitle.c_str(), 
                                     nullptr, 
                                     nullptr);

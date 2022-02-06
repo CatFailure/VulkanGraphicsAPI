@@ -1,19 +1,18 @@
 #include "pch.hpp"
-#include "SimpleRenderSystem.hpp"
+#include "MarchingCubesRenderSystem.hpp"
 
 namespace SolEngine::Rendering
 {
-    SimpleRenderSystem::SimpleRenderSystem(SolDevice& rSolDevice, 
-                                           VkRenderPass renderPass)
-        : GenericRenderSystem(rSolDevice, 
-                              renderPass)
+    MarchingCubesRenderSystem::MarchingCubesRenderSystem(SolDevice &rSolDevice, 
+                                                         VkRenderPass renderPass)
+        : GenericRenderSystem(rSolDevice, renderPass)
     {}
 
-    void SimpleRenderSystem::RenderGameObjects(const SolCamera &solCamera,
-                                               const VkCommandBuffer commandBuffer, 
-                                               const std::vector<SolGameObject> &gameObjects) const
+    void MarchingCubesRenderSystem::Render(const SolCamera &solCamera, 
+                                           const VkCommandBuffer commandBuffer, 
+                                           const std::shared_ptr<SolModel> pMarchingCubesModel) const
     {
-        const glm::mat4 projectionView = solCamera.GetProjectionViewMatrix();
+        /*const glm::mat4 projectionView = solCamera.GetProjectionViewMatrix();
 
         _pSolPipeline->Bind(commandBuffer);
 
@@ -37,6 +36,6 @@ namespace SolEngine::Rendering
 
             pGameObjectModel->Bind(commandBuffer);
             pGameObjectModel->Draw(commandBuffer);
-        }
+        }*/
     }
 }
