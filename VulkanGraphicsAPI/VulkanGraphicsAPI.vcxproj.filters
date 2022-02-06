@@ -55,6 +55,9 @@
     <Filter Include="SolEngine\Manager">
       <UniqueIdentifier>{8fa7572d-54bf-4373-83d6-163bc77b2c06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\GUI\Data">
+      <UniqueIdentifier>{a1a36440-43fb-47ec-ab53-f701fc70e175}</UniqueIdentifier>
+    </Filter>
     <Filter Include="SolEngine\Enumeration">
       <UniqueIdentifier>{5b8e70ca-8574-4d7d-9741-839fbe54f0ec}</UniqueIdentifier>
     </Filter>
@@ -266,9 +269,6 @@
     <ClInclude Include="GuiWindowManager.hpp">
       <Filter>SolEngine\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="DiagnosticData.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SolClock.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
@@ -283,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="GenericRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagnosticData.hpp">
+      <Filter>SolEngine\GUI\Data</Filter>
     </ClInclude>
     <ClInclude Include="MemoryHelpers.hpp">
       <Filter>Utility</Filter>
