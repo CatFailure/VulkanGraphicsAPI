@@ -2,8 +2,10 @@
 #include "Cubes.hpp"
 #include "SolDevice.hpp"
 #include "SolModel.hpp"
+#include "DiagnosticData.hpp"
 
 using namespace SolEngine::DOD;
+using namespace SolEngine::GUI::Data;
 using namespace SolEngine::Interface;
 using namespace Utility;
 
@@ -24,14 +26,13 @@ namespace SolEngine::Manager
         /// </summary>
         typedef std::function<void(const size_t, const size_t, const size_t)> TraverseCubesCallback_t;
 
-        MarchingCubesManager(SolDevice &rDevice);
-        MarchingCubesManager(SolDevice &rDevice, const glm::uvec3 &dimensions);
-        MarchingCubesManager(SolDevice &rDevice, const glm::uint scalarDimensions);
+        MarchingCubesManager(SolDevice &rDevice, DiagnosticData& rDiagnosticData);
+        MarchingCubesManager(SolDevice &rDevice, DiagnosticData& rDiagnosticData, const glm::uvec3 &dimensions);
+        MarchingCubesManager(SolDevice &rDevice, DiagnosticData& rDiagnosticData, const glm::uint scalarDimensions);
 
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
 
-        //void GetCubeVerticesAt(const glm::uvec3 &position, float *pOutXVertices, float *pOutYVertices, float *pOutZVertices) const;
         std::shared_ptr<SolModel> CreateModel();
 
         // Inherited via IMonoBehaviour
@@ -50,6 +51,7 @@ namespace SolEngine::Manager
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
         SolDevice &_rSolDevice;
+        DiagnosticData &_rDiagnosticData;
 
         float _isoLevel      { 2.f };
         bool  _isInterpolated{ true };

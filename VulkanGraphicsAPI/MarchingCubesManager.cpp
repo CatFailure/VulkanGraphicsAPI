@@ -3,20 +3,26 @@
 
 namespace SolEngine::Manager
 {
-    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice)
-        : _rSolDevice(rDevice)
+    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
+                                               DiagnosticData &rDiagnosticData)
+        : _rSolDevice(rDevice),
+          _rDiagnosticData(rDiagnosticData)
     {}
 
-    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
+    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice,
+                                               DiagnosticData &rDiagnosticData, 
                                                const glm::uvec3 &dimensions)
-        : _rSolDevice(rDevice)
+        : _rSolDevice(rDevice),
+          _rDiagnosticData(rDiagnosticData)
     {
         SetDimensions(dimensions);
     }
 
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
+                                               DiagnosticData &rDiagnosticData, 
                                                const glm::uint scalarDimensions)
-        : _rSolDevice(rDevice)
+        : _rSolDevice(rDevice),
+          _rDiagnosticData(rDiagnosticData)
     {
         SetDimensions(scalarDimensions);
     }
@@ -41,34 +47,15 @@ namespace SolEngine::Manager
 
         GenerateIsoValues();
         March();
+
+        _rDiagnosticData.vertexCount = _vertices.size();
+        _rDiagnosticData.triCount = _rDiagnosticData.vertexCount / 3;
     }
 
     void MarchingCubesManager::SetDimensions(const glm::uint scalarDimensions)
     {
         SetDimensions(glm::uvec3(scalarDimensions));
     }
-
-    //void MarchingCubesManager::GetCubeVerticesAt(const glm::uvec3 &position, 
-    //                                             float *pOutXVertices, 
-    //                                             float *pOutYVertices, 
-    //                                             float *pOutZVertices) const
-    //{
-    //    auto test = *_pCubes->ppXPositions[position.x];
-
-    //    memcpy_s(pOutXVertices, CUBE_VERTEX_COUNT, _pCubes->ppXPositions[position.x], CUBE_VERTEX_COUNT);
-
-    //    //std::copy(std::begin(_cubes.ppHeapXPositions[position.x]),
-    //    //          std::end(_cubes.pXPositions[position.x]), 
-    //    //          *pOutXVertices);
-
-    //    //std::copy(std::begin(_cubes.pYPositions[position.y]),
-    //    //          std::end(_cubes.pYPositions[position.y]), 
-    //    //          pOutYVertices);
-
-    //    //std::copy(std::begin(_cubes.pZPositions[position.z]),
-    //    //          std::end(_cubes.pZPositions[position.z]), 
-    //    //          pOutZVertices);
-    //}
 
     std::shared_ptr<SolModel> MarchingCubesManager::CreateModel()
     {
