@@ -56,9 +56,9 @@ namespace SolEngine::Manager
         float _isoLevel      { 2.f };
         bool  _isInterpolated{ true };
 
-        glm::uvec3             _dimensions{ 0 };
-        glm::vec3              _minBounds { 0 };
-        glm::vec3              _maxBounds { 0 };
+        glm::uvec3 _dimensions{ 0 };
+        glm::vec3  _minBounds { 0 };
+        glm::vec3  _maxBounds { 0 };
 
         std::unique_ptr<Cubes> _pCubes{ nullptr };
         std::vector<Vertex>    _vertices;  // TEMP
