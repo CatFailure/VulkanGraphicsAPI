@@ -2,6 +2,7 @@
 #include "IGuiWindow.hpp"
 #include "DiagnosticData.hpp"
 
+using namespace SolEngine::GUI::Data;
 using namespace SolEngine::Interface;
 
 namespace SolEngine::GUI

@@ -1,9 +1,11 @@
 #pragma once
 #include <vector>
 
-struct DiagnosticData
+namespace SolEngine::GUI::Data
 {
-	float deltaTimeSeconds;
-	float totalTimeSeconds;
-};
-
+	struct DiagnosticData
+	{
+		float deltaTimeSeconds;
+		float totalTimeSeconds;
+	};
+}
