@@ -22,8 +22,15 @@ namespace Utility
                                           const size_t height)
     {
         // https://stackoverflow.com/a/29375830
-        pprArr    = new _Ty *[width];
-        pprArr[0] = new _Ty[width * height];
+        const size_t sizeOfType = sizeof(_Ty);
+        const size_t sizeOfPtrType = sizeof(_Ty *);
+        const size_t alignment = 16U;
+
+        pprArr    = (_Ty **)_aligned_malloc(width * sizeOfPtrType, alignment);
+        pprArr[0] = (_Ty *)_aligned_malloc(width * height * sizeOfType, alignment);
+
+        //pprArr    = new _Ty *[width];
+        //pprArr[0] = new _Ty[width * height];
 
         for (size_t i(1); i < width; ++i)
         {
