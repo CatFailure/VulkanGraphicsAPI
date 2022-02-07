@@ -1,6 +1,8 @@
 #pragma once
 #include "Constants.hpp"
+#include "MemoryHelpers.hpp"
 
+using namespace Utility;
 using namespace SolEngine::Data;
 
 namespace SolEngine::DOD
@@ -122,32 +124,20 @@ namespace SolEngine::DOD
         void Dispose()
         {
             // X-Positions
-            delete[] ppXPositions[0];
-            ppXPositions[0] = nullptr;
-
-            delete[] ppXPositions;
-            ppXPositions = nullptr;
+            SafeDisposeArray(ppXPositions[0]);
+            SafeDisposeArray(ppXPositions);
 
             // Y-Positions
-            delete[] ppYPositions[0];
-            ppYPositions[0] = nullptr;
-
-            delete[] ppYPositions;
-            ppYPositions = nullptr;
+            SafeDisposeArray(ppYPositions[0]);
+            SafeDisposeArray(ppYPositions);
 
             // Z-Positions
-            delete[] ppZPositions[0];
-            ppZPositions[0] = nullptr;
-
-            delete[] ppZPositions;
-            ppZPositions = nullptr;
+            SafeDisposeArray(ppZPositions[0]);
+            SafeDisposeArray(ppZPositions);
 
             // Iso Values
-            delete[] ppIsoValues[0];
-            ppIsoValues[0] = nullptr;
-
-            delete[] ppIsoValues;
-            ppIsoValues = nullptr;
+            SafeDisposeArray(ppIsoValues[0]);
+            SafeDisposeArray(ppIsoValues);
         }
 
         static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes

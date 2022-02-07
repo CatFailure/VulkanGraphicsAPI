@@ -302,6 +302,9 @@
     <ClInclude Include="GenericRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="MemoryHelpers.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">
