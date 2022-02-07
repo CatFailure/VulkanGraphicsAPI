@@ -106,4 +106,98 @@ namespace Utility
         *pOutMinBounds = glm::vec3(-halfExtents.x, halfExtents.y, -halfExtents.z);
         *pOutMaxBounds = glm::vec3(halfExtents.x, -halfExtents.y, halfExtents.z);
     }
+
+    enum class Axis
+    {
+        X = 0,
+        Y = 1,
+        Z = 2
+    };
+
+    template<Axis>
+    static void GenerateVertices(float **ppOutPositions,
+                                 const float minValue, 
+                                 const float maxValue,
+                                 const float step) = delete;
+
+    template<>
+    static void GenerateVertices<Axis::X>(float **ppOutXPositions,
+                                          const float minValue, 
+                                          const float maxValue,
+                                          const float step)
+    {
+        uint32_t index(0);
+        for (float xPos = minValue; xPos < maxValue; xPos += step)
+        {
+            const float adjXPos  = xPos + step;
+            float *pVertices = ppOutXPositions[index];
+
+            pVertices[0] = xPos;
+            pVertices[1] = adjXPos;
+            pVertices[2] = adjXPos;
+            pVertices[3] = xPos;
+            pVertices[4] = xPos;
+            pVertices[5] = adjXPos;
+            pVertices[6] = adjXPos;
+            pVertices[7] = xPos;
+
+            ++index;
+        }
+
+        printf_s("Generated %u X-Positions.\n", index);
+    }
+
+    template<>
+    static void GenerateVertices<Axis::Y>(float **ppOutYPositions,
+                                          const float minValue, 
+                                          const float maxValue,
+                                          const float step)
+    {
+        uint32_t index(0);
+        for (float yPos = minValue; yPos > maxValue; yPos -= step)
+        {
+            const float adjYPos  = yPos - step;
+            float *pYVertices = ppOutYPositions[index];
+
+            pYVertices[0] = yPos;
+            pYVertices[1] = yPos;
+            pYVertices[2] = yPos;
+            pYVertices[3] = yPos;
+            pYVertices[4] = adjYPos;
+            pYVertices[5] = adjYPos;
+            pYVertices[6] = adjYPos;
+            pYVertices[7] = adjYPos;
+
+            ++index;
+        }
+
+        printf_s("Generated %u Y-Positions.\n", index);
+    }
+
+    template<>
+    static void GenerateVertices<Axis::Z>(float **ppOutZPositions,
+                                          const float minValue, 
+                                          const float maxValue,
+                                          const float step)
+    {
+        uint32_t index(0);
+        for (float zPos = minValue; zPos < maxValue; zPos += step)
+        {
+            const float adjZPos  = zPos + step;
+            float *pVertices = ppOutZPositions[index];
+
+            pVertices[0] = zPos;
+            pVertices[1] = zPos;
+            pVertices[2] = adjZPos;
+            pVertices[3] = adjZPos;
+            pVertices[4] = zPos;
+            pVertices[5] = zPos;
+            pVertices[6] = adjZPos;
+            pVertices[7] = adjZPos;
+
+            ++index;
+        }
+
+        printf_s("Generated %u Z-Positions.\n", index);
+    }
 }
