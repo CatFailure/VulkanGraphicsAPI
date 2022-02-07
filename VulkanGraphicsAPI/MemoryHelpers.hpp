@@ -27,7 +27,12 @@ namespace Utility
         const size_t alignment = 16U;
 
         pprArr    = (_Ty **)_aligned_malloc(width * sizeOfPtrType, alignment);
+
+        DBG_ASSERT_MSG((pprArr != nullptr), "_aligned_malloc Failed!");
+
         pprArr[0] = (_Ty *)_aligned_malloc(width * height * sizeOfType, alignment);
+
+        DBG_ASSERT_MSG((pprArr[0] != nullptr), "_aligned_malloc Failed!");
 
         for (size_t i(1); i < width; ++i)
         {
