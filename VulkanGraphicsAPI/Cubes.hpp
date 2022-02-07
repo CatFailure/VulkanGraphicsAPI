@@ -27,7 +27,9 @@ namespace SolEngine::DOD
         {}
 
         Cubes(const float scalarDimensions)
-            : Cubes({scalarDimensions, scalarDimensions, scalarDimensions})
+            : Cubes({ scalarDimensions, 
+                      scalarDimensions, 
+                      scalarDimensions })
         {}
 
         ~Cubes()

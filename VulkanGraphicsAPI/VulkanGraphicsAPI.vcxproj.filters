@@ -309,7 +309,7 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Axis.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>SolEngine\Enumeration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
