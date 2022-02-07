@@ -21,8 +21,9 @@ namespace Utility
                                           const size_t width, 
                                           const size_t height)
     {
-        pprArr    = new float *[width];
-        pprArr[0] = new float[width * height];
+        // https://stackoverflow.com/a/29375830
+        pprArr    = new _Ty *[width];
+        pprArr[0] = new _Ty[width * height];
 
         for (size_t i(1); i < width; ++i)
         {
