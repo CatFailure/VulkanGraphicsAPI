@@ -55,6 +55,9 @@
     <Filter Include="SolEngine\Manager">
       <UniqueIdentifier>{8fa7572d-54bf-4373-83d6-163bc77b2c06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\Enumeration">
+      <UniqueIdentifier>{5b8e70ca-8574-4d7d-9741-839fbe54f0ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="MemoryHelpers.hpp">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Axis.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

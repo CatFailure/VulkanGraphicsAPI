@@ -15,10 +15,6 @@ namespace SolEngine::DOD
               const glm::vec3 &maxBounds)
         {
             AllocateDataArrays();
-
-            /*GenerateVertices<Axis::X>(ppXPositions, minBounds.x, maxBounds.x, STEP);
-            GenerateVertices<Axis::Y>(ppYPositions, minBounds.y, maxBounds.y, STEP);
-            GenerateVertices<Axis::Z>(ppZPositions, minBounds.z, maxBounds.z, STEP);*/
         }
 
         Cubes(const glm::vec3 &dimensions)

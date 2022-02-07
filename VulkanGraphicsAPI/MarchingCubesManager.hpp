@@ -31,7 +31,6 @@ namespace SolEngine::Manager
         void SetDimensions(const glm::uvec3 &dimensions);
         void SetDimensions(const glm::uint scalarDimensions);
 
-        //void GetCubeVerticesAt(const glm::uvec3 &position, float *pOutXVertices, float *pOutYVertices, float *pOutZVertices) const;
         std::shared_ptr<SolModel> CreateModel();
 
         // Inherited via IMonoBehaviour

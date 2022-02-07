@@ -2,8 +2,10 @@
 #include <glm/glm.hpp>
 
 #include "Constants.hpp"
+#include "Axis.hpp"
 
 using namespace SolEngine::Data;
+using namespace SolEngine::Enumeration;
 
 namespace Utility
 {
@@ -106,13 +108,6 @@ namespace Utility
         *pOutMinBounds = glm::vec3(-halfExtents.x, halfExtents.y, -halfExtents.z);
         *pOutMaxBounds = glm::vec3(halfExtents.x, -halfExtents.y, halfExtents.z);
     }
-
-    enum class Axis
-    {
-        X = 0,
-        Y = 1,
-        Z = 2
-    };
 
     template<Axis>
     static void GenerateVertices(float **ppOutPositions,
