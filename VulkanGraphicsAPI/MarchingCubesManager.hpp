@@ -58,6 +58,6 @@ namespace SolEngine::Manager
         glm::vec3              _maxBounds { 0 };
 
         std::unique_ptr<Cubes> _pCubes{ nullptr };
-        std::vector<Vertex>    _vertices;  // TEMP
+        std::vector<Vertex>    _vertices; // TEMP
     };
 }

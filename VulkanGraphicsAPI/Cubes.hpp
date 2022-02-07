@@ -1,13 +1,15 @@
 #pragma once
 #include "Constants.hpp"
 #include "MemoryHelpers.hpp"
+#include "IDisposable.hpp"
 
 using namespace Utility;
 using namespace SolEngine::Data;
+using namespace SolEngine::Interface;
 
 namespace SolEngine::DOD
 {
-    struct Cubes
+    struct Cubes : private IDisposable
     {
         Cubes() = delete;
 
@@ -41,7 +43,17 @@ namespace SolEngine::DOD
             AllocateContiguous2DArray(ppIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
         }
 
-        void Dispose()
+        static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
+
+        // https://stackoverflow.com/a/29375830
+        float **ppXPositions;
+        float **ppYPositions;
+        float **ppZPositions;
+        float **ppIsoValues;    // Index first subscript using _3DTo1DIndex
+
+    private:
+        // Inherited via IDisposable
+        virtual void Dispose() override
         {
             // X-Positions
             SafeDisposeArray(ppXPositions[0]);
@@ -59,13 +71,5 @@ namespace SolEngine::DOD
             SafeDisposeArray(ppIsoValues[0]);
             SafeDisposeArray(ppIsoValues);
         }
-
-        static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
-
-        // https://stackoverflow.com/a/29375830
-        float **ppXPositions;
-        float **ppYPositions;
-        float **ppZPositions;
-        float **ppIsoValues;    // Index first subscript using _3DTo1DIndex
     };
 }
