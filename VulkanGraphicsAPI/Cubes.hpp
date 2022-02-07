@@ -14,7 +14,7 @@ namespace SolEngine::DOD
         Cubes(const glm::vec3 &minBounds, 
               const glm::vec3 &maxBounds)
         {
-            InitializePositionsArrays();
+            AllocateDataArrays();
 
             uint32_t index(0);
             for (float x = minBounds.x; x < maxBounds.x; x += STEP)
@@ -93,32 +93,13 @@ namespace SolEngine::DOD
             Dispose();
         }
 
-        void InitializePositionsArrays()
+        void AllocateDataArrays()
         {
             // https://stackoverflow.com/a/29375830
-            ppXPositions    = new float *[MAX_CUBES_PER_AXIS_COUNT];
-            ppXPositions[0] = new float[MAX_CUBES_PER_AXIS_COUNT * CUBE_VERTEX_COUNT];
-
-            ppYPositions    = new float *[MAX_CUBES_PER_AXIS_COUNT];
-            ppYPositions[0] = new float[MAX_CUBES_PER_AXIS_COUNT * CUBE_VERTEX_COUNT];
-
-            ppZPositions    = new float *[MAX_CUBES_PER_AXIS_COUNT];
-            ppZPositions[0] = new float[MAX_CUBES_PER_AXIS_COUNT * CUBE_VERTEX_COUNT];
-
-            ppIsoValues     = new float *[MAX_CUBES_COUNT];
-            ppIsoValues[0]  = new float[MAX_CUBES_COUNT * CUBE_VERTEX_COUNT];
-
-            for (size_t i = 1; i < MAX_CUBES_PER_AXIS_COUNT; ++i)
-            {
-                ppXPositions[i] = ppXPositions[i - 1] + CUBE_VERTEX_COUNT;
-                ppYPositions[i] = ppYPositions[i - 1] + CUBE_VERTEX_COUNT;
-                ppZPositions[i] = ppZPositions[i - 1] + CUBE_VERTEX_COUNT;
-            }
-
-            for (size_t i = 1; i < MAX_CUBES_COUNT; ++i)
-            {
-                ppIsoValues[i] = ppIsoValues[i - 1] + CUBE_VERTEX_COUNT;
-            }
+            AllocateContiguous2DArray(ppXPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AllocateContiguous2DArray(ppYPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AllocateContiguous2DArray(ppZPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AllocateContiguous2DArray(ppIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
         }
 
         void Dispose()

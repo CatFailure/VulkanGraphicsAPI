@@ -15,4 +15,18 @@ namespace Utility
         delete[] pArr;
         pArr = nullptr;
     }
+
+    template<typename _Ty>
+    static void AllocateContiguous2DArray(_Ty**& pprArr, 
+                                          const size_t width, 
+                                          const size_t height)
+    {
+        pprArr    = new float *[width];
+        pprArr[0] = new float[width * height];
+
+        for (size_t i(1); i < width; ++i)
+        {
+            pprArr[i] = pprArr[i - 1] + height;
+        }
+    }
 }
