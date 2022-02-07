@@ -15,7 +15,35 @@ namespace SolEngine::DOD
               const glm::vec3 &maxBounds)
         {
             AllocateDataArrays();
+            GeneratePositions(minBounds, maxBounds);
+        }
 
+        Cubes(const glm::vec3 &dimensions)
+            : Cubes(glm::vec3(0, 0, 0), 
+                    glm::vec3(dimensions.x, 
+                              -dimensions.y, 
+                              dimensions.z))
+        {}
+
+        Cubes(const float scalarDimensions)
+            : Cubes({scalarDimensions, scalarDimensions, scalarDimensions})
+        {}
+
+        ~Cubes()
+        {
+            Dispose();
+        }
+
+        void AllocateDataArrays()
+        {
+            AllocateContiguous2DArray(ppXPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AllocateContiguous2DArray(ppYPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AllocateContiguous2DArray(ppZPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AllocateContiguous2DArray(ppIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
+        }
+
+        void GeneratePositions(const glm::vec3 &minBounds, const glm::vec3 &maxBounds)
+        {
             uint32_t index(0);
             for (float x = minBounds.x; x < maxBounds.x; x += STEP)
             {
@@ -75,30 +103,6 @@ namespace SolEngine::DOD
             }
 
             printf_s("Generated %u Z-Positions.\n", index);
-        }
-
-        Cubes(const glm::vec3 &dimensions)
-            : Cubes(glm::vec3(0, 0, 0), 
-                    glm::vec3(dimensions.x, 
-                              -dimensions.y, 
-                              dimensions.z))
-        {}
-
-        Cubes(const float scalarDimensions)
-            : Cubes({scalarDimensions, scalarDimensions, scalarDimensions})
-        {}
-
-        ~Cubes()
-        {
-            Dispose();
-        }
-
-        void AllocateDataArrays()
-        {
-            AllocateContiguous2DArray(ppXPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AllocateContiguous2DArray(ppYPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AllocateContiguous2DArray(ppZPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AllocateContiguous2DArray(ppIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
         }
 
         void Dispose()
