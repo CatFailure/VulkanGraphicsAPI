@@ -10,16 +10,16 @@ namespace Utility
     }
 
     template<typename _Ty>
-    static void SafeDisposeArray(_Ty *pArr)
+    static void FreeAlignedMallocArray(_Ty *pArr)
     {
-        delete[] pArr;
+        _aligned_free(pArr);
         pArr = nullptr;
     }
 
     template<typename _Ty>
-    static void AllocateContiguous2DArray(_Ty**& pprArr, 
-                                          const size_t width, 
-                                          const size_t height)
+    static void AlignedMallocContiguous2DArray(_Ty**& pprArr, 
+                                               const size_t width, 
+                                               const size_t height)
     {
         // https://stackoverflow.com/a/29375830
         const size_t sizeOfType = sizeof(_Ty);
@@ -28,9 +28,6 @@ namespace Utility
 
         pprArr    = (_Ty **)_aligned_malloc(width * sizeOfPtrType, alignment);
         pprArr[0] = (_Ty *)_aligned_malloc(width * height * sizeOfType, alignment);
-
-        //pprArr    = new _Ty *[width];
-        //pprArr[0] = new _Ty[width * height];
 
         for (size_t i(1); i < width; ++i)
         {

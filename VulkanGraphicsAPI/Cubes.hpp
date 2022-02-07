@@ -39,10 +39,10 @@ namespace SolEngine::DOD
 
         void AllocateDataArrays()
         {
-            AllocateContiguous2DArray(ppXPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AllocateContiguous2DArray(ppYPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AllocateContiguous2DArray(ppZPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AllocateContiguous2DArray(ppIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray(ppXPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray(ppYPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray(ppZPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray(ppIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
         }
 
         static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
@@ -58,20 +58,20 @@ namespace SolEngine::DOD
         virtual void Dispose() override
         {
             // X-Positions
-            SafeDisposeArray(ppXPositions[0]);
-            SafeDisposeArray(ppXPositions);
+            FreeAlignedMallocArray(ppXPositions[0]);
+            FreeAlignedMallocArray(ppXPositions);
 
             // Y-Positions
-            SafeDisposeArray(ppYPositions[0]);
-            SafeDisposeArray(ppYPositions);
+            FreeAlignedMallocArray(ppYPositions[0]);
+            FreeAlignedMallocArray(ppYPositions);
 
             // Z-Positions
-            SafeDisposeArray(ppZPositions[0]);
-            SafeDisposeArray(ppZPositions);
+            FreeAlignedMallocArray(ppZPositions[0]);
+            FreeAlignedMallocArray(ppZPositions);
 
             // Iso Values
-            SafeDisposeArray(ppIsoValues[0]);
-            SafeDisposeArray(ppIsoValues);
+            FreeAlignedMallocArray(ppIsoValues[0]);
+            FreeAlignedMallocArray(ppIsoValues);
         }
     };
 }
