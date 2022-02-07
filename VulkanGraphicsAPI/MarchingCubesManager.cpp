@@ -39,6 +39,10 @@ namespace SolEngine::Manager
         _dimensions = dimensions;
         _pCubes      = std::make_unique<Cubes>(_minBounds, _maxBounds);
 
+        GenerateVertices<Axis::X>(_pCubes->ppXPositions, _minBounds.x, _maxBounds.x, Cubes::STEP);
+        GenerateVertices<Axis::Y>(_pCubes->ppYPositions, _minBounds.y, _maxBounds.y, Cubes::STEP);
+        GenerateVertices<Axis::Z>(_pCubes->ppZPositions, _minBounds.z, _maxBounds.z, Cubes::STEP);
+
         GenerateIsoValues();
         March();
     }
