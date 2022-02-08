@@ -149,6 +149,12 @@ void Application::CreateGuiWindowManager()
 void Application::LoadGameObjects()
 {
     std::shared_ptr<SolModel> marchingCubeModel = _pMarchingCubesManager->CreateModel();
+
+    if (marchingCubeModel == nullptr)
+    {
+        return;
+    }
+
     SolGameObject marchingCubeGameObject = SolGameObject::CreateGameObject();
     marchingCubeGameObject.SetModel(marchingCubeModel);
 
