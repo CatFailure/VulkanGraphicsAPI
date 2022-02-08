@@ -81,7 +81,7 @@ void Application::Update(const float deltaTime)
 
     for (SolGameObject &rGameObject : _gameObjects)
     {
-        rGameObject.transform.rotation.y += 1.f * deltaTime;
+        rGameObject.transform.rotation.y += .5f * deltaTime;
     }
 }
 
@@ -124,14 +124,14 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo);
-    _solCamera.SetPosition({ 0, 0, -15.f });
+    _solCamera.SetPosition({ 0, 0, -50.f });
     _solCamera.LookAt(_solCamera.GetPosition() + VEC3_FORWARD);   // Look forwards
 }
 
 void Application::SetupMarchingCubesManager()
 {
     // Create a 5x5x5 grid for testing...
-    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice, 4);
+    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice, 20);
 }
 
 #ifndef DISABLE_IM_GUI

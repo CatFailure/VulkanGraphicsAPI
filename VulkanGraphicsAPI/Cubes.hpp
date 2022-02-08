@@ -22,7 +22,7 @@ namespace SolEngine::DOD
             AlignedMallocContiguous2DArray(pAllIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
         }
 
-        static constexpr float STEP{ .5f };  // Adjusts the resolution of the nodes
+        static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
 
         float *pAllXVertices;   // All cubes vertices along x-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
         float *pAllYVertices;   // All cubes vertices along y-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]

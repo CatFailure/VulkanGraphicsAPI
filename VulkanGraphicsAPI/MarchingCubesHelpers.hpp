@@ -11,10 +11,11 @@ namespace Utility
 {
     static float MinIsoValueGenerated(1000.f), MaxIsoValueGenerated(-1000.f);
 
-    static size_t _3DTo1DIndex(const size_t xIndex, 
-                               const size_t yIndex, 
-                               const size_t zIndex,
-                               const glm::uvec3 &dimensions)
+    static uint32_t _3DTo1DIndex(const uint32_t xIndex, 
+                                 const uint32_t yIndex, 
+                                 const uint32_t zIndex,
+                                 const glm::vec3 &dimensions,
+                                 const float step)
     {
         // Always 0
         if (xIndex == 0 && 
@@ -24,10 +25,11 @@ namespace Utility
             return 0;
         }
 
-        const glm::uvec3 sqrDimensions = dimensions * dimensions;
+        const glm::vec3 scaledDimensions = dimensions / step;
+        const glm::vec3 sqrDimensions = scaledDimensions * scaledDimensions;
 
         // Convert 3D array indexes into a 1D array index
-        return (zIndex * sqrDimensions.x) + (yIndex * dimensions.y) + xIndex;
+        return (uint32_t)((zIndex * sqrDimensions.x) + (yIndex * scaledDimensions.y) + xIndex);
     }
 
     /// <summary>
