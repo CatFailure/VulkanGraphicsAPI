@@ -91,7 +91,7 @@ namespace SolEngine
         // ===============                    =========================
         //          \                                     | CopyBuffer()
         //           ----XX----                           V
-        //              ¬      \            ==============================
+        //              Â¬      \            ==============================
         //   Can't map Host      ---------> | Vertex/Index Buffer Memory |
         //   Memory directly                ==============================
         //   to Device Local Memory!         (Optimal Device Local Memory)
@@ -104,7 +104,7 @@ namespace SolEngine
                                 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
         stagingBuffer.Map();
-        stagingBuffer.WriteToBuffer((void *)pVertices);
+        stagingBuffer.WriteToBuffer((void *)vertices.data());
 
         // Create buffer in Device Local Memory
         _pVertexBuffer = std::make_unique<SolBuffer>(_rSolDevice,
@@ -145,7 +145,7 @@ namespace SolEngine
         // ===============                    =========================
         //          \                                     | CopyBuffer()
         //           ----XX----                           V
-        //              ¬      \            ==============================
+        //              Â¬      \            ==============================
         //   Can't map Host      ---------> | Vertex/Index Buffer Memory |
         //   Memory directly                ==============================
         //   to Device Local Memory!         (Optimal Device Local Memory)
@@ -158,7 +158,7 @@ namespace SolEngine
                                 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
         stagingBuffer.Map();
-        stagingBuffer.WriteToBuffer((void *)pIndices);
+        stagingBuffer.WriteToBuffer((void *)indices.data());
 
         // Create buffer in Device Local Memory
         _pIndexBuffer = std::make_unique<SolBuffer>(_rSolDevice,
