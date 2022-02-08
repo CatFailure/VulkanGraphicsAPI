@@ -1,5 +1,4 @@
 #pragma once
-#include "Vector.hpp"
 
 namespace SolEngine::Math
 {
@@ -19,8 +18,8 @@ namespace SolEngine::Math
               height(height_)
         {}
 
-        Rect(const Vector2<_Ty> &position, 
-             const Vector2<_Ty> &size)
+        Rect(const glm::vec2 &position, 
+             const glm::vec2 &size)
             : left(position.x), 
               top(position.y), 
               width(size.x), 
