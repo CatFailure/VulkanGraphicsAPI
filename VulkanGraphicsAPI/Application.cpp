@@ -123,9 +123,9 @@ void Application::SetupCamera()
         .fovDeg = 50.f
     };
 
-    _solCamera.SetProjectionInfo(projInfo);
-    _solCamera.SetPosition({ 0, 0, -50.f });
-    _solCamera.LookAt(_solCamera.GetPosition() + VEC3_FORWARD);   // Look forwards
+    _solCamera.SetProjectionInfo(projInfo)
+              .SetPosition({ 0, 0, -25.f })
+              .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
 void Application::SetupMarchingCubesManager()
