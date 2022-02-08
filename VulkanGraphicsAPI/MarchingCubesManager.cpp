@@ -53,6 +53,11 @@ namespace SolEngine::Manager
 
     std::shared_ptr<SolModel> MarchingCubesManager::CreateModel()
     {
+        if (_vertices.empty())
+        {
+            return nullptr;
+        }
+
         return std::make_shared<SolModel>(_rSolDevice, 
                                           _vertices.data(), 
                                           (uint32_t)_vertices.size());
