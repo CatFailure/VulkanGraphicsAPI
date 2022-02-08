@@ -5,7 +5,7 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[Development] Marching Cubes",
+		.windowTitle	  = "[Bug Fix] Fix Step",
 		.windowClassName  = L"VulkanWindowClass",
 		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",

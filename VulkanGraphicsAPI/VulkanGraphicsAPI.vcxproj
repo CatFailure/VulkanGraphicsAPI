@@ -385,6 +385,7 @@
   <ItemGroup>
     <ClInclude Include="Application.hpp" />
     <ClInclude Include="ApplicationData.hpp" />
+    <ClInclude Include="Axis.hpp" />
     <ClInclude Include="CameraProjectionInfo.hpp" />
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
@@ -408,6 +409,7 @@
     <ClInclude Include="MarchingCubesHelpers.hpp" />
     <ClInclude Include="MarchingCubesRenderSystem.hpp" />
     <ClInclude Include="MatrixUtility.hpp" />
+    <ClInclude Include="MemoryHelpers.hpp" />
     <ClInclude Include="pch.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
