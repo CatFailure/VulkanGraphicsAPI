@@ -82,10 +82,10 @@ namespace SolEngine::Manager
                              const float *pZVertices = &_cubes.pAllZVertices[zIndex * CUBE_VERTEX_COUNT];
                              float       *pIsoValues = &_cubes.pAllIsoValues[isoValuesIndex * CUBE_VERTEX_COUNT];
 
-                             VerticesToIsoValues2(pXVertices, 
-                                                  pYVertices, 
-                                                  pZVertices, 
-                                                  pIsoValues);
+                             VerticesToIsoValues(pXVertices, 
+                                                 pYVertices, 
+                                                 pZVertices, 
+                                                 pIsoValues);
 
                              ++isoValuesGeneratedCount;
                          });

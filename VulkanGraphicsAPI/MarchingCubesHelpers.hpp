@@ -51,20 +51,6 @@ namespace Utility
     {
         for (size_t i = 0; i < CUBE_VERTEX_COUNT; ++i)
         {
-            CoordToIsoValue(pXVertices[i], 
-                            pYVertices[i], 
-                            pZVertices[i], 
-                            &pOutIsoValues[i]);
-        }
-    }
-
-    static void VerticesToIsoValues2(const float *pXVertices, 
-                                     const float *pYVertices, 
-                                     const float *pZVertices,
-                                     float *pOutIsoValues)
-    {
-        for (size_t i = 0; i < CUBE_VERTEX_COUNT; ++i)
-        {
             CoordToIsoValue(*(pXVertices + i), 
                             *(pYVertices + i), 
                             *(pZVertices + i), 
