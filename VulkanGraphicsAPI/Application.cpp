@@ -81,7 +81,7 @@ void Application::Update(const float deltaTime)
 
     for (SolGameObject &rGameObject : _gameObjects)
     {
-        rGameObject.transform.rotation.y += 1.f * deltaTime;
+        rGameObject.transform.rotation.y += .5f * deltaTime;
     }
 }
 
@@ -124,7 +124,7 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo);
-    _solCamera.SetPosition({ 0, 0, -15.f });
+    _solCamera.SetPosition({ 0, 0, -50.f });
     _solCamera.LookAt(_solCamera.GetPosition() + VEC3_FORWARD);   // Look forwards
 }
 
