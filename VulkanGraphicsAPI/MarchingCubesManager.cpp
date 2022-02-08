@@ -8,20 +8,20 @@ namespace SolEngine::Manager
     {}
 
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
-                                               const glm::uvec3 &dimensions)
+                                               const glm::vec3 &dimensions)
         : _rSolDevice(rDevice)
     {
         SetDimensions(dimensions);
     }
 
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
-                                               const glm::uint scalarDimensions)
+                                               const int scalarDimensions)
         : _rSolDevice(rDevice)
     {
         SetDimensions(scalarDimensions);
     }
 
-    void MarchingCubesManager::SetDimensions(const glm::uvec3 &dimensions)
+    void MarchingCubesManager::SetDimensions(const glm::vec3 &dimensions)
     {
         DBG_ASSERT_MSG(IsWithinMaxCubeCount(dimensions.x), 
                        "Too many Cubes!");
@@ -32,11 +32,11 @@ namespace SolEngine::Manager
         DBG_ASSERT_MSG(IsWithinMaxCubeCount(dimensions.z), 
                        "Too many Cubes!");
 
+        _dimensions = dimensions;
+
         DimensionsToBounds(dimensions, 
                            &_minBounds, 
                            &_maxBounds);
-
-        _dimensions = dimensions;
 
         GenerateVertices<Axis::X>(_cubes.pAllXVertices, _minBounds.x, _maxBounds.x, Cubes::STEP);
         GenerateVertices<Axis::Y>(_cubes.pAllYVertices, _minBounds.y, _maxBounds.y, Cubes::STEP);
@@ -46,7 +46,7 @@ namespace SolEngine::Manager
         March();
     }
 
-    void MarchingCubesManager::SetDimensions(const glm::uint scalarDimensions)
+    void MarchingCubesManager::SetDimensions(const int scalarDimensions)
     {
         SetDimensions(glm::uvec3(scalarDimensions));
     }
@@ -90,8 +90,10 @@ namespace SolEngine::Manager
                              ++isoValuesGeneratedCount;
                          });
 
-        printf_s("Generated: %u Iso Values\n", 
-                 isoValuesGeneratedCount);
+        printf_s("Generated: %u Iso Values\nMin value: %f\nMaxValue: %f\n", 
+                 isoValuesGeneratedCount, 
+                 MinIsoValueGenerated, 
+                 MaxIsoValueGenerated);
     }
 
     void MarchingCubesManager::March()

@@ -51,7 +51,7 @@ namespace SolEngine
                 .sType                   = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO,
                 .depthClampEnable        = VK_FALSE,                    // Forces the z-component of glPosition to be between 0 and 1
                 .rasterizerDiscardEnable = VK_FALSE,
-                .polygonMode             = VK_POLYGON_MODE_FILL,
+                .polygonMode             = VK_POLYGON_MODE_LINE,        // VK_POLYGON_MODE_FILL
                 .cullMode                = VK_CULL_MODE_BACK_BIT,       // Face-culling
                 .frontFace               = VK_FRONT_FACE_COUNTER_CLOCKWISE,
                 .depthBiasEnable         = VK_FALSE,                    // Used to ensure that shadows in a scene are displayed properly

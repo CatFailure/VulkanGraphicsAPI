@@ -25,11 +25,11 @@ namespace SolEngine::Manager
         typedef std::function<void(const size_t, const size_t, const size_t)> TraverseCubesCallback_t;
 
         MarchingCubesManager(SolDevice &rDevice);
-        MarchingCubesManager(SolDevice &rDevice, const glm::uvec3 &dimensions);
-        MarchingCubesManager(SolDevice &rDevice, const glm::uint scalarDimensions);
+        MarchingCubesManager(SolDevice &rDevice, const glm::vec3 &dimensions);
+        MarchingCubesManager(SolDevice &rDevice, int scalarDimensions);
 
-        void SetDimensions(const glm::uvec3 &dimensions);
-        void SetDimensions(const glm::uint scalarDimensions);
+        void SetDimensions(const glm::vec3 &dimensions);
+        void SetDimensions(const int scalarDimensions);
 
         std::shared_ptr<SolModel> CreateModel();
 
@@ -37,7 +37,7 @@ namespace SolEngine::Manager
         virtual void Update(const float deltaTime) override;
 
     private:
-        bool IsWithinMaxCubeCount(const size_t count) const { return !((count / Cubes::STEP) > MAX_CUBES_COUNT); }
+        bool IsWithinMaxCubeCount(const size_t count) const { return !((count / Cubes::STEP) > MAX_CUBES_PER_AXIS_COUNT); }
 
         void GenerateIsoValues();
         void March();
@@ -51,10 +51,10 @@ namespace SolEngine::Manager
         SolDevice &_rSolDevice;
         Cubes      _cubes;
 
-        float _isoLevel      { 2.f };
-        bool  _isInterpolated{ true };
+        float _isoLevel      { 2.5f };
+        bool  _isInterpolated{ false };
 
-        glm::uvec3 _dimensions{ 0 };
+        glm::vec3 _dimensions{ 0 };
         glm::vec3  _minBounds { 0 };
         glm::vec3  _maxBounds { 0 };
 

@@ -9,6 +9,8 @@ using namespace SolEngine::Enumeration;
 
 namespace Utility
 {
+    static float MinIsoValueGenerated(1000.f), MaxIsoValueGenerated(-1000.f);
+
     static size_t _3DTo1DIndex(const size_t xIndex, 
                                const size_t yIndex, 
                                const size_t zIndex,
@@ -39,9 +41,19 @@ namespace Utility
         const float sqrX = x * x;
         const float sqrY = y * y;
         const float sqrZ = z * z;
+        const float generatedIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
+
+        if (generatedIsoValue < MinIsoValueGenerated)
+        {
+            MinIsoValueGenerated = generatedIsoValue;
+        }
+        else if (generatedIsoValue > MaxIsoValueGenerated)
+        {
+            MaxIsoValueGenerated = generatedIsoValue;
+        }
 
         // Creates a sphere
-        *pOutIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
+        *pOutIsoValue = generatedIsoValue;
     }
 
     static void VerticesToIsoValues(const float *pXVertices, 
