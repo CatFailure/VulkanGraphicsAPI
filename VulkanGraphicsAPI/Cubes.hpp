@@ -39,54 +39,27 @@ namespace SolEngine::DOD
 
         void AllocateDataArrays()
         {
-            AlignedMallocContiguous2DArray2(pXPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AlignedMallocContiguous2DArray2(pYPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AlignedMallocContiguous2DArray2(pZPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AlignedMallocContiguous2DArray2(pIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
-
-            AlignedMallocContiguous2DArray(ppXPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AlignedMallocContiguous2DArray(ppYPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AlignedMallocContiguous2DArray(ppZPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AlignedMallocContiguous2DArray(ppIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray(pAllXVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray(pAllYVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray(pAllZVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray(pAllIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
         }
 
         static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
 
-        float *pXPositions;     // [row_index * CUBE_VERTEX_COUNT + column_index]
-        float *pYPositions;
-        float *pZPositions;
-        float *pIsoValues;
-
-        // https://stackoverflow.com/a/29375830
-        float **ppXPositions;
-        float **ppYPositions;
-        float **ppZPositions;
-        float **ppIsoValues;    // Index first subscript using _3DTo1DIndex
+        float *pAllXVertices; // All cubes vertices along x-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
+        float *pAllYVertices; // All cubes vertices along y-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
+        float *pAllZVertices; // All cubes vertices along z-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
+        float *pAllIsoValues;  // Stores all isoValues for every cubes vertices
 
     private:
         // Inherited via IDisposable
         virtual void Dispose() override
         {
-            FreeAlignedMallocArray(pXPositions);
-            FreeAlignedMallocArray(pYPositions);
-            FreeAlignedMallocArray(pZPositions);
-            FreeAlignedMallocArray(pIsoValues);
-
-            // X-Positions
-            FreeAlignedMallocArray(ppXPositions[0]);
-            FreeAlignedMallocArray(ppXPositions);
-
-            // Y-Positions
-            FreeAlignedMallocArray(ppYPositions[0]);
-            FreeAlignedMallocArray(ppYPositions);
-
-            // Z-Positions
-            FreeAlignedMallocArray(ppZPositions[0]);
-            FreeAlignedMallocArray(ppZPositions);
-
-            // Iso Values
-            FreeAlignedMallocArray(ppIsoValues[0]);
-            FreeAlignedMallocArray(ppIsoValues);
+            FreeAlignedMallocArray(pAllXVertices);    // X-Positions
+            FreeAlignedMallocArray(pAllYVertices);    // Y-Positions
+            FreeAlignedMallocArray(pAllZVertices);    // Z-Positions
+            FreeAlignedMallocArray(pAllIsoValues);     // Iso Values
         }
     };
 }

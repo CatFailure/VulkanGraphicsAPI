@@ -39,13 +39,9 @@ namespace SolEngine::Manager
         _dimensions = dimensions;
         _pCubes      = std::make_unique<Cubes>(_minBounds, _maxBounds);
 
-        GenerateVertices2<Axis::X>(_pCubes->pXPositions, _minBounds.x, _maxBounds.x, Cubes::STEP);
-        GenerateVertices2<Axis::Y>(_pCubes->pYPositions, _minBounds.y, _maxBounds.y, Cubes::STEP);
-        GenerateVertices2<Axis::Z>(_pCubes->pZPositions, _minBounds.z, _maxBounds.z, Cubes::STEP);
-
-        GenerateVertices<Axis::X>(_pCubes->ppXPositions, _minBounds.x, _maxBounds.x, Cubes::STEP);
-        GenerateVertices<Axis::Y>(_pCubes->ppYPositions, _minBounds.y, _maxBounds.y, Cubes::STEP);
-        GenerateVertices<Axis::Z>(_pCubes->ppZPositions, _minBounds.z, _maxBounds.z, Cubes::STEP);
+        GenerateVertices<Axis::X>(_pCubes->pAllXVertices, _minBounds.x, _maxBounds.x, Cubes::STEP);
+        GenerateVertices<Axis::Y>(_pCubes->pAllYVertices, _minBounds.y, _maxBounds.y, Cubes::STEP);
+        GenerateVertices<Axis::Z>(_pCubes->pAllZVertices, _minBounds.z, _maxBounds.z, Cubes::STEP);
 
         GenerateIsoValues();
         March();
@@ -80,11 +76,17 @@ namespace SolEngine::Manager
                                                                         yIndex, 
                                                                         zIndex, 
                                                                         _dimensions);
-                         
-                             VerticesToIsoValues(_pCubes->ppXPositions[xIndex], 
-                                                 _pCubes->ppYPositions[yIndex], 
-                                                 _pCubes->ppZPositions[zIndex], 
-                                                 _pCubes->ppIsoValues[isoValuesIndex]);
+
+                             // Grab vertices
+                             const float *pXVertices = &_pCubes->pAllXVertices[xIndex * CUBE_VERTEX_COUNT];
+                             const float *pYVertices = &_pCubes->pAllYVertices[yIndex * CUBE_VERTEX_COUNT];
+                             const float *pZVertices = &_pCubes->pAllZVertices[zIndex * CUBE_VERTEX_COUNT];
+                             float       *pIsoValues = &_pCubes->pAllIsoValues[isoValuesIndex * CUBE_VERTEX_COUNT];
+
+                             VerticesToIsoValues2(pXVertices, 
+                                                  pYVertices, 
+                                                  pZVertices, 
+                                                  pIsoValues);
 
                              ++isoValuesGeneratedCount;
                          });
@@ -104,7 +106,7 @@ namespace SolEngine::Manager
                                                                         zIndex, 
                                                                         _dimensions);
 
-                             const float *pIsoValues = _pCubes->ppIsoValues[isoValuesIndex];
+                             const float *pIsoValues = &_pCubes->pAllIsoValues[isoValuesIndex * CUBE_VERTEX_COUNT];
 
                              // Calculate the cube index to pull from the Tri-table
                              const uint32_t cubeIndex = GetCubeIndex(pIsoValues);
@@ -182,11 +184,16 @@ namespace SolEngine::Manager
                                                           const size_t zIndex, 
                                                           const std::pair<Index_t, Index_t> &cornerIndices)
     {
-        const float *pXVertices = _pCubes->ppXPositions[xIndex];
-        const float *pYVertices = _pCubes->ppYPositions[yIndex];
-        const float *pZVertices = _pCubes->ppZPositions[zIndex];
-        const Index_t indexA    = cornerIndices.first;
-        const Index_t indexB    = cornerIndices.second;
+        const size_t xRowWidth   = xIndex * CUBE_VERTEX_COUNT;
+        const size_t yRowWidth   = yIndex * CUBE_VERTEX_COUNT;
+        const size_t zRowWidth   = zIndex * CUBE_VERTEX_COUNT;
+
+        const float *pXVertices = &_pCubes->pAllXVertices[xRowWidth];
+        const float *pYVertices = &_pCubes->pAllYVertices[yRowWidth];
+        const float *pZVertices = &_pCubes->pAllZVertices[zRowWidth];
+
+        const Index_t indexA = cornerIndices.first;
+        const Index_t indexB = cornerIndices.second;
 
         if (_isInterpolated)
         {
