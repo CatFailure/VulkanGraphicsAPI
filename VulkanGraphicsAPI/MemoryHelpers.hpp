@@ -13,6 +13,9 @@ namespace Utility
     static void FreeAlignedMallocArray(_Ty *pArr)
     {
         _aligned_free(pArr);
+
+        printf_s("%s - Disposed: %p.\n", __FUNCTION__, pArr);
+
         pArr = nullptr;
     }
 
