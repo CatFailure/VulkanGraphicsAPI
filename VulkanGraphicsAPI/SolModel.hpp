@@ -18,7 +18,7 @@ namespace SolEngine
 
         // Inherited via IDisposable
         virtual void Dispose() override;
-
+        
     private:
         void CreateVertexBuffers(const Vertex *pVertices, const uint32_t vertexCount);
         void CreateIndexBuffer(const UIndex_t *pIndices, const uint32_t indexCount = 0);
