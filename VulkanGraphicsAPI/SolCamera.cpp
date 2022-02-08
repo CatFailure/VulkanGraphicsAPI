@@ -18,10 +18,10 @@ namespace SolEngine
         SetPerspectiveProjection(_projectionInfo);
     }
 
-    void SolCamera::SetPerspectiveProjection(const float fovDeg,
-                                             const float aspect, 
-                                             const float near,
-                                             const float far)
+    SolCamera &SolCamera::SetPerspectiveProjection(const float fovDeg,
+                                                   const float aspect, 
+                                                   const float near,
+                                                   const float far)
     {
         DBG_ASSERT_MSG((glm::abs(aspect - glm::epsilon<float>()) > 0.f),
             "Aspect must be greater than 0!");
@@ -46,25 +46,38 @@ namespace SolEngine
         _projectionMatrix[2][2] = far / (far - near);
         _projectionMatrix[2][3] = 1.f;
         _projectionMatrix[3][2] = -(far * near) / (far - near);
+
+        return *this;
     }
 
-    void SolCamera::SetPerspectiveProjection(const PerspectiveProjectionInfo &projInfo)
+    SolCamera &SolCamera::SetPerspectiveProjection(const PerspectiveProjectionInfo &projInfo)
     {
-        SetPerspectiveProjection(projInfo.fovDeg, 
-                                 _rRenderer.GetAspectRatio(),
-                                 projInfo.near, 
-                                 projInfo.far);
+        return SetPerspectiveProjection(projInfo.fovDeg, 
+                                        _rRenderer.GetAspectRatio(),
+                                        projInfo.near, 
+                                        projInfo.far);
     }
 
-    void SolCamera::LookAt(const glm::vec3 &target, const glm::vec3 &up)
+    SolCamera &SolCamera::LookAt(const glm::vec3 &target, const glm::vec3 &up)
     {
         _viewMatrix = glm::lookAtLH(_position, target, up);
+
+        return *this;
     }
 
-    void SolCamera::SetProjectionInfo(const PerspectiveProjectionInfo &info)
+    SolCamera &SolCamera::SetProjectionInfo(const PerspectiveProjectionInfo &info)
     {
         _projectionInfo = info;
 
         SetPerspectiveProjection(_projectionInfo);
+
+        return *this;
+    }
+
+    SolCamera &SolCamera::SetPosition(const glm::vec3 &position)
+    { 
+        _position = position; 
+
+        return *this;
     }
 }
