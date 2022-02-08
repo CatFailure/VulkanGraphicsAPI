@@ -59,7 +59,7 @@ namespace SolEngine::DOD
             FreeAlignedMallocArray(pAllXVertices);    // X-Positions
             FreeAlignedMallocArray(pAllYVertices);    // Y-Positions
             FreeAlignedMallocArray(pAllZVertices);    // Z-Positions
-            FreeAlignedMallocArray(pAllIsoValues);     // Iso Values
+            FreeAlignedMallocArray(pAllIsoValues);    // Iso Values
         }
     };
 }
