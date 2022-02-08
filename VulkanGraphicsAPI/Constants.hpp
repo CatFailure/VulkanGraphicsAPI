@@ -14,7 +14,7 @@ namespace SolEngine::Data
 
     static constexpr float SPHERE_RADIUS{ 7.5f };
 
-    static constexpr uint32_t MAX_CUBES_PER_AXIS_COUNT{ 1 << 8 };   // Currently can only go upto 10 (16,777,216 Cubes)
+    static constexpr uint32_t MAX_CUBES_PER_AXIS_COUNT{ 1 << 6 };   // Currently can only go upto 10 (16,777,216 Cubes)
     static constexpr uint32_t MAX_CUBES_COUNT{ MAX_CUBES_PER_AXIS_COUNT * MAX_CUBES_PER_AXIS_COUNT * MAX_CUBES_PER_AXIS_COUNT };
     static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
     static constexpr uint32_t CUBE_INDEX_COUNT{ 36U };

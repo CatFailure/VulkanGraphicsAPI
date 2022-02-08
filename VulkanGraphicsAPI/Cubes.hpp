@@ -39,6 +39,11 @@ namespace SolEngine::DOD
 
         void AllocateDataArrays()
         {
+            AlignedMallocContiguous2DArray2(pXPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray2(pYPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray2(pZPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            AlignedMallocContiguous2DArray2(pIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
+
             AlignedMallocContiguous2DArray(ppXPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
             AlignedMallocContiguous2DArray(ppYPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
             AlignedMallocContiguous2DArray(ppZPositions, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
@@ -46,6 +51,11 @@ namespace SolEngine::DOD
         }
 
         static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
+
+        float *pXPositions;     // [row_index * CUBE_VERTEX_COUNT + column_index]
+        float *pYPositions;
+        float *pZPositions;
+        float *pIsoValues;
 
         // https://stackoverflow.com/a/29375830
         float **ppXPositions;
@@ -57,6 +67,11 @@ namespace SolEngine::DOD
         // Inherited via IDisposable
         virtual void Dispose() override
         {
+            FreeAlignedMallocArray(pXPositions);
+            FreeAlignedMallocArray(pYPositions);
+            FreeAlignedMallocArray(pZPositions);
+            FreeAlignedMallocArray(pIsoValues);
+
             // X-Positions
             FreeAlignedMallocArray(ppXPositions[0]);
             FreeAlignedMallocArray(ppXPositions);
