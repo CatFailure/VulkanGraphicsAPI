@@ -11,31 +11,8 @@ namespace SolEngine::DOD
 {
     struct Cubes : private IDisposable
     {
-        Cubes() = delete;
-
-        Cubes(const glm::vec3 &minBounds, 
-              const glm::vec3 &maxBounds)
-        {
-            AllocateDataArrays();
-        }
-
-        Cubes(const glm::vec3 &dimensions)
-            : Cubes(glm::vec3(0, 0, 0), 
-                    glm::vec3(dimensions.x, 
-                              -dimensions.y, 
-                              dimensions.z))
-        {}
-
-        Cubes(const float scalarDimensions)
-            : Cubes({ scalarDimensions, 
-                      scalarDimensions, 
-                      scalarDimensions })
-        {}
-
-        ~Cubes()
-        {
-            Dispose();
-        }
+        Cubes()  { AllocateDataArrays(); }
+        ~Cubes() { Dispose(); }
 
         void AllocateDataArrays()
         {

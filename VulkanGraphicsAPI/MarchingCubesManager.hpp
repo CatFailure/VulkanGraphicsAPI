@@ -49,6 +49,7 @@ namespace SolEngine::Manager
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
         SolDevice &_rSolDevice;
+        Cubes      _cubes;
 
         float _isoLevel      { 2.f };
         bool  _isInterpolated{ true };
@@ -57,7 +58,6 @@ namespace SolEngine::Manager
         glm::vec3  _minBounds { 0 };
         glm::vec3  _maxBounds { 0 };
 
-        std::unique_ptr<Cubes> _pCubes{ nullptr };
-        std::vector<Vertex>    _vertices; // TEMP
+        std::vector<Vertex> _vertices; // TEMP
     };
 }
