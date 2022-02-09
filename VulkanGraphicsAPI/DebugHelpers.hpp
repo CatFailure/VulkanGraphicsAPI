@@ -1,5 +1,11 @@
 #pragma once
-//#define ENABLE_LOGGING    // Debug Logging
+#define WIN32_LEAN_AND_MEAN
+//#define ENABLE_LOGGING        // Debug Logging
+
+#include <stdarg.h>             // Variable argument functions, e.g., dprintf(..)
+#include <stdio.h>              // vsprintf_s
+#include <windows.h>            // OutputDebugStringA
+#include <vulkan/vulkan.hpp>
 
 namespace Utility
 {
