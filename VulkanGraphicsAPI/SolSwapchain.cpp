@@ -1,16 +1,15 @@
-#include "pch.hpp"
 #include "SolSwapchain.hpp"
 
 namespace SolEngine
 {
     SolSwapchain::SolSwapchain(SolDevice &rSolDevice,
-                                           const VkExtent2D &windowExtent)
+                               const VkExtent2D &windowExtent)
         : SolSwapchain(rSolDevice, windowExtent, nullptr)
     {}
 
     SolSwapchain::SolSwapchain(SolDevice &rSolDevice, 
-                                           const VkExtent2D &windowExtent, 
-                                           std::shared_ptr<SolSwapchain> pOldSwapchain)
+                               const VkExtent2D &windowExtent, 
+                               std::shared_ptr<SolSwapchain> pOldSwapchain)
         : _rSolDevice(rSolDevice),
           _windowExtent(windowExtent),
           _pOldSwapchain(pOldSwapchain)
@@ -123,8 +122,8 @@ namespace SolEngine
     }
 
     void SolSwapchain::CreateSwapchain(uint32_t *pOutImageCount,
-                                             VkSurfaceFormatKHR *pOutSurfaceImageFormat, 
-                                             VkExtent2D *pOutSwapchainExtent)
+                                       VkSurfaceFormatKHR *pOutSurfaceImageFormat, 
+                                       VkExtent2D *pOutSwapchainExtent)
     {
         const SwapchainSupportDetails swapchainSupportDetails = _rSolDevice.QueryPhysicalDeviceSwapchainSupport();
         QueueFamilyIndices            queueFamilies           = _rSolDevice.QueryPhysicalDeviceQueueFamilies();

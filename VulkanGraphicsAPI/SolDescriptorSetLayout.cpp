@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "SolDescriptorSetLayout.hpp"
 
 namespace SolEngine::Descriptors

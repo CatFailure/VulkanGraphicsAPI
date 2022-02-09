@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "Application.hpp"
 
 Application::Application(const ApplicationData &appData)

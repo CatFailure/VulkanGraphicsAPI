@@ -84,9 +84,6 @@
     <ClCompile Include="SolModel.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
-    <ClCompile Include="SolGameObject.cpp">
-      <Filter>SolEngine</Filter>
-    </ClCompile>
     <ClCompile Include="SolRenderer.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
@@ -96,14 +93,8 @@
     <ClCompile Include="SolCamera.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Rect.cpp">
-      <Filter>SolEngine\Math</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="SolEvent.cpp">
-      <Filter>SolEngine\Events</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
