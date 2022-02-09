@@ -1,12 +1,10 @@
 #pragma once
 #include "SolClock.hpp"
-#include "SolModel.hpp"
 #include "SolGameObject.hpp"
 #include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
 #include "MarchingCubesManager.hpp"
-#include "MarchingCubesRenderSystem.hpp"
 
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
@@ -28,8 +26,6 @@ public:
     ~Application();
         
     void Run();
-
-    std::shared_ptr<SolModel> CreateCubeModel(SolDevice &rSolDevice);
 
 private:
     // Inherited via IDisposable

@@ -1,4 +1,6 @@
 #pragma once
+#define GLM_FORCE_RADIANS	// Make glm functions expect angles in radians instead of degrees
+
 #include "SolModel.hpp"
 #include "MatrixUtility.hpp"
 

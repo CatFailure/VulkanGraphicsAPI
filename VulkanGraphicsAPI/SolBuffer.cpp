@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "SolBuffer.hpp"
 
 namespace SolEngine

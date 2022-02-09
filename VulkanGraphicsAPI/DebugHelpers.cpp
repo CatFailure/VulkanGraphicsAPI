@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "DebugHelpers.hpp"
 
 namespace Utility

@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "GenericRenderSystem.hpp"
 
 namespace SolEngine::Rendering

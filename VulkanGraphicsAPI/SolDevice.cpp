@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "SolDevice.hpp"
 
 namespace SolEngine

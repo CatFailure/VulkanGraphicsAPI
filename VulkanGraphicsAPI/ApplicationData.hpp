@@ -1,4 +1,9 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
+
+#include <vulkan/vulkan.hpp>
+#include <glm/glm.hpp>
+#include <windows.h>
 
 namespace SolEngine::Data
 {

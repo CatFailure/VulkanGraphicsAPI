@@ -3,6 +3,9 @@
 #include "SolGameObject.hpp"
 #include "SolPipeline.hpp"
 #include "SolCamera.hpp"
+#include "SimplePushConstantData.hpp"
+
+using namespace SolEngine::Data;
 
 namespace SolEngine::Rendering
 {

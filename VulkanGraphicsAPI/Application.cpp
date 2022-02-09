@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "Application.hpp"
 
 Application::Application(const ApplicationData &appData)
@@ -51,13 +50,6 @@ void Application::Run()
 
     // Make CPU wait until all GPU operations have completed.
     vkDeviceWaitIdle(_solDevice.GetDevice());
-}
-
-std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rSolDevice)
-{    
-    return std::make_shared<SolModel>(rSolDevice, 
-                                      CUBE_VERTICES, 
-                                      CUBE_VERTEX_COUNT * CUBE_VERTEX_COUNT);
 }
 
 void Application::Dispose()

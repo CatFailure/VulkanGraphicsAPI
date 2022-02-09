@@ -63,9 +63,6 @@
     <ClCompile Include="DebugHelpers.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SolDevice.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
@@ -84,9 +81,6 @@
     <ClCompile Include="SolModel.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
-    <ClCompile Include="SolGameObject.cpp">
-      <Filter>SolEngine</Filter>
-    </ClCompile>
     <ClCompile Include="SolRenderer.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
@@ -96,14 +90,8 @@
     <ClCompile Include="SolCamera.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Rect.cpp">
-      <Filter>SolEngine\Math</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="SolEvent.cpp">
-      <Filter>SolEngine\Events</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
@@ -153,9 +141,6 @@
     <ClCompile Include="MarchingCubesManager.cpp">
       <Filter>SolEngine\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="MarchingCubesRenderSystem.cpp">
-      <Filter>SolEngine\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="GenericRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClCompile>
@@ -163,9 +148,6 @@
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SolDevice.hpp">
       <Filter>SolEngine</Filter>
@@ -298,9 +280,6 @@
     </ClInclude>
     <ClInclude Include="MarchingCubesManager.hpp">
       <Filter>SolEngine\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="MarchingCubesRenderSystem.hpp">
-      <Filter>SolEngine\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="GenericRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>

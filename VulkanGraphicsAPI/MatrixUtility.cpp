@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "MatrixUtility.hpp"
 
 glm::mat4 SolEngine::Math::FastTransformMatrix(const glm::vec3 &position,

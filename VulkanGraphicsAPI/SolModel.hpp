@@ -1,5 +1,6 @@
 #pragma once
 #include "SolBuffer.hpp"
+#include "Constants.hpp"
 
 using namespace SolEngine::Data;
 
