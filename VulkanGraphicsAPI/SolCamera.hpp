@@ -1,6 +1,10 @@
 #pragma once
+#define GLM_FORCE_RADIANS	// Make glm functions expect angles in radians instead of degrees
+
 #include "SolRenderer.hpp"
 #include "CameraProjectionInfo.hpp"
+#include "IMonoBehaviour.hpp"
+#include "Constants.hpp"
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Interface;

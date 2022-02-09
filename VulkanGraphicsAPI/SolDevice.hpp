@@ -1,7 +1,8 @@
 #pragma once
 #define ENABLE_VULKAN_DEBUG_CALLBACK
 
-#include "ApplicationData.hpp"
+#include <set>
+
 #include "SolWindow.hpp"
 #include "SwapchainSupportDetails.hpp"
 #include "QueueFamilyIndices.hpp"

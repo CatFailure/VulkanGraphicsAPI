@@ -1,6 +1,4 @@
 #pragma once
-#include <glm/glm.hpp>
-
 #include "Vertex.hpp"
 
 typedef uint32_t UIndex_t;
@@ -17,88 +15,9 @@ namespace SolEngine::Data
     static constexpr uint32_t MAX_CUBES_PER_AXIS_COUNT{ 1 << 6 };   // Currently can only go upto 9 (134,217,728 Cubes)
     static constexpr uint32_t MAX_CUBES_COUNT{ MAX_CUBES_PER_AXIS_COUNT * MAX_CUBES_PER_AXIS_COUNT * MAX_CUBES_PER_AXIS_COUNT };
     static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
-    static constexpr uint32_t CUBE_INDEX_COUNT{ 36U };
 
     static constexpr size_t TRI_TABLE_COUNT{ 256 };
     static constexpr size_t TRI_TABLE_INDEX_COUNT{ 16 };
-
-    static constexpr Vertex CUBE_VERTICES[CUBE_VERTEX_COUNT * CUBE_INDEX_COUNT]
-    {
-        { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
-        { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
-        { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
-
-        { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
-        { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
-        { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
-
-        { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
-        { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
-        { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
-
-        { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
-        { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
-        { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
-
-        { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
-        { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
-        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
-
-        { { 1.f, 0.f, 0.f }, { .8f, .8f, .1f } },       // 1
-        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
-        { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
-
-        { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
-        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
-        { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
-
-        { { 1.f, 0.f, -1.f }, { 1.f, .6f, .1f } },      // 2
-        { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
-        { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
-
-        { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
-        { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
-        { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
-
-        { { 0.f, 0.f, -1.f }, { .8f, .1f, .1f } },      // 3
-        { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
-        { { 0.f, 0.f, 0.f }, { .9f, .9f, .9f } },       // 0
-
-        { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
-        { { 0.f, -1.f, -1.f }, { .13f, .02f, .3f } },   // 7
-        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
-
-        { { 0.f, -1.f, 0.f }, { .1f, .1f, .8f } },      // 4
-        { { 1.f, -1.f, -1.f }, { .24f, .36f, .98f } },  // 6
-        { { 1.f, -1.f, 0.f }, { .98f, .27f, .41f } },   // 5
-    };
-
-	static constexpr UIndex_t CUBE_INDICES[CUBE_INDEX_COUNT]
-	{
-        // Bottom-Face
-        0, 1, 2,
-        0, 2, 3,
-
-        // Back-Face
-        0, 4, 5,
-        0, 5, 1,
-
-        // Right-Face
-        1, 5, 6,
-        1, 6, 2,
-
-        // Front-Face
-        2, 6, 7,
-        2, 7, 3,
-
-        // Left-Face
-        3, 7, 4,
-        3, 4, 0,
-
-        // Top-Face
-        4, 7, 6,
-        4, 6, 5,
-	};
 
     static constexpr Index_t TRI_TABLE[TRI_TABLE_COUNT][TRI_TABLE_INDEX_COUNT]
     {

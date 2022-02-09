@@ -1,9 +1,8 @@
 #pragma once
+#define VK_USE_PLATFORM_WIN32_KHR
 #define GLFW_INCLUDE_VULKAN
 
-#include <vulkan/vulkan.hpp>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 
 #include "ApplicationData.hpp"
 #include "DebugHelpers.hpp"

@@ -52,13 +52,6 @@ void Application::Run()
     vkDeviceWaitIdle(_solDevice.GetDevice());
 }
 
-std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rSolDevice)
-{    
-    return std::make_shared<SolModel>(rSolDevice, 
-                                      CUBE_VERTICES, 
-                                      CUBE_VERTEX_COUNT * CUBE_VERTEX_COUNT);
-}
-
 void Application::Dispose()
 {
     // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice

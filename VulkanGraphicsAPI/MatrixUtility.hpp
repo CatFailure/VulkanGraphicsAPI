@@ -1,4 +1,7 @@
 #pragma once
+#define GLM_FORCE_RADIANS	// Make glm functions expect angles in radians instead of degrees
+
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace SolEngine::Math
 {

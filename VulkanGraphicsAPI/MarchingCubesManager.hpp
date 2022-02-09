@@ -1,7 +1,8 @@
 #pragma once
 #include "Cubes.hpp"
-#include "SolDevice.hpp"
 #include "SolModel.hpp"
+#include "IMonoBehaviour.hpp"
+#include "MarchingCubesHelpers.hpp"
 
 using namespace SolEngine::DOD;
 using namespace SolEngine::Interface;

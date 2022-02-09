@@ -1,6 +1,5 @@
 #pragma once
-
-using namespace Utility;
+#include <chrono>
 
 namespace SolEngine
 {

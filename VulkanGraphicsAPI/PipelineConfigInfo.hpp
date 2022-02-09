@@ -1,4 +1,6 @@
 #pragma once
+#include <vulkan/vulkan.hpp>
+
 namespace SolEngine::Data
 {
     // Data specifying how to configure the pipeline
