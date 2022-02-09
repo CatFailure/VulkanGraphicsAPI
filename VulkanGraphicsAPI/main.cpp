@@ -5,7 +5,7 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[08/02/22] Fix 0 Vertices Exception",
+		.windowTitle	  = "[09/02/22] Print Vertex and Tri Count",
 		.windowClassName  = L"VulkanWindowClass",
 		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",

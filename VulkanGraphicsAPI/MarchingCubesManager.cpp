@@ -128,6 +128,9 @@ namespace SolEngine::Manager
                                             yIndex, 
                                             zIndex);
                          });
+
+        printf_s("Created: %zu Vertices\n", _vertices.size());
+        printf_s("Created: %zu Tris\n", _vertices.size() / 3);
     }
 
     uint32_t MarchingCubesManager::GetCubeIndex(const float *pIsoValues)
