@@ -1,9 +1,11 @@
 #pragma once
 #define WIN32_LEAN_AND_MEAN
+#define GLFW_INCLUDE_VULKAN
 
+#include <windows.h>
 #include <vulkan/vulkan.hpp>
 #include <glm/glm.hpp>
-#include <windows.h>
+#include <GLFW/glfw3.h>
 
 namespace SolEngine::Data
 {
