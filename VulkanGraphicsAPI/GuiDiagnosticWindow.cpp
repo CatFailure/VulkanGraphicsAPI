@@ -28,8 +28,9 @@ namespace SolEngine::GUI
                          MIN_DELTA_TIME_SCALE, 
                          MAX_DELTA_TIME_SCALE);
 
-        ImGui::Text("Vert Count: %u", _diagnosticData.vertexCount);
-        ImGui::Text("Tri Count: %u", _diagnosticData.triCount);
+        ImGui::Text("Vert Count: %zu", _diagnosticData.vertexCount);
+        ImGui::Text("Tri Count: %zu", _diagnosticData.triCount);
+        ImGui::Text("Allocated Memory (Bytes): %zu", _diagnosticData.memoryAllocatedBytes);
 
         ImGui::End();
     }

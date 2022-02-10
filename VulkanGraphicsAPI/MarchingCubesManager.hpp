@@ -51,9 +51,9 @@ namespace SolEngine::Manager
 
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
-        SolDevice &_rSolDevice;
-        DiagnosticData &_rDiagnosticData;
-        Cubes      _cubes;
+        SolDevice &            _rSolDevice;
+        DiagnosticData &       _rDiagnosticData;
+        std::unique_ptr<Cubes> _pCubes{ nullptr };
 
         float _isoLevel      { -2.5f };
         bool  _isInterpolated{ true };

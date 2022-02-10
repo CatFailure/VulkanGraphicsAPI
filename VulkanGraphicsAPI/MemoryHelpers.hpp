@@ -21,9 +21,9 @@ namespace Utility
     }
 
     template<typename _Ty>
-    static void AlignedMallocContiguous2DArray(_Ty *&prArr, 
-                                               const size_t rowCount, 
-                                               const size_t columnCount)
+    static size_t AlignedMallocContiguous2DArray(_Ty *&prArr, 
+                                                 const size_t rowCount, 
+                                                 const size_t columnCount)
     {
         // Must be indexed via my_matrix[row_index * row_length + column_index];
         const size_t sizeOfType = sizeof(_Ty);
@@ -34,5 +34,7 @@ namespace Utility
 
         DBG_ASSERT_MSG((prArr != nullptr), "_aligned_malloc Failed!");
         printf_s("%s - Allocated: %zu bytes.\n", __FUNCTION__, sizeOfArrayBytes);
+
+        return sizeOfArrayBytes;
     }
 }
