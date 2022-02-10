@@ -50,12 +50,8 @@ namespace SolEngine
         VkFormat FindSupportedFormat(const std::vector<VkFormat> &candidates, const VkImageTiling tiling, const VkFormatFeatureFlags features) const;
 
         // Buffer Helper Functions
-        // TEMP BEGIN: THESE BEING IN THE GLOBAL SCOPE IS TEMP WHILST
-        // FIGURING OUT IMGUI.
         VkCommandBuffer BeginOneTimeCommandBuffer();
         void            EndOneTimeCommandBuffer(const VkCommandBuffer commandBuffer);
-        // TEMP END
-
         void            CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
         void            CopyBuffer(const VkBuffer srcBuffer, const VkBuffer dstBuffer, const VkDeviceSize size);
 
