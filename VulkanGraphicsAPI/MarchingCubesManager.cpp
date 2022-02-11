@@ -44,16 +44,23 @@ namespace SolEngine::Manager
                            &_minBounds, 
                            &_maxBounds);
 
-        GenerateVertices<Axis::X>(_pCubes->pAllXVertices, _minBounds.x, _maxBounds.x, Cubes::STEP);
-        GenerateVertices<Axis::Y>(_pCubes->pAllYVertices, _minBounds.y, _maxBounds.y, Cubes::STEP);
-        GenerateVertices<Axis::Z>(_pCubes->pAllZVertices, _minBounds.z, _maxBounds.z, Cubes::STEP);
+        const size_t floatSizeBytes = sizeof(float);
+        size_t bytesInUse(0);
+        uint32_t isoValuesCount(0);
 
-        GenerateIsoValues();
+        bytesInUse += GenerateVertices<Axis::X>(_pCubes->pAllXVertices, _minBounds.x, _maxBounds.x, Cubes::STEP);
+        bytesInUse += GenerateVertices<Axis::Y>(_pCubes->pAllYVertices, _minBounds.y, _maxBounds.y, Cubes::STEP);
+        bytesInUse += GenerateVertices<Axis::Z>(_pCubes->pAllZVertices, _minBounds.z, _maxBounds.z, Cubes::STEP);
+
+        isoValuesCount = GenerateIsoValues();
         March();
+
+        bytesInUse += floatSizeBytes * isoValuesCount;
 
         // Vertices aren't shared currently, so just div by 3 for tris
         _rDiagnosticData.vertexCount    = _vertices.size();
         _rDiagnosticData.triCount       = _rDiagnosticData.vertexCount / 3;
+        _rDiagnosticData.memoryUsedBytes = bytesInUse;
     }
 
     void MarchingCubesManager::SetDimensions(const int scalarDimensions)
@@ -78,9 +85,10 @@ namespace SolEngine::Manager
 
     }
 
-    void MarchingCubesManager::GenerateIsoValues()
+    uint32_t MarchingCubesManager::GenerateIsoValues()
     {
         uint32_t isoValuesGeneratedCount(0);
+
         TraverseAllCubes([this, &isoValuesGeneratedCount]
                          (const uint32_t xIndex, 
                           const uint32_t yIndex, 
@@ -103,13 +111,15 @@ namespace SolEngine::Manager
                                                  pZVertices, 
                                                  pIsoValues);
 
-                             ++isoValuesGeneratedCount;
+                             isoValuesGeneratedCount += CUBE_VERTEX_COUNT;
                          });
 
         printf_s("Generated: %u Iso Values\nMin value: %f\nMaxValue: %f\n", 
                  isoValuesGeneratedCount, 
                  MinIsoValueGenerated, 
                  MaxIsoValueGenerated);
+
+        return isoValuesGeneratedCount;
     }
 
     void MarchingCubesManager::March()

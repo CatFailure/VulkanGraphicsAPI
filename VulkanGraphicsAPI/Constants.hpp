@@ -6,7 +6,7 @@ typedef int32_t  Index_t;
 
 namespace SolEngine::Data
 {
-    static constexpr float TO_MILLISECONDS{ 1000.f };
+    static constexpr float SECONDS_TO_MILLISECONDS{ 1000.f };
 
 	static constexpr glm::vec3 VEC3_RIGHT  { 1.f, 0.f, 0.f };
 	static constexpr glm::vec3 VEC3_UP     { 0.f, -1.f, 0.f };

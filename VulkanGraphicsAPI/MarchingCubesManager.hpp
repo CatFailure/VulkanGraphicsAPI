@@ -42,7 +42,7 @@ namespace SolEngine::Manager
     private:
         bool IsWithinMaxCubeCount(const float axisSize) const { return !((uint32_t)(axisSize / Cubes::STEP) > MAX_CUBES_PER_AXIS_COUNT); }
 
-        void GenerateIsoValues();
+        uint32_t GenerateIsoValues();
         void March();
         uint32_t GetCubeIndex(const float *pIsoValues);
         void CreateVertices(const Index_t *pEdgeIndices, const float *pIsoValues, const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex);

@@ -69,6 +69,7 @@ namespace Utility
                             *(pYVertices + i), 
                             *(pZVertices + i), 
                             pOutIsoValues + i);
+
         }
     }
 
@@ -122,19 +123,26 @@ namespace Utility
         *pOutMaxBounds = glm::vec3(halfExtents.x, -halfExtents.y, halfExtents.z);
     }
 
+    /// <summary>
+    /// Generates Vertices along an axis
+    /// </summary>
+    /// <returns>Bytes used.</returns>
     template<Axis>
-    static void GenerateVertices(float *pOutPositions,
-                                 const float minValue, 
-                                 const float maxValue,
-                                 const float step) = delete;
+    static size_t GenerateVertices(float *pOutPositions,
+                                   const float minValue, 
+                                   const float maxValue,
+                                   const float step) = delete;
 
     template<>
-    static void GenerateVertices<Axis::X>(float *pOutXPositions,
-                                          const float minValue, 
-                                          const float maxValue,
-                                          const float step)
+    static size_t GenerateVertices<Axis::X>(float *pOutXPositions,
+                                            const float minValue, 
+                                            const float maxValue,
+                                            const float step)
     {
-        uint32_t rowIndex(0);
+        const size_t floatSizeBytes = sizeof(float);
+        size_t       bytesInUse     = 0;
+        uint32_t     rowIndex       = 0;
+
         for (float xPos = minValue; xPos < maxValue; xPos += step)
         {
             const float adjXPos     = xPos + step;
@@ -150,18 +158,24 @@ namespace Utility
             pOutXPositions[rowWidth + 7] = xPos;
 
             ++rowIndex;
+            bytesInUse += (floatSizeBytes * CUBE_VERTEX_COUNT);
         }
 
         printf_s("Generated %u X-Positions.\n", rowIndex);
+
+        return bytesInUse;
     }
 
     template<>
-    static void GenerateVertices<Axis::Y>(float *pOutYPositions,
-                                          const float minValue, 
-                                          const float maxValue,
-                                          const float step)
+    static size_t GenerateVertices<Axis::Y>(float *pOutYPositions,
+                                            const float minValue, 
+                                            const float maxValue,
+                                            const float step)
     {
-        uint32_t rowIndex(0);
+        const size_t floatSizeBytes = sizeof(float);
+        size_t       bytesInUse     = 0;
+        uint32_t     rowIndex       = 0;
+
         for (float yPos = minValue; yPos > maxValue; yPos -= step)
         {
             const float adjYPos     = yPos - step;
@@ -177,18 +191,24 @@ namespace Utility
             pOutYPositions[rowWidth + 7] = adjYPos;
 
             ++rowIndex;
+            bytesInUse += (floatSizeBytes * CUBE_VERTEX_COUNT);
         }
 
         printf_s("Generated %u Y-Positions.\n", rowIndex);
+
+        return bytesInUse;
     }
 
     template<>
-    static void GenerateVertices<Axis::Z>(float *pOutZPositions,
-                                          const float minValue, 
-                                          const float maxValue,
-                                          const float step)
+    static size_t GenerateVertices<Axis::Z>(float *pOutZPositions,
+                                            const float minValue, 
+                                            const float maxValue,
+                                            const float step)
     {
-        uint32_t rowIndex(0);
+        const size_t floatSizeBytes = sizeof(float);
+        size_t       bytesInUse     = 0;
+        uint32_t     rowIndex       = 0;
+
         for (float zPos = minValue; zPos < maxValue; zPos += step)
         {
             const float adjZPos     = zPos + step;
@@ -204,8 +224,11 @@ namespace Utility
             pOutZPositions[rowWidth + 7] = adjZPos;
 
             ++rowIndex;
+            bytesInUse += (floatSizeBytes * CUBE_VERTEX_COUNT);
         }
 
         printf_s("Generated %u Z-Positions.\n", rowIndex);
+
+        return bytesInUse;
     }
 }
