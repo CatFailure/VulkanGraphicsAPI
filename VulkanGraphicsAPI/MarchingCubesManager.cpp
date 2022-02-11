@@ -295,6 +295,7 @@ namespace SolEngine::Manager
 
     void MarchingCubesManager::UpdateGameObjectModel()
     {
+        // Any vertices to work with?
         if (_vertices.empty())
         {
             return;
@@ -305,6 +306,7 @@ namespace SolEngine::Manager
                                        _vertices.data(), 
                                        (uint32_t)_vertices.size());
 
+        // Any model to work with?
         if (marchingCubeModel == nullptr)
         {
             return;
