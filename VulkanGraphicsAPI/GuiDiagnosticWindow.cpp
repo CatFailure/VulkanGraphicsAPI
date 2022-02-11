@@ -17,9 +17,15 @@ namespace SolEngine::GUI
 
     void GuiDiagnosticWindow::RenderWindowContents()
     {
+        const float framesPerSecond = 1.f / _diagnosticData.deltaTimeSeconds;
+        const float deltaTimeMS     = _diagnosticData.deltaTimeSeconds * SECONDS_TO_MILLISECONDS;
+
         ImGui::Begin(_windowTitle, &_isActive, _windowFlags);
 
-        ImGui::Text("Framerate: %.3f", 1.f / _diagnosticData.deltaTimeSeconds);
+        ImGui::Text("Framerate: %.3f (%.3f ms)", 
+                    framesPerSecond, 
+                    deltaTimeMS);
+
         ImGui::PlotLines("Frame Delta (ms)",
                          _deltaTimeBacklog, 
                          MAX_BACKLOGGED_DELTA_TIMES,
@@ -27,6 +33,13 @@ namespace SolEngine::GUI
                          NULL, 
                          MIN_DELTA_TIME_SCALE, 
                          MAX_DELTA_TIME_SCALE);
+
+        ImGui::Text("Vert Count: %zu", _diagnosticData.vertexCount);
+        ImGui::Text("Tri Count: %zu", _diagnosticData.triCount);
+        ImGui::Text("In-use Memory (Bytes): %zu/%zu (%.3f%%)", 
+                    _diagnosticData.memoryUsedBytes, 
+                    _diagnosticData.memoryAllocatedBytes,
+                    _diagnosticData.memoryUsedPercentage);
 
         ImGui::End();
     }
@@ -48,6 +61,6 @@ namespace SolEngine::GUI
 
         // Commit new deltatime at the end
         _deltaTimeBacklog[MAX_BACKLOGGED_DELTA_TIMES - 1] = 
-            _diagnosticData.deltaTimeSeconds * TO_MILLISECONDS;
+            _diagnosticData.deltaTimeSeconds * SECONDS_TO_MILLISECONDS;
     }
 }

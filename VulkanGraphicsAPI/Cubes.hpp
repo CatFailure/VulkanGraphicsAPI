@@ -1,25 +1,36 @@
 #pragma once
 #include "Constants.hpp"
 #include "MemoryHelpers.hpp"
+#include "DiagnosticData.hpp"
 #include "IDisposable.hpp"
 
 using namespace Utility;
 using namespace SolEngine::Data;
+using namespace SolEngine::GUI::Data;
 using namespace SolEngine::Interface;
 
 namespace SolEngine::DOD
 {
     struct Cubes : private IDisposable
     {
-        Cubes()  { AllocateDataArrays(); }
+        Cubes(DiagnosticData &rDiagnosticData)
+            : _rDiagnosticData(rDiagnosticData) 
+        {
+            AllocateDataArrays(); 
+        }
+
         ~Cubes() { Dispose(); }
 
         void AllocateDataArrays()
         {
-            AlignedMallocContiguous2DArray(pAllXVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AlignedMallocContiguous2DArray(pAllYVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AlignedMallocContiguous2DArray(pAllZVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
-            AlignedMallocContiguous2DArray(pAllIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
+            size_t memoryAllocatedBytes(0);
+
+            memoryAllocatedBytes += AlignedMallocContiguous2DArray(pAllXVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            memoryAllocatedBytes += AlignedMallocContiguous2DArray(pAllYVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            memoryAllocatedBytes += AlignedMallocContiguous2DArray(pAllZVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
+            memoryAllocatedBytes += AlignedMallocContiguous2DArray(pAllIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
+
+            _rDiagnosticData.memoryAllocatedBytes = memoryAllocatedBytes;
         }
 
         static constexpr float STEP{ 1.f };  // Adjusts the resolution of the nodes
@@ -38,5 +49,7 @@ namespace SolEngine::DOD
             FreeAlignedMallocArray(pAllZVertices);  // Z-Positions
             FreeAlignedMallocArray(pAllIsoValues);  // Iso Values
         }
+
+        DiagnosticData &_rDiagnosticData;
     };
 }

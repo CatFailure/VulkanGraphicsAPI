@@ -3,8 +3,10 @@
 #include "SolModel.hpp"
 #include "IMonoBehaviour.hpp"
 #include "MarchingCubesHelpers.hpp"
+#include "DiagnosticData.hpp"
 
 using namespace SolEngine::DOD;
+using namespace SolEngine::GUI::Data;
 using namespace SolEngine::Interface;
 using namespace Utility;
 
@@ -25,9 +27,9 @@ namespace SolEngine::Manager
         /// </summary>
         typedef std::function<void(const uint32_t, const uint32_t, const uint32_t)> TraverseCubesCallback_t;
 
-        MarchingCubesManager(SolDevice &rDevice);
-        MarchingCubesManager(SolDevice &rDevice, const glm::vec3 &dimensions);
-        MarchingCubesManager(SolDevice &rDevice, int scalarDimensions);
+        MarchingCubesManager(SolDevice &rDevice, DiagnosticData& rDiagnosticData);
+        MarchingCubesManager(SolDevice &rDevice, DiagnosticData& rDiagnosticData, const glm::vec3 &dimensions);
+        MarchingCubesManager(SolDevice &rDevice, DiagnosticData& rDiagnosticData, const int scalarDimensions);
 
         void SetDimensions(const glm::vec3 &dimensions);
         void SetDimensions(const int scalarDimensions);
@@ -40,7 +42,7 @@ namespace SolEngine::Manager
     private:
         bool IsWithinMaxCubeCount(const float axisSize) const { return !((uint32_t)(axisSize / Cubes::STEP) > MAX_CUBES_PER_AXIS_COUNT); }
 
-        void GenerateIsoValues();
+        uint32_t GenerateIsoValues();
         void March();
         uint32_t GetCubeIndex(const float *pIsoValues);
         void CreateVertices(const Index_t *pEdgeIndices, const float *pIsoValues, const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex);
@@ -49,8 +51,9 @@ namespace SolEngine::Manager
 
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
-        SolDevice &_rSolDevice;
-        Cubes      _cubes;
+        SolDevice &            _rSolDevice;
+        DiagnosticData &       _rDiagnosticData;
+        std::unique_ptr<Cubes> _pCubes{ nullptr };
 
         float _isoLevel      { -2.5f };
         bool  _isInterpolated{ true };
