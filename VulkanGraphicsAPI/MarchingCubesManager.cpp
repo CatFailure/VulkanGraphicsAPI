@@ -83,18 +83,6 @@ namespace SolEngine::Manager
         SetDimensions(glm::uvec3(scalarDimensions));
     }
 
-    std::shared_ptr<SolModel> MarchingCubesManager::CreateModel()
-    {
-        if (_vertices.empty())
-        {
-            return nullptr;
-        }
-
-        return std::make_shared<SolModel>(_rSolDevice, 
-                                          _vertices.data(), 
-                                          (uint32_t)_vertices.size());
-    }
-
     void MarchingCubesManager::Update(const float deltaTime)
     {
 
@@ -166,15 +154,7 @@ namespace SolEngine::Manager
                                             zIndex);
                          });
 
-        // TEMP
-        std::shared_ptr<SolModel> marchingCubeModel = CreateModel();
-
-        if (marchingCubeModel == nullptr)
-        {
-            return;
-        }
-
-        _marchingCubesObject.SetModel(marchingCubeModel);
+        UpdateGameObjectModel();
 
         printf_s("Created: %zu Vertices\n", _vertices.size());
         printf_s("Created: %zu Tris\n", _vertices.size() / 3);
@@ -311,5 +291,25 @@ namespace SolEngine::Manager
 
             ++zIndex;
         }
+    }
+
+    void MarchingCubesManager::UpdateGameObjectModel()
+    {
+        if (_vertices.empty())
+        {
+            return;
+        }
+
+        std::shared_ptr<SolModel> marchingCubeModel = 
+            std::make_shared<SolModel>(_rSolDevice, 
+                                       _vertices.data(), 
+                                       (uint32_t)_vertices.size());
+
+        if (marchingCubeModel == nullptr)
+        {
+            return;
+        }
+
+        _marchingCubesObject.SetModel(marchingCubeModel);
     }
 }

@@ -37,8 +37,6 @@ namespace SolEngine::Manager
         void SetDimensions(const glm::vec3 &dimensions);
         void SetDimensions(const int scalarDimensions);
 
-        std::shared_ptr<SolModel> CreateModel();
-
         // Inherited via IMonoBehaviour
         virtual void Update(const float deltaTime) override;
 
@@ -53,6 +51,8 @@ namespace SolEngine::Manager
                                         const uint32_t zIndex, const std::pair<Index_t, Index_t> &cornerIndices);
 
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
+
+        void UpdateGameObjectModel();
 
         SolDevice &        _rSolDevice;
         DiagnosticData &   _rDiagnosticData;
