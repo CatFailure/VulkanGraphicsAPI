@@ -19,7 +19,6 @@ namespace SolEngine::GUI
     {
         const float framesPerSecond = 1.f / _diagnosticData.deltaTimeSeconds;
         const float deltaTimeMS     = _diagnosticData.deltaTimeSeconds * SECONDS_TO_MILLISECONDS;
-        const float memoryUsedPercent = ((float)_diagnosticData.memoryUsedBytes / _diagnosticData.memoryAllocatedBytes) * 100.f;
 
         ImGui::Begin(_windowTitle, &_isActive, _windowFlags);
 
@@ -40,7 +39,7 @@ namespace SolEngine::GUI
         ImGui::Text("In-use Memory (Bytes): %zu/%zu (%.3f%%)", 
                     _diagnosticData.memoryUsedBytes, 
                     _diagnosticData.memoryAllocatedBytes,
-                    memoryUsedPercent);
+                    _diagnosticData.memoryUsedPercentage);
 
         ImGui::End();
     }

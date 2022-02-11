@@ -58,9 +58,10 @@ namespace SolEngine::Manager
         bytesInUse += floatSizeBytes * isoValuesCount;
 
         // Vertices aren't shared currently, so just div by 3 for tris
-        _rDiagnosticData.vertexCount    = _vertices.size();
-        _rDiagnosticData.triCount       = _rDiagnosticData.vertexCount / 3;
-        _rDiagnosticData.memoryUsedBytes = bytesInUse;
+        _rDiagnosticData.vertexCount          = _vertices.size();
+        _rDiagnosticData.triCount             = _rDiagnosticData.vertexCount / 3;
+        _rDiagnosticData.memoryUsedBytes      = bytesInUse;
+        _rDiagnosticData.memoryUsedPercentage = ((float)bytesInUse / _rDiagnosticData.memoryAllocatedBytes) * 100.f;
     }
 
     void MarchingCubesManager::SetDimensions(const int scalarDimensions)
