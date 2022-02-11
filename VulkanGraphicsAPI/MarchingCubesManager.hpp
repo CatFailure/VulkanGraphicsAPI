@@ -32,7 +32,7 @@ namespace SolEngine::Manager
         MarchingCubesManager(SolDevice &rDevice, DiagnosticData &rDiagnosticData, MarchingCubesData &rMarchingCubesData, const glm::vec3 &dimensions);
         MarchingCubesManager(SolDevice &rDevice, DiagnosticData &rDiagnosticData, MarchingCubesData &rMarchingCubesData, const int scalarDimensions);
 
-        SolGameObject GetGameObject() const { return _marchingCubesObject; }
+        SolGameObject &GetGameObject() { return _marchingCubesObject; }
 
         void SetDimensions(const glm::vec3 &dimensions);
         void SetDimensions(const int scalarDimensions);

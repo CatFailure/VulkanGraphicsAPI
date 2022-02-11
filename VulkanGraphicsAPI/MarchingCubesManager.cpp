@@ -166,6 +166,16 @@ namespace SolEngine::Manager
                                             zIndex);
                          });
 
+        // TEMP
+        std::shared_ptr<SolModel> marchingCubeModel = CreateModel();
+
+        if (marchingCubeModel == nullptr)
+        {
+            return;
+        }
+
+        _marchingCubesObject.SetModel(marchingCubeModel);
+
         printf_s("Created: %zu Vertices\n", _vertices.size());
         printf_s("Created: %zu Tris\n", _vertices.size() / 3);
     }

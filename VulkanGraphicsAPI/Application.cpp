@@ -71,12 +71,10 @@ void Application::Update(const float deltaTime)
     _pGuiWindowManager->Update(deltaTime);
 #endif  // !DISABLE_IM_GUI
 
-    _pMarchingCubesManager->
-
-    for (SolGameObject &rGameObject : _marchingCubesObject)
-    {
-        rGameObject.transform.rotation.y += .5f * deltaTime;
-    }
+    _pMarchingCubesManager->GetGameObject()
+                          .transform
+                          .rotation
+                          .y += .5f * deltaTime;
 }
 
 void Application::Render()
@@ -91,7 +89,9 @@ void Application::Render()
 
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-    renderSystem.RenderGameObjects(_solCamera, commandBuffer, _pMarchingCubesManager->GetGameObject());
+    renderSystem.RenderGameObject(_solCamera, 
+                                  commandBuffer, 
+                                  _pMarchingCubesManager->GetGameObject());
 
 #ifndef DISABLE_IM_GUI
     // Render Dear ImGui...
@@ -146,15 +146,13 @@ void Application::CreateGuiWindowManager()
 
 void Application::LoadGameObjects()
 {
-    std::shared_ptr<SolModel> marchingCubeModel = _pMarchingCubesManager->CreateModel();
+    //std::shared_ptr<SolModel> marchingCubeModel = _pMarchingCubesManager->CreateModel();
 
-    if (marchingCubeModel == nullptr)
-    {
-        return;
-    }
+    //if (marchingCubeModel == nullptr)
+    //{
+    //    return;
+    //}
 
-    SolGameObject marchingCubeGameObject = SolGameObject::CreateGameObject();
-    marchingCubeGameObject.SetModel(marchingCubeModel);
-
-    _marchingCubesObject.push_back(std::move(marchingCubeGameObject));
+    //SolGameObject marchingCubeGameObject = SolGameObject::CreateGameObject();
+    //marchingCubeGameObject.SetModel(marchingCubeModel);
 }
