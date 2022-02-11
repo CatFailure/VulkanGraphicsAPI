@@ -3,6 +3,7 @@
 #include "SolDevice.hpp"
 #include "SolRenderer.hpp"
 #include "GuiDiagnosticWindow.hpp"
+#include "GuiMarchingCubesWindow.hpp"
 
 using namespace SolEngine::Interface;
 

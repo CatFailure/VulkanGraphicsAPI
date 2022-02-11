@@ -4,11 +4,11 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[11/02/22] ImGui - Diagnostic Window",
+		.windowTitle	  = "[11/02/22] ImGui - Marching Cubes Window",
 		.windowClassName  = L"VulkanWindowClass",
 		.engineName		  = "SolEngine",
 		.appName		  = "VulkanGraphicsAPI",
-		.windowDimensions = glm::uvec2(800, 600)
+		.windowDimensions = glm::uvec2(1280, 720)
 	};
 
 	Application application(appData);

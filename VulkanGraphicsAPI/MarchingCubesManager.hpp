@@ -1,9 +1,10 @@
 #pragma once
 #include "Cubes.hpp"
-#include "SolModel.hpp"
+#include "SolGameObject.hpp"
 #include "IMonoBehaviour.hpp"
 #include "MarchingCubesHelpers.hpp"
 #include "DiagnosticData.hpp"
+#include "MarchingCubesData.hpp"
 
 using namespace SolEngine::DOD;
 using namespace SolEngine::GUI::Data;
@@ -27,9 +28,11 @@ namespace SolEngine::Manager
         /// </summary>
         typedef std::function<void(const uint32_t, const uint32_t, const uint32_t)> TraverseCubesCallback_t;
 
-        MarchingCubesManager(SolDevice &rDevice, DiagnosticData& rDiagnosticData);
-        MarchingCubesManager(SolDevice &rDevice, DiagnosticData& rDiagnosticData, const glm::vec3 &dimensions);
-        MarchingCubesManager(SolDevice &rDevice, DiagnosticData& rDiagnosticData, const int scalarDimensions);
+        MarchingCubesManager(SolDevice &rDevice, DiagnosticData &rDiagnosticData, MarchingCubesData &rMarchingCubesData);
+        MarchingCubesManager(SolDevice &rDevice, DiagnosticData &rDiagnosticData, MarchingCubesData &rMarchingCubesData, const glm::vec3 &dimensions);
+        MarchingCubesManager(SolDevice &rDevice, DiagnosticData &rDiagnosticData, MarchingCubesData &rMarchingCubesData, const int scalarDimensions);
+
+        SolGameObject GetGameObject() const { return _marchingCubesObject; }
 
         void SetDimensions(const glm::vec3 &dimensions);
         void SetDimensions(const int scalarDimensions);
@@ -40,7 +43,7 @@ namespace SolEngine::Manager
         virtual void Update(const float deltaTime) override;
 
     private:
-        bool IsWithinMaxCubeCount(const float axisSize) const { return !((uint32_t)(axisSize / Cubes::STEP) > MAX_CUBES_PER_AXIS_COUNT); }
+        bool IsWithinMaxCubeCount(const float axisSize) const { return !((uint32_t)(axisSize / _rMarchingCubesData.step) > MAX_CUBES_PER_AXIS_COUNT); }
 
         uint32_t GenerateIsoValues();
         void March();
@@ -51,12 +54,14 @@ namespace SolEngine::Manager
 
         void TraverseAllCubes(const TraverseCubesCallback_t &callback);
 
-        SolDevice &            _rSolDevice;
-        DiagnosticData &       _rDiagnosticData;
+        SolDevice &        _rSolDevice;
+        DiagnosticData &   _rDiagnosticData;
+        MarchingCubesData &_rMarchingCubesData;
+
         std::unique_ptr<Cubes> _pCubes{ nullptr };
+        SolGameObject _marchingCubesObject;
 
         float _isoLevel      { -2.5f };
-        bool  _isInterpolated{ true };
 
         glm::vec3 _dimensions{ 0 };
         glm::vec3 _minBounds { 0 };

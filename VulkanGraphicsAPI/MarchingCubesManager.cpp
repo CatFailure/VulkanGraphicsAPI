@@ -3,26 +3,39 @@
 namespace SolEngine::Manager
 {
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
-                                               DiagnosticData &rDiagnosticData)
+                                               DiagnosticData &rDiagnosticData,
+                                               MarchingCubesData &rMarchingCubesData)
         : _rSolDevice(rDevice),
           _rDiagnosticData(rDiagnosticData),
-          _pCubes(std::make_unique<Cubes>(rDiagnosticData))
-    {}
+          _rMarchingCubesData(rMarchingCubesData),
+          _pCubes(std::make_unique<Cubes>(rDiagnosticData)),
+          _marchingCubesObject(SolGameObject::CreateGameObject())
+    {
+        _rMarchingCubesData.onIsInterpolatedChangedEvent
+                           .AddListener([this]() 
+                           {
+                               March();
+                           });
+    }
 
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice,
                                                DiagnosticData &rDiagnosticData, 
+                                               MarchingCubesData &rMarchingCubesData,
                                                const glm::vec3 &dimensions)
         : MarchingCubesManager(rDevice, 
-                               rDiagnosticData)
+                               rDiagnosticData,
+                               rMarchingCubesData)
     {
         SetDimensions(dimensions);
     }
 
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
                                                DiagnosticData &rDiagnosticData, 
+                                               MarchingCubesData &rMarchingCubesData,
                                                const int scalarDimensions)
         : MarchingCubesManager(rDevice, 
-                               rDiagnosticData)
+                               rDiagnosticData,
+                               rMarchingCubesData)
     {
         SetDimensions(scalarDimensions);
     }
@@ -44,13 +57,14 @@ namespace SolEngine::Manager
                            &_minBounds, 
                            &_maxBounds);
 
+        const float step = _rMarchingCubesData.step;
         const size_t floatSizeBytes = sizeof(float);
         size_t bytesInUse(0);
         uint32_t isoValuesCount(0);
 
-        bytesInUse += GenerateVertices<Axis::X>(_pCubes->pAllXVertices, _minBounds.x, _maxBounds.x, Cubes::STEP);
-        bytesInUse += GenerateVertices<Axis::Y>(_pCubes->pAllYVertices, _minBounds.y, _maxBounds.y, Cubes::STEP);
-        bytesInUse += GenerateVertices<Axis::Z>(_pCubes->pAllZVertices, _minBounds.z, _maxBounds.z, Cubes::STEP);
+        bytesInUse += GenerateVertices<Axis::X>(_pCubes->pAllXVertices, _minBounds.x, _maxBounds.x, step);
+        bytesInUse += GenerateVertices<Axis::Y>(_pCubes->pAllYVertices, _minBounds.y, _maxBounds.y, step);
+        bytesInUse += GenerateVertices<Axis::Z>(_pCubes->pAllZVertices, _minBounds.z, _maxBounds.z, step);
 
         isoValuesCount = GenerateIsoValues();
         March();
@@ -99,7 +113,7 @@ namespace SolEngine::Manager
                                                                           yIndex, 
                                                                           zIndex, 
                                                                           _dimensions,
-                                                                          Cubes::STEP);
+                                                                          _rMarchingCubesData.step);
 
                              // Grab vertices
                              const float *pXVertices = &_pCubes->pAllXVertices[xIndex * CUBE_VERTEX_COUNT];
@@ -125,6 +139,8 @@ namespace SolEngine::Manager
 
     void MarchingCubesManager::March()
     {
+        _vertices.clear();
+
         TraverseAllCubes([this](const uint32_t xIndex, 
                                 const uint32_t yIndex, 
                                 const uint32_t zIndex) 
@@ -133,7 +149,7 @@ namespace SolEngine::Manager
                                                                           yIndex, 
                                                                           zIndex, 
                                                                           _dimensions,
-                                                                          Cubes::STEP);
+                                                                          _rMarchingCubesData.step);
 
                              const float *pIsoValues = &_pCubes->pAllIsoValues[isoValuesIndex * CUBE_VERTEX_COUNT];
 
@@ -189,7 +205,7 @@ namespace SolEngine::Manager
                 CornerIndicesFromEdgeIndex(pEdgeIndices[i]);
 
             // Find edge midpoint
-            const glm::vec3 vertex = GetEdgeVertexPosition(_isInterpolated,
+            const glm::vec3 vertex = GetEdgeVertexPosition(_rMarchingCubesData.isInterpolated,
                                                            pIsoValues,
                                                            xIndex,
                                                            yIndex,
@@ -227,7 +243,7 @@ namespace SolEngine::Manager
         const Index_t indexA = cornerIndices.first;
         const Index_t indexB = cornerIndices.second;
 
-        if (_isInterpolated)
+        if (_rMarchingCubesData.isInterpolated)
         {
             const glm::vec3 vertexA
             {
@@ -263,13 +279,15 @@ namespace SolEngine::Manager
     {
         // We have to index this way to account for resolution (step)
         uint32_t zIndex(0);
-        for (float z(_minBounds.z); z < _maxBounds.z; z += Cubes::STEP)
+        const float step = _rMarchingCubesData.step;
+
+        for (float z(_minBounds.z); z < _maxBounds.z; z += step)
         {
             uint32_t yIndex(0);
-            for (float y(_minBounds.y); y > _maxBounds.y; y -= Cubes::STEP)
+            for (float y(_minBounds.y); y > _maxBounds.y; y -= step)
             {
                 uint32_t xIndex(0);
-                for (float x(_minBounds.x); x < _maxBounds.x; x += Cubes::STEP)
+                for (float x(_minBounds.x); x < _maxBounds.x; x += step)
                 {
                     callback(xIndex, 
                              yIndex, 

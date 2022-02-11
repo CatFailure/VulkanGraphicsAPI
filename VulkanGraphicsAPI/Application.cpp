@@ -71,7 +71,9 @@ void Application::Update(const float deltaTime)
     _pGuiWindowManager->Update(deltaTime);
 #endif  // !DISABLE_IM_GUI
 
-    for (SolGameObject &rGameObject : _gameObjects)
+    _pMarchingCubesManager->
+
+    for (SolGameObject &rGameObject : _marchingCubesObject)
     {
         rGameObject.transform.rotation.y += .5f * deltaTime;
     }
@@ -89,7 +91,7 @@ void Application::Render()
 
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-    renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
+    renderSystem.RenderGameObjects(_solCamera, commandBuffer, _pMarchingCubesManager->GetGameObject());
 
 #ifndef DISABLE_IM_GUI
     // Render Dear ImGui...
@@ -123,7 +125,10 @@ void Application::SetupCamera()
 void Application::SetupMarchingCubesManager()
 {
     // Create a 5x5x5 grid for testing...
-    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice, _diagnosticData, 20);
+    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice,
+                                                                    _diagnosticData,
+                                                                    _marchingCubesData,
+                                                                    20);
 }
 
 #ifndef DISABLE_IM_GUI
@@ -135,6 +140,7 @@ void Application::CreateGuiWindowManager()
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
     _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _diagnosticData);
+    _pGuiWindowManager->CreateGuiWindow<GuiMarchingCubesWindow>("Marching Cubes Settings", true, 0, _marchingCubesData);
 }
 #endif // !DISABLE_IM_GUI
 
@@ -150,5 +156,5 @@ void Application::LoadGameObjects()
     SolGameObject marchingCubeGameObject = SolGameObject::CreateGameObject();
     marchingCubeGameObject.SetModel(marchingCubeModel);
 
-    _gameObjects.push_back(std::move(marchingCubeGameObject));
+    _marchingCubesObject.push_back(std::move(marchingCubeGameObject));
 }
