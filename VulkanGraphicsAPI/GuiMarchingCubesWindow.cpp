@@ -7,7 +7,9 @@ namespace SolEngine::GUI
                                                    const ImGuiWindowFlags windowFlags,
                                                    MarchingCubesData &rMarchingCubesData)
         : _rRealtimeMarchingCubesData(rMarchingCubesData),
-          IGuiWindow(windowTitle, isActive, windowFlags)
+          IGuiWindow(windowTitle, 
+                     isActive, 
+                     windowFlags)
     {
     }
 
