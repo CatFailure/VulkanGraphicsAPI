@@ -11,11 +11,7 @@ namespace SolEngine::Manager
           _pCubes(std::make_unique<Cubes>(rDiagnosticData)),
           _marchingCubesObject(SolGameObject::CreateGameObject())
     {
-        _rMarchingCubesData.onIsInterpolatedChangedEvent
-                           .AddListener([this]() 
-                           {
-                               March();
-                           });
+        SetupEventCallbacks();
     }
 
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice,
@@ -71,6 +67,9 @@ namespace SolEngine::Manager
 
         bytesInUse += floatSizeBytes * isoValuesCount;
 
+        const char *string = "ha";
+        string = "no";
+
         // Vertices aren't shared currently, so just div by 3 for tris
         _rDiagnosticData.vertexCount          = _vertices.size();
         _rDiagnosticData.triCount             = _rDiagnosticData.vertexCount / 3;
@@ -86,6 +85,21 @@ namespace SolEngine::Manager
     void MarchingCubesManager::Update(const float deltaTime)
     {
 
+    }
+
+    void MarchingCubesManager::SetupEventCallbacks()
+    {
+        _rMarchingCubesData.onIsInterpolatedChangedEvent
+                           .AddListener([this]() 
+                           {
+                               March();
+                           });
+
+        _rMarchingCubesData.onIsoLevelChangedEvent
+                           .AddListener([this]()
+                           {
+                               March();
+                           });
     }
 
     uint32_t MarchingCubesManager::GenerateIsoValues()
@@ -166,7 +180,7 @@ namespace SolEngine::Manager
 
         for (uint32_t i(0); i < CUBE_VERTEX_COUNT; ++i)
         {
-            if (!(pIsoValues[i] < _isoLevel))
+            if (!(pIsoValues[i] < _rMarchingCubesData.isoLevel))
             {
                 continue;
             }
@@ -253,7 +267,7 @@ namespace SolEngine::Manager
 
             const float interpScalar = CalculateInterpolationScalar(pIsoValues[indexA], 
                                                                     pIsoValues[indexB], 
-                                                                    _isoLevel);
+                                                                    _rMarchingCubesData.isoLevel);
 
             return vertexA + (vertexDistance * interpScalar);
         }

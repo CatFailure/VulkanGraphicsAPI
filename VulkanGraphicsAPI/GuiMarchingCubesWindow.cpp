@@ -18,8 +18,15 @@ namespace SolEngine::GUI
         if (ImGui::Checkbox("Use Interpolation?",
                             &_rRealtimeMarchingCubesData.isInterpolated))
         {
-            _rRealtimeMarchingCubesData.onIsInterpolatedChangedEvent
-                                       .Invoke();
+            _rRealtimeMarchingCubesData.onIsInterpolatedChangedEvent.Invoke();
+        } 
+
+        if (ImGui::SliderFloat("Iso Surface", 
+                               &_rRealtimeMarchingCubesData.isoLevel, 
+                               -15.f, 
+                               10.f))
+        {
+            _rRealtimeMarchingCubesData.onIsoLevelChangedEvent.Invoke();
         }
 
         ImGui::End();

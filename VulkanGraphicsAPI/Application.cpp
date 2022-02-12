@@ -89,14 +89,14 @@ void Application::Render()
 
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-    renderSystem.RenderGameObject(_solCamera, 
-                                  commandBuffer, 
-                                  _pMarchingCubesManager->GetGameObject());
-
 #ifndef DISABLE_IM_GUI
     // Render Dear ImGui...
     _pGuiWindowManager->Render(commandBuffer);
 #endif  // !DISABLE_IM_GUI
+
+    renderSystem.RenderGameObject(_solCamera, 
+                                  commandBuffer, 
+                                  _pMarchingCubesManager->GetGameObject());
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();

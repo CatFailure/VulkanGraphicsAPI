@@ -43,6 +43,8 @@ namespace SolEngine::Manager
     private:
         bool IsWithinMaxCubeCount(const float axisSize) const { return !((uint32_t)(axisSize / _rMarchingCubesData.step) > MAX_CUBES_PER_AXIS_COUNT); }
 
+        void SetupEventCallbacks();
+
         uint32_t GenerateIsoValues();
         void March();
         uint32_t GetCubeIndex(const float *pIsoValues);
@@ -60,8 +62,6 @@ namespace SolEngine::Manager
 
         std::unique_ptr<Cubes> _pCubes{ nullptr };
         SolGameObject _marchingCubesObject;
-
-        float _isoLevel      { -2.5f };
 
         glm::vec3 _dimensions{ 0 };
         glm::vec3 _minBounds { 0 };
