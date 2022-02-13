@@ -9,7 +9,7 @@ namespace SolEngine::GUI::Data
 	{
 		bool isInterpolated{ true };
 		float isoLevel	   { -2.5f };
-		float step		   { .5f };		// Adjusts the resolution of the nodes
+		float step		   { 1.f };		// Adjusts the resolution of the nodes
 
 		SolEvent<> onIsInterpolatedChangedEvent;
 		SolEvent<> onIsoLevelChangedEvent;
