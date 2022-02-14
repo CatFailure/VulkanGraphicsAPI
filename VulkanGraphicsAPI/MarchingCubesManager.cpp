@@ -53,10 +53,10 @@ namespace SolEngine::Manager
                            &_minBounds, 
                            &_maxBounds);
 
-        const float step = _rMarchingCubesData.step;
+        const float  step           = _rMarchingCubesData.step;
         const size_t floatSizeBytes = sizeof(float);
-        size_t bytesInUse(0);
-        uint32_t isoValuesCount(0);
+        size_t       bytesInUse     = 0;
+        uint32_t     isoValuesCount = 0;
 
         bytesInUse += GenerateVertices<Axis::X>(_pCubes->pAllXVertices, _minBounds.x, _maxBounds.x, step);
         bytesInUse += GenerateVertices<Axis::Y>(_pCubes->pAllYVertices, _minBounds.y, _maxBounds.y, step);
@@ -66,9 +66,6 @@ namespace SolEngine::Manager
         March();
 
         bytesInUse += floatSizeBytes * isoValuesCount;
-
-        const char *string = "ha";
-        string = "no";
 
         // Vertices aren't shared currently, so just div by 3 for tris
         _rDiagnosticData.vertexCount          = _vertices.size();
@@ -236,9 +233,9 @@ namespace SolEngine::Manager
                                                           const uint32_t zIndex, 
                                                           const std::pair<Index_t, Index_t> &cornerIndices)
     {
-        const uint32_t xRowWidth   = xIndex * CUBE_VERTEX_COUNT;
-        const uint32_t yRowWidth   = yIndex * CUBE_VERTEX_COUNT;
-        const uint32_t zRowWidth   = zIndex * CUBE_VERTEX_COUNT;
+        const uint32_t xRowWidth = xIndex * CUBE_VERTEX_COUNT;
+        const uint32_t yRowWidth = yIndex * CUBE_VERTEX_COUNT;
+        const uint32_t zRowWidth = zIndex * CUBE_VERTEX_COUNT;
 
         const float *pXVertices = &_pCubes->pAllXVertices[xRowWidth];
         const float *pYVertices = &_pCubes->pAllYVertices[yRowWidth];
