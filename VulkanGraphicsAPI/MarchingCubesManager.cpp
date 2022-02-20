@@ -213,6 +213,7 @@ namespace SolEngine::Manager
                                                            zIndex, 
                                                            cornerIndices);
 
+            // Compact Voxel Array
             // Push back vertex...
             _vertices.push_back(
                 {
