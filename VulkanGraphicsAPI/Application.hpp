@@ -43,8 +43,6 @@ private:
     void CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI
 
-    void LoadGameObjects();
-
     ApplicationData _appData;
 
     DiagnosticData    _diagnosticData   {};

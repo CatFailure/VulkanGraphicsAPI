@@ -143,16 +143,3 @@ void Application::CreateGuiWindowManager()
     _pGuiWindowManager->CreateGuiWindow<GuiMarchingCubesWindow>("Marching Cubes Settings", true, 0, _marchingCubesData);
 }
 #endif // !DISABLE_IM_GUI
-
-void Application::LoadGameObjects()
-{
-    //std::shared_ptr<SolModel> marchingCubeModel = _pMarchingCubesManager->CreateModel();
-
-    //if (marchingCubeModel == nullptr)
-    //{
-    //    return;
-    //}
-
-    //SolGameObject marchingCubeGameObject = SolGameObject::CreateGameObject();
-    //marchingCubeGameObject.SetModel(marchingCubeModel);
-}
