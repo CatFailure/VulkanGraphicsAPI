@@ -46,7 +46,9 @@ private:
     void LoadGameObjects();
 
     ApplicationData _appData;
-    DiagnosticData _diagnosticData{};
+
+    DiagnosticData    _diagnosticData   {};
+    MarchingCubesData _marchingCubesData{};
 
     SolClock    _solClock;
     SolCamera   _solCamera;
@@ -61,8 +63,6 @@ private:
 #endif  // !DISABLE_IM_GUI
 
     std::unique_ptr<MarchingCubesManager> _pMarchingCubesManager;
-    
-    std::vector<SolGameObject> _gameObjects;
 
     static constexpr float CAM_NEAR{ 0.01f };
     static constexpr float CAM_FAR { 100.f };

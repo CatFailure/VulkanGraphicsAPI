@@ -147,6 +147,9 @@
     <ClCompile Include="GenericRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="GuiMarchingCubesWindow.cpp">
+      <Filter>SolEngine\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -292,6 +295,12 @@
     </ClInclude>
     <ClInclude Include="Axis.hpp">
       <Filter>SolEngine\Enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiMarchingCubesWindow.hpp">
+      <Filter>SolEngine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MarchingCubesData.hpp">
+      <Filter>SolEngine\GUI\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

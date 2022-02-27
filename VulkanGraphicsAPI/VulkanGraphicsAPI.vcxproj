@@ -330,6 +330,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="DebugHelpers.cpp" />
     <ClCompile Include="GenericRenderSystem.cpp" />
+    <ClCompile Include="GuiMarchingCubesWindow.cpp" />
     <ClCompile Include="MarchingCubesManager.cpp" />
     <ClCompile Include="GuiDiagnosticWindow.cpp" />
     <ClCompile Include="GuiWindowManager.cpp" />
@@ -366,6 +367,8 @@
     <ClInclude Include="DiagnosticData.hpp" />
     <ClInclude Include="Cubes.hpp" />
     <ClInclude Include="GenericRenderSystem.hpp" />
+    <ClInclude Include="GuiMarchingCubesWindow.hpp" />
+    <ClInclude Include="MarchingCubesData.hpp" />
     <ClInclude Include="MarchingCubesManager.hpp" />
     <ClInclude Include="GuiDiagnosticWindow.hpp" />
     <ClInclude Include="GuiWindowManager.hpp" />

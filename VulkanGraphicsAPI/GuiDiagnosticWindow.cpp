@@ -6,8 +6,8 @@ namespace SolEngine::GUI
                                              const bool isActive, 
                                              const ImGuiWindowFlags windowFlags, 
                                              DiagnosticData &rDiagnosticData)
-        : _diagnosticData(_rRealTimeDiagnosticData),
-          _rRealTimeDiagnosticData(rDiagnosticData),
+        : _diagnosticData(_rRealtimeDiagnosticData),
+          _rRealtimeDiagnosticData(rDiagnosticData),
           IGuiWindow(windowTitle, isActive, windowFlags)
     {
         _updateFrequency = 5.f;
@@ -46,7 +46,7 @@ namespace SolEngine::GUI
 
     void GuiDiagnosticWindow::OnUpdate_Method()
     {
-        _diagnosticData = _rRealTimeDiagnosticData;
+        _diagnosticData = _rRealtimeDiagnosticData;
 
         PushBackDeltaTime();
     }

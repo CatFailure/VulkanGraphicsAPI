@@ -3,26 +3,35 @@
 namespace SolEngine::Manager
 {
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
-                                               DiagnosticData &rDiagnosticData)
+                                               DiagnosticData &rDiagnosticData,
+                                               MarchingCubesData &rMarchingCubesData)
         : _rSolDevice(rDevice),
           _rDiagnosticData(rDiagnosticData),
-          _pCubes(std::make_unique<Cubes>(rDiagnosticData))
-    {}
+          _rMarchingCubesData(rMarchingCubesData),
+          _pCubes(std::make_unique<Cubes>(rDiagnosticData)),
+          _marchingCubesObject(SolGameObject::CreateGameObject())
+    {
+        SetupEventCallbacks();
+    }
 
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice,
                                                DiagnosticData &rDiagnosticData, 
+                                               MarchingCubesData &rMarchingCubesData,
                                                const glm::vec3 &dimensions)
         : MarchingCubesManager(rDevice, 
-                               rDiagnosticData)
+                               rDiagnosticData,
+                               rMarchingCubesData)
     {
         SetDimensions(dimensions);
     }
 
     MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
                                                DiagnosticData &rDiagnosticData, 
+                                               MarchingCubesData &rMarchingCubesData,
                                                const int scalarDimensions)
         : MarchingCubesManager(rDevice, 
-                               rDiagnosticData)
+                               rDiagnosticData,
+                               rMarchingCubesData)
     {
         SetDimensions(scalarDimensions);
     }
@@ -44,13 +53,14 @@ namespace SolEngine::Manager
                            &_minBounds, 
                            &_maxBounds);
 
+        const float  step           = _rMarchingCubesData.step;
         const size_t floatSizeBytes = sizeof(float);
-        size_t bytesInUse(0);
-        uint32_t isoValuesCount(0);
+        size_t       bytesInUse     = 0;
+        uint32_t     isoValuesCount = 0;
 
-        bytesInUse += GenerateVertices<Axis::X>(_pCubes->pAllXVertices, _minBounds.x, _maxBounds.x, Cubes::STEP);
-        bytesInUse += GenerateVertices<Axis::Y>(_pCubes->pAllYVertices, _minBounds.y, _maxBounds.y, Cubes::STEP);
-        bytesInUse += GenerateVertices<Axis::Z>(_pCubes->pAllZVertices, _minBounds.z, _maxBounds.z, Cubes::STEP);
+        bytesInUse += GenerateVertices<Axis::X>(_pCubes->pAllXVertices, _minBounds.x, _maxBounds.x, step);
+        bytesInUse += GenerateVertices<Axis::Y>(_pCubes->pAllYVertices, _minBounds.y, _maxBounds.y, step);
+        bytesInUse += GenerateVertices<Axis::Z>(_pCubes->pAllZVertices, _minBounds.z, _maxBounds.z, step);
 
         isoValuesCount = GenerateIsoValues();
         March();
@@ -69,21 +79,24 @@ namespace SolEngine::Manager
         SetDimensions(glm::uvec3(scalarDimensions));
     }
 
-    std::shared_ptr<SolModel> MarchingCubesManager::CreateModel()
-    {
-        if (_vertices.empty())
-        {
-            return nullptr;
-        }
-
-        return std::make_shared<SolModel>(_rSolDevice, 
-                                          _vertices.data(), 
-                                          (uint32_t)_vertices.size());
-    }
-
     void MarchingCubesManager::Update(const float deltaTime)
     {
 
+    }
+
+    void MarchingCubesManager::SetupEventCallbacks()
+    {
+        _rMarchingCubesData.onIsInterpolatedChangedEvent
+                           .AddListener([this]() 
+                           {
+                               March();
+                           });
+
+        _rMarchingCubesData.onIsoLevelChangedEvent
+                           .AddListener([this]()
+                           {
+                               March();
+                           });
     }
 
     uint32_t MarchingCubesManager::GenerateIsoValues()
@@ -99,7 +112,7 @@ namespace SolEngine::Manager
                                                                           yIndex, 
                                                                           zIndex, 
                                                                           _dimensions,
-                                                                          Cubes::STEP);
+                                                                          _rMarchingCubesData.step);
 
                              // Grab vertices
                              const float *pXVertices = &_pCubes->pAllXVertices[xIndex * CUBE_VERTEX_COUNT];
@@ -125,6 +138,8 @@ namespace SolEngine::Manager
 
     void MarchingCubesManager::March()
     {
+        _vertices.clear();
+
         TraverseAllCubes([this](const uint32_t xIndex, 
                                 const uint32_t yIndex, 
                                 const uint32_t zIndex) 
@@ -133,7 +148,7 @@ namespace SolEngine::Manager
                                                                           yIndex, 
                                                                           zIndex, 
                                                                           _dimensions,
-                                                                          Cubes::STEP);
+                                                                          _rMarchingCubesData.step);
 
                              const float *pIsoValues = &_pCubes->pAllIsoValues[isoValuesIndex * CUBE_VERTEX_COUNT];
 
@@ -150,6 +165,8 @@ namespace SolEngine::Manager
                                             zIndex);
                          });
 
+        UpdateGameObjectModel();
+
         printf_s("Created: %zu Vertices\n", _vertices.size());
         printf_s("Created: %zu Tris\n", _vertices.size() / 3);
     }
@@ -160,7 +177,7 @@ namespace SolEngine::Manager
 
         for (uint32_t i(0); i < CUBE_VERTEX_COUNT; ++i)
         {
-            if (!(pIsoValues[i] < _isoLevel))
+            if (!(pIsoValues[i] < _rMarchingCubesData.isoLevel))
             {
                 continue;
             }
@@ -189,13 +206,14 @@ namespace SolEngine::Manager
                 CornerIndicesFromEdgeIndex(pEdgeIndices[i]);
 
             // Find edge midpoint
-            const glm::vec3 vertex = GetEdgeVertexPosition(_isInterpolated,
+            const glm::vec3 vertex = GetEdgeVertexPosition(_rMarchingCubesData.isInterpolated,
                                                            pIsoValues,
                                                            xIndex,
                                                            yIndex,
                                                            zIndex, 
                                                            cornerIndices);
 
+            // Compact Voxel Array
             // Push back vertex...
             _vertices.push_back(
                 {
@@ -216,9 +234,9 @@ namespace SolEngine::Manager
                                                           const uint32_t zIndex, 
                                                           const std::pair<Index_t, Index_t> &cornerIndices)
     {
-        const uint32_t xRowWidth   = xIndex * CUBE_VERTEX_COUNT;
-        const uint32_t yRowWidth   = yIndex * CUBE_VERTEX_COUNT;
-        const uint32_t zRowWidth   = zIndex * CUBE_VERTEX_COUNT;
+        const uint32_t xRowWidth = xIndex * CUBE_VERTEX_COUNT;
+        const uint32_t yRowWidth = yIndex * CUBE_VERTEX_COUNT;
+        const uint32_t zRowWidth = zIndex * CUBE_VERTEX_COUNT;
 
         const float *pXVertices = &_pCubes->pAllXVertices[xRowWidth];
         const float *pYVertices = &_pCubes->pAllYVertices[yRowWidth];
@@ -227,7 +245,7 @@ namespace SolEngine::Manager
         const Index_t indexA = cornerIndices.first;
         const Index_t indexB = cornerIndices.second;
 
-        if (_isInterpolated)
+        if (_rMarchingCubesData.isInterpolated)
         {
             const glm::vec3 vertexA
             {
@@ -247,7 +265,7 @@ namespace SolEngine::Manager
 
             const float interpScalar = CalculateInterpolationScalar(pIsoValues[indexA], 
                                                                     pIsoValues[indexB], 
-                                                                    _isoLevel);
+                                                                    _rMarchingCubesData.isoLevel);
 
             return vertexA + (vertexDistance * interpScalar);
         }
@@ -263,13 +281,15 @@ namespace SolEngine::Manager
     {
         // We have to index this way to account for resolution (step)
         uint32_t zIndex(0);
-        for (float z(_minBounds.z); z < _maxBounds.z; z += Cubes::STEP)
+        const float step = _rMarchingCubesData.step;
+
+        for (float z(_minBounds.z); z < _maxBounds.z; z += step)
         {
             uint32_t yIndex(0);
-            for (float y(_minBounds.y); y > _maxBounds.y; y -= Cubes::STEP)
+            for (float y(_minBounds.y); y > _maxBounds.y; y -= step)
             {
                 uint32_t xIndex(0);
-                for (float x(_minBounds.x); x < _maxBounds.x; x += Cubes::STEP)
+                for (float x(_minBounds.x); x < _maxBounds.x; x += step)
                 {
                     callback(xIndex, 
                              yIndex, 
@@ -283,5 +303,27 @@ namespace SolEngine::Manager
 
             ++zIndex;
         }
+    }
+
+    void MarchingCubesManager::UpdateGameObjectModel()
+    {
+        // Any vertices to work with?
+        if (_vertices.empty())
+        {
+            return;
+        }
+
+        std::shared_ptr<SolModel> marchingCubeModel = 
+            std::make_shared<SolModel>(_rSolDevice, 
+                                       _vertices.data(), 
+                                       (uint32_t)_vertices.size());
+
+        // Any model to work with?
+        if (marchingCubeModel == nullptr)
+        {
+            return;
+        }
+
+        _marchingCubesObject.SetModel(marchingCubeModel);
     }
 }

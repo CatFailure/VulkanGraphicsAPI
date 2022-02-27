@@ -25,7 +25,7 @@ namespace SolEngine::GUI
 		static constexpr size_t MAX_BACKLOGGED_DELTA_TIMES{ 20 };
 		static constexpr float MIN_DELTA_TIME_SCALE{ 0.5f }, MAX_DELTA_TIME_SCALE{ 2.f };
 
-		DiagnosticData &_rRealTimeDiagnosticData;
+		DiagnosticData &_rRealtimeDiagnosticData;
 		DiagnosticData _diagnosticData;
 
 		float _deltaTimeBacklog[MAX_BACKLOGGED_DELTA_TIMES]{ 0.f };
