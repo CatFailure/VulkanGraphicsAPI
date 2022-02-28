@@ -3,6 +3,7 @@
 #include "SolGameObject.hpp"
 #include "IMonoBehaviour.hpp"
 #include "MarchingCubesHelpers.hpp"
+#include "GridHelpers.hpp"
 #include "DiagnosticData.hpp"
 #include "MarchingCubesData.hpp"
 

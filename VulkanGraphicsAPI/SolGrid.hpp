@@ -1,10 +1,12 @@
 #pragma once
 #include "DebugHelpers.hpp"
-#include "MarchingCubesHelpers.hpp"
+#include "GridHelpers.hpp"
 #include "Nodes.hpp"
+#include "IDisposable.hpp"
 
 using namespace Utility;
 using namespace SolEngine::DOD;
+using namespace SolEngine::Interface;
 
 namespace SolEngine
 {
@@ -12,6 +14,7 @@ namespace SolEngine
 	{
 	public:
 		SolGrid(const glm::vec3& dimensions, DiagnosticData& rDiagnosticData);
+		~SolGrid();
 
 		SolGrid& SetDimensions(const glm::uvec3& dimensions, const float step);
 

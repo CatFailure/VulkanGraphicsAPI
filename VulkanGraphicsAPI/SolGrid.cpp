@@ -10,8 +10,13 @@ namespace SolEngine
         InitialiseNodes();
     }
 
+    SolGrid::~SolGrid()
+    {
+        _nodes.Free();
+    }
+
     SolGrid& SolGrid::SetDimensions(const glm::uvec3& dimensions, 
-                                          const float step)
+                                    const float step)
     {
         const char* limitExceededMessage = "Grid dimensions exceed maximum node count!";
 
@@ -29,6 +34,14 @@ namespace SolEngine
     void SolGrid::InitialiseNodes()
     {
         _rDiagnosticData.memoryAllocatedBytes = _nodes.AllocateDataArrays();
+
+        size_t bytesInUse = 0;
+
+        bytesInUse += GenerateVertices<Axis::X>(_nodes.pXVertices, _minBounds.x, _maxBounds.x, _step);
+        bytesInUse += GenerateVertices<Axis::Y>(_nodes.pYVertices, _minBounds.y, _maxBounds.y, _step);
+        bytesInUse += GenerateVertices<Axis::Z>(_nodes.pZVertices, _minBounds.z, _maxBounds.z, _step);
+
+        _rDiagnosticData.memoryUsedBytes = bytesInUse;
     }
 
     void SolGrid::SetBoundsWithDimensions(const glm::uvec3& dimensions)
@@ -40,7 +53,7 @@ namespace SolEngine
     }
 
     bool SolGrid::AreDimensionsWithinMaxCubeLimits(const glm::uvec3& dimensions, 
-                                                      const float step)
+                                                   const float step)
     {
         return IsAxisSizeWithinMaxCubeLimit(dimensions.x, step) && 
                IsAxisSizeWithinMaxCubeLimit(dimensions.y, step) && 
@@ -48,7 +61,7 @@ namespace SolEngine
     }
 
     bool SolGrid::IsAxisSizeWithinMaxCubeLimit(const uint32_t axisSize, 
-                                                  const float step)
+                                               const float step)
     {
         const uint32_t scaledAxisSize = (uint32_t)(axisSize / step);
 

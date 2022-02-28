@@ -343,6 +343,7 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MarchingCubesSystem.cpp" />
     <ClCompile Include="SolGrid.cpp" />
     <ClCompile Include="MatrixUtility.cpp" />
     <ClCompile Include="SimpleRenderSystem.cpp" />
@@ -367,6 +368,8 @@
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="DiagnosticData.hpp" />
+    <ClInclude Include="GridHelpers.hpp" />
+    <ClInclude Include="MarchingCubesSystem.hpp" />
     <ClInclude Include="SolGrid.hpp" />
     <ClInclude Include="Nodes.hpp" />
     <ClInclude Include="GameOfLifeHelpers.hpp" />
