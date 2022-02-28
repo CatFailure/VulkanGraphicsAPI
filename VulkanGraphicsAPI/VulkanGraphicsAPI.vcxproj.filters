@@ -150,6 +150,9 @@
     <ClCompile Include="GuiMarchingCubesWindow.cpp">
       <Filter>SolEngine\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="GameOfLifeHelpers.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -302,8 +305,11 @@
     <ClInclude Include="MarchingCubesData.hpp">
       <Filter>SolEngine\GUI\Data</Filter>
     </ClInclude>
-    <ClInclude Include="NeighbourIndex.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GameOfLifeHelpers.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="NeighbourBitFieldIndex.hpp">
+      <Filter>SolEngine\Enumeration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -329,6 +329,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="DebugHelpers.cpp" />
+    <ClCompile Include="GameOfLifeHelpers.cpp" />
     <ClCompile Include="GenericRenderSystem.cpp" />
     <ClCompile Include="GuiMarchingCubesWindow.cpp" />
     <ClCompile Include="MarchingCubesManager.cpp" />
@@ -366,6 +367,7 @@
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="DiagnosticData.hpp" />
     <ClInclude Include="Cubes.hpp" />
+    <ClInclude Include="GameOfLifeHelpers.hpp" />
     <ClInclude Include="GenericRenderSystem.hpp" />
     <ClInclude Include="GuiMarchingCubesWindow.hpp" />
     <ClInclude Include="MarchingCubesData.hpp" />
@@ -386,7 +388,7 @@
     <ClInclude Include="MarchingCubesHelpers.hpp" />
     <ClInclude Include="MatrixUtility.hpp" />
     <ClInclude Include="MemoryHelpers.hpp" />
-    <ClInclude Include="NeighbourIndex.hpp" />
+    <ClInclude Include="NeighbourBitFieldIndex.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
     <ClInclude Include="Rect.hpp" />

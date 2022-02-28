@@ -15,7 +15,7 @@ namespace SolEngine::Enumeration
     *	     Back /  |
     *              Bottom
     */
-    enum class NeighbourIndex : unsigned char
+    enum class NeighbourBitFieldIndex : unsigned char
     {
         TOP	   = 1,
         BOTTOM = TOP << 1,
