@@ -15,15 +15,9 @@ namespace SolEngine::DOD
 {
     struct Nodes : private IDisposable
     {
-        Nodes(DiagnosticData &rDiagnosticData)
-            : _rDiagnosticData(rDiagnosticData) 
-        {
-            AllocateDataArrays(); 
-        }
-
         ~Nodes() { Dispose(); }
 
-        void AllocateDataArrays()
+        size_t AllocateDataArrays()
         {
             size_t memoryAllocatedBytes(0);
 
@@ -31,8 +25,9 @@ namespace SolEngine::DOD
             memoryAllocatedBytes += AlignedMallocContiguous2DArray(pYVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
             memoryAllocatedBytes += AlignedMallocContiguous2DArray(pZVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
             memoryAllocatedBytes += AlignedMallocContiguous2DArray(pIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
+            memoryAllocatedBytes += AlignedMallocContiguousArray(pLiveNeighbours, MAX_CUBES_COUNT * CUBE_VERTEX_COUNT);
 
-            _rDiagnosticData.memoryAllocatedBytes = memoryAllocatedBytes;
+            return memoryAllocatedBytes;
         }
 
         float*          pXVertices     { nullptr }; // All cubes vertices along x-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
@@ -45,13 +40,11 @@ namespace SolEngine::DOD
         // Inherited via IDisposable
         virtual void Dispose() override
         {
-            FreeAlignedMallocArray(pXVertices);              // X-Positions
-            FreeAlignedMallocArray(pYVertices);              // Y-Positions
-            FreeAlignedMallocArray(pZVertices);              // Z-Positions
-            FreeAlignedMallocArray(pIsoValues);              // Iso Values
-            FreeAlignedMallocArray(pLiveNeighbourCounts);    // Neighbour Counts
+            FreeAlignedMallocArray(pXVertices);         // X-Positions
+            FreeAlignedMallocArray(pYVertices);         // Y-Positions
+            FreeAlignedMallocArray(pZVertices);         // Z-Positions
+            FreeAlignedMallocArray(pIsoValues);         // Iso Values
+            FreeAlignedMallocArray(pLiveNeighbours);    // Live Neighbours
         }
-
-        DiagnosticData &_rDiagnosticData;
     };
 }
