@@ -4,6 +4,13 @@ namespace SolEngine::GUI::Data
 {
 	struct DiagnosticData
 	{
+		float MemoryUsedPercentage() const 
+		{ 
+			const float returnVal = ((float)memoryUsedBytes / memoryAllocatedBytes) * 100.f; 
+
+			return returnVal;
+		}
+
 		// Frame time data
 		float deltaTimeSeconds;
 		float totalTimeSeconds;
@@ -11,7 +18,6 @@ namespace SolEngine::GUI::Data
 		// Memory data
 		size_t memoryAllocatedBytes;
 		size_t memoryUsedBytes;
-		float memoryUsedPercentage;
 
 		// Geometry data
 		size_t vertexCount;

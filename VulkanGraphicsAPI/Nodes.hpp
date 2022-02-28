@@ -32,7 +32,7 @@ namespace SolEngine::DOD
             return memoryAllocatedBytes;
         }
 
-        size_t Free()
+        void Free()
         {
             FreeAlignedMallocArray(pXVertices);         // X-Positions
             FreeAlignedMallocArray(pYVertices);         // Y-Positions

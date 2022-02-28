@@ -18,7 +18,9 @@ Application::Application(const ApplicationData &appData)
 #endif  // !DISABLE_IM_GUI
 
     SetupCamera();
-    SetupMarchingCubesManager();
+
+    SetupGrid();
+    SetupMarchingCubesSystem();
 }
 
 Application::~Application()
@@ -62,17 +64,11 @@ void Application::Dispose()
 
 void Application::Update(const float deltaTime)
 {
-    _pMarchingCubesManager->Update(deltaTime);
     _solCamera.Update(deltaTime);
 
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
 #endif  // !DISABLE_IM_GUI
-
-    _pMarchingCubesManager->GetGameObject()
-                          .transform
-                          .rotation
-                          .y += .5f * deltaTime;
 }
 
 void Application::Render()
@@ -94,7 +90,7 @@ void Application::Render()
 
     renderSystem.RenderGameObject(_solCamera, 
                                   commandBuffer, 
-                                  _pMarchingCubesManager->GetGameObject());
+                                  _pMarchingCubesSystem->GetGameObject());
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -120,13 +116,21 @@ void Application::SetupCamera()
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
-void Application::SetupMarchingCubesManager()
+void Application::SetupGrid()
 {
-    // Create a 5x5x5 grid for testing...
-    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice,
-                                                                    _diagnosticData,
-                                                                    _marchingCubesData,
-                                                                    20);
+    const glm::uvec3 gridDimensions(20);
+
+    _pSolGrid = std::make_unique<SolGrid>(gridDimensions, 
+                                          _diagnosticData);
+}
+
+void Application::SetupMarchingCubesSystem()
+{
+    _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_marchingCubesData, 
+                                                                  _solDevice);
+
+    _pMarchingCubesSystem->GenerateIsoValues(*_pSolGrid, _diagnosticData);
+    _pMarchingCubesSystem->March(*_pSolGrid, _diagnosticData);
 }
 
 #ifndef DISABLE_IM_GUI

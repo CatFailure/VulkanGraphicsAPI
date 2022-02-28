@@ -3,6 +3,7 @@
 
 #include "Axis.hpp"
 #include "Constants.hpp"
+#include "LiveNeighbours.hpp"
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Enumeration;
@@ -114,6 +115,22 @@ namespace Utility
         }
 
         printf_s("Generated %u Z-Positions.\n", rowIndex);
+
+        return bytesInUse;
+    }
+
+    static size_t DefaultLiveNeighbours(LiveNeighbours* pOutLiveNeighbours,
+                                        const size_t count)
+    {
+        const size_t enumSizeBytes = sizeof(LiveNeighbours);
+        size_t       bytesInUse    = 0;
+
+        for (size_t i = 0; i < count; ++i)
+        {
+            pOutLiveNeighbours[i] = LiveNeighbours::NONE;
+
+            bytesInUse += enumSizeBytes;
+        }
 
         return bytesInUse;
     }

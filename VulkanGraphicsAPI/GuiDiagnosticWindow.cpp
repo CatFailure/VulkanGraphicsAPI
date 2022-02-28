@@ -39,7 +39,7 @@ namespace SolEngine::GUI
         ImGui::Text("In-use Memory (Bytes): %zu/%zu (%.3f%%)", 
                     _diagnosticData.memoryUsedBytes, 
                     _diagnosticData.memoryAllocatedBytes,
-                    _diagnosticData.memoryUsedPercentage);
+                    _diagnosticData.MemoryUsedPercentage());
 
         ImGui::End();
     }

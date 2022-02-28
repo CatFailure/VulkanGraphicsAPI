@@ -332,7 +332,6 @@
     <ClCompile Include="GameOfLifeHelpers.cpp" />
     <ClCompile Include="GenericRenderSystem.cpp" />
     <ClCompile Include="GuiMarchingCubesWindow.cpp" />
-    <ClCompile Include="MarchingCubesManager.cpp" />
     <ClCompile Include="GuiDiagnosticWindow.cpp" />
     <ClCompile Include="GuiWindowManager.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -376,7 +375,6 @@
     <ClInclude Include="GenericRenderSystem.hpp" />
     <ClInclude Include="GuiMarchingCubesWindow.hpp" />
     <ClInclude Include="MarchingCubesData.hpp" />
-    <ClInclude Include="MarchingCubesManager.hpp" />
     <ClInclude Include="GuiDiagnosticWindow.hpp" />
     <ClInclude Include="GuiWindowManager.hpp" />
     <ClInclude Include="IDisposable.hpp" />

@@ -4,7 +4,8 @@
 #include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
-#include "MarchingCubesManager.hpp"
+#include "MarchingCubesSystem.hpp"
+#include "SolGrid.hpp"
 
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
@@ -15,8 +16,8 @@ using namespace SolEngine::Data;
 using namespace SolEngine::Descriptors;
 using namespace SolEngine::GUI;
 using namespace SolEngine::Interface;
-using namespace SolEngine::Manager;
 using namespace SolEngine::Rendering;
+using namespace SolEngine::System;
 
 class Application : private IDisposable, public IMonoBehaviour
 {
@@ -37,7 +38,8 @@ private:
 
     void CreateDescriptorPool();
     void SetupCamera();
-    void SetupMarchingCubesManager();
+    void SetupGrid();
+    void SetupMarchingCubesSystem();
 
 #ifndef DISABLE_IM_GUI
     void CreateGuiWindowManager();
@@ -60,7 +62,8 @@ private:
     std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;
 #endif  // !DISABLE_IM_GUI
 
-    std::unique_ptr<MarchingCubesManager> _pMarchingCubesManager;
+    std::unique_ptr<SolGrid>             _pSolGrid;
+    std::unique_ptr<MarchingCubesSystem> _pMarchingCubesSystem;
 
     static constexpr float CAM_NEAR{ 0.01f };
     static constexpr float CAM_FAR { 100.f };

@@ -52,9 +52,6 @@
     <Filter Include="SolEngine\DOD">
       <UniqueIdentifier>{ad079547-8b04-47ad-aa75-ed6a3cd4c320}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SolEngine\Manager">
-      <UniqueIdentifier>{8fa7572d-54bf-4373-83d6-163bc77b2c06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SolEngine\GUI\Data">
       <UniqueIdentifier>{a1a36440-43fb-47ec-ab53-f701fc70e175}</UniqueIdentifier>
     </Filter>
@@ -143,9 +140,6 @@
     </ClCompile>
     <ClCompile Include="SolClock.cpp">
       <Filter>SolEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="MarchingCubesManager.cpp">
-      <Filter>SolEngine\Manager</Filter>
     </ClCompile>
     <ClCompile Include="GenericRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
@@ -292,9 +286,6 @@
     </ClInclude>
     <ClInclude Include="MarchingCubesHelpers.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="MarchingCubesManager.hpp">
-      <Filter>SolEngine\Manager</Filter>
     </ClInclude>
     <ClInclude Include="GenericRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
