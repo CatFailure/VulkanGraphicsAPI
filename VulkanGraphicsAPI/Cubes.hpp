@@ -29,23 +29,26 @@ namespace SolEngine::DOD
             memoryAllocatedBytes += AlignedMallocContiguous2DArray(pAllYVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
             memoryAllocatedBytes += AlignedMallocContiguous2DArray(pAllZVertices, MAX_CUBES_PER_AXIS_COUNT, CUBE_VERTEX_COUNT);
             memoryAllocatedBytes += AlignedMallocContiguous2DArray(pAllIsoValues, MAX_CUBES_COUNT, CUBE_VERTEX_COUNT);
+            memoryAllocatedBytes += AlignedMallocContiguousArray(pAllLiveNeighbourCounts, MAX_CUBES_COUNT * CUBE_VERTEX_COUNT);
 
             _rDiagnosticData.memoryAllocatedBytes = memoryAllocatedBytes;
         }
 
-        float *pAllXVertices;   // All cubes vertices along x-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
-        float *pAllYVertices;   // All cubes vertices along y-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
-        float *pAllZVertices;   // All cubes vertices along z-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
-        float *pAllIsoValues;   // Stores all isoValues for every cubes vertices [iso_index * CUBE_VERTEX_COUNT + vertex_index]
+        float *pAllXVertices;           // All cubes vertices along x-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
+        float *pAllYVertices;           // All cubes vertices along y-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
+        float *pAllZVertices;           // All cubes vertices along z-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
+        float *pAllIsoValues;           // Stores all isoValues for every cubes vertices [iso_index * CUBE_VERTEX_COUNT + vertex_index]
+        BYTE * pAllLiveNeighbourCounts; // Stores all live neighbour count for every cube vertex [iso_index * CUBE_VERTEX_COUNT + vertex_index]
 
     private:
         // Inherited via IDisposable
         virtual void Dispose() override
         {
-            FreeAlignedMallocArray(pAllXVertices);  // X-Positions
-            FreeAlignedMallocArray(pAllYVertices);  // Y-Positions
-            FreeAlignedMallocArray(pAllZVertices);  // Z-Positions
-            FreeAlignedMallocArray(pAllIsoValues);  // Iso Values
+            FreeAlignedMallocArray(pAllXVertices);              // X-Positions
+            FreeAlignedMallocArray(pAllYVertices);              // Y-Positions
+            FreeAlignedMallocArray(pAllZVertices);              // Z-Positions
+            FreeAlignedMallocArray(pAllIsoValues);              // Iso Values
+            FreeAlignedMallocArray(pAllLiveNeighbourCounts);    // Neighbour Counts
         }
 
         DiagnosticData &_rDiagnosticData;

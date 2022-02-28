@@ -302,6 +302,9 @@
     <ClInclude Include="MarchingCubesData.hpp">
       <Filter>SolEngine\GUI\Data</Filter>
     </ClInclude>
+    <ClInclude Include="NeighbourIndex.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">

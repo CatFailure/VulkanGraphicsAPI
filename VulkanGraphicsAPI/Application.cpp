@@ -19,8 +19,6 @@ Application::Application(const ApplicationData &appData)
 
     SetupCamera();
     SetupMarchingCubesManager();
-
-    LoadGameObjects();
 }
 
 Application::~Application()
