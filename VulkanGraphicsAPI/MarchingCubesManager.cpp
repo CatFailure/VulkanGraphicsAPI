@@ -2,22 +2,22 @@
 
 namespace SolEngine::Manager
 {
-    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
-                                               DiagnosticData &rDiagnosticData,
-                                               MarchingCubesData &rMarchingCubesData)
+    MarchingCubesManager::MarchingCubesManager(SolDevice& rDevice, 
+                                               DiagnosticData& rDiagnosticData,
+                                               MarchingCubesData& rMarchingCubesData)
         : _rSolDevice(rDevice),
           _rDiagnosticData(rDiagnosticData),
           _rMarchingCubesData(rMarchingCubesData),
-          _pCubes(std::make_unique<Cubes>(rDiagnosticData)),
+          _pNodes(std::make_unique<Nodes>(rDiagnosticData)),
           _marchingCubesObject(SolGameObject::CreateGameObject())
     {
         SetupEventCallbacks();
     }
 
-    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice,
-                                               DiagnosticData &rDiagnosticData, 
-                                               MarchingCubesData &rMarchingCubesData,
-                                               const glm::vec3 &dimensions)
+    MarchingCubesManager::MarchingCubesManager(SolDevice& rDevice,
+                                               DiagnosticData& rDiagnosticData, 
+                                               MarchingCubesData& rMarchingCubesData,
+                                               const glm::vec3& dimensions)
         : MarchingCubesManager(rDevice, 
                                rDiagnosticData,
                                rMarchingCubesData)
@@ -25,9 +25,9 @@ namespace SolEngine::Manager
         SetDimensions(dimensions);
     }
 
-    MarchingCubesManager::MarchingCubesManager(SolDevice &rDevice, 
-                                               DiagnosticData &rDiagnosticData, 
-                                               MarchingCubesData &rMarchingCubesData,
+    MarchingCubesManager::MarchingCubesManager(SolDevice& rDevice, 
+                                               DiagnosticData& rDiagnosticData, 
+                                               MarchingCubesData& rMarchingCubesData,
                                                const int scalarDimensions)
         : MarchingCubesManager(rDevice, 
                                rDiagnosticData,
@@ -36,7 +36,7 @@ namespace SolEngine::Manager
         SetDimensions(scalarDimensions);
     }
 
-    void MarchingCubesManager::SetDimensions(const glm::vec3 &dimensions)
+    void MarchingCubesManager::SetDimensions(const glm::vec3& dimensions)
     {
         DBG_ASSERT_MSG(IsWithinMaxCubeCount(dimensions.x), 
                        "Too many Cubes!");
@@ -58,9 +58,9 @@ namespace SolEngine::Manager
         size_t       bytesInUse     = 0;
         uint32_t     isoValuesCount = 0;
 
-        bytesInUse += GenerateVertices<Axis::X>(_pCubes->pAllXVertices, _minBounds.x, _maxBounds.x, step);
-        bytesInUse += GenerateVertices<Axis::Y>(_pCubes->pAllYVertices, _minBounds.y, _maxBounds.y, step);
-        bytesInUse += GenerateVertices<Axis::Z>(_pCubes->pAllZVertices, _minBounds.z, _maxBounds.z, step);
+        bytesInUse += GenerateVertices<Axis::X>(_pNodes->pXVertices, _minBounds.x, _maxBounds.x, step);
+        bytesInUse += GenerateVertices<Axis::Y>(_pNodes->pYVertices, _minBounds.y, _maxBounds.y, step);
+        bytesInUse += GenerateVertices<Axis::Z>(_pNodes->pZVertices, _minBounds.z, _maxBounds.z, step);
 
         isoValuesCount = GenerateIsoValues();
         March();
@@ -115,10 +115,10 @@ namespace SolEngine::Manager
                                                                           _rMarchingCubesData.step);
 
                              // Grab vertices
-                             const float *pXVertices = &_pCubes->pAllXVertices[xIndex * CUBE_VERTEX_COUNT];
-                             const float *pYVertices = &_pCubes->pAllYVertices[yIndex * CUBE_VERTEX_COUNT];
-                             const float *pZVertices = &_pCubes->pAllZVertices[zIndex * CUBE_VERTEX_COUNT];
-                             float       *pIsoValues = &_pCubes->pAllIsoValues[isoValuesIndex * CUBE_VERTEX_COUNT];
+                             const float* pXVertices = &_pNodes->pXVertices[xIndex * CUBE_VERTEX_COUNT];
+                             const float* pYVertices = &_pNodes->pYVertices[yIndex * CUBE_VERTEX_COUNT];
+                             const float* pZVertices = &_pNodes->pZVertices[zIndex * CUBE_VERTEX_COUNT];
+                             float*       pIsoValues = &_pNodes->pIsoValues[isoValuesIndex * CUBE_VERTEX_COUNT];
 
                              VerticesToIsoValues(pXVertices, 
                                                  pYVertices, 
@@ -150,13 +150,13 @@ namespace SolEngine::Manager
                                                                           _dimensions,
                                                                           _rMarchingCubesData.step);
 
-                             const float *pIsoValues = &_pCubes->pAllIsoValues[isoValuesIndex * CUBE_VERTEX_COUNT];
+                             const float* pIsoValues = &_pNodes->pIsoValues[isoValuesIndex * CUBE_VERTEX_COUNT];
 
                              // Calculate the cube index to pull from the Tri-table
                              const uint32_t cubeIndex = GetCubeIndex(pIsoValues);
 
                              // Look up the triangulation for the cubeIndex
-                             const Index_t *pEdgeIndices = TRI_TABLE[cubeIndex];
+                             const Index_t* pEdgeIndices = TRI_TABLE[cubeIndex];
 
                              CreateVertices(pEdgeIndices, 
                                             pIsoValues, 
@@ -171,7 +171,7 @@ namespace SolEngine::Manager
         printf_s("Created: %zu Tris\n", _vertices.size() / 3);
     }
 
-    uint32_t MarchingCubesManager::GetCubeIndex(const float *pIsoValues)
+    uint32_t MarchingCubesManager::GetCubeIndex(const float* pIsoValues)
     {
         uint32_t cubeIndex(0);
 
@@ -188,8 +188,8 @@ namespace SolEngine::Manager
         return cubeIndex;
     }
 
-    void MarchingCubesManager::CreateVertices(const Index_t *pEdgeIndices, 
-                                              const float *pIsoValues, 
+    void MarchingCubesManager::CreateVertices(const Index_t* pEdgeIndices, 
+                                              const float* pIsoValues, 
                                               const uint32_t xIndex,
                                               const uint32_t yIndex,
                                               const uint32_t zIndex)
@@ -228,19 +228,19 @@ namespace SolEngine::Manager
     }
 
     glm::vec3 MarchingCubesManager::GetEdgeVertexPosition(const bool isInterpolated, 
-                                                          const float *pIsoValues, 
+                                                          const float* pIsoValues, 
                                                           const uint32_t xIndex, 
                                                           const uint32_t yIndex, 
                                                           const uint32_t zIndex, 
-                                                          const std::pair<Index_t, Index_t> &cornerIndices)
+                                                          const std::pair<Index_t, Index_t>& cornerIndices)
     {
         const uint32_t xRowWidth = xIndex * CUBE_VERTEX_COUNT;
         const uint32_t yRowWidth = yIndex * CUBE_VERTEX_COUNT;
         const uint32_t zRowWidth = zIndex * CUBE_VERTEX_COUNT;
 
-        const float *pXVertices = &_pCubes->pAllXVertices[xRowWidth];
-        const float *pYVertices = &_pCubes->pAllYVertices[yRowWidth];
-        const float *pZVertices = &_pCubes->pAllZVertices[zRowWidth];
+        const float* pXVertices = &_pNodes->pXVertices[xRowWidth];
+        const float* pYVertices = &_pNodes->pYVertices[yRowWidth];
+        const float* pZVertices = &_pNodes->pZVertices[zRowWidth];
 
         const Index_t indexA = cornerIndices.first;
         const Index_t indexB = cornerIndices.second;
@@ -277,7 +277,7 @@ namespace SolEngine::Manager
                          (pZVertices[indexA] + pZVertices[indexB]) * half);
     }
 
-    void MarchingCubesManager::TraverseAllCubes(const TraverseCubesCallback_t &callback)
+    void MarchingCubesManager::TraverseAllCubes(const TraverseCubesCallback_t& callback)
     {
         // We have to index this way to account for resolution (step)
         uint32_t zIndex(0);

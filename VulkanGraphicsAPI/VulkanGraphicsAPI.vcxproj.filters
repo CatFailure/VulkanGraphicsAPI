@@ -278,7 +278,7 @@
     <ClInclude Include="SolClock.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Cubes.hpp">
+    <ClInclude Include="Nodes.hpp">
       <Filter>SolEngine\DOD</Filter>
     </ClInclude>
     <ClInclude Include="MarchingCubesHelpers.hpp">
@@ -308,7 +308,7 @@
     <ClInclude Include="GameOfLifeHelpers.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="NeighbourBitFieldIndex.hpp">
+    <ClInclude Include="LiveNeighbours.hpp">
       <Filter>SolEngine\Enumeration</Filter>
     </ClInclude>
   </ItemGroup>

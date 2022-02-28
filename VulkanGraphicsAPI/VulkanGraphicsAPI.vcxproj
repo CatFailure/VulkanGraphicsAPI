@@ -366,7 +366,7 @@
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="DiagnosticData.hpp" />
-    <ClInclude Include="Cubes.hpp" />
+    <ClInclude Include="Nodes.hpp" />
     <ClInclude Include="GameOfLifeHelpers.hpp" />
     <ClInclude Include="GenericRenderSystem.hpp" />
     <ClInclude Include="GuiMarchingCubesWindow.hpp" />
@@ -388,7 +388,7 @@
     <ClInclude Include="MarchingCubesHelpers.hpp" />
     <ClInclude Include="MatrixUtility.hpp" />
     <ClInclude Include="MemoryHelpers.hpp" />
-    <ClInclude Include="NeighbourBitFieldIndex.hpp" />
+    <ClInclude Include="LiveNeighbours.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
     <ClInclude Include="Rect.hpp" />
