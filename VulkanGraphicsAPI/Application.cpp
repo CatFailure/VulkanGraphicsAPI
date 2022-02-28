@@ -113,9 +113,13 @@ void Application::SetupCamera()
 
 void Application::SetupGrid()
 {
-    const glm::uvec3 gridDimensions(20);
+    _gridData = GridData
+    {
+        .dimensions = glm::uvec3(20),
+        .step = 1.f
+    };
 
-    _pSolGrid = std::make_unique<SolGrid>(gridDimensions, 
+    _pSolGrid = std::make_unique<SolGrid>(_gridData, 
                                           _diagnosticData);
 }
 

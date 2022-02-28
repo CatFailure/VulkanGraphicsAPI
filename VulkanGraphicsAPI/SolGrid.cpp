@@ -2,12 +2,12 @@
 
 namespace SolEngine
 {
-    SolGrid::SolGrid(const glm::vec3& dimensions, 
+    SolGrid::SolGrid(GridData& rGridData, 
                      DiagnosticData& rDiagnosticData)
-        : _rDiagnosticData(rDiagnosticData)
+        : _rDiagnosticData(rDiagnosticData),
+          _rGridData(rGridData)
     {
-        SetDimensions(dimensions, _step);
-        InitialiseNodes();
+        Initialise();
     }
 
     SolGrid::~SolGrid()
@@ -15,40 +15,25 @@ namespace SolEngine
         nodes.Free();
     }
 
-    size_t SolGrid::GetNodeCount() const
+    void SolGrid::Initialise()
     {
-        const glm::uint dimensionsVolume = _dimensions.x * _dimensions.y * _dimensions.z;
-
-        return (size_t)(dimensionsVolume * (double)_step);
-    }
-
-    SolGrid& SolGrid::SetDimensions(const glm::uvec3& dimensions, 
-                                    const float step)
-    {
-        const char* limitExceededMessage = "Grid dimensions exceed maximum node count!";
-
-        DBG_ASSERT_MSG(AreDimensionsWithinMaxCubeLimits(dimensions, 
-                                                        step), 
-                       limitExceededMessage);
-
-        _dimensions = dimensions;
-
-        SetBoundsWithDimensions(dimensions);
-
-        return *this;
+        SetBoundsWithDimensions(_rGridData.dimensions);
+        InitialiseNodes();
     }
 
     void SolGrid::TraverseGrid(const TraverseCubesCallback_t& callback)
     {
+        const float gridStep = _rGridData.step;
+
         // We have to index this way to account for resolution (step)
         uint32_t zIndex(0);
-        for (float z(_minBounds.z); z < _maxBounds.z; z += _step)
+        for (float z(_minBounds.z); z < _maxBounds.z; z += gridStep)
         {
             uint32_t yIndex(0);
-            for (float y(_minBounds.y); y > _maxBounds.y; y -= _step)
+            for (float y(_minBounds.y); y > _maxBounds.y; y -= gridStep)
             {
                 uint32_t xIndex(0);
-                for (float x(_minBounds.x); x < _maxBounds.x; x += _step)
+                for (float x(_minBounds.x); x < _maxBounds.x; x += gridStep)
                 {
                     callback(xIndex, 
                              yIndex, 
@@ -66,14 +51,15 @@ namespace SolEngine
 
     void SolGrid::InitialiseNodes()
     {
+        const float gridStep = _rGridData.step;
+        size_t bytesInUse(0);
+
         _rDiagnosticData.memoryAllocatedBytes = nodes.AllocateDataArrays();
 
-        size_t bytesInUse = 0;
-
-        bytesInUse += GenerateVertices<Axis::X>(nodes.pXVertices, _minBounds.x, _maxBounds.x, _step);
-        bytesInUse += GenerateVertices<Axis::Y>(nodes.pYVertices, _minBounds.y, _maxBounds.y, _step);
-        bytesInUse += GenerateVertices<Axis::Z>(nodes.pZVertices, _minBounds.z, _maxBounds.z, _step);
-        bytesInUse += DefaultLiveNeighbours(nodes.pLiveNeighbours, GetNodeCount());
+        bytesInUse += GenerateVertices<Axis::X>(nodes.pXVertices, _minBounds.x, _maxBounds.x, gridStep);
+        bytesInUse += GenerateVertices<Axis::Y>(nodes.pYVertices, _minBounds.y, _maxBounds.y, gridStep);
+        bytesInUse += GenerateVertices<Axis::Z>(nodes.pZVertices, _minBounds.z, _maxBounds.z, gridStep);
+        bytesInUse += DefaultLiveNeighbours(nodes.pLiveNeighbours, _rGridData.GetNodeCount());
 
         _rDiagnosticData.memoryUsedBytes = bytesInUse;
     }

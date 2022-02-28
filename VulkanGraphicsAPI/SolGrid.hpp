@@ -2,6 +2,7 @@
 #include "DebugHelpers.hpp"
 #include "GridHelpers.hpp"
 #include "Nodes.hpp"
+#include "GridData.hpp"
 
 using namespace Utility;
 using namespace SolEngine::DOD;
@@ -18,14 +19,13 @@ namespace SolEngine
 		/// </summary>
 		typedef std::function<void(const uint32_t, const uint32_t, const uint32_t)> TraverseCubesCallback_t;
 
-		SolGrid(const glm::vec3& dimensions, DiagnosticData& rDiagnosticData);
+		SolGrid(GridData& rGridData, DiagnosticData& rDiagnosticData);
 		~SolGrid();
 
-		size_t GetNodeCount() const;
-		glm::vec3 GetDimensions() const { return _dimensions; }
-		float GetStep() const { return _step; }
+		void Initialise();
 
-		SolGrid& SetDimensions(const glm::uvec3& dimensions, const float step);
+		glm::vec3 GetDimensions() const { return _rGridData.dimensions; }
+		float	  GetStep()		  const { return _rGridData.step; }
 
 		void TraverseGrid(const TraverseCubesCallback_t &callback);
 
@@ -37,10 +37,9 @@ namespace SolEngine
 		bool AreDimensionsWithinMaxCubeLimits(const glm::uvec3& dimensions, const float step);
 		bool IsAxisSizeWithinMaxCubeLimit(const uint32_t axisSize, const float step);
 
-		DiagnosticData &_rDiagnosticData;
-		float _step{ .5f };	// TEMP
+		GridData&		_rGridData;
+		DiagnosticData& _rDiagnosticData;
 
-		glm::uvec3 _dimensions{ 0 };
 		glm::vec3  _minBounds { 0 };
 		glm::vec3  _maxBounds { 0 };
 	};

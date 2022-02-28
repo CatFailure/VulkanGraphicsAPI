@@ -367,6 +367,7 @@
     <ClInclude Include="Constants.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="DiagnosticData.hpp" />
+    <ClInclude Include="GridData.hpp" />
     <ClInclude Include="GridHelpers.hpp" />
     <ClInclude Include="MarchingCubesSystem.hpp" />
     <ClInclude Include="SolGrid.hpp" />

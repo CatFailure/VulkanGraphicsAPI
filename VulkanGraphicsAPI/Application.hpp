@@ -45,6 +45,7 @@ private:
     ApplicationData _appData;
 
     DiagnosticData    _diagnosticData   {};
+    GridData          _gridData         {};
     MarchingCubesData _marchingCubesData{};
 
     SolClock    _solClock;
