@@ -19,7 +19,7 @@ using namespace SolEngine::Interface;
 using namespace SolEngine::Rendering;
 using namespace SolEngine::System;
 
-class Application : private IDisposable, public IMonoBehaviour
+class Application : public IMonoBehaviour
 {
 public:
     Application() = delete;
@@ -29,9 +29,6 @@ public:
     void Run();
 
 private:
-    // Inherited via IDisposable
-    virtual void Dispose() override;
-
     // Inherited via IMonoBehaviour
     virtual void Update(const float deltaTime) override;
     void Render();

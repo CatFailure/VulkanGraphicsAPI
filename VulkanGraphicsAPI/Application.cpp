@@ -25,7 +25,12 @@ Application::Application(const ApplicationData &appData)
 
 Application::~Application()
 {
-    Dispose();
+    // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
+    _pSolDescriptorPool = nullptr;
+
+#ifndef DISABLE_IM_GUI
+    _pGuiWindowManager = nullptr;
+#endif
 }
 
 void Application::Run()
@@ -50,16 +55,6 @@ void Application::Run()
 
     // Make CPU wait until all GPU operations have completed.
     vkDeviceWaitIdle(_solDevice.GetDevice());
-}
-
-void Application::Dispose()
-{
-    // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
-    _pSolDescriptorPool = nullptr;
-
-#ifndef DISABLE_IM_GUI
-    _pGuiWindowManager = nullptr;
-#endif
 }
 
 void Application::Update(const float deltaTime)
