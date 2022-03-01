@@ -37,6 +37,7 @@ private:
     void SetupCamera();
     void SetupGrid();
     void SetupMarchingCubesSystem();
+    void SetupMarchingCubesDataEventCallbacks();
 
 #ifndef DISABLE_IM_GUI
     void CreateGuiWindowManager();

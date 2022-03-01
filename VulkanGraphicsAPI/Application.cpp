@@ -21,6 +21,7 @@ Application::Application(const ApplicationData &appData)
 
     SetupGrid();
     SetupMarchingCubesSystem();
+    SetupMarchingCubesDataEventCallbacks();
 }
 
 Application::~Application()
@@ -130,6 +131,23 @@ void Application::SetupMarchingCubesSystem()
 
     _pMarchingCubesSystem->GenerateIsoValues(*_pSolGrid, _diagnosticData);
     _pMarchingCubesSystem->March(*_pSolGrid, _diagnosticData);
+}
+
+void Application::SetupMarchingCubesDataEventCallbacks()
+{
+    _marchingCubesData.onIsInterpolatedChangedEvent
+                      .AddListener([this]() 
+                                   {
+                                       _pMarchingCubesSystem->March(*_pSolGrid, 
+                                                                    _diagnosticData);
+                                   });
+
+    _marchingCubesData.onIsoLevelChangedEvent
+                      .AddListener([this]()
+                                   {
+                                       _pMarchingCubesSystem->March(*_pSolGrid, 
+                                                                    _diagnosticData);
+                                   });
 }
 
 #ifndef DISABLE_IM_GUI
