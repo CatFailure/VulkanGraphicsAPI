@@ -62,7 +62,7 @@ void Application::Update(const float deltaTime)
 {
     _solCamera.Update(deltaTime);
 
-    _pGameOfLifeSystem->Update(deltaTime, *_pSolGrid);
+    _pGameOfLifeSystem->Update(deltaTime);
 
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
@@ -128,16 +128,17 @@ void Application::SetupGrid()
 
 void Application::SetupMarchingCubesSystem()
 {
-    _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice);
+    _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice, 
+                                                                  *_pSolGrid);
 
-    _pMarchingCubesSystem->March(*_pSolGrid, _diagnosticData);
+    _pMarchingCubesSystem->March(_diagnosticData);
 }
 
 void Application::SetupGameOfLifeSystem()
 {
-    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>();
+    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid);
 
-    _pGameOfLifeSystem->CheckAllLiveNeighbours(*_pSolGrid);
+    _pGameOfLifeSystem->CheckAllLiveNeighbours();
 }
 
 void Application::SetupMarchingCubesDataEventCallbacks()
@@ -145,8 +146,7 @@ void Application::SetupMarchingCubesDataEventCallbacks()
     _pGameOfLifeSystem->onUpdateAllCellStatesEvent
                       .AddListener([this]() 
                       { 
-                          _pMarchingCubesSystem->March(*_pSolGrid, 
-                                                       _diagnosticData); 
+                          _pMarchingCubesSystem->March(_diagnosticData); 
                       });
 }
 

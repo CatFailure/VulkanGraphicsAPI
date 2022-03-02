@@ -2,59 +2,60 @@
 
 namespace SolEngine::System
 {
-    MarchingCubesSystem::MarchingCubesSystem(SolDevice& rSolDevice)
+    MarchingCubesSystem::MarchingCubesSystem(SolDevice& rSolDevice, 
+                                             SolGrid& rSolGrid)
         : _rSolDevice(rSolDevice),
+          _rSolGrid(rSolGrid),
           _marchingCubesObject(SolGameObject::CreateGameObject())
     {}
 
-    void MarchingCubesSystem::March(SolGrid& rSolGrid, 
-                                    DiagnosticData& rDiagnosticData)
+    void MarchingCubesSystem::March(DiagnosticData& rDiagnosticData)
     {
         _vertices.clear();
 
-        const glm::uvec3 gridDimensions  = rSolGrid.GetDimensions();
-        const float      gridStep        = rSolGrid.GetStep();
-        const bool*      pGridCellStates = rSolGrid.nodes.pCellStates;
+        const glm::uvec3 gridDimensions  = _rSolGrid.GetDimensions();
+        const float      gridStep        = _rSolGrid.GetStep();
+        const bool*      pGridCellStates = _rSolGrid.nodes.pCellStates;
 
-        rSolGrid.TraverseGrid([&](const uint32_t xIndex, 
-                                  const uint32_t yIndex, 
-                                  const uint32_t zIndex) 
-                              {
-                                  const uint32_t adjXIndex = xIndex + 1U;
-                                  const uint32_t adjYIndex = yIndex + 1U;
-                                  const uint32_t adjZIndex = zIndex + 1U;
-
-                                  const uint32_t nodeStateIndex = _3DTo1DIndex(xIndex, 
-                                                                               yIndex, 
-                                                                               zIndex, 
-                                                                               gridDimensions,
-                                                                               gridStep);
-
-                                  // Retrieve a cubes vertex states
-                                  const bool cubeNodeStates[CUBE_VERTEX_COUNT]
-                                  {
-                                      pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    zIndex,    gridDimensions, gridStep)],
-                                      pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    zIndex,    gridDimensions, gridStep)],
-                                      pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    adjZIndex, gridDimensions, gridStep)],
-                                      pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    adjZIndex, gridDimensions, gridStep)],
-                                      pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, zIndex,    gridDimensions, gridStep)],
-                                      pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, zIndex,    gridDimensions, gridStep)],
-                                      pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, adjZIndex, gridDimensions, gridStep)],
-                                      pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, adjZIndex, gridDimensions, gridStep)]
-                                  };
-
-                                  // Calculate the cube index to pull from the Tri-table
-                                  const uint32_t cubeIndex = GetCubeIndex(cubeNodeStates);
-
-                                  // Look up the triangulation for the cubeIndex
-                                  const Index_t* pEdgeIndices = TRI_TABLE[cubeIndex];
-
-                                  CreateVertices(rSolGrid.nodes,
-                                                 pEdgeIndices, 
-                                                 xIndex, 
-                                                 yIndex, 
-                                                 zIndex);
-                              });
+        _rSolGrid.TraverseGrid([&](const uint32_t xIndex, 
+                                   const uint32_t yIndex, 
+                                   const uint32_t zIndex) 
+                               {
+                                   const uint32_t adjXIndex = xIndex + 1U;
+                                   const uint32_t adjYIndex = yIndex + 1U;
+                                   const uint32_t adjZIndex = zIndex + 1U;
+                               
+                                   const uint32_t nodeStateIndex = _3DTo1DIndex(xIndex, 
+                                                                                yIndex, 
+                                                                                zIndex, 
+                                                                                gridDimensions,
+                                                                                gridStep);
+                               
+                                   // Retrieve a cubes vertex states
+                                   const bool cubeNodeStates[CUBE_VERTEX_COUNT]
+                                   {
+                                       pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    zIndex,    gridDimensions, gridStep)],
+                                       pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    zIndex,    gridDimensions, gridStep)],
+                                       pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    adjZIndex, gridDimensions, gridStep)],
+                                       pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    adjZIndex, gridDimensions, gridStep)],
+                                       pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, zIndex,    gridDimensions, gridStep)],
+                                       pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, zIndex,    gridDimensions, gridStep)],
+                                       pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, adjZIndex, gridDimensions, gridStep)],
+                                       pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, adjZIndex, gridDimensions, gridStep)]
+                                   };
+                               
+                                   // Calculate the cube index to pull from the Tri-table
+                                   const uint32_t cubeIndex = GetCubeIndex(cubeNodeStates);
+                               
+                                   // Look up the triangulation for the cubeIndex
+                                   const Index_t* pEdgeIndices = TRI_TABLE[cubeIndex];
+                               
+                                   CreateVertices(_rSolGrid.nodes,
+                                                  pEdgeIndices, 
+                                                  xIndex, 
+                                                  yIndex, 
+                                                  zIndex);
+                               });
 
         UpdateGameObjectModel();
 

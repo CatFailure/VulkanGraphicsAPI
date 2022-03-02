@@ -47,8 +47,8 @@ private:
 
     ApplicationData _appData;
 
-    DiagnosticData    _diagnosticData   {};
-    GridData          _gridData         {};
+    DiagnosticData    _diagnosticData{};
+    GridData          _gridData      {};
 
     SolClock    _solClock;
     SolCamera   _solCamera;
@@ -62,9 +62,9 @@ private:
     std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;
 #endif  // !DISABLE_IM_GUI
 
-    std::unique_ptr<SolGrid>             _pSolGrid;
-    std::unique_ptr<MarchingCubesSystem> _pMarchingCubesSystem;
-    std::unique_ptr<GameOfLifeSystem>    _pGameOfLifeSystem;
+    std::unique_ptr<SolGrid>             _pSolGrid            { nullptr };
+    std::unique_ptr<MarchingCubesSystem> _pMarchingCubesSystem{ nullptr };
+    std::unique_ptr<GameOfLifeSystem>    _pGameOfLifeSystem   { nullptr };
 
     static constexpr float CAM_NEAR{ 0.01f };
     static constexpr float CAM_FAR { 100.f };

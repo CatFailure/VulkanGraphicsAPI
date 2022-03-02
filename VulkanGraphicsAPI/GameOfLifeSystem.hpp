@@ -11,10 +11,12 @@ namespace SolEngine::System
     class GameOfLifeSystem
     {
     public:
-        void CheckAllLiveNeighbours(SolGrid& rSolGrid);
-        void UpdateAllCellStates(SolGrid& rSolGrid);
+        GameOfLifeSystem(SolGrid& rSolGrid);
 
-        void Update(const float deltaTime, SolGrid& rSolGrid);
+        void CheckAllLiveNeighbours();
+        void UpdateAllCellStates();
+
+        void Update(const float deltaTime);
 
         SolEvent<> onUpdateAllCellStatesEvent;
 
@@ -24,5 +26,7 @@ namespace SolEngine::System
         static constexpr float            NEXT_GENERATION_DELAY   { .1f };
 
         float _nextGenerationDelayRemaining{ NEXT_GENERATION_DELAY };
+
+        SolGrid& _rSolGrid;
     };
 }

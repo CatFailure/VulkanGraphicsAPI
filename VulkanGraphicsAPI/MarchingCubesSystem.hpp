@@ -11,12 +11,12 @@ namespace SolEngine::System
 	class MarchingCubesSystem
 	{
 	public:
-		MarchingCubesSystem(SolDevice& rSolDevice);
+		MarchingCubesSystem(SolDevice& rSolDevice, SolGrid& rSolGrid);
 
 		const SolGameObject& GetGameObject() const { return _marchingCubesObject; }
 		size_t GetIsoValuesGeneratedCount() const { return _isoValuesGeneratedCount; }
 
-		void March(SolGrid& rSolGrid, DiagnosticData& rDiagnosticData);
+		void March(DiagnosticData& rDiagnosticData);
 
 	private:
 		uint32_t GetCubeIndex(const bool* pNodeStates);
@@ -25,8 +25,9 @@ namespace SolEngine::System
 										const uint32_t zIndex, const std::pair<Index_t, Index_t>& cornerIndices);
 		void UpdateGameObjectModel();
 
-		SolDevice&			_rSolDevice;
-		SolGameObject       _marchingCubesObject;
+		SolDevice&	  _rSolDevice;
+		SolGrid&	  _rSolGrid;
+		SolGameObject _marchingCubesObject;
 
 		size_t				_isoValuesGeneratedCount{ 0 };
 		std::vector<Vertex> _vertices;
