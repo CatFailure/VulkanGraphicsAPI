@@ -64,6 +64,7 @@ void Application::Update(const float deltaTime)
     _solCamera.Update(deltaTime);
 
     _pGameOfLifeSystem->Update(deltaTime, *_pSolGrid);
+    _pMarchingCubesSystem->March(*_pSolGrid, _diagnosticData);
 
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
@@ -132,7 +133,7 @@ void Application::SetupMarchingCubesSystem()
     _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_marchingCubesData, 
                                                                   _solDevice);
 
-    _pMarchingCubesSystem->GenerateIsoValues(*_pSolGrid, _diagnosticData);
+    //_pMarchingCubesSystem->GenerateIsoValues(*_pSolGrid, _diagnosticData);
     _pMarchingCubesSystem->March(*_pSolGrid, _diagnosticData);
 }
 

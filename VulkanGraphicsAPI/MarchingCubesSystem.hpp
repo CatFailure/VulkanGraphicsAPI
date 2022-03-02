@@ -17,13 +17,17 @@ namespace SolEngine::System
 		const SolGameObject& GetGameObject() const { return _marchingCubesObject; }
 		size_t GetIsoValuesGeneratedCount() const { return _isoValuesGeneratedCount; }
 
-		void GenerateIsoValues(SolGrid& rSolGrid, DiagnosticData& rDiagnosticData);
+		//void GenerateIsoValues(SolGrid& rSolGrid, DiagnosticData& rDiagnosticData);
 		void March(SolGrid& rSolGrid, DiagnosticData& rDiagnosticData);
 
 	private:
 		uint32_t GetCubeIndex(const float* pIsoValues);
+		uint32_t GetCubeIndex(const bool* pNodeStates);
 		void CreateVertices(Nodes& rNodes, const Index_t* pEdgeIndices, const float* pIsoValues, const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex);
+		void CreateVertices(Nodes& rNodes, const Index_t* pEdgeIndices, const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex);
 		glm::vec3 GetEdgeVertexPosition(Nodes& rNodes, const bool isInterpolated, const float* pIsoValues, const uint32_t xIndex, const uint32_t yIndex, 
+										const uint32_t zIndex, const std::pair<Index_t, Index_t>& cornerIndices);
+		glm::vec3 GetEdgeVertexPosition(Nodes& rNodes, const uint32_t xIndex, const uint32_t yIndex, 
 										const uint32_t zIndex, const std::pair<Index_t, Index_t>& cornerIndices);
 		void UpdateGameObjectModel();
 

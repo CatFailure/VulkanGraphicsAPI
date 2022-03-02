@@ -17,7 +17,7 @@ namespace SolEngine::System
     private:
         static constexpr unsigned char MIN_LIVE_NEIGHBOUR_COUNT{ 2U };
         static constexpr unsigned char MAX_LIVE_NEIGHBOUR_COUNT{ 3U };
-        static constexpr float         NEXT_GENERATION_DELAY   { 1.5f };
+        static constexpr float         NEXT_GENERATION_DELAY   { 0.01f };
 
         float _nextGenerationDelayRemaining{ NEXT_GENERATION_DELAY };
     };
