@@ -49,7 +49,6 @@ private:
 
     DiagnosticData    _diagnosticData   {};
     GridData          _gridData         {};
-    MarchingCubesData _marchingCubesData{};
 
     SolClock    _solClock;
     SolCamera   _solCamera;

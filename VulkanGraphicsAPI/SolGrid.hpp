@@ -1,7 +1,7 @@
 #pragma once
 #include "DebugHelpers.hpp"
 #include "GridHelpers.hpp"
-#include "Nodes.hpp"
+#include "Cells.hpp"
 #include "GridData.hpp"
 
 using namespace Utility;
@@ -29,7 +29,7 @@ namespace SolEngine
 
 		void TraverseGrid(const TraverseCubesCallback_t &callback);
 
-		Nodes nodes;
+		Cells nodes;
 
 	private:
 		void InitialiseNodes();

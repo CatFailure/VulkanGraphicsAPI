@@ -18,7 +18,6 @@ Application::Application(const ApplicationData &appData)
 #endif  // !DISABLE_IM_GUI
 
     SetupCamera();
-
     SetupGrid();
     SetupMarchingCubesSystem();
     SetupGameOfLifeSystem();
@@ -64,7 +63,6 @@ void Application::Update(const float deltaTime)
     _solCamera.Update(deltaTime);
 
     _pGameOfLifeSystem->Update(deltaTime, *_pSolGrid);
-    _pMarchingCubesSystem->March(*_pSolGrid, _diagnosticData);
 
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
@@ -112,7 +110,7 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 0, 0, -25.f })
+              .SetPosition({ 0, 0, -125.f })
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
@@ -120,7 +118,7 @@ void Application::SetupGrid()
 {
     _gridData = GridData
     {
-        .dimensions = glm::uvec3(20),
+        .dimensions = glm::uvec3(125, 75, 100),
         .step = 1.f
     };
 
@@ -130,10 +128,8 @@ void Application::SetupGrid()
 
 void Application::SetupMarchingCubesSystem()
 {
-    _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_marchingCubesData, 
-                                                                  _solDevice);
+    _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice);
 
-    //_pMarchingCubesSystem->GenerateIsoValues(*_pSolGrid, _diagnosticData);
     _pMarchingCubesSystem->March(*_pSolGrid, _diagnosticData);
 }
 
@@ -146,19 +142,12 @@ void Application::SetupGameOfLifeSystem()
 
 void Application::SetupMarchingCubesDataEventCallbacks()
 {
-    _marchingCubesData.onIsInterpolatedChangedEvent
+    _pGameOfLifeSystem->onUpdateAllCellStatesEvent
                       .AddListener([this]() 
-                                   {
-                                       _pMarchingCubesSystem->March(*_pSolGrid, 
-                                                                    _diagnosticData);
-                                   });
-
-    _marchingCubesData.onIsoLevelChangedEvent
-                      .AddListener([this]()
-                                   {
-                                       _pMarchingCubesSystem->March(*_pSolGrid, 
-                                                                    _diagnosticData);
-                                   });
+                      { 
+                          _pMarchingCubesSystem->March(*_pSolGrid, 
+                                                       _diagnosticData); 
+                      });
 }
 
 #ifndef DISABLE_IM_GUI

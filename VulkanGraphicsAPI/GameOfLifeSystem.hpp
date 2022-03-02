@@ -1,8 +1,10 @@
 #pragma once
 #include "SolGrid.hpp"
 #include "MarchingCubesHelpers.hpp"
+#include "SolEvent.hpp"
 
 using namespace Utility;
+using namespace SolEngine::Events;
 
 namespace SolEngine::System
 {
@@ -14,10 +16,12 @@ namespace SolEngine::System
 
         void Update(const float deltaTime, SolGrid& rSolGrid);
 
+        SolEvent<> onUpdateAllCellStatesEvent;
+
     private:
-        static constexpr unsigned char MIN_LIVE_NEIGHBOUR_COUNT{ 2U };
-        static constexpr unsigned char MAX_LIVE_NEIGHBOUR_COUNT{ 3U };
-        static constexpr float         NEXT_GENERATION_DELAY   { 0.01f };
+        static constexpr NeighbourCount_t MIN_LIVE_NEIGHBOUR_COUNT{ 2U };
+        static constexpr NeighbourCount_t MAX_LIVE_NEIGHBOUR_COUNT{ 3U };
+        static constexpr float            NEXT_GENERATION_DELAY   { .1f };
 
         float _nextGenerationDelayRemaining{ NEXT_GENERATION_DELAY };
     };

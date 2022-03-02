@@ -144,9 +144,6 @@
     <ClCompile Include="GenericRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="GuiMarchingCubesWindow.cpp">
-      <Filter>SolEngine\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="SolGrid.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
@@ -281,7 +278,7 @@
     <ClInclude Include="SolClock.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Nodes.hpp">
+    <ClInclude Include="Cells.hpp">
       <Filter>SolEngine\DOD</Filter>
     </ClInclude>
     <ClInclude Include="MarchingCubesHelpers.hpp">
@@ -298,12 +295,6 @@
     </ClInclude>
     <ClInclude Include="Axis.hpp">
       <Filter>SolEngine\Enumeration</Filter>
-    </ClInclude>
-    <ClInclude Include="GuiMarchingCubesWindow.hpp">
-      <Filter>SolEngine\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="MarchingCubesData.hpp">
-      <Filter>SolEngine\GUI\Data</Filter>
     </ClInclude>
     <ClInclude Include="LiveNeighbours.hpp">
       <Filter>SolEngine\Enumeration</Filter>

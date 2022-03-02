@@ -12,7 +12,7 @@ namespace SolEngine::System
                                   const uint32_t yIndex, 
                                   const uint32_t zIndex)
                               {
-                                  Nodes& rGridNodes = rSolGrid.nodes;
+                                  Cells& rGridNodes = rSolGrid.nodes;
 
                                   const size_t nodeIndex = _3DTo1DIndex(xIndex, 
                                                                         yIndex, 
@@ -20,7 +20,7 @@ namespace SolEngine::System
                                                                         gridDimensions, 
                                                                         gridStep);
 
-                                  unsigned char& rNodeLiveNeighbourCount = rGridNodes.pLiveNeighbourCounts[nodeIndex];
+                                  NeighbourCount_t& rNodeLiveNeighbourCount = rGridNodes.pLiveNeighbourCounts[nodeIndex];
                                   rNodeLiveNeighbourCount = 0U;  // Reset the neighbour count
 
                                   rGridNodes.pXVertices[xIndex * CUBE_VERTEX_COUNT];
@@ -126,33 +126,36 @@ namespace SolEngine::System
                                   const uint32_t yIndex,
                                   const uint32_t zIndex)
                               {
-                                  Nodes& rGridNodes = rSolGrid.nodes;
+                                  Cells& rGridNodes = rSolGrid.nodes;
 
-                                  const size_t nodeIndex = _3DTo1DIndex(xIndex, 
+                                  const size_t cellIndex = _3DTo1DIndex(xIndex, 
                                                                         yIndex, 
                                                                         zIndex, 
                                                                         gridDimensions, 
                                                                         gridStep);
 
+                                  bool&                  rCellState         = rGridNodes.pCellStates[cellIndex];
+                                  const NeighbourCount_t cellNeighbourCount = rGridNodes.pLiveNeighbourCounts[cellIndex];
+
                                   // Nothing to do
-                                  if (rGridNodes.pLiveNeighbourCounts[nodeIndex] == 0)
+                                  if (cellNeighbourCount == 0)
                                   {
                                       return;
                                   }
 
                                   // If alive
-                                  if (rGridNodes.pCellStates[nodeIndex])
+                                  if (rCellState)
                                   {
                                       // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-                                      if (rGridNodes.pLiveNeighbourCounts[nodeIndex] < MIN_LIVE_NEIGHBOUR_COUNT)
+                                      if (cellNeighbourCount < MIN_LIVE_NEIGHBOUR_COUNT)
                                       {
-                                          rGridNodes.pCellStates[nodeIndex] = false;
+                                          rCellState = false;
                                       }
 
                                       // Any live cell with more than three live neighbours dies, as if by overpopulation.
-                                      if (rGridNodes.pLiveNeighbourCounts[nodeIndex] > MAX_LIVE_NEIGHBOUR_COUNT)
+                                      if (cellNeighbourCount > MAX_LIVE_NEIGHBOUR_COUNT)
                                       {
-                                          rGridNodes.pCellStates[nodeIndex] = false;
+                                          rCellState = false;
                                       }
 
                                       // Any live cell with two or three live neighbours lives on to the next generation.
@@ -160,9 +163,9 @@ namespace SolEngine::System
                                   }
 
                                   // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-                                  if (rGridNodes.pLiveNeighbourCounts[nodeIndex] == MAX_LIVE_NEIGHBOUR_COUNT)
+                                  if (cellNeighbourCount == MAX_LIVE_NEIGHBOUR_COUNT)
                                   {
-                                      rGridNodes.pCellStates[nodeIndex] = true;
+                                       rCellState = true;
                                   }
                               });
     }
@@ -179,6 +182,8 @@ namespace SolEngine::System
 
         UpdateAllCellStates(rSolGrid);
         CheckAllLiveNeighbours(rSolGrid);
+
+        onUpdateAllCellStatesEvent.Invoke();
 
         _nextGenerationDelayRemaining = NEXT_GENERATION_DELAY;
     }
