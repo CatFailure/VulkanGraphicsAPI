@@ -156,6 +156,9 @@
     <ClCompile Include="MarchingCubesSystem.cpp">
       <Filter>SolEngine\System</Filter>
     </ClCompile>
+    <ClCompile Include="GameOfLifeSystem.cpp">
+      <Filter>SolEngine\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="GridData.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOfLifeSystem.hpp">
+      <Filter>SolEngine\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
