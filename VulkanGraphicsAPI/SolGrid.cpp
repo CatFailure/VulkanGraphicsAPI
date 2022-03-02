@@ -59,7 +59,8 @@ namespace SolEngine
         bytesInUse += GenerateVertices<Axis::X>(nodes.pXVertices, _minBounds.x, _maxBounds.x, gridStep);
         bytesInUse += GenerateVertices<Axis::Y>(nodes.pYVertices, _minBounds.y, _maxBounds.y, gridStep);
         bytesInUse += GenerateVertices<Axis::Z>(nodes.pZVertices, _minBounds.z, _maxBounds.z, gridStep);
-        bytesInUse += DefaultLiveNeighbours(nodes.pLiveNeighbours, _rGridData.GetNodeCount());
+        bytesInUse += DefaultLiveNeighbours(nodes.pLiveNeighbourCounts, _rGridData.GetNodeCount());
+        bytesInUse += GenerateRandomStates(nodes.pCellStates, _rGridData.GetNodeCount());
 
         _rDiagnosticData.memoryUsedBytes = bytesInUse;
     }

@@ -10,6 +10,11 @@ using namespace SolEngine::Enumeration;
 
 namespace Utility
 {
+    static inline bool RandomBool()
+    {
+        return rand() > (RAND_MAX / 2);
+    }
+
     /// <summary>
     /// Generates Vertices along an axis
     /// </summary>
@@ -119,17 +124,33 @@ namespace Utility
         return bytesInUse;
     }
 
-    static size_t DefaultLiveNeighbours(LiveNeighbours* pOutLiveNeighbours,
+    static size_t GenerateRandomStates(bool* pOutNodeStates,
+                                       const size_t count)
+    {
+        const size_t stateSizeBytes = sizeof(bool);
+        size_t       bytesInUse     = 0;
+
+        for (size_t i = 0; i < count; ++i)
+        {
+            pOutNodeStates[i] = RandomBool();
+
+            bytesInUse += stateSizeBytes;
+        }
+
+        return bytesInUse;
+    }
+
+    static size_t DefaultLiveNeighbours(unsigned char* pOutLiveNeighbours,
                                         const size_t count)
     {
-        const size_t enumSizeBytes = sizeof(LiveNeighbours);
+        const size_t neighbourCountSizeBytes = sizeof(unsigned char);
         size_t       bytesInUse    = 0;
 
         for (size_t i = 0; i < count; ++i)
         {
-            pOutLiveNeighbours[i] = LiveNeighbours::NONE;
+            pOutLiveNeighbours[i] = 0;
 
-            bytesInUse += enumSizeBytes;
+            bytesInUse += neighbourCountSizeBytes;
         }
 
         return bytesInUse;

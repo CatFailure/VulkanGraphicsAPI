@@ -4,8 +4,9 @@
 #include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
-#include "MarchingCubesSystem.hpp"
 #include "SolGrid.hpp"
+#include "MarchingCubesSystem.hpp"
+#include "GameOfLifeSystem.hpp"
 
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
@@ -37,6 +38,7 @@ private:
     void SetupCamera();
     void SetupGrid();
     void SetupMarchingCubesSystem();
+    void SetupGameOfLifeSystem();
     void SetupMarchingCubesDataEventCallbacks();
 
 #ifndef DISABLE_IM_GUI
@@ -63,6 +65,7 @@ private:
 
     std::unique_ptr<SolGrid>             _pSolGrid;
     std::unique_ptr<MarchingCubesSystem> _pMarchingCubesSystem;
+    std::unique_ptr<GameOfLifeSystem>    _pGameOfLifeSystem;
 
     static constexpr float CAM_NEAR{ 0.01f };
     static constexpr float CAM_FAR { 100.f };

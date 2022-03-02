@@ -147,9 +147,6 @@
     <ClCompile Include="GuiMarchingCubesWindow.cpp">
       <Filter>SolEngine\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GameOfLifeHelpers.cpp">
-      <Filter>Utility</Filter>
-    </ClCompile>
     <ClCompile Include="SolGrid.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
@@ -307,9 +304,6 @@
     </ClInclude>
     <ClInclude Include="MarchingCubesData.hpp">
       <Filter>SolEngine\GUI\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOfLifeHelpers.hpp">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="LiveNeighbours.hpp">
       <Filter>SolEngine\Enumeration</Filter>
