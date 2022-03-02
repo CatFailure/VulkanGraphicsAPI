@@ -12,7 +12,7 @@ namespace SolEngine
 
     SolGrid::~SolGrid()
     {
-        nodes.Free();
+        cells.Free();
     }
 
     void SolGrid::Initialise()
@@ -52,15 +52,16 @@ namespace SolEngine
     void SolGrid::InitialiseNodes()
     {
         const float gridStep = _rGridData.step;
+        const size_t nodeCount = _rGridData.GetNodeCount();
         size_t bytesInUse(0);
 
-        _rDiagnosticData.memoryAllocatedBytes = nodes.AllocateDataArrays();
+        _rDiagnosticData.memoryAllocatedBytes = cells.AllocateDataArrays();
 
-        bytesInUse += GenerateVertices<Axis::X>(nodes.pXVertices, _minBounds.x, _maxBounds.x, gridStep);
-        bytesInUse += GenerateVertices<Axis::Y>(nodes.pYVertices, _minBounds.y, _maxBounds.y, gridStep);
-        bytesInUse += GenerateVertices<Axis::Z>(nodes.pZVertices, _minBounds.z, _maxBounds.z, gridStep);
-        bytesInUse += DefaultLiveNeighbours(nodes.pLiveNeighbourCounts, _rGridData.GetNodeCount());
-        bytesInUse += GenerateRandomStates(nodes.pCellStates, _rGridData.GetNodeCount());
+        bytesInUse += GenerateVertices<Axis::X>(cells.pXVertices, _minBounds.x, _maxBounds.x, gridStep);
+        bytesInUse += GenerateVertices<Axis::Y>(cells.pYVertices, _minBounds.y, _maxBounds.y, gridStep);
+        bytesInUse += GenerateVertices<Axis::Z>(cells.pZVertices, _minBounds.z, _maxBounds.z, gridStep);
+        bytesInUse += DefaultLiveNeighbours(cells.pLiveNeighbourCounts, nodeCount);
+        bytesInUse += GenerateRandomStates(cells.pCellStates, nodeCount);
 
         _rDiagnosticData.memoryUsedBytes = bytesInUse;
     }

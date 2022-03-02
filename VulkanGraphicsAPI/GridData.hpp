@@ -5,8 +5,12 @@ namespace SolEngine::GUI::Data
 {
 	struct GridData
 	{
-		glm::uint GetGridVolume() const { return dimensions.x * dimensions.y * dimensions.z; }
-		size_t	  GetNodeCount()  const { return (size_t)(GetGridVolume() * (double)step); }
+		size_t GetNodeCount() const 
+		{
+			const glm::vec3 scaledDimensions = (glm::vec3)dimensions / step;
+
+			return (size_t)((double)scaledDimensions.x * scaledDimensions.y * scaledDimensions.z);
+		}
 
 		glm::uvec3 dimensions{ 10 };	// Adjusts the size of the grid
 		float	   step		 { 1.f };	// Adjusts the resolution of the grid

@@ -29,7 +29,7 @@ namespace SolEngine
 
 		void TraverseGrid(const TraverseCubesCallback_t &callback);
 
-		Cells nodes;
+		Cells cells;
 
 	private:
 		void InitialiseNodes();

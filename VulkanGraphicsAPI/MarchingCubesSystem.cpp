@@ -15,7 +15,7 @@ namespace SolEngine::System
 
         const glm::uvec3 gridDimensions  = _rSolGrid.GetDimensions();
         const float      gridStep        = _rSolGrid.GetStep();
-        const bool*      pGridCellStates = _rSolGrid.nodes.pCellStates;
+        const bool*      pGridCellStates = _rSolGrid.cells.pCellStates;
 
         _rSolGrid.TraverseGrid([&](const uint32_t xIndex, 
                                    const uint32_t yIndex, 
@@ -24,12 +24,6 @@ namespace SolEngine::System
                                    const uint32_t adjXIndex = xIndex + 1U;
                                    const uint32_t adjYIndex = yIndex + 1U;
                                    const uint32_t adjZIndex = zIndex + 1U;
-                               
-                                   const uint32_t nodeStateIndex = _3DTo1DIndex(xIndex, 
-                                                                                yIndex, 
-                                                                                zIndex, 
-                                                                                gridDimensions,
-                                                                                gridStep);
                                
                                    // Retrieve a cubes vertex states
                                    const bool cubeNodeStates[CUBE_VERTEX_COUNT]
@@ -49,8 +43,13 @@ namespace SolEngine::System
                                
                                    // Look up the triangulation for the cubeIndex
                                    const Index_t* pEdgeIndices = TRI_TABLE[cubeIndex];
+
+                                   if (*pEdgeIndices == -1)
+                                   {
+                                       return;
+                                   }
                                
-                                   CreateVertices(_rSolGrid.nodes,
+                                   CreateVertices(_rSolGrid.cells,
                                                   pEdgeIndices, 
                                                   xIndex, 
                                                   yIndex, 

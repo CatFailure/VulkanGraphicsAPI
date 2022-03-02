@@ -27,9 +27,10 @@ namespace Utility
 
         const glm::vec3 scaledDimensions = dimensions / step;
         const glm::vec3 sqrDimensions = scaledDimensions * scaledDimensions;
+        const uint32_t returnIndex = (uint32_t)((zIndex * sqrDimensions.x) + (yIndex * scaledDimensions.y) + xIndex);
 
         // Convert 3D array indexes into a 1D array index
-        return (uint32_t)((zIndex * sqrDimensions.x) + (yIndex * scaledDimensions.y) + xIndex);
+        return returnIndex;
     }
 
     /// <summary>

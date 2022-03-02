@@ -60,6 +60,10 @@ void Application::Run()
 
 void Application::Update(const float deltaTime)
 {
+    _solCamera.LookAt(_pMarchingCubesSystem->GetGameObject()
+                                           .transform
+                                           .position);
+
     _solCamera.Update(deltaTime);
 
     _pGameOfLifeSystem->Update(deltaTime);
@@ -110,7 +114,7 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 0, 0, -125.f })
+              .SetPosition({ 5.f, 2.5f, 5.f })
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
@@ -118,7 +122,7 @@ void Application::SetupGrid()
 {
     _gridData = GridData
     {
-        .dimensions = glm::uvec3(125, 75, 100),
+        .dimensions = glm::uvec3(5),
         .step = 1.f
     };
 
