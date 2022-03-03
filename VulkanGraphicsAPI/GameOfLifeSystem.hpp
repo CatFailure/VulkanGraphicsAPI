@@ -25,8 +25,8 @@ namespace SolEngine::System
         static constexpr NeighbourCount_t MAX_LIVE_NEIGHBOUR_COUNT{ 3U };
         static constexpr float            NEXT_GENERATION_DELAY   { .1f };
 
-        void CheckNeighbourState(const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex,
-                                 const glm::vec3& dimensions, const float step, const bool* pCellStates, 
+        void CheckNeighbourState(const size_t neighbourIndex,
+                                 const bool* pCellStates, 
                                  NeighbourCount_t& rLiveNeighbourCount);
 
         float _nextGenerationDelayRemaining{ NEXT_GENERATION_DELAY };

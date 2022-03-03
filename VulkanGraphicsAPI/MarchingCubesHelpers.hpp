@@ -14,8 +14,7 @@ namespace Utility
     static uint32_t _3DTo1DIndex(const uint32_t xIndex, 
                                  const uint32_t yIndex, 
                                  const uint32_t zIndex,
-                                 const glm::vec3 &dimensions,
-                                 const float step)
+                                 const glm::vec3 &scaledDimensions)
     {
         // Always 0
         if (xIndex == 0 && 
@@ -25,7 +24,6 @@ namespace Utility
             return 0;
         }
 
-        const glm::vec3 scaledDimensions = dimensions / step;
         const glm::vec3 sqrDimensions = scaledDimensions * scaledDimensions;
         const uint32_t returnIndex = (uint32_t)((zIndex * sqrDimensions.x) + (yIndex * scaledDimensions.y) + xIndex);
 

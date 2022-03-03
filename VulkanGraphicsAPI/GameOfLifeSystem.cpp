@@ -8,45 +8,48 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::CheckAllLiveNeighbours()
     {
-        const glm::vec3 gridDimensions = _rSolGrid.GetDimensions();
-        const float     gridStep       = _rSolGrid.GetStep();
-        const glm::vec3 maxIndex       = gridDimensions / gridStep;
+        const glm::vec3 gridDimensions   = _rSolGrid.GetDimensions();
+        const float     gridStep         = _rSolGrid.GetStep();
+        const glm::vec3 scaledDimensions = _rSolGrid.GetScaledDimensions();
                                           
         _rSolGrid.TraverseGrid([&](const uint32_t xIndex, 
                                    const uint32_t yIndex, 
                                    const uint32_t zIndex)
                                {
                                    const Cells& gridNodes = _rSolGrid.cells;
-                               
                                    const size_t nodeIndex = _3DTo1DIndex(xIndex, 
                                                                          yIndex, 
                                                                          zIndex, 
-                                                                         gridDimensions, 
-                                                                         gridStep);
+                                                                         scaledDimensions);
+                                   size_t neighbourIndex(0);
                                
-                                   NeighbourCount_t& rNodeLiveNeighbourCount = gridNodes.pLiveNeighbourCounts[nodeIndex];
+                                   NeighbourCount_t& rNodeLiveNeighbourCount = 
+                                       gridNodes.pLiveNeighbourCounts[nodeIndex];
+
                                    rNodeLiveNeighbourCount = 0U;  // Reset the neighbour count
                                
                                    // Is there a node to the left?
                                    if (xIndex > 0)
                                    {
-                                       CheckNeighbourState(xIndex - 1, 
-                                                           yIndex, 
-                                                           zIndex,
-                                                           gridDimensions,
-                                                           gridStep,
-                                                           gridNodes.pCellStates, 
+                                       neighbourIndex = _3DTo1DIndex(xIndex - 1, 
+                                                                     yIndex, 
+                                                                     zIndex, 
+                                                                     scaledDimensions);
+
+                                       CheckNeighbourState(neighbourIndex, 
+                                                           gridNodes.pCellStates,
                                                            rNodeLiveNeighbourCount);
                                    }
                                
                                    // Is there a node to the right?
-                                   if (xIndex < maxIndex.x - 1)
+                                   if (xIndex < scaledDimensions.x - 1)
                                    {
-                                       CheckNeighbourState(xIndex + 1, 
-                                                           yIndex, 
-                                                           zIndex, 
-                                                           gridDimensions,
-                                                           gridStep,
+                                       neighbourIndex = _3DTo1DIndex(xIndex + 1, 
+                                                                     yIndex, 
+                                                                     zIndex, 
+                                                                     scaledDimensions);
+
+                                       CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
                                                            rNodeLiveNeighbourCount);
                                    }
@@ -54,23 +57,25 @@ namespace SolEngine::System
                                    // Is there a node above?
                                    if (yIndex > 0)
                                    {
-                                       CheckNeighbourState(xIndex, 
-                                                           yIndex - 1, 
-                                                           zIndex, 
-                                                           gridDimensions,
-                                                           gridStep,
+                                       neighbourIndex = _3DTo1DIndex(xIndex, 
+                                                                     yIndex - 1, 
+                                                                     zIndex, 
+                                                                     scaledDimensions);
+
+                                       CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
                                                            rNodeLiveNeighbourCount);
                                    }
                                
                                    // Is there a node below?
-                                   if (yIndex < maxIndex.y - 1)
+                                   if (yIndex < scaledDimensions.y - 1)
                                    {
-                                       CheckNeighbourState(xIndex, 
-                                                           yIndex + 1, 
-                                                           zIndex, 
-                                                           gridDimensions,
-                                                           gridStep,
+                                       neighbourIndex = _3DTo1DIndex(xIndex, 
+                                                                     yIndex + 1, 
+                                                                     zIndex, 
+                                                                     scaledDimensions);
+
+                                       CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
                                                            rNodeLiveNeighbourCount);
                                    }
@@ -78,23 +83,25 @@ namespace SolEngine::System
                                    // Is there a node to the back?
                                    if (zIndex > 0)
                                    {
-                                       CheckNeighbourState(xIndex, 
-                                                           yIndex, 
-                                                           zIndex - 1, 
-                                                           gridDimensions,
-                                                           gridStep,
+                                       neighbourIndex = _3DTo1DIndex(xIndex, 
+                                                                     yIndex, 
+                                                                     zIndex - 1, 
+                                                                     scaledDimensions);
+
+                                       CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
                                                            rNodeLiveNeighbourCount);
                                    }
                                
                                    // Is there a node to the front?
-                                   if (zIndex < maxIndex.z - 1)
+                                   if (zIndex < scaledDimensions.z - 1)
                                    {
-                                       CheckNeighbourState(xIndex, 
-                                                           yIndex, 
-                                                           zIndex + 1, 
-                                                           gridDimensions,
-                                                           gridStep,
+                                       neighbourIndex = _3DTo1DIndex(xIndex, 
+                                                                     yIndex, 
+                                                                     zIndex + 1, 
+                                                                     scaledDimensions);
+
+                                       CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
                                                            rNodeLiveNeighbourCount);
                                    }
@@ -103,8 +110,9 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::UpdateAllCellStates()
     {
-        const glm::vec3 gridDimensions = _rSolGrid.GetDimensions();
-        const float     gridStep       = _rSolGrid.GetStep();
+        //const glm::vec3 gridDimensions = _rSolGrid.GetDimensions();
+        //const float     gridStep       = _rSolGrid.GetStep();
+        const glm::vec3 scaledDimensions = _rSolGrid.GetScaledDimensions();
 
         _rSolGrid.TraverseGrid([&](const uint32_t xIndex,
                                    const uint32_t yIndex,
@@ -115,8 +123,7 @@ namespace SolEngine::System
                                    const size_t cellIndex = _3DTo1DIndex(xIndex, 
                                                                          yIndex, 
                                                                          zIndex, 
-                                                                         gridDimensions, 
-                                                                         gridStep);
+                                                                         scaledDimensions);
                                
                                    bool&                  rCellState         = rGridNodes.pCellStates[cellIndex];
                                    const NeighbourCount_t cellNeighbourCount = rGridNodes.pLiveNeighbourCounts[cellIndex];
@@ -171,23 +178,16 @@ namespace SolEngine::System
         _nextGenerationDelayRemaining = NEXT_GENERATION_DELAY;
     }
 
-    void GameOfLifeSystem::CheckNeighbourState(const uint32_t xIndex,
-                                               const uint32_t yIndex,
-                                               const uint32_t zIndex,
-                                               const glm::vec3& dimensions,
-                                               const float step, 
+    void GameOfLifeSystem::CheckNeighbourState(const size_t neighbourIndex,
                                                const bool* pCellStates, 
                                                NeighbourCount_t& rLiveNeighbourCount)
     {
-        const size_t    neighbourIndex = _3DTo1DIndex(xIndex, 
-                                                      yIndex, 
-                                                      zIndex, 
-                                                      dimensions, 
-                                                      step);
         // Is this cell alive?
-        if (pCellStates[neighbourIndex])
+        if (!pCellStates[neighbourIndex])
         {
-            ++rLiveNeighbourCount;
+            return;
         }
+
+        ++rLiveNeighbourCount;
     }
 }

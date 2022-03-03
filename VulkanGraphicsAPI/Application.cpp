@@ -110,11 +110,12 @@ void Application::SetupCamera()
 {
     const PerspectiveProjectionInfo projInfo
     {
-        .fovDeg = 50.f
+        .fovDeg = 50.f,
+        .far    = 250.f
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 5.f, 2.5f, 5.f })
+              .SetPosition({ 15.f, 2.5f, 15.f })
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
@@ -122,8 +123,8 @@ void Application::SetupGrid()
 {
     _gridData = GridData
     {
-        .dimensions = glm::uvec3(5),
-        .step = 1.f
+        .dimensions = glm::uvec3(10),
+        .step = .5f
     };
 
     _pSolGrid = std::make_unique<SolGrid>(_gridData, 
@@ -163,6 +164,5 @@ void Application::CreateGuiWindowManager()
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
     _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _diagnosticData);
-    _pGuiWindowManager->CreateGuiWindow<GuiMarchingCubesWindow>("Marching Cubes Settings", true, 0, _marchingCubesData);
 }
 #endif // !DISABLE_IM_GUI
