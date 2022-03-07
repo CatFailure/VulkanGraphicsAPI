@@ -18,14 +18,20 @@ Application::Application(const ApplicationData &appData)
 #endif  // !DISABLE_IM_GUI
 
     SetupCamera();
-    SetupMarchingCubesManager();
-
-    LoadGameObjects();
+    SetupGrid();
+    SetupMarchingCubesSystem();
+    SetupGameOfLifeSystem();
+    SetupMarchingCubesDataEventCallbacks();
 }
 
 Application::~Application()
 {
-    Dispose();
+    // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
+    _pSolDescriptorPool = nullptr;
+
+#ifndef DISABLE_IM_GUI
+    _pGuiWindowManager = nullptr;
+#endif
 }
 
 void Application::Run()
@@ -52,29 +58,19 @@ void Application::Run()
     vkDeviceWaitIdle(_solDevice.GetDevice());
 }
 
-void Application::Dispose()
-{
-    // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
-    _pSolDescriptorPool = nullptr;
-
-#ifndef DISABLE_IM_GUI
-    _pGuiWindowManager = nullptr;
-#endif
-}
-
 void Application::Update(const float deltaTime)
 {
-    _pMarchingCubesManager->Update(deltaTime);
+    _solCamera.LookAt(_pMarchingCubesSystem->GetGameObject()
+                                           .transform
+                                           .position);
+
     _solCamera.Update(deltaTime);
+
+    _pGameOfLifeSystem->Update(deltaTime);
 
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
 #endif  // !DISABLE_IM_GUI
-
-    _pMarchingCubesManager->GetGameObject()
-                          .transform
-                          .rotation
-                          .y += .5f * deltaTime;
 }
 
 void Application::Render()
@@ -96,7 +92,7 @@ void Application::Render()
 
     renderSystem.RenderGameObject(_solCamera, 
                                   commandBuffer, 
-                                  _pMarchingCubesManager->GetGameObject());
+                                  _pMarchingCubesSystem->GetGameObject());
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -114,21 +110,43 @@ void Application::SetupCamera()
 {
     const PerspectiveProjectionInfo projInfo
     {
-        .fovDeg = 50.f
+        .fovDeg = 50.f,
+        .far    = 250.f
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 0, 0, -25.f })
+              .SetPosition({ 15.f, 2.5f, 15.f })
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
-void Application::SetupMarchingCubesManager()
+void Application::SetupGrid()
 {
-    // Create a 5x5x5 grid for testing...
-    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice,
-                                                                    _diagnosticData,
-                                                                    _marchingCubesData,
-                                                                    20);
+    _pSolGrid = std::make_unique<SolGrid>(_gridData, 
+                                          _diagnosticData);
+}
+
+void Application::SetupMarchingCubesSystem()
+{
+    _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice, 
+                                                                  *_pSolGrid);
+
+    _pMarchingCubesSystem->March(_diagnosticData);
+}
+
+void Application::SetupGameOfLifeSystem()
+{
+    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid);
+
+    _pGameOfLifeSystem->CheckAllCellNeighbours();
+}
+
+void Application::SetupMarchingCubesDataEventCallbacks()
+{
+    _pGameOfLifeSystem->onUpdateAllCellStatesEvent
+                      .AddListener([this]() 
+                      { 
+                          _pMarchingCubesSystem->March(_diagnosticData); 
+                      });
 }
 
 #ifndef DISABLE_IM_GUI
@@ -140,19 +158,5 @@ void Application::CreateGuiWindowManager()
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
     _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _diagnosticData);
-    _pGuiWindowManager->CreateGuiWindow<GuiMarchingCubesWindow>("Marching Cubes Settings", true, 0, _marchingCubesData);
 }
 #endif // !DISABLE_IM_GUI
-
-void Application::LoadGameObjects()
-{
-    //std::shared_ptr<SolModel> marchingCubeModel = _pMarchingCubesManager->CreateModel();
-
-    //if (marchingCubeModel == nullptr)
-    //{
-    //    return;
-    //}
-
-    //SolGameObject marchingCubeGameObject = SolGameObject::CreateGameObject();
-    //marchingCubeGameObject.SetModel(marchingCubeModel);
-}

@@ -52,14 +52,14 @@
     <Filter Include="SolEngine\DOD">
       <UniqueIdentifier>{ad079547-8b04-47ad-aa75-ed6a3cd4c320}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SolEngine\Manager">
-      <UniqueIdentifier>{8fa7572d-54bf-4373-83d6-163bc77b2c06}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SolEngine\GUI\Data">
       <UniqueIdentifier>{a1a36440-43fb-47ec-ab53-f701fc70e175}</UniqueIdentifier>
     </Filter>
     <Filter Include="SolEngine\Enumeration">
       <UniqueIdentifier>{5b8e70ca-8574-4d7d-9741-839fbe54f0ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SolEngine\System">
+      <UniqueIdentifier>{b64bfb7c-6aec-400d-be4d-2ed03452811d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,14 +141,17 @@
     <ClCompile Include="SolClock.cpp">
       <Filter>SolEngine</Filter>
     </ClCompile>
-    <ClCompile Include="MarchingCubesManager.cpp">
-      <Filter>SolEngine\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="GenericRenderSystem.cpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="GuiMarchingCubesWindow.cpp">
-      <Filter>SolEngine\GUI</Filter>
+    <ClCompile Include="SolGrid.cpp">
+      <Filter>SolEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="MarchingCubesSystem.cpp">
+      <Filter>SolEngine\System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOfLifeSystem.cpp">
+      <Filter>SolEngine\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,14 +278,11 @@
     <ClInclude Include="SolClock.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Cubes.hpp">
+    <ClInclude Include="Cells.hpp">
       <Filter>SolEngine\DOD</Filter>
     </ClInclude>
     <ClInclude Include="MarchingCubesHelpers.hpp">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="MarchingCubesManager.hpp">
-      <Filter>SolEngine\Manager</Filter>
     </ClInclude>
     <ClInclude Include="GenericRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
@@ -296,11 +296,20 @@
     <ClInclude Include="Axis.hpp">
       <Filter>SolEngine\Enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="GuiMarchingCubesWindow.hpp">
-      <Filter>SolEngine\GUI</Filter>
+    <ClInclude Include="SolGrid.hpp">
+      <Filter>SolEngine</Filter>
     </ClInclude>
-    <ClInclude Include="MarchingCubesData.hpp">
-      <Filter>SolEngine\GUI\Data</Filter>
+    <ClInclude Include="MarchingCubesSystem.hpp">
+      <Filter>SolEngine\System</Filter>
+    </ClInclude>
+    <ClInclude Include="GridHelpers.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GridData.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOfLifeSystem.hpp">
+      <Filter>SolEngine\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
