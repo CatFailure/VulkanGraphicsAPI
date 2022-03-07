@@ -2,7 +2,6 @@
 #include "Constants.hpp"
 #include "MemoryHelpers.hpp"
 #include "DiagnosticData.hpp"
-#include "LiveNeighbours.hpp"
 
 using namespace Utility;
 using namespace SolEngine::Data;

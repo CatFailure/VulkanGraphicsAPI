@@ -296,9 +296,6 @@
     <ClInclude Include="Axis.hpp">
       <Filter>SolEngine\Enumeration</Filter>
     </ClInclude>
-    <ClInclude Include="LiveNeighbours.hpp">
-      <Filter>SolEngine\Enumeration</Filter>
-    </ClInclude>
     <ClInclude Include="SolGrid.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>

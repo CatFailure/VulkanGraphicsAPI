@@ -3,7 +3,6 @@
 
 #include "Axis.hpp"
 #include "Constants.hpp"
-#include "LiveNeighbours.hpp"
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Enumeration;

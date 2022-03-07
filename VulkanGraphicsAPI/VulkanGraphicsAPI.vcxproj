@@ -393,7 +393,6 @@
     <ClInclude Include="MarchingCubesHelpers.hpp" />
     <ClInclude Include="MatrixUtility.hpp" />
     <ClInclude Include="MemoryHelpers.hpp" />
-    <ClInclude Include="LiveNeighbours.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
     <ClInclude Include="Rect.hpp" />
