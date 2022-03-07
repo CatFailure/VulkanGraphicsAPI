@@ -121,12 +121,6 @@ void Application::SetupCamera()
 
 void Application::SetupGrid()
 {
-    _gridData = GridData
-    {
-        .dimensions = glm::uvec3(10),
-        .step = .5f
-    };
-
     _pSolGrid = std::make_unique<SolGrid>(_gridData, 
                                           _diagnosticData);
 }
@@ -143,7 +137,7 @@ void Application::SetupGameOfLifeSystem()
 {
     _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid);
 
-    _pGameOfLifeSystem->CheckAllLiveNeighbours();
+    _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
 
 void Application::SetupMarchingCubesDataEventCallbacks()

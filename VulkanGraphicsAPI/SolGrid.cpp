@@ -21,7 +21,7 @@ namespace SolEngine
         InitialiseNodes();
     }
 
-    void SolGrid::TraverseGrid(const TraverseCubesCallback_t& callback)
+    void SolGrid::TraverseAllGridCells(const TraverseCubesCallback_t& callback)
     {
         const float gridStep = _rGridData.step;
 

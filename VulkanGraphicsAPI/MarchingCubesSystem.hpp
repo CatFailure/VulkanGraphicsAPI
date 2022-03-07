@@ -21,8 +21,8 @@ namespace SolEngine::System
 	private:
 		uint32_t GetCubeIndex(const bool* pNodeStates);
 		void CreateVertices(Cells& rNodes, const Index_t* pEdgeIndices, const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex);
-		glm::vec3 GetEdgeVertexPosition(Cells& rNodes, const uint32_t xIndex, const uint32_t yIndex, 
-										const uint32_t zIndex, const std::pair<Index_t, Index_t>& cornerIndices);
+		glm::vec3 GetEdgeVertexPosition(Cells& rNodes, const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex,
+										const std::pair<Index_t, Index_t>& cornerIndices);
 		void UpdateGameObjectModel();
 
 		SolDevice&	  _rSolDevice;

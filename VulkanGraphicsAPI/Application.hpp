@@ -47,8 +47,12 @@ private:
 
     ApplicationData _appData;
 
-    DiagnosticData    _diagnosticData{};
-    GridData          _gridData      {};
+    DiagnosticData _diagnosticData{};
+    GridData       _gridData
+    {
+        .dimensions = glm::uvec3(10),
+        .step       = .5f
+    };
 
     SolClock    _solClock;
     SolCamera   _solCamera;

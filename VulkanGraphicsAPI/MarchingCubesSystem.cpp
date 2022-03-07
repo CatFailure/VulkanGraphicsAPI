@@ -11,57 +11,59 @@ namespace SolEngine::System
 
     void MarchingCubesSystem::March(DiagnosticData& rDiagnosticData)
     {
+        // Delete all previous vertices
         _vertices.clear();
 
+        const uint32_t   adjOffset            = 1U;
         const glm::vec3  scaledGridDimensions = _rSolGrid.GetScaledDimensions();
         const bool*      pGridCellStates      = _rSolGrid.cells.pCellStates;
 
-        _rSolGrid.TraverseGrid([&](const uint32_t xIndex, 
-                                   const uint32_t yIndex, 
-                                   const uint32_t zIndex) 
-                               {
-                                   const uint32_t adjXIndex = xIndex + 1U;
-                                   const uint32_t adjYIndex = yIndex + 1U;
-                                   const uint32_t adjZIndex = zIndex + 1U;
+        _rSolGrid.TraverseAllGridCells([&](const uint32_t xIndex, 
+                                           const uint32_t yIndex, 
+                                           const uint32_t zIndex) 
+                                       {
+                                           const uint32_t adjXIndex = xIndex + adjOffset;
+                                           const uint32_t adjYIndex = yIndex + adjOffset;
+                                           const uint32_t adjZIndex = zIndex + adjOffset;
 
-                                   if (!(adjXIndex < scaledGridDimensions.x) ||
-                                       !(adjYIndex < scaledGridDimensions.y) ||
-                                       !(adjZIndex < scaledGridDimensions.z))
-                                   {
-                                       // Out-of-range
-                                       return;
-                                   }
-                               
-                                   // Retrieve a cubes vertex states
-                                   const bool cubeNodeStates[CUBE_VERTEX_COUNT]
-                                   {
-                                       pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    zIndex,    scaledGridDimensions)],
-                                       pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    zIndex,    scaledGridDimensions)],
-                                       pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    adjZIndex, scaledGridDimensions)],
-                                       pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    adjZIndex, scaledGridDimensions)],
-                                       pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, zIndex,    scaledGridDimensions)],
-                                       pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, zIndex,    scaledGridDimensions)],
-                                       pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, adjZIndex, scaledGridDimensions)],
-                                       pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, adjZIndex, scaledGridDimensions)]
-                                   };
-                               
-                                   // Calculate the cube index to pull from the Tri-table
-                                   const uint32_t cubeIndex = GetCubeIndex(cubeNodeStates);
-                               
-                                   // Look up the triangulation for the cubeIndex
-                                   const Index_t* pEdgeIndices = TRI_TABLE[cubeIndex];
+                                           if (!(adjXIndex < scaledGridDimensions.x) ||
+                                               !(adjYIndex < scaledGridDimensions.y) ||
+                                               !(adjZIndex < scaledGridDimensions.z))
+                                           {
+                                               // Out-of-range
+                                               return;
+                                           }
+                                       
+                                           // Retrieve a cubes vertex states
+                                           const bool cubeNodeStates[CUBE_VERTEX_COUNT]
+                                           {
+                                               pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    zIndex,    scaledGridDimensions)],
+                                               pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    zIndex,    scaledGridDimensions)],
+                                               pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    adjZIndex, scaledGridDimensions)],
+                                               pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    adjZIndex, scaledGridDimensions)],
+                                               pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, zIndex,    scaledGridDimensions)],
+                                               pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, zIndex,    scaledGridDimensions)],
+                                               pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, adjZIndex, scaledGridDimensions)],
+                                               pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, adjZIndex, scaledGridDimensions)]
+                                           };
+                                       
+                                           // Calculate the cube index to pull from the Tri-table
+                                           const uint32_t cubeIndex = GetCubeIndex(cubeNodeStates);
+                                       
+                                           // Look up the triangulation for the cubeIndex
+                                           const Index_t* pEdgeIndices = TRI_TABLE[cubeIndex];
 
-                                   if (*pEdgeIndices == -1)
-                                   {
-                                       return;
-                                   }
-                               
-                                   CreateVertices(_rSolGrid.cells,
-                                                  pEdgeIndices, 
-                                                  xIndex, 
-                                                  yIndex, 
-                                                  zIndex);
-                               });
+                                           if (*pEdgeIndices == -1)
+                                           {
+                                               return;
+                                           }
+                                       
+                                           CreateVertices(_rSolGrid.cells,
+                                                          pEdgeIndices, 
+                                                          xIndex, 
+                                                          yIndex, 
+                                                          zIndex);
+                                       });
 
         UpdateGameObjectModel();
 

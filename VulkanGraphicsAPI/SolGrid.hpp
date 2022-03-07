@@ -28,7 +28,7 @@ namespace SolEngine
 		float	   GetStep()			 const { return _rGridData.step; }
 		glm::vec3  GetScaledDimensions() const { return (glm::vec3)GetDimensions() / GetStep(); }
 
-		void TraverseGrid(const TraverseCubesCallback_t &callback);
+		void TraverseAllGridCells(const TraverseCubesCallback_t& callback);
 
 		Cells cells;
 
