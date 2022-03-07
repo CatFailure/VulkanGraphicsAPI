@@ -8,25 +8,28 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::CheckAllLiveNeighbours()
     {
-        const glm::vec3 gridDimensions   = _rSolGrid.GetDimensions();
-        const float     gridStep         = _rSolGrid.GetStep();
-        const glm::vec3 scaledDimensions = _rSolGrid.GetScaledDimensions();
+        const size_t    neighbourOffset          = 1U;
+        const glm::vec3 gridDimensions           = _rSolGrid.GetDimensions();
+        const float     gridStep                 = _rSolGrid.GetStep();
+        const Cells&    gridNodes                = _rSolGrid.cells;
+        const glm::vec3 scaledDimensions         = _rSolGrid.GetScaledDimensions();
+        const glm::vec3 validNeighbourDimensions = scaledDimensions - glm::vec3(1);
+
+        size_t neighbourIndex(0);
                                           
         _rSolGrid.TraverseGrid([&](const uint32_t xIndex, 
                                    const uint32_t yIndex, 
                                    const uint32_t zIndex)
                                {
-                                   const Cells& gridNodes = _rSolGrid.cells;
                                    const size_t nodeIndex = _3DTo1DIndex(xIndex, 
                                                                          yIndex, 
                                                                          zIndex, 
                                                                          scaledDimensions);
-                                   size_t neighbourIndex(0);
-                               
-                                   NeighbourCount_t& rNodeLiveNeighbourCount = 
+
+                                   NeighbourCount_t& rLiveNeighbourCount = 
                                        gridNodes.pLiveNeighbourCounts[nodeIndex];
 
-                                   rNodeLiveNeighbourCount = 0U;  // Reset the neighbour count
+                                   rLiveNeighbourCount = 0U;  // Reset the neighbour count
                                
                                    // Is there a node to the left?
                                    if (xIndex > 0)
@@ -38,11 +41,11 @@ namespace SolEngine::System
 
                                        CheckNeighbourState(neighbourIndex, 
                                                            gridNodes.pCellStates,
-                                                           rNodeLiveNeighbourCount);
+                                                           rLiveNeighbourCount);
                                    }
                                
                                    // Is there a node to the right?
-                                   if (xIndex < scaledDimensions.x - 1)
+                                   if (xIndex < validNeighbourDimensions.x)
                                    {
                                        neighbourIndex = _3DTo1DIndex(xIndex + 1, 
                                                                      yIndex, 
@@ -51,7 +54,7 @@ namespace SolEngine::System
 
                                        CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
-                                                           rNodeLiveNeighbourCount);
+                                                           rLiveNeighbourCount);
                                    }
                                
                                    // Is there a node above?
@@ -64,11 +67,11 @@ namespace SolEngine::System
 
                                        CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
-                                                           rNodeLiveNeighbourCount);
+                                                           rLiveNeighbourCount);
                                    }
                                
                                    // Is there a node below?
-                                   if (yIndex < scaledDimensions.y - 1)
+                                   if (yIndex < validNeighbourDimensions.y)
                                    {
                                        neighbourIndex = _3DTo1DIndex(xIndex, 
                                                                      yIndex + 1, 
@@ -77,7 +80,7 @@ namespace SolEngine::System
 
                                        CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
-                                                           rNodeLiveNeighbourCount);
+                                                           rLiveNeighbourCount);
                                    }
                                
                                    // Is there a node to the back?
@@ -90,11 +93,11 @@ namespace SolEngine::System
 
                                        CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
-                                                           rNodeLiveNeighbourCount);
+                                                           rLiveNeighbourCount);
                                    }
                                
                                    // Is there a node to the front?
-                                   if (zIndex < scaledDimensions.z - 1)
+                                   if (zIndex < validNeighbourDimensions.z)
                                    {
                                        neighbourIndex = _3DTo1DIndex(xIndex, 
                                                                      yIndex, 
@@ -103,7 +106,7 @@ namespace SolEngine::System
 
                                        CheckNeighbourState(neighbourIndex,
                                                            gridNodes.pCellStates, 
-                                                           rNodeLiveNeighbourCount);
+                                                           rLiveNeighbourCount);
                                    }
                                });
     }
