@@ -5,13 +5,17 @@ int main()
 	const ApplicationData appData
 	{
 		.windowTitle	  = "[02/03/22] Integrating Game of Life",
-		.windowClassName  = L"VulkanWindowClass",
-		.engineName		  = "SolEngine",
-		.appName		  = "VulkanGraphicsAPI",
 		.windowDimensions = glm::uvec2(1280, 720)
 	};
 
-	Application application(appData);
+	DiagnosticData     diagnosticData    {};
+	GridSettings       gridSettings{ .dimensions = glm::vec3{20} };
+	GameOfLifeSettings gameOfLifeSettings{};
+
+	Application application(appData, 
+							diagnosticData,
+							gridSettings,
+							gameOfLifeSettings);
 
 	try
 	{

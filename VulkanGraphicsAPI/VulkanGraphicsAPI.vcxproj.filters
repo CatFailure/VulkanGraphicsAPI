@@ -314,6 +314,9 @@
     <ClInclude Include="GridSettings.hpp">
       <Filter>SolEngine\Settings</Filter>
     </ClInclude>
+    <ClInclude Include="GameOfLifeSettings.hpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">

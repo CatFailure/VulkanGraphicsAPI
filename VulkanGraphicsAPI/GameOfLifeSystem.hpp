@@ -2,16 +2,18 @@
 #include "SolGrid.hpp"
 #include "MarchingCubesHelpers.hpp"
 #include "SolEvent.hpp"
+#include "GameOfLifeSettings.hpp"
 
 using namespace Utility;
 using namespace SolEngine::Events;
+using namespace SolEngine::Settings;
 
 namespace SolEngine::System
 {
     class GameOfLifeSystem
     {
     public:
-        GameOfLifeSystem(SolGrid& rSolGrid);
+        GameOfLifeSystem(SolGrid& rSolGrid, GameOfLifeSettings& rGameOfLifeSettings);
 
         void CheckAllLiveNeighbours();
         void UpdateAllCellStates();
@@ -31,6 +33,7 @@ namespace SolEngine::System
 
         float _nextGenerationDelayRemaining{ NEXT_GENERATION_DELAY };
 
-        SolGrid& _rSolGrid;
+        SolGrid&            _rSolGrid;
+        GameOfLifeSettings& _rGameOfLifeSettings;
     };
 }

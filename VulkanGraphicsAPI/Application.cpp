@@ -1,6 +1,9 @@
 #include "Application.hpp"
 
-Application::Application(const ApplicationData &appData)
+Application::Application(const ApplicationData &appData, 
+                         DiagnosticData& rDiagnosticData,
+                         GridSettings& rGridSettings, 
+                         GameOfLifeSettings& rGameOfLifeSettings)
     : _solCamera(_solRenderer),
       _solRenderer(_appData,
                    _solWindow, 
@@ -18,9 +21,9 @@ Application::Application(const ApplicationData &appData)
 #endif  // !DISABLE_IM_GUI
 
     SetupCamera();
-    SetupGrid();
-    SetupMarchingCubesSystem();
-    SetupGameOfLifeSystem();
+    SetupGrid(rDiagnosticData, rGridSettings);
+    SetupMarchingCubesSystem(rDiagnosticData);
+    SetupGameOfLifeSystem(rGameOfLifeSettings);
     SetupMarchingCubesDataEventCallbacks();
 }
 
@@ -83,7 +86,8 @@ void Application::Update(const float deltaTime)
 void Application::Render()
 {
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
-    const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
+    const SimpleRenderSystem renderSystem(_solDevice, 
+                                          _solRenderer.GetSwapchainRenderPass());
 
     if (commandBuffer == nullptr)
     {
@@ -133,24 +137,26 @@ void Application::SetupCamera()
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
-void Application::SetupGrid()
+void Application::SetupGrid(DiagnosticData& rDiagnosticData,
+                            GridSettings& rGridSettings)
 {
-    _pSolGrid = std::make_unique<SolGrid>(_gridData, 
-                                          _diagnosticData);
+    _pSolGrid = std::make_unique<SolGrid>(rGridSettings, 
+                                          rDiagnosticData);
 }
 
-void Application::SetupMarchingCubesSystem()
+void Application::SetupMarchingCubesSystem(DiagnosticData& rDiagnosticData)
 {
     _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice, 
                                                                   *_pSolGrid,
-                                                                  _diagnosticData);
+                                                                  rDiagnosticData);
 
     _pMarchingCubesSystem->March();
 }
 
-void Application::SetupGameOfLifeSystem()
+void Application::SetupGameOfLifeSystem(GameOfLifeSettings& rGameOfLifeSettings)
 {
-    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid);
+    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
+                                                            rGameOfLifeSettings);
 
     _pGameOfLifeSystem->CheckAllLiveNeighbours();
 }

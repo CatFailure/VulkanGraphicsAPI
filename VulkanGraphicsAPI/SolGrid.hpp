@@ -27,8 +27,8 @@ namespace SolEngine
 
 		bool IsGridDataValid() const { return _isGridDataValid; }
 
-		const glm::uvec3& GetDimensions()	    const { return _rGridData.dimensions; }
-		float			  GetStep()				const { return _rGridData.step; }
+		const glm::uvec3& GetDimensions()	    const { return _rGridSettings.dimensions; }
+		float			  GetStep()				const { return _rGridSettings.step; }
 		glm::vec3		  GetScaledDimensions() const { return (glm::vec3)GetDimensions() / GetStep(); }
 
 		void TraverseGrid(const TraverseCubesCallback_t &callback);
@@ -41,11 +41,11 @@ namespace SolEngine
 		bool AreCellLimitsExceeded(const glm::uvec3& dimensions, const float step);
 		bool IsMaxCellsPerAxisExceeded(const uint32_t axisSize, const float step);
 
-		GridSettings&		_rGridData;
+		GridSettings&   _rGridSettings;
 		DiagnosticData& _rDiagnosticData;
 
-		glm::vec3  _minBounds { 0 };
-		glm::vec3  _maxBounds { 0 };
+		glm::vec3 _minBounds { 0 };
+		glm::vec3 _maxBounds { 0 };
 
 		bool _isGridDataValid{ false };
 	};

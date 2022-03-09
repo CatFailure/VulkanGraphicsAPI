@@ -24,7 +24,7 @@ class Application : public IMonoBehaviour
 {
 public:
     Application() = delete;
-    Application(const ApplicationData &appData);
+    Application(const ApplicationData &appData, DiagnosticData& rDiagnosticData, GridSettings& rGridSettings, GameOfLifeSettings& rGameOfLifeSettings);
     ~Application();
         
     void Run();
@@ -36,9 +36,9 @@ private:
 
     void CreateDescriptorPool();
     void SetupCamera();
-    void SetupGrid();
-    void SetupMarchingCubesSystem();
-    void SetupGameOfLifeSystem();
+    void SetupGrid(DiagnosticData& rDiagnosticData, GridSettings& rGridSettings);
+    void SetupMarchingCubesSystem(DiagnosticData& rDiagnosticData);
+    void SetupGameOfLifeSystem(GameOfLifeSettings& rGameOfLifeSettings);
     void SetupMarchingCubesDataEventCallbacks();
 
 #ifndef DISABLE_IM_GUI
@@ -46,9 +46,6 @@ private:
 #endif  // !DISABLE_IM_GUI
 
     ApplicationData _appData;
-
-    DiagnosticData _diagnosticData{};
-    GridSettings       _gridData      {};
 
     SolClock    _solClock;
     SolCamera   _solCamera;

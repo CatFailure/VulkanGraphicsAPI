@@ -9,14 +9,14 @@
 
 namespace SolEngine::Data
 {
+    // Information about the application window
     struct ApplicationData
     {
-        const std::string windowTitle;
-        const LPCWSTR	  windowClassName;
-        const char		  *engineName;
-        const char		  *appName;
-
-        glm::uvec2 windowDimensions;
+        const std::string windowTitle     { "Vulkan Window" };
+        const LPCWSTR	  windowClassName { L"VulkanWindowClass" };
+        const char*       engineName      { "Sol Engine" };
+        const char*       appName         {"VulkanGraphicsAPI"};
+        glm::uvec2        windowDimensions{ 800, 600 };
 
         VkExtent2D GetExtent() const { return { windowDimensions.x, windowDimensions.y }; }
     };
