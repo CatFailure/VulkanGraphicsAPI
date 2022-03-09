@@ -66,7 +66,14 @@ void Application::Update(const float deltaTime)
 
     _solCamera.Update(deltaTime);
 
-    _pGameOfLifeSystem->Update(deltaTime);
+    if (_pSolGrid->IsGridDataValid())
+    {
+        _pGameOfLifeSystem->Update(deltaTime);
+    }
+    else
+    {
+        printf_s("Bad Grid data, cannot update Game of Life!\n");
+    }
 
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
@@ -90,9 +97,16 @@ void Application::Render()
     _pGuiWindowManager->Render(commandBuffer);
 #endif  // !DISABLE_IM_GUI
 
-    renderSystem.RenderGameObject(_solCamera, 
-                                  commandBuffer, 
-                                  _pMarchingCubesSystem->GetGameObject());
+    if (_pSolGrid->IsGridDataValid())
+    {
+        renderSystem.RenderGameObject(_solCamera, 
+                                      commandBuffer, 
+                                      _pMarchingCubesSystem->GetGameObject());
+    }
+    else
+    {
+        printf_s("Bad Grid data, cannot render GameObject!\n");
+    }
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -115,7 +129,7 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 15.f, 2.5f, 15.f })
+              .SetPosition({ 35.f, 2.5f, 35.f })
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
