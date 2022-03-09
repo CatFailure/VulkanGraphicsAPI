@@ -6,6 +6,7 @@
 
 using namespace Utility;
 using namespace SolEngine::DOD;
+using namespace SolEngine::Settings;
 
 namespace SolEngine
 {
