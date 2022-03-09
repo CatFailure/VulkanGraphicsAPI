@@ -24,7 +24,8 @@ class Application : public IMonoBehaviour
 {
 public:
     Application() = delete;
-    Application(const ApplicationData &appData, DiagnosticData& rDiagnosticData, GridSettings& rGridSettings, GameOfLifeSettings& rGameOfLifeSettings);
+    Application(const ApplicationData &appData, DiagnosticData& rDiagnosticData, 
+                GridSettings& rGridSettings, GameOfLifeSettings& rGameOfLifeSettings);
     ~Application();
         
     void Run();
