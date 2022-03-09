@@ -2,7 +2,7 @@
 
 namespace SolEngine
 {
-    SolGrid::SolGrid(GridData& rGridData, 
+    SolGrid::SolGrid(GridSettings& rGridData, 
                      DiagnosticData& rDiagnosticData)
         : _rDiagnosticData(rDiagnosticData),
           _rGridData(rGridData)

@@ -2,7 +2,7 @@
 #include "DebugHelpers.hpp"
 #include "GridHelpers.hpp"
 #include "Cells.hpp"
-#include "GridData.hpp"
+#include "GridSettings.hpp"
 
 using namespace Utility;
 using namespace SolEngine::DOD;
@@ -21,7 +21,7 @@ namespace SolEngine
 								   const uint32_t yIndex, 
 								   const uint32_t zIndex)> TraverseCubesCallback_t;
 
-		SolGrid(GridData& rGridData, DiagnosticData& rDiagnosticData);
+		SolGrid(GridSettings& rGridData, DiagnosticData& rDiagnosticData);
 		~SolGrid();
 
 		void Initialise();
@@ -42,7 +42,7 @@ namespace SolEngine
 		bool AreCellLimitsExceeded(const glm::uvec3& dimensions, const float step);
 		bool IsMaxCellsPerAxisExceeded(const uint32_t axisSize, const float step);
 
-		GridData&		_rGridData;
+		GridSettings&		_rGridData;
 		DiagnosticData& _rDiagnosticData;
 
 		glm::vec3  _minBounds { 0 };

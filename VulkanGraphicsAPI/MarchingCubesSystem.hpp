@@ -12,8 +12,8 @@ namespace SolEngine::System
 	public:
 		MarchingCubesSystem(SolDevice& rSolDevice, SolGrid& rSolGrid, DiagnosticData& rDiagnosticData);
 
-		const SolGameObject& GetGameObject() const { return _marchingCubesObject; }
-		size_t GetIsoValuesGeneratedCount()  const { return _isoValuesGeneratedCount; }
+		const SolGameObject& GetGameObject()			  const { return _marchingCubesObject; }
+		size_t				 GetIsoValuesGeneratedCount() const { return _isoValuesGeneratedCount; }
 
 		void March();
 
