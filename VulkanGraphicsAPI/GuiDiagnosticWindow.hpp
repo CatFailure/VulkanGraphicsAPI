@@ -4,7 +4,6 @@
 #include "Constants.hpp"
 
 using namespace SolEngine::Data;
-using namespace SolEngine::GUI::Data;
 using namespace SolEngine::Interface;
 
 namespace SolEngine::GUI

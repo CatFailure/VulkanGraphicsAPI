@@ -3,13 +3,15 @@
 namespace SolEngine::System
 {
     MarchingCubesSystem::MarchingCubesSystem(SolDevice& rSolDevice, 
-                                             SolGrid& rSolGrid)
+                                             SolGrid& rSolGrid,
+                                             DiagnosticData& rDiagnosticData)
         : _rSolDevice(rSolDevice),
           _rSolGrid(rSolGrid),
+          _rDiagnosticData(rDiagnosticData),
           _marchingCubesObject(SolGameObject::CreateGameObject())
     {}
 
-    void MarchingCubesSystem::March(DiagnosticData& rDiagnosticData)
+    void MarchingCubesSystem::March()
     {
         _vertices.clear();
 
@@ -68,11 +70,11 @@ namespace SolEngine::System
         const size_t vertexCount = _vertices.size();
         const size_t triCount = vertexCount / 3;
 
-        rDiagnosticData.vertexCount = vertexCount;
-        rDiagnosticData.triCount = triCount;
+        _rDiagnosticData.vertexCount = vertexCount;
+        _rDiagnosticData.triCount    = triCount;
 
-        printf_s("Created: %zu Vertices\n", vertexCount);
-        printf_s("Created: %zu Tris\n", triCount);
+        //printf_s("Created: %zu Vertices\n", vertexCount);
+        //printf_s("Created: %zu Tris\n", triCount);
     }
 
     uint32_t MarchingCubesSystem::GetCubeIndex(const bool* pNodeStates)

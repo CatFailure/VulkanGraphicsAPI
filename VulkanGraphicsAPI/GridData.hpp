@@ -1,7 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 
-namespace SolEngine::GUI::Data
+namespace SolEngine::Data
 {
 	struct GridData
 	{
