@@ -58,6 +58,9 @@
     <Filter Include="SolEngine\System">
       <UniqueIdentifier>{b64bfb7c-6aec-400d-be4d-2ed03452811d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\Settings">
+      <UniqueIdentifier>{0c8a191c-2dc0-4a7a-b988-5b118a17f2ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -309,7 +312,7 @@
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
     <ClInclude Include="GridSettings.hpp">
-      <Filter>SolEngine\Data</Filter>
+      <Filter>SolEngine\Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
