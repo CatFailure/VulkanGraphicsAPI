@@ -2,10 +2,11 @@
 #include "DebugHelpers.hpp"
 #include "GridHelpers.hpp"
 #include "Cells.hpp"
-#include "GridData.hpp"
+#include "GridSettings.hpp"
 
 using namespace Utility;
 using namespace SolEngine::DOD;
+using namespace SolEngine::Settings;
 
 namespace SolEngine
 {
@@ -21,14 +22,16 @@ namespace SolEngine
 								   const uint32_t yIndex, 
 								   const uint32_t zIndex)> TraverseCubesCallback_t;
 
-		SolGrid(GridData& rGridData, DiagnosticData& rDiagnosticData);
+		SolGrid(GridSettings& rGridData, DiagnosticData& rDiagnosticData);
 		~SolGrid();
 
 		void Initialise();
 
-		glm::uvec3 GetDimensions()		 const { return _rGridData.dimensions; }
-		float	   GetStep()			 const { return _rGridData.step; }
-		glm::vec3  GetScaledDimensions() const { return (glm::vec3)GetDimensions() / GetStep(); }
+		bool IsGridDataValid() const { return _isGridDataValid; }
+
+		const glm::uvec3& GetDimensions()	    const { return _rGridSettings.dimensions; }
+		float			  GetStep()				const { return _rGridSettings.step; }
+		glm::vec3		  GetScaledDimensions() const { return (glm::vec3)GetDimensions() / GetStep(); }
 
 		void TraverseAllGridCells(const TraverseCubesCallback_t& callback);
 
@@ -37,13 +40,15 @@ namespace SolEngine
 	private:
 		void InitialiseNodes();
 		void SetBoundsWithDimensions(const glm::uvec3& dimensions);
-		bool AreDimensionsWithinMaxCubeLimits(const glm::uvec3& dimensions, const float step);
-		bool IsAxisSizeWithinMaxCubeLimit(const uint32_t axisSize, const float step);
+		bool AreCellLimitsExceeded(const glm::uvec3& dimensions, const float step);
+		bool IsMaxCellsPerAxisExceeded(const uint32_t axisSize, const float step);
 
-		GridData&		_rGridData;
+		GridSettings&   _rGridSettings;
 		DiagnosticData& _rDiagnosticData;
 
-		glm::vec3  _minBounds { 0 };
-		glm::vec3  _maxBounds { 0 };
+		glm::vec3 _minBounds { 0 };
+		glm::vec3 _maxBounds { 0 };
+
+		bool _isGridDataValid{ false };
 	};
 }

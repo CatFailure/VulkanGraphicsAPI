@@ -1,6 +1,9 @@
 #include "Application.hpp"
 
-Application::Application(const ApplicationData &appData)
+Application::Application(const ApplicationData &appData, 
+                         DiagnosticData& rDiagnosticData,
+                         GridSettings& rGridSettings, 
+                         GameOfLifeSettings& rGameOfLifeSettings)
     : _solCamera(_solRenderer),
       _solRenderer(_appData,
                    _solWindow, 
@@ -18,9 +21,9 @@ Application::Application(const ApplicationData &appData)
 #endif  // !DISABLE_IM_GUI
 
     SetupCamera();
-    SetupGrid();
-    SetupMarchingCubesSystem();
-    SetupGameOfLifeSystem();
+    SetupGrid(rDiagnosticData, rGridSettings);
+    SetupMarchingCubesSystem(rDiagnosticData);
+    SetupGameOfLifeSystem(rGameOfLifeSettings);
     SetupMarchingCubesDataEventCallbacks();
 }
 
@@ -66,7 +69,14 @@ void Application::Update(const float deltaTime)
 
     _solCamera.Update(deltaTime);
 
-    _pGameOfLifeSystem->Update(deltaTime);
+    if (_pSolGrid->IsGridDataValid())
+    {
+        _pGameOfLifeSystem->Update(deltaTime);
+    }
+    else
+    {
+        printf_s("Bad Grid data, cannot update Game of Life!\n");
+    }
 
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
@@ -76,7 +86,8 @@ void Application::Update(const float deltaTime)
 void Application::Render()
 {
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
-    const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
+    const SimpleRenderSystem renderSystem(_solDevice, 
+                                          _solRenderer.GetSwapchainRenderPass());
 
     if (commandBuffer == nullptr)
     {
@@ -90,9 +101,16 @@ void Application::Render()
     _pGuiWindowManager->Render(commandBuffer);
 #endif  // !DISABLE_IM_GUI
 
-    renderSystem.RenderGameObject(_solCamera, 
-                                  commandBuffer, 
-                                  _pMarchingCubesSystem->GetGameObject());
+    if (_pSolGrid->IsGridDataValid())
+    {
+        renderSystem.RenderGameObject(_solCamera, 
+                                      commandBuffer, 
+                                      _pMarchingCubesSystem->GetGameObject());
+    }
+    else
+    {
+        printf_s("Bad Grid data, cannot render GameObject!\n");
+    }
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -115,27 +133,30 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 15.f, 2.5f, 15.f })
+              .SetPosition({ 35.f, 2.5f, 35.f })
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
-void Application::SetupGrid()
+void Application::SetupGrid(DiagnosticData& rDiagnosticData,
+                            GridSettings& rGridSettings)
 {
-    _pSolGrid = std::make_unique<SolGrid>(_gridData, 
-                                          _diagnosticData);
+    _pSolGrid = std::make_unique<SolGrid>(rGridSettings, 
+                                          rDiagnosticData);
 }
 
-void Application::SetupMarchingCubesSystem()
+void Application::SetupMarchingCubesSystem(DiagnosticData& rDiagnosticData)
 {
     _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice, 
-                                                                  *_pSolGrid);
+                                                                  *_pSolGrid,
+                                                                  rDiagnosticData);
 
-    _pMarchingCubesSystem->March(_diagnosticData);
+    _pMarchingCubesSystem->March();
 }
 
-void Application::SetupGameOfLifeSystem()
+void Application::SetupGameOfLifeSystem(GameOfLifeSettings& rGameOfLifeSettings)
 {
-    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid);
+    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
+                                                            rGameOfLifeSettings);
 
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
@@ -145,7 +166,7 @@ void Application::SetupMarchingCubesDataEventCallbacks()
     _pGameOfLifeSystem->onUpdateAllCellStatesEvent
                       .AddListener([this]() 
                       { 
-                          _pMarchingCubesSystem->March(_diagnosticData); 
+                          _pMarchingCubesSystem->March(); 
                       });
 }
 

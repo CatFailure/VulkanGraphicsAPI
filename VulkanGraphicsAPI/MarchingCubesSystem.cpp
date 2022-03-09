@@ -3,18 +3,19 @@
 namespace SolEngine::System
 {
     MarchingCubesSystem::MarchingCubesSystem(SolDevice& rSolDevice, 
-                                             SolGrid& rSolGrid)
+                                             SolGrid& rSolGrid,
+                                             DiagnosticData& rDiagnosticData)
         : _rSolDevice(rSolDevice),
           _rSolGrid(rSolGrid),
+          _rDiagnosticData(rDiagnosticData),
           _marchingCubesObject(SolGameObject::CreateGameObject())
     {}
 
-    void MarchingCubesSystem::March(DiagnosticData& rDiagnosticData)
+    void MarchingCubesSystem::March()
     {
         // Delete all previous vertices
         _vertices.clear();
 
-        const uint32_t   adjOffset            = 1U;
         const glm::vec3  scaledGridDimensions = _rSolGrid.GetScaledDimensions();
         const bool*      pGridCellStates      = _rSolGrid.cells.pCellStates;
 
@@ -55,8 +56,8 @@ namespace SolEngine::System
         const size_t vertexCount = _vertices.size();
         const size_t triCount    = vertexCount / 3U;
 
-        rDiagnosticData.vertexCount = vertexCount;
-        rDiagnosticData.triCount    = triCount;
+        _rDiagnosticData.vertexCount = vertexCount;
+        _rDiagnosticData.triCount    = triCount;
 
         //printf_s("Created: %zu Vertices\n", vertexCount);
         //printf_s("Created: %zu Tris\n", triCount);

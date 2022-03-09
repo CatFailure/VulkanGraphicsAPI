@@ -52,14 +52,14 @@
     <Filter Include="SolEngine\DOD">
       <UniqueIdentifier>{ad079547-8b04-47ad-aa75-ed6a3cd4c320}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SolEngine\GUI\Data">
-      <UniqueIdentifier>{a1a36440-43fb-47ec-ab53-f701fc70e175}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SolEngine\Enumeration">
       <UniqueIdentifier>{5b8e70ca-8574-4d7d-9741-839fbe54f0ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="SolEngine\System">
       <UniqueIdentifier>{b64bfb7c-6aec-400d-be4d-2ed03452811d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SolEngine\Settings">
+      <UniqueIdentifier>{0c8a191c-2dc0-4a7a-b988-5b118a17f2ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -287,9 +287,6 @@
     <ClInclude Include="GenericRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="DiagnosticData.hpp">
-      <Filter>SolEngine\GUI\Data</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryHelpers.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
@@ -305,11 +302,17 @@
     <ClInclude Include="GridHelpers.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="GridData.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameOfLifeSystem.hpp">
       <Filter>SolEngine\System</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagnosticData.hpp">
+      <Filter>SolEngine\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="GridSettings.hpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOfLifeSettings.hpp">
+      <Filter>SolEngine\Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

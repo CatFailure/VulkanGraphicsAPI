@@ -1,9 +1,9 @@
 #pragma once
 #include <glm/glm.hpp>
 
-namespace SolEngine::GUI::Data
+namespace SolEngine::Settings
 {
-	struct GridData
+	struct GridSettings
 	{
 		size_t GetNodeCount() const 
 		{

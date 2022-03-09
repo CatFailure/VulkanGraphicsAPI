@@ -2,8 +2,10 @@
 
 namespace SolEngine::System
 {
-    GameOfLifeSystem::GameOfLifeSystem(SolGrid& rSolGrid)
-        : _rSolGrid(rSolGrid)
+    GameOfLifeSystem::GameOfLifeSystem(SolGrid& rSolGrid, 
+                                       GameOfLifeSettings& rGameOfLifeSettings)
+        : _rSolGrid(rSolGrid),
+          _rGameOfLifeSettings(rGameOfLifeSettings)
     {}
 
     void GameOfLifeSystem::CheckAllCellNeighbours()

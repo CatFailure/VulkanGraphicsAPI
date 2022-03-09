@@ -2,10 +2,10 @@
 
 namespace SolEngine
 {
-    SolGrid::SolGrid(GridData& rGridData, 
+    SolGrid::SolGrid(GridSettings& rGridData, 
                      DiagnosticData& rDiagnosticData)
         : _rDiagnosticData(rDiagnosticData),
-          _rGridData(rGridData)
+          _rGridSettings(rGridData)
     {
         Initialise();
     }
@@ -17,13 +17,23 @@ namespace SolEngine
 
     void SolGrid::Initialise()
     {
-        SetBoundsWithDimensions(_rGridData.dimensions);
+        _isGridDataValid = !AreCellLimitsExceeded(_rGridSettings.dimensions,
+                                                  _rGridSettings.step);
+
+        // Bad grid data - will cause problems
+        // so just back out...
+        if (!_isGridDataValid)
+        {
+            return;
+        }
+
+        SetBoundsWithDimensions(_rGridSettings.dimensions);
         InitialiseNodes();
     }
 
     void SolGrid::TraverseAllGridCells(const TraverseCubesCallback_t& callback)
     {
-        const float gridStep = _rGridData.step;
+        const float gridStep = _rGridSettings.step;
 
         // We have to index this way to account for resolution (step)
         uint32_t zIndex(0);
@@ -51,8 +61,8 @@ namespace SolEngine
 
     void SolGrid::InitialiseNodes()
     {
-        const float gridStep = _rGridData.step;
-        const size_t nodeCount = _rGridData.GetNodeCount();
+        const float gridStep = _rGridSettings.step;
+        const size_t nodeCount = _rGridSettings.GetNodeCount();
         size_t bytesInUse(0);
 
         _rDiagnosticData.memoryAllocatedBytes = cells.AllocateDataArrays();
@@ -74,19 +84,20 @@ namespace SolEngine
         _maxBounds = glm::vec3(halfExtents.x, -halfExtents.y, halfExtents.z);
     }
 
-    bool SolGrid::AreDimensionsWithinMaxCubeLimits(const glm::uvec3& dimensions, 
-                                                   const float step)
+    bool SolGrid::AreCellLimitsExceeded(const glm::uvec3& dimensions, 
+                                        const float step)
     {
-        return IsAxisSizeWithinMaxCubeLimit(dimensions.x, step) && 
-               IsAxisSizeWithinMaxCubeLimit(dimensions.y, step) && 
-               IsAxisSizeWithinMaxCubeLimit(dimensions.z, step);
+        // If any of these fail, the whole check should fail
+        return IsMaxCellsPerAxisExceeded(dimensions.x, step) || 
+               IsMaxCellsPerAxisExceeded(dimensions.y, step) || 
+               IsMaxCellsPerAxisExceeded(dimensions.z, step);
     }
 
-    bool SolGrid::IsAxisSizeWithinMaxCubeLimit(const uint32_t axisSize, 
-                                               const float step)
+    bool SolGrid::IsMaxCellsPerAxisExceeded(const uint32_t axisSize, 
+                                            const float step)
     {
         const uint32_t scaledAxisSize = (uint32_t)(axisSize / step);
 
-        return !(scaledAxisSize > MAX_CUBES_PER_AXIS_COUNT);
+        return scaledAxisSize > MAX_CELLS_PER_AXIS_COUNT;
     }
 }

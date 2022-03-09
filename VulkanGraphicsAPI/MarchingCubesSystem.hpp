@@ -4,19 +4,18 @@
 #include "SolGameObject.hpp"
 
 using namespace Utility;
-using namespace SolEngine::GUI::Data;
 
 namespace SolEngine::System
 {
 	class MarchingCubesSystem
 	{
 	public:
-		MarchingCubesSystem(SolDevice& rSolDevice, SolGrid& rSolGrid);
+		MarchingCubesSystem(SolDevice& rSolDevice, SolGrid& rSolGrid, DiagnosticData& rDiagnosticData);
 
-		const SolGameObject& GetGameObject() const { return _marchingCubesObject; }
-		size_t GetIsoValuesGeneratedCount()  const { return _isoValuesGeneratedCount; }
+		const SolGameObject& GetGameObject()			  const { return _marchingCubesObject; }
+		size_t				 GetIsoValuesGeneratedCount() const { return _isoValuesGeneratedCount; }
 
-		void March(DiagnosticData& rDiagnosticData);
+		void March();
 
 	private:
 		uint32_t  GetCubeIndex(const bool* pNodeStates);
@@ -28,9 +27,10 @@ namespace SolEngine::System
 										const std::pair<Index_t, Index_t>& cornerIndices);
 		void UpdateGameObjectModel();
 
-		SolDevice&	  _rSolDevice;
-		SolGrid&	  _rSolGrid;
-		SolGameObject _marchingCubesObject;
+		SolDevice&		_rSolDevice;
+		SolGrid&		_rSolGrid;
+		DiagnosticData& _rDiagnosticData;
+		SolGameObject	_marchingCubesObject;
 
 		size_t				_isoValuesGeneratedCount{ 0 };
 		std::vector<Vertex> _vertices;
