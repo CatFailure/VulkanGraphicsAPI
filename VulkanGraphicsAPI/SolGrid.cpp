@@ -5,7 +5,7 @@ namespace SolEngine
     SolGrid::SolGrid(GridSettings& rGridData, 
                      DiagnosticData& rDiagnosticData)
         : _rDiagnosticData(rDiagnosticData),
-          _rGridData(rGridData)
+          _rGridSettings(rGridData)
     {
         Initialise();
     }
@@ -17,8 +17,8 @@ namespace SolEngine
 
     void SolGrid::Initialise()
     {
-        _isGridDataValid = !AreCellLimitsExceeded(_rGridData.dimensions,
-                                                  _rGridData.step);
+        _isGridDataValid = !AreCellLimitsExceeded(_rGridSettings.dimensions,
+                                                  _rGridSettings.step);
 
         // Bad grid data - will cause problems
         // so just back out...
@@ -27,13 +27,13 @@ namespace SolEngine
             return;
         }
 
-        SetBoundsWithDimensions(_rGridData.dimensions);
+        SetBoundsWithDimensions(_rGridSettings.dimensions);
         InitialiseNodes();
     }
 
     void SolGrid::TraverseAllGridCells(const TraverseCubesCallback_t& callback)
     {
-        const float gridStep = _rGridData.step;
+        const float gridStep = _rGridSettings.step;
 
         // We have to index this way to account for resolution (step)
         uint32_t zIndex(0);
@@ -61,8 +61,8 @@ namespace SolEngine
 
     void SolGrid::InitialiseNodes()
     {
-        const float gridStep = _rGridData.step;
-        const size_t nodeCount = _rGridData.GetNodeCount();
+        const float gridStep = _rGridSettings.step;
+        const size_t nodeCount = _rGridSettings.GetNodeCount();
         size_t bytesInUse(0);
 
         _rDiagnosticData.memoryAllocatedBytes = cells.AllocateDataArrays();
