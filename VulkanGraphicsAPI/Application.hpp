@@ -48,7 +48,7 @@ private:
     ApplicationData _appData;
 
     DiagnosticData _diagnosticData{};
-    GridData       _gridData      {};
+    GridSettings       _gridData      {};
 
     SolClock    _solClock;
     SolCamera   _solCamera;

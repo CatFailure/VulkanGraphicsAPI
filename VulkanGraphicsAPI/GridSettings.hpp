@@ -3,7 +3,7 @@
 
 namespace SolEngine::Data
 {
-	struct GridData
+	struct GridSettings
 	{
 		size_t GetNodeCount() const 
 		{

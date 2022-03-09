@@ -308,7 +308,7 @@
     <ClInclude Include="DiagnosticData.hpp">
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
-    <ClInclude Include="GridData.hpp">
+    <ClInclude Include="GridSettings.hpp">
       <Filter>SolEngine\Data</Filter>
     </ClInclude>
   </ItemGroup>
