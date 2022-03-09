@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "GuiDiagnosticWindow.hpp"
 
 namespace SolEngine::GUI
@@ -7,8 +6,8 @@ namespace SolEngine::GUI
                                              const bool isActive, 
                                              const ImGuiWindowFlags windowFlags, 
                                              DiagnosticData &rDiagnosticData)
-        : _diagnosticData(_rRealTimeDiagnosticData),
-          _rRealTimeDiagnosticData(rDiagnosticData),
+        : _rDiagnosticData(_rRealtimeDiagnosticData),
+          _rRealtimeDiagnosticData(rDiagnosticData),
           IGuiWindow(windowTitle, isActive, windowFlags)
     {
         _updateFrequency = 5.f;
@@ -18,9 +17,15 @@ namespace SolEngine::GUI
 
     void GuiDiagnosticWindow::RenderWindowContents()
     {
+        const float framesPerSecond = 1.f / _rDiagnosticData.deltaTimeSeconds;
+        const float deltaTimeMS     = _rDiagnosticData.deltaTimeSeconds * SECONDS_TO_MILLISECONDS;
+
         ImGui::Begin(_windowTitle, &_isActive, _windowFlags);
 
-        ImGui::Text("Framerate: %.3f", 1.f / _diagnosticData.deltaTimeSeconds);
+        ImGui::Text("Framerate: %.3f (%.3f ms)", 
+                    framesPerSecond, 
+                    deltaTimeMS);
+
         ImGui::PlotLines("Frame Delta (ms)",
                          _deltaTimeBacklog, 
                          MAX_BACKLOGGED_DELTA_TIMES,
@@ -29,12 +34,19 @@ namespace SolEngine::GUI
                          MIN_DELTA_TIME_SCALE, 
                          MAX_DELTA_TIME_SCALE);
 
+        ImGui::Text("Vert Count: %zu", _rDiagnosticData.vertexCount);
+        ImGui::Text("Tri Count: %zu", _rDiagnosticData.triCount);
+        ImGui::Text("In-use Memory (Bytes): %zu/%zu (%.3f%%)", 
+                    _rDiagnosticData.memoryUsedBytes, 
+                    _rDiagnosticData.memoryAllocatedBytes,
+                    _rDiagnosticData.MemoryUsedPercentage());
+
         ImGui::End();
     }
 
     void GuiDiagnosticWindow::OnUpdate_Method()
     {
-        _diagnosticData = _rRealTimeDiagnosticData;
+        _rDiagnosticData = _rRealtimeDiagnosticData;
 
         PushBackDeltaTime();
     }
@@ -49,6 +61,6 @@ namespace SolEngine::GUI
 
         // Commit new deltatime at the end
         _deltaTimeBacklog[MAX_BACKLOGGED_DELTA_TIMES - 1] = 
-            _diagnosticData.deltaTimeSeconds * TO_MILLISECONDS;
+            _rDiagnosticData.deltaTimeSeconds * SECONDS_TO_MILLISECONDS;
     }
 }

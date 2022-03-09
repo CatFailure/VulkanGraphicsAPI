@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "SolDescriptorWriter.hpp"
 
 namespace SolEngine::Descriptors

@@ -3,7 +3,9 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_vulkan.h"
 #include "SolEvent.hpp"
+#include "IMonoBehaviour.hpp"
 
+using namespace SolEngine::Interface;
 using namespace SolEngine::Events;
 
 namespace SolEngine::Interface

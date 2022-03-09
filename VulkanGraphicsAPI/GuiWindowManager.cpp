@@ -1,4 +1,3 @@
-#include "pch.hpp"
 #include "GuiWindowManager.hpp"
 
 namespace SolEngine::GUI

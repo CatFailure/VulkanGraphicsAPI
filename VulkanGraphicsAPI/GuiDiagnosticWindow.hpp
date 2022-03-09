@@ -1,7 +1,9 @@
 #pragma once
 #include "IGuiWindow.hpp"
 #include "DiagnosticData.hpp"
+#include "Constants.hpp"
 
+using namespace SolEngine::Data;
 using namespace SolEngine::Interface;
 
 namespace SolEngine::GUI
@@ -20,11 +22,10 @@ namespace SolEngine::GUI
 		void PushBackDeltaTime();
 
 		static constexpr size_t MAX_BACKLOGGED_DELTA_TIMES{ 20 };
-		static constexpr float TO_MILLISECONDS{ 1000.f };
 		static constexpr float MIN_DELTA_TIME_SCALE{ 0.5f }, MAX_DELTA_TIME_SCALE{ 2.f };
 
-		DiagnosticData &_rRealTimeDiagnosticData;
-		DiagnosticData _diagnosticData;
+		DiagnosticData &_rRealtimeDiagnosticData;
+		DiagnosticData _rDiagnosticData;
 
 		float _deltaTimeBacklog[MAX_BACKLOGGED_DELTA_TIMES]{ 0.f };
 	};

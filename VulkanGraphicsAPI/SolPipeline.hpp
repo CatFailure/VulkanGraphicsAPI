@@ -1,5 +1,12 @@
 #pragma once
+#include <iostream>
+#include <fstream>
+
+#include "PipelineConfigInfo.hpp"
 #include "SolDevice.hpp"
+#include "Vertex.hpp"
+
+using namespace SolEngine::Data;
 
 namespace SolEngine
 {

@@ -1,7 +1,9 @@
-#include "pch.hpp"
 #include "Application.hpp"
 
-Application::Application(const ApplicationData &appData)
+Application::Application(const ApplicationData &appData, 
+                         DiagnosticData& rDiagnosticData,
+                         GridSettings& rGridSettings, 
+                         GameOfLifeSettings& rGameOfLifeSettings)
     : _solCamera(_solRenderer),
       _solRenderer(_appData,
                    _solWindow, 
@@ -19,14 +21,20 @@ Application::Application(const ApplicationData &appData)
 #endif  // !DISABLE_IM_GUI
 
     SetupCamera();
-    SetupMarchingCubesManager();
-
-    LoadGameObjects();
+    SetupGrid(rDiagnosticData, rGridSettings);
+    SetupMarchingCubesSystem(rDiagnosticData);
+    SetupGameOfLifeSystem(rGameOfLifeSettings);
+    SetupMarchingCubesDataEventCallbacks();
 }
 
 Application::~Application()
 {
-    Dispose();
+    // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
+    _pSolDescriptorPool = nullptr;
+
+#ifndef DISABLE_IM_GUI
+    _pGuiWindowManager = nullptr;
+#endif
 }
 
 void Application::Run()
@@ -53,42 +61,33 @@ void Application::Run()
     vkDeviceWaitIdle(_solDevice.GetDevice());
 }
 
-std::shared_ptr<SolModel> Application::CreateCubeModel(SolDevice &rSolDevice)
-{    
-    return std::make_shared<SolModel>(rSolDevice, 
-                                      CUBE_VERTICES, 
-                                      CUBE_VERTEX_COUNT * CUBE_VERTEX_COUNT);
-}
-
-void Application::Dispose()
-{
-    // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
-    _pSolDescriptorPool = nullptr;
-
-#ifndef DISABLE_IM_GUI
-    _pGuiWindowManager = nullptr;
-#endif
-}
-
 void Application::Update(const float deltaTime)
 {
-    _pMarchingCubesManager->Update(deltaTime);
+    _solCamera.LookAt(_pMarchingCubesSystem->GetGameObject()
+                                           .transform
+                                           .position);
+
     _solCamera.Update(deltaTime);
+
+    if (_pSolGrid->IsGridDataValid())
+    {
+        _pGameOfLifeSystem->Update(deltaTime);
+    }
+    else
+    {
+        printf_s("Bad Grid data, cannot update Game of Life!\n");
+    }
 
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
 #endif  // !DISABLE_IM_GUI
-
-    for (SolGameObject &rGameObject : _gameObjects)
-    {
-        rGameObject.transform.rotation.y += .5f * deltaTime;
-    }
 }
 
 void Application::Render()
 {
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
-    const SimpleRenderSystem renderSystem(_solDevice, _solRenderer.GetSwapchainRenderPass());
+    const SimpleRenderSystem renderSystem(_solDevice, 
+                                          _solRenderer.GetSwapchainRenderPass());
 
     if (commandBuffer == nullptr)
     {
@@ -97,12 +96,21 @@ void Application::Render()
 
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-    renderSystem.RenderGameObjects(_solCamera, commandBuffer, _gameObjects);
-
 #ifndef DISABLE_IM_GUI
     // Render Dear ImGui...
     _pGuiWindowManager->Render(commandBuffer);
 #endif  // !DISABLE_IM_GUI
+
+    if (_pSolGrid->IsGridDataValid())
+    {
+        renderSystem.RenderGameObject(_solCamera, 
+                                      commandBuffer, 
+                                      _pMarchingCubesSystem->GetGameObject());
+    }
+    else
+    {
+        printf_s("Bad Grid data, cannot render GameObject!\n");
+    }
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -120,18 +128,46 @@ void Application::SetupCamera()
 {
     const PerspectiveProjectionInfo projInfo
     {
-        .fovDeg = 50.f
+        .fovDeg = 50.f,
+        .far    = 250.f
     };
 
-    _solCamera.SetProjectionInfo(projInfo);
-    _solCamera.SetPosition({ 0, 0, -50.f });
-    _solCamera.LookAt(_solCamera.GetPosition() + VEC3_FORWARD);   // Look forwards
+    _solCamera.SetProjectionInfo(projInfo)
+              .SetPosition({ 35.f, 2.5f, 35.f })
+              .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
-void Application::SetupMarchingCubesManager()
+void Application::SetupGrid(DiagnosticData& rDiagnosticData,
+                            GridSettings& rGridSettings)
 {
-    // Create a 5x5x5 grid for testing...
-    _pMarchingCubesManager = std::make_unique<MarchingCubesManager>(_solDevice, 20);
+    _pSolGrid = std::make_unique<SolGrid>(rGridSettings, 
+                                          rDiagnosticData);
+}
+
+void Application::SetupMarchingCubesSystem(DiagnosticData& rDiagnosticData)
+{
+    _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice, 
+                                                                  *_pSolGrid,
+                                                                  rDiagnosticData);
+
+    _pMarchingCubesSystem->March();
+}
+
+void Application::SetupGameOfLifeSystem(GameOfLifeSettings& rGameOfLifeSettings)
+{
+    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
+                                                            rGameOfLifeSettings);
+
+    _pGameOfLifeSystem->CheckAllCellNeighbours();
+}
+
+void Application::SetupMarchingCubesDataEventCallbacks()
+{
+    _pGameOfLifeSystem->onUpdateAllCellStatesEvent
+                      .AddListener([this]() 
+                      { 
+                          _pMarchingCubesSystem->March(); 
+                      });
 }
 
 #ifndef DISABLE_IM_GUI
@@ -145,12 +181,3 @@ void Application::CreateGuiWindowManager()
     _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _diagnosticData);
 }
 #endif // !DISABLE_IM_GUI
-
-void Application::LoadGameObjects()
-{
-    std::shared_ptr<SolModel> marchingCubeModel = _pMarchingCubesManager->CreateModel();
-    SolGameObject marchingCubeGameObject = SolGameObject::CreateGameObject();
-    marchingCubeGameObject.SetModel(marchingCubeModel);
-
-    _gameObjects.push_back(std::move(marchingCubeGameObject));
-}

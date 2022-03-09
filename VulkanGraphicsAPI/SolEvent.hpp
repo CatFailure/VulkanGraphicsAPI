@@ -1,4 +1,7 @@
 #pragma once
+#include <algorithm>
+#include <functional>
+#include <list>
 
 namespace SolEngine::Events
 {

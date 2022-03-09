@@ -70,8 +70,6 @@ Index of this file:
 // [SECTION] Example App: Documents Handling / ShowExampleAppDocuments()
 
 */
-#include "pch.hpp"
-
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS
 #endif
@@ -4773,7 +4771,7 @@ static void ShowDemoWindowTables()
                     }
                 }
             };
-            static const MyTreeNode nodes[] =
+            static const MyTreeNode cells[] =
             {
                 { "Root",                         "Folder",       -1,       1, 3    }, // 0
                 { "Music",                        "Folder",       -1,       4, 2    }, // 1
@@ -4786,7 +4784,7 @@ static void ShowDemoWindowTables()
                 { "Copy of Image001 (Final2).png","Image file",   203512,  -1,-1    }, // 8
             };
 
-            MyTreeNode::DisplayNode(&nodes[0], nodes);
+            MyTreeNode::DisplayNode(&cells[0], cells);
 
             ImGui::EndTable();
         }
