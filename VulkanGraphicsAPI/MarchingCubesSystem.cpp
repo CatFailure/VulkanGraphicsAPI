@@ -16,7 +16,6 @@ namespace SolEngine::System
         // Delete all previous vertices
         _vertices.clear();
 
-        const uint32_t   adjOffset            = 1U;
         const glm::vec3  scaledGridDimensions = _rSolGrid.GetScaledDimensions();
         const bool*      pGridCellStates      = _rSolGrid.cells.pCellStates;
 
