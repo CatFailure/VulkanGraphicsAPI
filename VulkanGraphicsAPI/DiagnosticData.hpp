@@ -1,6 +1,6 @@
 #pragma once
 
-namespace SolEngine::GUI::Data
+namespace SolEngine::Data
 {
 	struct DiagnosticData
 	{
@@ -12,15 +12,15 @@ namespace SolEngine::GUI::Data
 		}
 
 		// Frame time data
-		float deltaTimeSeconds;
-		float totalTimeSeconds;
+		float deltaTimeSeconds{ 0.f };
+		float totalTimeSeconds{ 0.f };
 
 		// Memory data
-		size_t memoryAllocatedBytes;
-		size_t memoryUsedBytes;
+		size_t memoryAllocatedBytes{ 0U };
+		size_t memoryUsedBytes	   { 0U };
 
 		// Geometry data
-		size_t vertexCount;
-		size_t triCount;
+		size_t vertexCount{ 0U };
+		size_t triCount   { 0U };
 	};
 }

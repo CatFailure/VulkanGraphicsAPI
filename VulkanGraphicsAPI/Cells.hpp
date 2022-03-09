@@ -6,7 +6,6 @@
 using namespace Utility;
 using namespace SolEngine::Data;
 using namespace SolEngine::Enumeration;
-using namespace SolEngine::GUI::Data;
 
 namespace SolEngine::DOD
 {

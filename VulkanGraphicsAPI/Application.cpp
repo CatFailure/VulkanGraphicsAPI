@@ -142,9 +142,10 @@ void Application::SetupGrid()
 void Application::SetupMarchingCubesSystem()
 {
     _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice, 
-                                                                  *_pSolGrid);
+                                                                  *_pSolGrid,
+                                                                  _diagnosticData);
 
-    _pMarchingCubesSystem->March(_diagnosticData);
+    _pMarchingCubesSystem->March();
 }
 
 void Application::SetupGameOfLifeSystem()
@@ -159,7 +160,7 @@ void Application::SetupMarchingCubesDataEventCallbacks()
     _pGameOfLifeSystem->onUpdateAllCellStatesEvent
                       .AddListener([this]() 
                       { 
-                          _pMarchingCubesSystem->March(_diagnosticData); 
+                          _pMarchingCubesSystem->March(); 
                       });
 }
 
