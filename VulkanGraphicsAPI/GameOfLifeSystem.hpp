@@ -30,6 +30,7 @@ namespace SolEngine::System
 
         void NextGeneration();
 
+        static constexpr float NEXT_GENERATION_DELAY{ 0.1f };
         float _nextGenerationDelayRemaining;
 
         SolGrid&            _rSolGrid;

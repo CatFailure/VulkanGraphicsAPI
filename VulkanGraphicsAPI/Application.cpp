@@ -66,13 +66,6 @@ void Application::Run()
 
 void Application::Update(const float deltaTime)
 {
-    if (_rGameOfLifeSettings.isResetRequested)
-    {
-        //_pSolGrid->Reset();
-        _rGameOfLifeSettings.Reset();
-        //_pGameOfLifeSystem->ForceUpdateCellStates();
-    }
-
     _solCamera.LookAt(_pMarchingCubesSystem->GetGameObject()
                                            .transform
                                            .position);
@@ -177,14 +170,6 @@ void Application::SetupEventCallbacks()
                       { 
                           _pMarchingCubesSystem->March(); 
                       });
-
-    //_rGameOfLifeSettings.onResetEvent
-    //                    .AddListener([this]() 
-    //                    { 
-    //                        _pSolGrid->Reset();
-    //                        _rGameOfLifeSettings.Reset();
-    //                        _pGameOfLifeSystem->ForceNextGeneration();
-    //                    });
 }
 
 #ifndef DISABLE_IM_GUI

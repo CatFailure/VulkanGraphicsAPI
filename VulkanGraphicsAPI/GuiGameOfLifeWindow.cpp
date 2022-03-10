@@ -17,10 +17,9 @@ namespace SolEngine::GUI
 		int minLiveNeighbourCount = (int)_rGameOfLifeSettings.minLiveNeighbourCount;
 		int maxLiveNeighbourCount = (int)_rGameOfLifeSettings.maxLiveNeighbourCount;
 
-		ImGui::Begin(_windowTitle, &_isActive, _windowFlags);
-
-		ImGui::Text("Generation: %zu",
-					_rGameOfLifeSettings.currentGeneration);
+		ImGui::Begin(_windowTitle, 
+					 &_isActive, 
+					 _windowFlags);
 
 		if (ImGui::SliderInt("Min. Live Neighbours",
 							 &minLiveNeighbourCount,
@@ -38,13 +37,9 @@ namespace SolEngine::GUI
 			OnMaxLiveNeighboursChanged(maxLiveNeighbourCount);
 		}
 
-		if (ImGui::Checkbox("Pause Simulation",
-							&_rGameOfLifeSettings.isSimulationPaused))
-		{ }
-
 		if (ImGui::Button("Reset"))
 		{
-			_rGameOfLifeSettings.isResetRequested = true;
+			_rGameOfLifeSettings.Reset();
 		}
 
 		ImGui::End();
