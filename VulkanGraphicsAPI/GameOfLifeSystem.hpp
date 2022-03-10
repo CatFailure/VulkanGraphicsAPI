@@ -3,7 +3,7 @@
 #include "MarchingCubesHelpers.hpp"
 #include "SolEvent.hpp"
 #include "GameOfLifeSettings.hpp"
-#include "SimulationSettings.hpp"
+#include "GeneralSettings.hpp"
 
 using namespace Utility;
 using namespace SolEngine::Events;
@@ -14,7 +14,7 @@ namespace SolEngine::System
     class GameOfLifeSystem
     {
     public:
-        GameOfLifeSystem(SolGrid& rSolGrid, GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
+        GameOfLifeSystem(SolGrid& rSolGrid, GameOfLifeSettings& rGameOfLifeSettings, GeneralSettings& rGeneralSettings);
 
         void CheckAllCellNeighbours();
         void UpdateAllCellStates();
@@ -35,6 +35,6 @@ namespace SolEngine::System
 
         SolGrid&            _rSolGrid;
         GameOfLifeSettings& _rGameOfLifeSettings;
-        SimulationSettings& _rSimulationSettings;
+        GeneralSettings&    _rGeneralSettings;
     };
 }

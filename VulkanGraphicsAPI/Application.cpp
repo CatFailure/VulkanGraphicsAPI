@@ -4,7 +4,7 @@ Application::Application(const ApplicationData &appData,
                          DiagnosticData& rDiagnosticData,
                          GridSettings& rGridSettings, 
                          GameOfLifeSettings& rGameOfLifeSettings,
-                         SimulationSettings& rSimulationSettings)
+                         GeneralSettings& rGeneralSettings)
     : _solCamera(_solRenderer),
       _solRenderer(_appData,
                    _solWindow, 
@@ -17,7 +17,7 @@ Application::Application(const ApplicationData &appData,
       _rDiagnosticData(rDiagnosticData),
       _rGridSettings(rGridSettings),
       _rGameOfLifeSettings(rGameOfLifeSettings),
-      _rSimulationSettings(rSimulationSettings)
+      _rGeneralSettings(rGeneralSettings)
 {
     CreateDescriptorPool();
 
@@ -161,7 +161,7 @@ void Application::SetupGameOfLifeSystem()
 {
     _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
                                                             _rGameOfLifeSettings,
-                                                            _rSimulationSettings);
+                                                            _rGeneralSettings);
 
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
@@ -185,17 +185,14 @@ void Application::CreateGuiWindowManager()
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
-    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", 
-                                                             true, 
-                                                             flags, 
+    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics",
+                                                             true,
+                                                             flags,
                                                              _rDiagnosticData)
-                      .CreateGuiWindow<GuiGameOfLifeWindow>("Game of Life Settings", 
-                                                            true, 
-                                                            flags, 
-                                                            _rGameOfLifeSettings)
-                      .CreateGuiWindow<GuiSimulationWindow>("Simulation Settings", 
-                                                            true, 
-                                                            flags, 
-                                                            _rSimulationSettings);
+                      .CreateGuiWindow<GuiSettingsWindow>("Settings", 
+                                                          true, 
+                                                          flags, 
+                                                          _rGameOfLifeSettings,
+                                                          _rGeneralSettings);
 }
 #endif // !DISABLE_IM_GUI

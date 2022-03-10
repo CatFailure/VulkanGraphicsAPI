@@ -24,7 +24,7 @@ public:
     Application() = delete;
     Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData, 
                 GridSettings& rGridSettings, GameOfLifeSettings& rGameOfLifeSettings,
-                SimulationSettings& rSimulationSettings);
+                GeneralSettings& rGeneralSettings);
     ~Application();
         
     void Run();
@@ -49,7 +49,7 @@ private:
     DiagnosticData&     _rDiagnosticData;
     GridSettings&       _rGridSettings;
     GameOfLifeSettings& _rGameOfLifeSettings;
-    SimulationSettings& _rSimulationSettings;
+    GeneralSettings&    _rGeneralSettings;
 
     SolClock    _solClock;
     SolCamera   _solCamera;

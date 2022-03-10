@@ -5,21 +5,21 @@ using namespace SolEngine::Events;
 
 namespace SolEngine::Settings
 {
-	struct SimulationSettings
+	struct GeneralSettings
 	{
 		void Reset()
 		{
-			SimulationSettings defaultSettings{};
+			GeneralSettings defaultSettings{};
 
 			generation		    = 0U;
 			nextGenerationDelay = defaultSettings.nextGenerationDelay;
 			isPaused			= defaultSettings.isPaused;
+			isResetRequested	= false;
 		}
 
 		size_t generation		  { 0U };
 		float  nextGenerationDelay{ 1.f };
 		bool   isPaused			  { false };
-
-		SolEvent<> onResetEvent;
+		bool   isResetRequested	  { false };
 	};
 }

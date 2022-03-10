@@ -153,10 +153,7 @@
     <ClCompile Include="GameOfLifeSystem.cpp">
       <Filter>SolEngine\System</Filter>
     </ClCompile>
-    <ClCompile Include="GuiGameOfLifeWindow.cpp">
-      <Filter>SolEngine\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GuiSimulationWindow.cpp">
+    <ClCompile Include="GuiSettingsWindow.cpp">
       <Filter>SolEngine\GUI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -323,14 +320,11 @@
     <ClInclude Include="Typedefs.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="GuiGameOfLifeWindow.hpp">
-      <Filter>SolEngine\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GuiSimulationWindow.hpp">
-      <Filter>SolEngine\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="SimulationSettings.hpp">
+    <ClInclude Include="GeneralSettings.hpp">
       <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiSettingsWindow.hpp">
+      <Filter>SolEngine\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
