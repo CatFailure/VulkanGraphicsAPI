@@ -175,11 +175,16 @@ void Application::SetupMarchingCubesDataEventCallbacks()
 #ifndef DISABLE_IM_GUI
 void Application::CreateGuiWindowManager()
 {
+    const ImGuiWindowFlags flags{ 0 };
+
     _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,  
                                                             _solWindow,
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
-    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _rDiagnosticData);
+    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", 
+                                                             true, 
+                                                             flags, 
+                                                             _rDiagnosticData);
 }
 #endif // !DISABLE_IM_GUI
