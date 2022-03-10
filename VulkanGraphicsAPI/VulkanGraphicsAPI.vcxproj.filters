@@ -314,6 +314,9 @@
     <ClInclude Include="GameOfLifeSettings.hpp">
       <Filter>SolEngine\Settings</Filter>
     </ClInclude>
+    <ClInclude Include="Typedefs.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">

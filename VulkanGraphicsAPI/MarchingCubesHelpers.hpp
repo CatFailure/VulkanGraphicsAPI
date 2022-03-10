@@ -14,7 +14,7 @@ namespace Utility
     static uint32_t _3DTo1DIndex(const uint32_t xIndex, 
                                  const uint32_t yIndex, 
                                  const uint32_t zIndex,
-                                 const glm::vec3 &scaledDimensions)
+                                 const glm::vec3 &dimensions)
     {
         // Always 0
         if (xIndex == 0 && 
@@ -24,8 +24,8 @@ namespace Utility
             return 0;
         }
 
-        const glm::vec3 sqrDimensions = scaledDimensions * scaledDimensions;
-        const uint32_t returnIndex = (uint32_t)((zIndex * sqrDimensions.x) + (yIndex * scaledDimensions.y) + xIndex);
+        const glm::vec3 sqrDimensions = dimensions * dimensions;
+        const uint32_t returnIndex = (uint32_t)((zIndex * sqrDimensions.x) + (yIndex * dimensions.y) + xIndex);
 
         // Convert 3D array indexes into a 1D array index
         return returnIndex;

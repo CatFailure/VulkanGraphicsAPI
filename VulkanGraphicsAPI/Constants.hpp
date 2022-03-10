@@ -1,11 +1,13 @@
 #pragma once
 #include "Vertex.hpp"
+#include "Typedefs.hpp"
 
-typedef uint32_t UIndex_t;
-typedef int32_t  Index_t; 
+using namespace Utility;
 
 namespace SolEngine::Data
 {
+    static constexpr size_t INT_SIZE_BYTES{ sizeof(int) };
+
     static constexpr float SECONDS_TO_MILLISECONDS{ 1000.f };
 
 	static constexpr glm::vec3 VEC3_RIGHT  { 1.f, 0.f, 0.f };
@@ -15,8 +17,9 @@ namespace SolEngine::Data
     static constexpr float SPHERE_RADIUS{ 5.f };
 
     static constexpr uint32_t MAX_CELLS_PER_AXIS_COUNT{ 1 << 8 };   // Currently can only go upto 9 (134,217,728 Cubes)
-    static constexpr uint32_t MAX_CUBES_COUNT{ MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT };
-    static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
+    static constexpr uint32_t MAX_CUBES_COUNT         { MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT };
+    static constexpr uint32_t CUBE_VERTEX_COUNT       { 8U };
+    static constexpr uint32_t MAX_CUBE_VERTEX_COUNT   { MAX_CUBES_COUNT * CUBE_VERTEX_COUNT };
 
     static constexpr size_t TRI_TABLE_COUNT{ 256 };
     static constexpr size_t TRI_TABLE_INDEX_COUNT{ 16 };

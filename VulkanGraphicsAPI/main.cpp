@@ -9,7 +9,7 @@ int main()
 	};
 
 	DiagnosticData     diagnosticData    {};
-	GridSettings       gridSettings{ .dimensions = glm::vec3{20} };
+	GridSettings       gridSettings		 { .dimensions = glm::uvec3{20} };
 	GameOfLifeSettings gameOfLifeSettings{};
 
 	Application application(appData, 

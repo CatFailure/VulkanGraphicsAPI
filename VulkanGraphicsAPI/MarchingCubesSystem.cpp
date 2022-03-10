@@ -16,8 +16,8 @@ namespace SolEngine::System
         // Delete all previous vertices
         _vertices.clear();
 
-        const glm::vec3  scaledGridDimensions = _rSolGrid.GetScaledDimensions();
-        const bool*      pGridCellStates      = _rSolGrid.cells.pCellStates;
+        const glm::uvec3  gridDimensions  = _rSolGrid.GetDimensions();
+        const bool*       pGridCellStates = _rSolGrid.cells.pCellStates;
 
         _rSolGrid.TraverseAllGridCells([&](const uint32_t xIndex, 
                                            const uint32_t yIndex, 
@@ -31,7 +31,7 @@ namespace SolEngine::System
                                                             xIndex, 
                                                             yIndex, 
                                                             zIndex, 
-                                                            scaledGridDimensions);
+                                                            gridDimensions);
                                        
                                            // Calculate the cube index to pull from the Tri-table
                                            const uint32_t cubeIndex = GetCubeIndex(cubeIsoValues);
@@ -81,34 +81,34 @@ namespace SolEngine::System
     }
 
     void MarchingCubesSystem::GetCubeIsoValues(bool* pOutCubeIsoValues, 
-                                                const bool* pGridCellStates, 
-                                                const uint32_t xIndex, 
-                                                const uint32_t yIndex, 
-                                                const uint32_t zIndex, 
-                                                const glm::vec3& scaledGridDimensions)
+                                               const bool* pGridCellStates, 
+                                               const uint32_t xIndex, 
+                                               const uint32_t yIndex, 
+                                               const uint32_t zIndex, 
+                                               const glm::vec3& gridDimensions)
     {
         const uint32_t adjOffset = 1U;
         const uint32_t adjXIndex = xIndex + adjOffset;
         const uint32_t adjYIndex = yIndex + adjOffset;
         const uint32_t adjZIndex = zIndex + adjOffset;
 
-        if (!(adjXIndex < scaledGridDimensions.x) ||
-            !(adjYIndex < scaledGridDimensions.y) ||
-            !(adjZIndex < scaledGridDimensions.z))
+        if (!(adjXIndex < gridDimensions.x) ||
+            !(adjYIndex < gridDimensions.y) ||
+            !(adjZIndex < gridDimensions.z))
         {
             // Out-of-range
             return;
         }
 
         // Retrieve a "Cube" of cell states
-        pOutCubeIsoValues[0] = pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    zIndex,    scaledGridDimensions)];
-        pOutCubeIsoValues[1] = pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    zIndex,    scaledGridDimensions)];
-        pOutCubeIsoValues[2] = pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    adjZIndex, scaledGridDimensions)];
-        pOutCubeIsoValues[3] = pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    adjZIndex, scaledGridDimensions)];
-        pOutCubeIsoValues[4] = pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, zIndex,    scaledGridDimensions)];
-        pOutCubeIsoValues[5] = pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, zIndex,    scaledGridDimensions)];
-        pOutCubeIsoValues[6] = pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, adjZIndex, scaledGridDimensions)];
-        pOutCubeIsoValues[7] = pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, adjZIndex, scaledGridDimensions)];
+        pOutCubeIsoValues[0] = pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    zIndex,    gridDimensions)];
+        pOutCubeIsoValues[1] = pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    zIndex,    gridDimensions)];
+        pOutCubeIsoValues[2] = pGridCellStates[_3DTo1DIndex(adjXIndex, yIndex,    adjZIndex, gridDimensions)];
+        pOutCubeIsoValues[3] = pGridCellStates[_3DTo1DIndex(xIndex,    yIndex,    adjZIndex, gridDimensions)];
+        pOutCubeIsoValues[4] = pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, zIndex,    gridDimensions)];
+        pOutCubeIsoValues[5] = pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, zIndex,    gridDimensions)];
+        pOutCubeIsoValues[6] = pGridCellStates[_3DTo1DIndex(adjXIndex, adjYIndex, adjZIndex, gridDimensions)];
+        pOutCubeIsoValues[7] = pGridCellStates[_3DTo1DIndex(xIndex,    adjYIndex, adjZIndex, gridDimensions)];
     }
 
     void MarchingCubesSystem::CreateVertices(Cells& rNodes,
@@ -159,9 +159,9 @@ namespace SolEngine::System
         const uint32_t yRowWidth = yIndex * CUBE_VERTEX_COUNT;
         const uint32_t zRowWidth = zIndex * CUBE_VERTEX_COUNT;
 
-        const float* pXVertices = &rNodes.pXVertices[xRowWidth];
-        const float* pYVertices = &rNodes.pYVertices[yRowWidth];
-        const float* pZVertices = &rNodes.pZVertices[zRowWidth];
+        const int* pXVertices = &rNodes.pXVertices[xRowWidth];
+        const int* pYVertices = &rNodes.pYVertices[yRowWidth];
+        const int* pZVertices = &rNodes.pZVertices[zRowWidth];
 
         const Index_t indexA = cornerIndices.first;
         const Index_t indexB = cornerIndices.second;

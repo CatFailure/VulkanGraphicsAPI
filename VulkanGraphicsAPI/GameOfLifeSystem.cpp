@@ -10,10 +10,10 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::CheckAllCellNeighbours()
     {
-        const uint32_t  neighbourOffset          = 1U;
-        const Cells&    gridNodes                = _rSolGrid.cells;
-        const glm::vec3 scaledDimensions         = _rSolGrid.GetScaledDimensions();
-        const glm::vec3 validNeighbourDimensions = scaledDimensions - glm::vec3(1);
+        const uint32_t   neighbourOffset          = 1U;
+        const Cells&     gridNodes                = _rSolGrid.cells;
+        const glm::uvec3 gridDimensions           = _rSolGrid.GetDimensions();
+        const glm::uvec3 validNeighbourDimensions = gridDimensions - glm::uvec3(1);
 
         uint32_t neighbourIndex(0);
                                           
@@ -24,7 +24,7 @@ namespace SolEngine::System
                                            const uint32_t nodeIndex = _3DTo1DIndex(xIndex, 
                                                                                    yIndex, 
                                                                                    zIndex, 
-                                                                                   scaledDimensions);
+                                                                                   gridDimensions);
 
                                            NeighbourCount_t& rLiveNeighbourCount = 
                                                gridNodes.pLiveNeighbourCounts[nodeIndex];
@@ -37,7 +37,7 @@ namespace SolEngine::System
                                                CheckNeighbourState(xIndex - neighbourOffset, 
                                                                    yIndex,
                                                                    zIndex,
-                                                                   scaledDimensions, 
+                                                                   gridDimensions, 
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
@@ -48,7 +48,7 @@ namespace SolEngine::System
                                                CheckNeighbourState(xIndex + neighbourOffset, 
                                                                    yIndex,
                                                                    zIndex,
-                                                                   scaledDimensions, 
+                                                                   gridDimensions, 
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
@@ -59,7 +59,7 @@ namespace SolEngine::System
                                                CheckNeighbourState(xIndex, 
                                                                    yIndex - neighbourOffset,
                                                                    zIndex,
-                                                                   scaledDimensions, 
+                                                                   gridDimensions, 
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
@@ -70,7 +70,7 @@ namespace SolEngine::System
                                                CheckNeighbourState(xIndex, 
                                                                    yIndex + neighbourOffset,
                                                                    zIndex,
-                                                                   scaledDimensions, 
+                                                                   gridDimensions, 
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
@@ -81,7 +81,7 @@ namespace SolEngine::System
                                                CheckNeighbourState(xIndex, 
                                                                    yIndex,
                                                                    zIndex - neighbourOffset,
-                                                                   scaledDimensions, 
+                                                                   gridDimensions, 
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
@@ -92,7 +92,7 @@ namespace SolEngine::System
                                                CheckNeighbourState(xIndex, 
                                                                    yIndex,
                                                                    zIndex + neighbourOffset,
-                                                                   scaledDimensions, 
+                                                                   gridDimensions, 
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
@@ -101,7 +101,7 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::UpdateAllCellStates()
     {
-        const glm::vec3 scaledDimensions = _rSolGrid.GetScaledDimensions();
+        const glm::uvec3 dimensions = _rSolGrid.GetDimensions();
 
         _rSolGrid.TraverseAllGridCells([&](const uint32_t xIndex,
                                            const uint32_t yIndex,
@@ -112,7 +112,7 @@ namespace SolEngine::System
                                            const size_t cellIndex = _3DTo1DIndex(xIndex, 
                                                                                  yIndex, 
                                                                                  zIndex, 
-                                                                                 scaledDimensions);
+                                                                                 dimensions);
                                        
                                            bool&                  rCellState         = rGridNodes.pCellStates[cellIndex];
                                            const NeighbourCount_t cellNeighbourCount = rGridNodes.pLiveNeighbourCounts[cellIndex];
