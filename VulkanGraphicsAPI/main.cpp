@@ -9,8 +9,8 @@ int main()
 	};
 
 	DiagnosticData     diagnosticData    {};
-	GridSettings       gridSettings		 { .dimensions = glm::uvec3{20} };
-	GameOfLifeSettings gameOfLifeSettings{};
+	GridSettings       gridSettings		 { .dimensions = glm::uvec3{10} };
+	GameOfLifeSettings gameOfLifeSettings{ .nextGenerationDelay = .05f };
 
 	Application application(appData, 
 							diagnosticData,

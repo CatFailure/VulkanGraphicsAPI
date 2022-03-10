@@ -5,7 +5,8 @@ namespace SolEngine::System
     GameOfLifeSystem::GameOfLifeSystem(SolGrid& rSolGrid, 
                                        GameOfLifeSettings& rGameOfLifeSettings)
         : _rSolGrid(rSolGrid),
-          _rGameOfLifeSettings(rGameOfLifeSettings)
+          _rGameOfLifeSettings(rGameOfLifeSettings),
+          _nextGenerationDelayRemaining(rGameOfLifeSettings.nextGenerationDelay)
     {}
 
     void GameOfLifeSystem::CheckAllCellNeighbours()
@@ -13,7 +14,7 @@ namespace SolEngine::System
         const uint32_t   neighbourOffset          = 1U;
         const Cells&     gridNodes                = _rSolGrid.cells;
         const glm::uvec3 gridDimensions           = _rSolGrid.GetDimensions();
-        const glm::uvec3 validNeighbourDimensions = gridDimensions - glm::uvec3(1);
+        const glm::uvec3 validNeighbourDimensions = gridDimensions - glm::uvec3(1U);
 
         uint32_t neighbourIndex(0);
                                           
@@ -101,6 +102,9 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::UpdateAllCellStates()
     {
+        const NeighbourCount_t minLiveNeighbourCount = _rGameOfLifeSettings.minLiveNeighbourCount;
+        const NeighbourCount_t maxLiveNeighbourCount = _rGameOfLifeSettings.maxLiveNeighbourCount;
+
         const glm::uvec3 dimensions = _rSolGrid.GetDimensions();
 
         _rSolGrid.TraverseAllGridCells([&](const uint32_t xIndex,
@@ -126,15 +130,15 @@ namespace SolEngine::System
                                            // If alive
                                            if (rCellState)
                                            {
-                                               rCellState = !(cellNeighbourCount < MIN_LIVE_NEIGHBOUR_COUNT) && // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-                                                            !(cellNeighbourCount > MAX_LIVE_NEIGHBOUR_COUNT);   // Any live cell with more than three live neighbours dies, as if by overpopulation.
+                                               rCellState = !(cellNeighbourCount < minLiveNeighbourCount) && // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+                                                            !(cellNeighbourCount > maxLiveNeighbourCount);   // Any live cell with more than three live neighbours dies, as if by overpopulation.
                                        
                                                // Any live cell with two or three live neighbours lives on to the next generation.
                                                return;
                                            }
                                        
                                            // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-                                           if (cellNeighbourCount == MAX_LIVE_NEIGHBOUR_COUNT)
+                                           if (cellNeighbourCount == maxLiveNeighbourCount)
                                            {
                                                 rCellState = true;
                                            }
@@ -155,7 +159,11 @@ namespace SolEngine::System
 
         onUpdateAllCellStatesEvent.Invoke();
 
-        _nextGenerationDelayRemaining = NEXT_GENERATION_DELAY;
+        // Reset the delay
+        _nextGenerationDelayRemaining = _rGameOfLifeSettings.nextGenerationDelay;
+
+        // Next generation
+        ++_rGameOfLifeSettings.currentGeneration;
     }
 
     void GameOfLifeSystem::CheckNeighbourState(const uint32_t xIndex,
