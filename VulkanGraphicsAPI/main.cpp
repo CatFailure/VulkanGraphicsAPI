@@ -11,11 +11,13 @@ int main()
 	DiagnosticData     diagnosticData    {};
 	GridSettings       gridSettings		 { .dimensions = glm::uvec3{ 30 } };
 	GameOfLifeSettings gameOfLifeSettings{};
+	SimulationSettings simulationSettings{};
 
 	Application application(appData, 
 							diagnosticData,
 							gridSettings,
-							gameOfLifeSettings);
+							gameOfLifeSettings,
+							simulationSettings);
 
 	try
 	{

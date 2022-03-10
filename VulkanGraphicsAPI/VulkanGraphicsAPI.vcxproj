@@ -337,6 +337,7 @@
     <ClCompile Include="GenericRenderSystem.cpp" />
     <ClCompile Include="GuiDiagnosticWindow.cpp" />
     <ClCompile Include="GuiGameOfLifeWindow.cpp" />
+    <ClCompile Include="GuiSimulationWindow.cpp" />
     <ClCompile Include="GuiWindowManager.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
@@ -376,7 +377,9 @@
     <ClInclude Include="GridSettings.hpp" />
     <ClInclude Include="GridHelpers.hpp" />
     <ClInclude Include="GuiGameOfLifeWindow.hpp" />
+    <ClInclude Include="GuiSimulationWindow.hpp" />
     <ClInclude Include="MarchingCubesSystem.hpp" />
+    <ClInclude Include="SimulationSettings.hpp" />
     <ClInclude Include="SolGrid.hpp" />
     <ClInclude Include="Cells.hpp" />
     <ClInclude Include="GenericRenderSystem.hpp" />

@@ -3,7 +3,8 @@
 Application::Application(const ApplicationData &appData, 
                          DiagnosticData& rDiagnosticData,
                          GridSettings& rGridSettings, 
-                         GameOfLifeSettings& rGameOfLifeSettings)
+                         GameOfLifeSettings& rGameOfLifeSettings,
+                         SimulationSettings& rSimulationSettings)
     : _solCamera(_solRenderer),
       _solRenderer(_appData,
                    _solWindow, 
@@ -15,7 +16,8 @@ Application::Application(const ApplicationData &appData,
       _appData(appData),
       _rDiagnosticData(rDiagnosticData),
       _rGridSettings(rGridSettings),
-      _rGameOfLifeSettings(rGameOfLifeSettings)
+      _rGameOfLifeSettings(rGameOfLifeSettings),
+      _rSimulationSettings(rSimulationSettings)
 {
     CreateDescriptorPool();
 
@@ -189,6 +191,10 @@ void Application::CreateGuiWindowManager()
                       .CreateGuiWindow<GuiGameOfLifeWindow>("Game of Life Settings", 
                                                             true, 
                                                             flags, 
-                                                            _rGameOfLifeSettings);
+                                                            _rGameOfLifeSettings)
+                      .CreateGuiWindow<GuiSimulationWindow>("Simulation Settings", 
+                                                            true, 
+                                                            flags, 
+                                                            _rSimulationSettings);
 }
 #endif // !DISABLE_IM_GUI

@@ -4,6 +4,7 @@
 #include "SolRenderer.hpp"
 #include "GuiDiagnosticWindow.hpp"
 #include "GuiGameOfLifeWindow.hpp"
+#include "GuiSimulationWindow.hpp"
 
 using namespace SolEngine::Interface;
 
