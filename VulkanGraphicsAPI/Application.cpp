@@ -160,7 +160,8 @@ void Application::SetupMarchingCubesSystem()
 void Application::SetupGameOfLifeSystem()
 {
     _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
-                                                            _rGameOfLifeSettings);
+                                                            _rGameOfLifeSettings,
+                                                            _rSimulationSettings);
 
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }

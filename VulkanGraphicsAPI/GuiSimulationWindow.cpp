@@ -11,4 +11,16 @@ namespace SolEngine::GUI
 					 windowFlags),
 		_rSimulationSettings(rSimulationSettings)
 	{}
+
+	void GuiSimulationWindow::RenderWindowContents()
+	{
+		ImGui::Begin(_windowTitle, 
+					 &_isActive, 
+					 _windowFlags);
+
+		ImGui::Text("Generation: %zu", 
+					_rSimulationSettings.generation);
+
+		ImGui::End();
+	}
 }

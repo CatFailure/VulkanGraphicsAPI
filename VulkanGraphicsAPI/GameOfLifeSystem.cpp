@@ -3,10 +3,12 @@
 namespace SolEngine::System
 {
     GameOfLifeSystem::GameOfLifeSystem(SolGrid& rSolGrid, 
-                                       GameOfLifeSettings& rGameOfLifeSettings)
+                                       GameOfLifeSettings& rGameOfLifeSettings,
+                                       SimulationSettings& rSimulationSettings)
         : _rSolGrid(rSolGrid),
           _rGameOfLifeSettings(rGameOfLifeSettings),
-          _nextGenerationDelayRemaining(NEXT_GENERATION_DELAY)
+          _rSimulationSettings(rSimulationSettings),
+          _nextGenerationDelayRemaining(rSimulationSettings.nextGenerationDelay)
     {}
 
     void GameOfLifeSystem::CheckAllCellNeighbours()
@@ -165,7 +167,7 @@ namespace SolEngine::System
         CheckAllCellNeighbours();
 
         // Reset the delay
-        _nextGenerationDelayRemaining = NEXT_GENERATION_DELAY;
+        _nextGenerationDelayRemaining = _rSimulationSettings.nextGenerationDelay;
     }
 
     void GameOfLifeSystem::CheckNeighbourState(const uint32_t xIndex,
@@ -193,5 +195,7 @@ namespace SolEngine::System
     void GameOfLifeSystem::NextGeneration()
     {
         ForceUpdateCellStates();
+
+        ++_rSimulationSettings.generation;
     }
 }

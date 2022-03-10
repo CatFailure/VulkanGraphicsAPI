@@ -15,6 +15,9 @@ namespace SolEngine::GUI
 		GuiSimulationWindow() = delete;
 		GuiSimulationWindow(const char* windowTitle, const bool isActive, const ImGuiWindowFlags windowFlags, SimulationSettings& rSimulationSettings);
 
+		// Inherited via IGuiWindow
+		virtual void RenderWindowContents() override;
+
 	private:
 		SimulationSettings& _rSimulationSettings;
 	};
