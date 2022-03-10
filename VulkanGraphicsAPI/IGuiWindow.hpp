@@ -23,32 +23,32 @@ namespace SolEngine::Interface
 
 		virtual void Update(const float deltaTime) override
 		{
-			if (!ShouldUpdate())
+			if (!ShouldUpdateData())
 			{
-				TickUpdateDelayRemaining(deltaTime);
+				TickUpdateDataDelayRemaining(deltaTime);
 
 				return;
 			}
 
 			ResetUpdateDelayRemaining();
 
-			_onUpdateEvent.Invoke();
+			_onUpdateDataEvent.Invoke();
 		}
 
 		virtual void RenderWindowContents() = 0;
 
 	protected:
-		void TickUpdateDelayRemaining(const float deltaTime) { _updateDelayRemaining -= deltaTime; }
-		bool ShouldUpdate() const { return !(_updateDelayRemaining > 0.f); }
-		void ResetUpdateDelayRemaining() { _updateDelayRemaining = 1.f / _updateFrequency; }
+		void TickUpdateDataDelayRemaining(const float deltaTime) { _updateDataDelayRemaining -= deltaTime; }
+		bool ShouldUpdateData() const { return !(_updateDataDelayRemaining > 0.f); }
+		void ResetUpdateDelayRemaining() { _updateDataDelayRemaining = 1.f / _updateDataFrequency; }
 
-		const char *_windowTitle{ "ImGui Window" };
-		bool _isActive{ true };
+		const char*		 _windowTitle{ "ImGui Window" };
+		bool			 _isActive	 { true };
 		ImGuiWindowFlags _windowFlags{ 0 };
 
-		float _updateFrequency{ 1.f };
-		float _updateDelayRemaining{ 0.f };
+		float _updateDataFrequency	   { 1.f };
+		float _updateDataDelayRemaining{ 0.f };
 
-		SolEvent<> _onUpdateEvent;
+		SolEvent<> _onUpdateDataEvent;
 	};
 }

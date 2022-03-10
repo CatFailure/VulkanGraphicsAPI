@@ -12,13 +12,13 @@ namespace SolEngine::GUI
 	{
 	public:
 		GuiDiagnosticWindow() = default;
-		GuiDiagnosticWindow(const char *windowTitle, const bool isActive, const ImGuiWindowFlags windowFlags, DiagnosticData &rDiagnosticData);
+		GuiDiagnosticWindow(const char* windowTitle, const bool isActive, const ImGuiWindowFlags windowFlags, DiagnosticData& rDiagnosticData);
 
 		// Inherited via IGuiWindow
 		virtual void RenderWindowContents() override;
 
 	private:
-		void OnUpdate_Method();
+		void OnUpdateData_Method();
 		void PushBackDeltaTime();
 
 		static constexpr size_t MAX_BACKLOGGED_DELTA_TIMES{ 20 };
