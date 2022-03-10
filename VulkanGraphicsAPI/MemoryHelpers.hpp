@@ -24,9 +24,9 @@ namespace Utility
     static size_t AlignedMallocContiguousArray(_Ty*& prArr,
                                                const size_t size)
     {
-        const size_t typeSizeBytes = sizeof(_Ty);
+        const size_t typeSizeBytes  = sizeof(_Ty);
         const size_t arraySizeBytes = size * typeSizeBytes;
-        const size_t alignment = 16U;
+        const size_t alignment      = 16U;
 
         prArr = (_Ty*)_aligned_malloc(arraySizeBytes, alignment);
 

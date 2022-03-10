@@ -43,11 +43,11 @@ namespace SolEngine::DOD
             _wasFreed = true;
         }
 
-        float*             pXVertices          { nullptr }; // All cubes vertices along x-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
-        float*             pYVertices          { nullptr }; // All cubes vertices along y-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
-        float*             pZVertices          { nullptr }; // All cubes vertices along z-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
-        bool*              pCellStates         { nullptr }; // Stores all cell states (false = dead, true = alive)
-        NeighbourCount_t*  pLiveNeighbourCounts{ nullptr }; // Stores all live neighbours relative to the node
+        int*              pXVertices          { nullptr }; // All cubes vertices along x-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
+        int*              pYVertices          { nullptr }; // All cubes vertices along y-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
+        int*              pZVertices          { nullptr }; // All cubes vertices along z-axis [position_index * CUBE_VERTEX_COUNT + vertex_index]
+        bool*             pCellStates         { nullptr }; // Stores all cell states (false = dead, true = alive)
+        NeighbourCount_t* pLiveNeighbourCounts{ nullptr }; // Stores all live neighbours relative to the node
 
     private:
         bool _wasFreed{ false };    // Memory leak flag
