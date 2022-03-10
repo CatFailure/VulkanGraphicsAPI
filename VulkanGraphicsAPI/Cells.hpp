@@ -3,14 +3,11 @@
 #include "MemoryHelpers.hpp"
 #include "DiagnosticData.hpp"
 
-using namespace Utility;
 using namespace SolEngine::Data;
 using namespace SolEngine::Enumeration;
 
 namespace SolEngine::DOD
 {
-    typedef unsigned char NeighbourCount_t;
-
     struct Cells
     {
         ~Cells()

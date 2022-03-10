@@ -3,6 +3,7 @@
 
 #include "Axis.hpp"
 #include "Constants.hpp"
+#include "Typedefs.hpp"
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Enumeration;

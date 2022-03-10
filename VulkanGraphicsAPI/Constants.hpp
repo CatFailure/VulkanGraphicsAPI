@@ -1,8 +1,8 @@
 #pragma once
 #include "Vertex.hpp"
+#include "Typedefs.hpp"
 
-typedef uint32_t UIndex_t;
-typedef int32_t  Index_t; 
+using namespace Utility;
 
 namespace SolEngine::Data
 {
