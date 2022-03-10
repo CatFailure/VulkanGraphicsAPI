@@ -37,7 +37,7 @@ namespace SolEngine
         vkCmdBindIndexBuffer(commandBuffer, 
                              _pIndexBuffer->GetBuffer(),
                              0, 
-                             VK_INDEX_TYPE_UINT32);
+                             VK_INDEX_TYPE_UINT8_EXT);
     }
 
     void SolModel::Draw(const VkCommandBuffer commandBuffer)
