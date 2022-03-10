@@ -27,7 +27,7 @@ Application::Application(const ApplicationData &appData,
     SetupGrid();
     SetupMarchingCubesSystem();
     SetupGameOfLifeSystem();
-    SetupMarchingCubesDataEventCallbacks();
+    SetupEventCallbacks();
 }
 
 Application::~Application()
@@ -99,11 +99,6 @@ void Application::Render()
 
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-#ifndef DISABLE_IM_GUI
-    // Render Dear ImGui...
-    _pGuiWindowManager->Render(commandBuffer);
-#endif  // !DISABLE_IM_GUI
-
     if (_pSolGrid->IsGridDataValid())
     {
         renderSystem.RenderGameObject(_solCamera, 
@@ -114,6 +109,11 @@ void Application::Render()
     {
         printf_s("Bad Grid data, cannot render GameObject!\n");
     }
+
+#ifndef DISABLE_IM_GUI
+    // Render Dear ImGui...
+    _pGuiWindowManager->Render(commandBuffer);
+#endif  // !DISABLE_IM_GUI
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -163,7 +163,7 @@ void Application::SetupGameOfLifeSystem()
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
 
-void Application::SetupMarchingCubesDataEventCallbacks()
+void Application::SetupEventCallbacks()
 {
     _pGameOfLifeSystem->onUpdateAllCellStatesEvent
                       .AddListener([this]() 
@@ -175,11 +175,20 @@ void Application::SetupMarchingCubesDataEventCallbacks()
 #ifndef DISABLE_IM_GUI
 void Application::CreateGuiWindowManager()
 {
+    const ImGuiWindowFlags flags{ 0 };
+
     _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,  
                                                             _solWindow,
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
-    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _rDiagnosticData);
+    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", 
+                                                             true, 
+                                                             flags, 
+                                                             _rDiagnosticData)
+                      .CreateGuiWindow<GuiGameOfLifeWindow>("Game of Life Settings", 
+                                                            true, 
+                                                            flags, 
+                                                            _rGameOfLifeSettings);
 }
 #endif // !DISABLE_IM_GUI

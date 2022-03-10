@@ -25,6 +25,8 @@ namespace SolEngine
 		SolGrid(GridSettings& rGridData, DiagnosticData& rDiagnosticData);
 		~SolGrid();
 
+		void Reset();
+
 		bool			  IsGridDataValid() const { return _isGridDataValid; }
 		const glm::uvec3& GetDimensions()   const { return _rGridSettings.dimensions; }
 

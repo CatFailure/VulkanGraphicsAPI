@@ -1,16 +1,25 @@
 #pragma once
+#include "SolEvent.hpp"
 #include "Typedefs.hpp"
 
 using namespace Utility;
+using namespace SolEngine::Events;
 
 namespace SolEngine::Settings
 {
 	struct GameOfLifeSettings
 	{
-		size_t currentGeneration  { 0U };
-		float  nextGenerationDelay{ .1f };
+		void Reset()
+		{
+			GameOfLifeSettings defaultSettings{};
+
+			minLiveNeighbourCount = defaultSettings.minLiveNeighbourCount;
+			maxLiveNeighbourCount = defaultSettings.maxLiveNeighbourCount;
+		}
 
 		NeighbourCount_t minLiveNeighbourCount{ 2U };
 		NeighbourCount_t maxLiveNeighbourCount{ 3U };
+
+		SolEvent<> onResetEvent;
 	};
 }

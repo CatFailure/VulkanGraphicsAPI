@@ -19,6 +19,7 @@ namespace SolEngine::System
         void UpdateAllCellStates();
 
         void Update(const float deltaTime);
+        void ForceUpdateCellStates();
 
         SolEvent<> onUpdateAllCellStatesEvent;
 
@@ -27,6 +28,9 @@ namespace SolEngine::System
                                  const glm::vec3& scaledDimensions, const bool* pCellStates, 
                                  NeighbourCount_t& rLiveNeighbourCount);
 
+        void NextGeneration();
+
+        static constexpr float NEXT_GENERATION_DELAY{ 0.1f };
         float _nextGenerationDelayRemaining;
 
         SolGrid&            _rSolGrid;
