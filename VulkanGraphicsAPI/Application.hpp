@@ -1,6 +1,5 @@
 #pragma once
 #include "SolClock.hpp"
-#include "SolGameObject.hpp"
 #include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
@@ -16,7 +15,6 @@ using namespace SolEngine;
 using namespace SolEngine::Data;
 using namespace SolEngine::Descriptors;
 using namespace SolEngine::GUI;
-using namespace SolEngine::Interface;
 using namespace SolEngine::Rendering;
 using namespace SolEngine::System;
 

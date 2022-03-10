@@ -133,7 +133,7 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 35.f, 2.5f, 35.f })
+              .SetPosition({ 35.f, 2.5f, 55.f })
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
