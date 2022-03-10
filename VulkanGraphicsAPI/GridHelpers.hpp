@@ -29,9 +29,8 @@ namespace Utility
                                             const int minValue, 
                                             const int maxValue)
     {
-        const size_t intSizeBytes   = sizeof(int);    // TODO: Move to constants?
-        size_t       bytesInUse     = 0;
-        uint32_t     rowIndex       = 0;
+        size_t   bytesInUse = 0;
+        uint32_t rowIndex   = 0;
 
         for (int xPos = minValue; xPos < maxValue; ++xPos)
         {
@@ -48,7 +47,7 @@ namespace Utility
             pOutXPositions[rowWidth + 7] = xPos;
 
             ++rowIndex;
-            bytesInUse += (intSizeBytes * CUBE_VERTEX_COUNT);
+            bytesInUse += (INT_SIZE_BYTES * CUBE_VERTEX_COUNT);
         }
 
         printf_s("Generated %u X-Positions.\n", rowIndex);
@@ -61,9 +60,8 @@ namespace Utility
                                             const int minValue, 
                                             const int maxValue)
     {
-        const size_t intSizeBytes = sizeof(int);
-        size_t       bytesInUse     = 0;
-        uint32_t     rowIndex       = 0;
+        size_t   bytesInUse = 0;
+        uint32_t rowIndex   = 0;
 
         for (int yPos = minValue; yPos > maxValue; --yPos)
         {
@@ -80,7 +78,7 @@ namespace Utility
             pOutYPositions[rowWidth + 7] = adjYPos;
 
             ++rowIndex;
-            bytesInUse += (intSizeBytes * CUBE_VERTEX_COUNT);
+            bytesInUse += (INT_SIZE_BYTES * CUBE_VERTEX_COUNT);
         }
 
         printf_s("Generated %u Y-Positions.\n", rowIndex);
@@ -93,9 +91,8 @@ namespace Utility
                                             const int minValue, 
                                             const int maxValue)
     {
-        const size_t intSizeBytes = sizeof(int);
-        size_t       bytesInUse     = 0;
-        uint32_t     rowIndex       = 0;
+        size_t   bytesInUse = 0;
+        uint32_t rowIndex   = 0;
 
         for (int zPos = minValue; zPos < maxValue; ++zPos)
         {
@@ -112,7 +109,7 @@ namespace Utility
             pOutZPositions[rowWidth + 7] = adjZPos;
 
             ++rowIndex;
-            bytesInUse += (intSizeBytes * CUBE_VERTEX_COUNT);
+            bytesInUse += (INT_SIZE_BYTES * CUBE_VERTEX_COUNT);
         }
 
         printf_s("Generated %u Z-Positions.\n", rowIndex);
