@@ -12,7 +12,10 @@ Application::Application(const ApplicationData &appData,
                  _appData),
       _solWindow(_appData.windowTitle,
                  _appData.windowDimensions),
-      _appData(appData)
+      _appData(appData),
+      _rDiagnosticData(rDiagnosticData),
+      _rGridSettings(rGridSettings),
+      _rGameOfLifeSettings(rGameOfLifeSettings)
 {
     CreateDescriptorPool();
 
@@ -21,9 +24,9 @@ Application::Application(const ApplicationData &appData,
 #endif  // !DISABLE_IM_GUI
 
     SetupCamera();
-    SetupGrid(rDiagnosticData, rGridSettings);
-    SetupMarchingCubesSystem(rDiagnosticData);
-    SetupGameOfLifeSystem(rGameOfLifeSettings);
+    SetupGrid();
+    SetupMarchingCubesSystem();
+    SetupGameOfLifeSystem();
     SetupMarchingCubesDataEventCallbacks();
 }
 
@@ -46,8 +49,8 @@ void Application::Run()
         const float deltaTime = _solClock.Restart();
 
 #ifndef DISABLE_IM_GUI
-        _diagnosticData.deltaTimeSeconds = deltaTime;
-        _diagnosticData.totalTimeSeconds = _solClock.GetTotalTime();
+        _rDiagnosticData.deltaTimeSeconds = deltaTime;
+        _rDiagnosticData.totalTimeSeconds = _solClock.GetTotalTime();
 
         // Start Dear ImGui frame...
         _pGuiWindowManager->NewFrame();
@@ -137,26 +140,25 @@ void Application::SetupCamera()
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
-void Application::SetupGrid(DiagnosticData& rDiagnosticData,
-                            GridSettings& rGridSettings)
+void Application::SetupGrid()
 {
-    _pSolGrid = std::make_unique<SolGrid>(rGridSettings, 
-                                          rDiagnosticData);
+    _pSolGrid = std::make_unique<SolGrid>(_rGridSettings, 
+                                          _rDiagnosticData);
 }
 
-void Application::SetupMarchingCubesSystem(DiagnosticData& rDiagnosticData)
+void Application::SetupMarchingCubesSystem()
 {
     _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice, 
                                                                   *_pSolGrid,
-                                                                  rDiagnosticData);
+                                                                  _rDiagnosticData);
 
     _pMarchingCubesSystem->March();
 }
 
-void Application::SetupGameOfLifeSystem(GameOfLifeSettings& rGameOfLifeSettings)
+void Application::SetupGameOfLifeSystem()
 {
     _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
-                                                            rGameOfLifeSettings);
+                                                            _rGameOfLifeSettings);
 
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
@@ -178,6 +180,6 @@ void Application::CreateGuiWindowManager()
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
-    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _diagnosticData);
+    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _rDiagnosticData);
 }
 #endif // !DISABLE_IM_GUI
