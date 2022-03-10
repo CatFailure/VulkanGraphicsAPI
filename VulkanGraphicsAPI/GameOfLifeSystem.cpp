@@ -143,10 +143,18 @@ namespace SolEngine::System
                                                 rCellState = true;
                                            }
                                        });
+
+        onUpdateAllCellStatesEvent.Invoke();
     }
 
     void GameOfLifeSystem::Update(const float deltaTime)
     {
+        // Don't update anything whilst simulation is paused
+        if (_rGameOfLifeSettings.isSimulationPaused)
+        {
+            return;
+        }
+
         if (_nextGenerationDelayRemaining > 0.f)
         {
             _nextGenerationDelayRemaining -= deltaTime;
@@ -154,16 +162,16 @@ namespace SolEngine::System
             return;
         }
 
+        NextGeneration();
+    }
+
+    void GameOfLifeSystem::ForceUpdateCellStates()
+    {
         UpdateAllCellStates();
         CheckAllCellNeighbours();
 
-        onUpdateAllCellStatesEvent.Invoke();
-
         // Reset the delay
         _nextGenerationDelayRemaining = _rGameOfLifeSettings.nextGenerationDelay;
-
-        // Next generation
-        ++_rGameOfLifeSettings.currentGeneration;
     }
 
     void GameOfLifeSystem::CheckNeighbourState(const uint32_t xIndex,
@@ -186,5 +194,13 @@ namespace SolEngine::System
         }
 
         ++rLiveNeighbourCount;
+    }
+
+    void GameOfLifeSystem::NextGeneration()
+    {
+        ForceUpdateCellStates();
+
+        // Next generation
+        ++_rGameOfLifeSettings.currentGeneration;
     }
 }

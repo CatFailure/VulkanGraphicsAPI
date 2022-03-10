@@ -27,7 +27,7 @@ Application::Application(const ApplicationData &appData,
     SetupGrid();
     SetupMarchingCubesSystem();
     SetupGameOfLifeSystem();
-    SetupMarchingCubesDataEventCallbacks();
+    SetupEventCallbacks();
 }
 
 Application::~Application()
@@ -66,6 +66,13 @@ void Application::Run()
 
 void Application::Update(const float deltaTime)
 {
+    if (_rGameOfLifeSettings.isResetRequested)
+    {
+        //_pSolGrid->Reset();
+        _rGameOfLifeSettings.Reset();
+        //_pGameOfLifeSystem->ForceUpdateCellStates();
+    }
+
     _solCamera.LookAt(_pMarchingCubesSystem->GetGameObject()
                                            .transform
                                            .position);
@@ -99,11 +106,6 @@ void Application::Render()
 
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-#ifndef DISABLE_IM_GUI
-    // Render Dear ImGui...
-    _pGuiWindowManager->Render(commandBuffer);
-#endif  // !DISABLE_IM_GUI
-
     if (_pSolGrid->IsGridDataValid())
     {
         renderSystem.RenderGameObject(_solCamera, 
@@ -114,6 +116,11 @@ void Application::Render()
     {
         printf_s("Bad Grid data, cannot render GameObject!\n");
     }
+
+#ifndef DISABLE_IM_GUI
+    // Render Dear ImGui...
+    _pGuiWindowManager->Render(commandBuffer);
+#endif  // !DISABLE_IM_GUI
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -163,13 +170,21 @@ void Application::SetupGameOfLifeSystem()
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
 
-void Application::SetupMarchingCubesDataEventCallbacks()
+void Application::SetupEventCallbacks()
 {
     _pGameOfLifeSystem->onUpdateAllCellStatesEvent
                       .AddListener([this]() 
                       { 
                           _pMarchingCubesSystem->March(); 
                       });
+
+    //_rGameOfLifeSettings.onResetEvent
+    //                    .AddListener([this]() 
+    //                    { 
+    //                        _pSolGrid->Reset();
+    //                        _rGameOfLifeSettings.Reset();
+    //                        _pGameOfLifeSystem->ForceNextGeneration();
+    //                    });
 }
 
 #ifndef DISABLE_IM_GUI
@@ -185,6 +200,10 @@ void Application::CreateGuiWindowManager()
     _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", 
                                                              true, 
                                                              flags, 
-                                                             _rDiagnosticData);
+                                                             _rDiagnosticData)
+                      .CreateGuiWindow<GuiGameOfLifeWindow>("Game of Life Settings", 
+                                                            true, 
+                                                            flags, 
+                                                            _rGameOfLifeSettings);
 }
 #endif // !DISABLE_IM_GUI

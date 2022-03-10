@@ -15,6 +15,14 @@ namespace SolEngine
         cells.Free();
     }
 
+    void SolGrid::Reset()
+    {
+        const size_t nodeCount = _rGridSettings.GetNodeCount();
+
+        DefaultLiveNeighbours(cells.pLiveNeighbourCounts, nodeCount);
+        GenerateRandomStates(cells.pCellStates, nodeCount);
+    }
+
     void SolGrid::Initialise()
     {
         _isGridDataValid = !AreCellLimitsExceeded(_rGridSettings.dimensions);

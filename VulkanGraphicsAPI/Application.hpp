@@ -38,7 +38,7 @@ private:
     void SetupGrid();
     void SetupMarchingCubesSystem();
     void SetupGameOfLifeSystem();
-    void SetupMarchingCubesDataEventCallbacks();
+    void SetupEventCallbacks();
 
 #ifndef DISABLE_IM_GUI
     void CreateGuiWindowManager();
