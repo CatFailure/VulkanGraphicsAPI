@@ -39,7 +39,8 @@ namespace SolEngine::GUI
 
 		RenderSimulationGenerationText();
 		RenderSimulationSimulationSpeedInput();
-		RenderSimulationPauseButton();
+		RenderSimulationPauseButton(); ImGui::SameLine();
+		RenderSimulationResetButton();
 	}
 
 	void GuiSettingsWindow::RenderGameOfLifeSettings()
@@ -123,6 +124,30 @@ namespace SolEngine::GUI
 		ImGui::BeginTooltip();
 		{
 			ImGui::Text(TOOLTIP_PAUSE_SIMULATION);
+		}
+		ImGui::EndTooltip();
+	}
+
+	void GuiSettingsWindow::RenderSimulationResetButton()
+	{
+		ImGui::BeginDisabled(_rSimulationSettings.simulationState == SimulationState::PLAY);
+		{
+			if (ImGui::Button("Reset"))
+			{
+				OnSimulationReset();
+			}
+		}
+		ImGui::EndDisabled();
+
+		// Tooltip - Reset Simulation
+		if (!ImGui::IsItemHovered())
+		{
+			return;
+		}
+
+		ImGui::BeginTooltip();
+		{
+			ImGui::Text("Reset Simulation.\nSimulation MUST be paused to reset.");
 		}
 		ImGui::EndTooltip();
 	}
@@ -275,15 +300,21 @@ namespace SolEngine::GUI
 		}
 	}
 
+	void GuiSettingsWindow::OnSimulationReset()
+	{
+		_rSimulationSettings.Reset();
+		_simulationSpeed = _rSimulationSettings.nextGenerationDelay;
+	}
+
 	void GuiSettingsWindow::SetSimulationState(const SimulationState state)
 	{
 		SimulationState& rSimulationState = _rSimulationSettings.simulationState;
+		rSimulationState				  = state;
 
 		switch (state)
 		{
 		case SimulationState::PAUSED:
 		{
-			rSimulationState	   = state;
 			_toggleStateButtonText = "Play";
 
 			return;
@@ -291,7 +322,6 @@ namespace SolEngine::GUI
 		case SimulationState::PLAY:
 		default:	// Move simulation to a paused state if something goes wrong just in case...
 		{
-			rSimulationState	   = state;
 			_toggleStateButtonText = "Pause";
 
 			return;

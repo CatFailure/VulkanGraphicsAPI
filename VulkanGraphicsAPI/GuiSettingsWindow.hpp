@@ -36,6 +36,7 @@ namespace SolEngine::GUI
 		void RenderSimulationGenerationText();
 		void RenderSimulationSimulationSpeedInput();
 		void RenderSimulationPauseButton();
+		void RenderSimulationResetButton();
 
 		void RenderGameOfLifeMinLiveNeighboursSlider(int& rMinLiveNeighbourCount, const int maxLiveNeighbourCount);
 		void RenderGameOfLifeMaxLiveNeighboursSlider(int& rMaxLiveNeighbourCount, const int minLiveNeighbourCount);
@@ -47,6 +48,7 @@ namespace SolEngine::GUI
 		void OnReproductionLiveNeighboursChanged(const int value);
 		void OnSimulationSpeedChanged();
 		void OnSimulationStateToggled();
+		void OnSimulationReset();
 		void SetSimulationState(const SimulationState state);
 
 		GameOfLifeSettings  _defaultGameOfLifeSettings{};
