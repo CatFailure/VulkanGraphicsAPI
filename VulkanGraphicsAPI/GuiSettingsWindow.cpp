@@ -30,7 +30,8 @@ namespace SolEngine::GUI
 
 	void GuiSettingsWindow::RenderSimulationSettings()
 	{
-		if (!ImGui::CollapsingHeader("Simulation"))
+		if (!ImGui::CollapsingHeader("Simulation",
+									 ImGuiTreeNodeFlags_DefaultOpen))	// This header should be expanded by default
 		{
 			return;
 		}
