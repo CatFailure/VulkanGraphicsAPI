@@ -36,11 +36,13 @@ namespace SolEngine::GUI
 		void RenderGeneralPauseButton();
 
 		void RenderGameOfLifeMinLiveNeighbours(int& rMinLiveNeighbourCount, const int maxLiveNeighbourCount);
-		void RenderGameOfLifeMaxLiveNeighbours(const int minLiveNeighbourCount, int& rMaxLiveNeighbourCount);
+		void RenderGameOfLifeMaxLiveNeighbours(int& rMaxLiveNeighbourCount, const int minLiveNeighbourCount);
+		void RenderGameOfLifeReproductionLiveNeighbours(int& rReproductionLiveNeighbourCount);
 		void RenderGameOfLifeResetButton();
 
 		void OnMinLiveNeighboursChanged(const int value);
 		void OnMaxLiveNeighboursChanged(const int value);
+		void OnReproLiveNeighboursChanged(const int value);
 		void OnSimulationSpeedChanged();
 
 		GameOfLifeSettings& _rGameOfLifeSettings;

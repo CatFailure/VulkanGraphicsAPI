@@ -104,8 +104,9 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::UpdateAllCellStates()
     {
-        const NeighbourCount_t minLiveNeighbourCount = _rGameOfLifeSettings.minLiveNeighbourCount;
-        const NeighbourCount_t maxLiveNeighbourCount = _rGameOfLifeSettings.maxLiveNeighbourCount;
+        const NeighbourCount_t minLiveNeighbourCount          = _rGameOfLifeSettings.minLiveNeighbourCount;
+        const NeighbourCount_t maxLiveNeighbourCount          = _rGameOfLifeSettings.maxLiveNeighbourCount;
+        const NeighbourCount_t reproductionLiveNeighbourCount = _rGameOfLifeSettings.reproductionLiveNeighbourCount;
 
         const glm::uvec3 dimensions = _rSolGrid.GetDimensions();
 
@@ -132,15 +133,16 @@ namespace SolEngine::System
                                            // If alive
                                            if (rCellState)
                                            {
-                                               rCellState = !(cellNeighbourCount < minLiveNeighbourCount) && // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-                                                            !(cellNeighbourCount > maxLiveNeighbourCount);   // Any live cell with more than three live neighbours dies, as if by overpopulation.
+                                               rCellState = !(cellNeighbourCount < minLiveNeighbourCount) && // Any live cell with fewer than minLiveNeighbourCount live neighbours dies, as if by underpopulation.
+                                                            !(cellNeighbourCount > maxLiveNeighbourCount);   // Any live cell with more than maxLiveNeighbourCount live neighbours dies, as if by overpopulation.
                                        
-                                               // Any live cell with two or three live neighbours lives on to the next generation.
+                                               // Any live cell with minLiveNeighbourCount or maxLiveNeighbourCount 
+                                               // live neighbours lives on to the next generation.
                                                return;
                                            }
                                        
-                                           // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-                                           if (cellNeighbourCount == maxLiveNeighbourCount)
+                                           // Any dead cell with exactly reproductionLiveNeighbourCount live neighbours becomes a live cell, as if by reproduction.
+                                           if (cellNeighbourCount == reproductionLiveNeighbourCount)
                                            {
                                                 rCellState = true;
                                            }

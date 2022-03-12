@@ -48,12 +48,14 @@ namespace SolEngine::GUI
 		}
 
 		// Make a copy of these values for input sanitation 
-		// (See OnMinLiveNeighboursChanged and OnMaxLiveNeighboursChanged)
-		int minLiveNeighbourCount = (int)_rGameOfLifeSettings.minLiveNeighbourCount;
-		int maxLiveNeighbourCount = (int)_rGameOfLifeSettings.maxLiveNeighbourCount;
+		// (See OnMinLiveNeighboursChanged, OnMaxLiveNeighboursChanged and OnReproLiveNeighboursChanged)
+		int minLiveNeighbourCount	= (int)_rGameOfLifeSettings.minLiveNeighbourCount;
+		int maxLiveNeighbourCount	= (int)_rGameOfLifeSettings.maxLiveNeighbourCount;
+		int reproLiveNeighbourCount = (int)_rGameOfLifeSettings.reproductionLiveNeighbourCount;
 
 		RenderGameOfLifeMinLiveNeighbours(minLiveNeighbourCount, maxLiveNeighbourCount);
-		RenderGameOfLifeMaxLiveNeighbours(minLiveNeighbourCount, maxLiveNeighbourCount);
+		RenderGameOfLifeMaxLiveNeighbours(maxLiveNeighbourCount, minLiveNeighbourCount);
+		RenderGameOfLifeReproductionLiveNeighbours(reproLiveNeighbourCount);
 		RenderGameOfLifeResetButton();
 	}
 
@@ -126,7 +128,7 @@ namespace SolEngine::GUI
 		if (ImGui::SliderInt("Min. Live Neighbours",
 							 &rMinLiveNeighbourCount,
 							 0,
-							 maxLiveNeighbourCount - 1))
+							 maxLiveNeighbourCount))
 		{
 			OnMinLiveNeighboursChanged(rMinLiveNeighbourCount);
 		}
@@ -145,12 +147,12 @@ namespace SolEngine::GUI
 		ImGui::EndTooltip();
 	}
 
-	void GuiSettingsWindow::RenderGameOfLifeMaxLiveNeighbours(const int minLiveNeighbourCount, 
-															  int& rMaxLiveNeighbourCount)
+	void GuiSettingsWindow::RenderGameOfLifeMaxLiveNeighbours(int& rMaxLiveNeighbourCount, 
+															  const int minLiveNeighbourCount)
 	{
 		if (ImGui::SliderInt("Max. Live Neighbours",
 							 &rMaxLiveNeighbourCount,
-							 minLiveNeighbourCount + 1,
+							 minLiveNeighbourCount,
 							 CELL_NEIGHBOURS_COUNT))
 		{
 			OnMaxLiveNeighboursChanged(rMaxLiveNeighbourCount);
@@ -167,6 +169,31 @@ namespace SolEngine::GUI
 		{
 			ImGui::Text(TOOLTIP_MAX_LIVE_NEIGHBOURS, 
 						rMaxLiveNeighbourCount);
+		}
+		ImGui::EndTooltip();
+	}
+
+	void GuiSettingsWindow::RenderGameOfLifeReproductionLiveNeighbours(int& rReproductionLiveNeighbourCount)
+	{
+		if (ImGui::SliderInt("Repro. Live Neighbours",
+							 &rReproductionLiveNeighbourCount,
+							 0,
+							 CELL_NEIGHBOURS_COUNT))
+		{
+			OnReproLiveNeighboursChanged(rReproductionLiveNeighbourCount);
+		}
+
+
+		// Tooltip - Maximum Live Neighbours Slider
+		if (!ImGui::IsItemHovered())
+		{
+			return;
+		}
+
+		ImGui::BeginTooltip();
+		{
+			ImGui::Text(TOOLTIP_REPRODUCE_LIVE_NEIGHBOURS, 
+						rReproductionLiveNeighbourCount);
 		}
 		ImGui::EndTooltip();
 	}
@@ -199,6 +226,11 @@ namespace SolEngine::GUI
 	void GuiSettingsWindow::OnMaxLiveNeighboursChanged(const int value)
 	{
 		_rGameOfLifeSettings.maxLiveNeighbourCount = (NeighbourCount_t)value;
+	}
+
+	void GuiSettingsWindow::OnReproLiveNeighboursChanged(const int value)
+	{
+		_rGameOfLifeSettings.reproductionLiveNeighbourCount = (NeighbourCount_t)value;
 	}
 
 	void GuiSettingsWindow::OnSimulationSpeedChanged()
