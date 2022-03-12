@@ -203,10 +203,10 @@ namespace SolEngine::GUI
 
 	void GuiSettingsWindow::OnSimulationSpeedChanged()
 	{
-		// Clamp the speed so it remains within limits
-		_simulationSpeed = fminf(MAX_SIMULATION_SPEED, 
-								 fmaxf(MIN_SIMULATION_SPEED, 
-									   _simulationSpeed));
+		// Keep simulation speed within limits
+		_simulationSpeed = Clamp(_simulationSpeed, 
+								 MIN_SIMULATION_SPEED, 
+								 MAX_SIMULATION_SPEED);
 
 		_rGeneralSettings.nextGenerationDelay = _simulationSpeed;
 	}

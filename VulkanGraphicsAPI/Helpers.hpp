@@ -12,6 +12,22 @@ namespace Utility
 {
 	static float MinIsoValueGenerated(1000.f), MaxIsoValueGenerated(-1000.f);
 
+    // TEMP
+    static inline bool RandomBool()
+    {
+        return rand() > (RAND_MAX / 2);
+    }
+
+    /// <summary>
+    /// Clamps a value between 2 bounds.
+    /// </summary>
+    static float Clamp(const float value,
+                       const float min, 
+                       const float max)
+    {
+        return fminf(max, fmaxf(min, value));
+    }
+
     static uint32_t _3DTo1DIndex(const uint32_t xIndex, 
                                  const uint32_t yIndex, 
                                  const uint32_t zIndex,
@@ -30,11 +46,6 @@ namespace Utility
 
         // Convert 3D array indexes into a 1D array index
         return returnIndex;
-    }
-
-    static inline bool RandomBool()
-    {
-        return rand() > (RAND_MAX / 2);
     }
 
     /// <summary>

@@ -4,6 +4,7 @@
 #include "GameOfLifeSettings.hpp"
 #include "GeneralSettings.hpp"
 #include "GuiTooltips.hpp"
+#include "Helpers.hpp"
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Interface;
