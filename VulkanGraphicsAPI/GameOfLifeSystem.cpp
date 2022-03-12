@@ -155,7 +155,7 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::Update(const float deltaTime)
     {
-        if (_rSimulationSettings.isPaused)
+        if (_rSimulationSettings.simulationState != SimulationState::PLAY)
         {
             return;
         }

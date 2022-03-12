@@ -14,6 +14,7 @@ namespace SolEngine::GUI
 		  _rSimulationSettings(rSimulationSettings)
 	{
 		_simulationSpeed = _rSimulationSettings.nextGenerationDelay;
+		SetSimulationState(_rSimulationSettings.simulationState);
 	}
 
 	void GuiSettingsWindow::RenderWindowContents()
@@ -108,8 +109,10 @@ namespace SolEngine::GUI
 
 	void GuiSettingsWindow::RenderSimulationPauseButton()
 	{
-		ImGui::Checkbox("Pause Simulation", 
-						&_rSimulationSettings.isPaused);
+		if (ImGui::Button(_toggleStateButtonText.c_str()))
+		{
+			OnSimulationStateToggled();
+		}
 
 		// Tooltip - Pause Simulation
 		if (!ImGui::IsItemHovered())
@@ -184,7 +187,7 @@ namespace SolEngine::GUI
 							 0,
 							 CELL_NEIGHBOURS_COUNT))
 		{
-			OnReproLiveNeighboursChanged(rReproductionLiveNeighbourCount);
+			OnReproductionLiveNeighboursChanged(rReproductionLiveNeighbourCount);
 		}
 
 
@@ -235,7 +238,7 @@ namespace SolEngine::GUI
 		_rGameOfLifeSettings.maxLiveNeighbourCount = (NeighbourCount_t)value;
 	}
 
-	void GuiSettingsWindow::OnReproLiveNeighboursChanged(const int value)
+	void GuiSettingsWindow::OnReproductionLiveNeighboursChanged(const int value)
 	{
 		_rGameOfLifeSettings.reproductionLiveNeighbourCount = (NeighbourCount_t)value;
 	}
@@ -248,5 +251,51 @@ namespace SolEngine::GUI
 								 MAX_SIMULATION_SPEED);
 
 		_rSimulationSettings.nextGenerationDelay = _simulationSpeed;
+	}
+
+	void GuiSettingsWindow::OnSimulationStateToggled()
+	{
+		SimulationState& rSimulationState = _rSimulationSettings.simulationState;
+
+		switch (rSimulationState)
+		{
+		case SimulationState::PAUSED:
+		{
+			SetSimulationState(SimulationState::PLAY);
+
+			return;
+		}
+		case SimulationState::PLAY:
+		default:	// Move simulation to a paused state if something goes wrong just in case...
+		{
+			SetSimulationState(SimulationState::PAUSED);
+
+			return;
+		}
+		}
+	}
+
+	void GuiSettingsWindow::SetSimulationState(const SimulationState state)
+	{
+		SimulationState& rSimulationState = _rSimulationSettings.simulationState;
+
+		switch (state)
+		{
+		case SimulationState::PAUSED:
+		{
+			rSimulationState	   = state;
+			_toggleStateButtonText = "Play";
+
+			return;
+		}
+		case SimulationState::PLAY:
+		default:	// Move simulation to a paused state if something goes wrong just in case...
+		{
+			rSimulationState	   = state;
+			_toggleStateButtonText = "Pause";
+
+			return;
+		}
+		}
 	}
 }

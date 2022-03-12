@@ -323,6 +323,9 @@
     <ClInclude Include="Helpers.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="SimulationState.hpp">
+      <Filter>SolEngine\Enumeration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">

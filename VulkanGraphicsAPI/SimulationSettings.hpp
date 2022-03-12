@@ -1,6 +1,8 @@
 #pragma once
 #include "SolEvent.hpp"
+#include "SimulationState.hpp"
 
+using namespace SolEngine::Enumeration;
 using namespace SolEngine::Events;
 
 namespace SolEngine::Settings
@@ -13,13 +15,13 @@ namespace SolEngine::Settings
 
 			generation		    = 0U;
 			nextGenerationDelay = defaultSettings.nextGenerationDelay;
-			isPaused			= defaultSettings.isPaused;
+			simulationState		= defaultSettings.simulationState;
 			isResetRequested	= false;
 		}
 
-		size_t generation		  { 0U };
-		float  nextGenerationDelay{ 1.f };
-		bool   isPaused			  { true };
-		bool   isResetRequested	  { false };
+		size_t			generation		   { 0U };
+		float			nextGenerationDelay{ 1.f };
+		SimulationState simulationState	   { SimulationState::PAUSED };
+		bool			isResetRequested   { false };
 	};
 }

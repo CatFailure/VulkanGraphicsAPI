@@ -378,6 +378,7 @@
     <ClInclude Include="Helpers.hpp" />
     <ClInclude Include="MarchingCubesSystem.hpp" />
     <ClInclude Include="SimulationSettings.hpp" />
+    <ClInclude Include="SimulationState.hpp" />
     <ClInclude Include="SolGrid.hpp" />
     <ClInclude Include="Cells.hpp" />
     <ClInclude Include="GenericRenderSystem.hpp" />

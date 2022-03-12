@@ -5,8 +5,10 @@
 #include "SimulationSettings.hpp"
 #include "GuiTooltips.hpp"
 #include "Helpers.hpp"
+#include "SimulationState.hpp"
 
 using namespace SolEngine::Data;
+using namespace SolEngine::Enumeration;
 using namespace SolEngine::Interface;
 using namespace SolEngine::Settings;
 
@@ -42,8 +44,10 @@ namespace SolEngine::GUI
 
 		void OnMinLiveNeighboursChanged(const int value);
 		void OnMaxLiveNeighboursChanged(const int value);
-		void OnReproLiveNeighboursChanged(const int value);
+		void OnReproductionLiveNeighboursChanged(const int value);
 		void OnSimulationSpeedChanged();
+		void OnSimulationStateToggled();
+		void SetSimulationState(const SimulationState state);
 
 		GameOfLifeSettings  _defaultGameOfLifeSettings{};
 		SimulationSettings  _defaultSimulationSettings{};
@@ -51,6 +55,7 @@ namespace SolEngine::GUI
 		GameOfLifeSettings& _rGameOfLifeSettings;
 		SimulationSettings&	_rSimulationSettings;
 
-		float _simulationSpeed{ 0.f };
+		float			_simulationSpeed	  { 0.f };
+		std::string     _toggleStateButtonText{};
 	};
 }
