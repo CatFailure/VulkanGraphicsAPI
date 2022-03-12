@@ -140,12 +140,14 @@ namespace SolEngine::System
                                                // live neighbours lives on to the next generation.
                                                return;
                                            }
-                                       
+
                                            // Any dead cell with exactly reproductionLiveNeighbourCount live neighbours becomes a live cell, as if by reproduction.
-                                           if (cellNeighbourCount == reproductionLiveNeighbourCount)
+                                           if (cellNeighbourCount != reproductionLiveNeighbourCount)
                                            {
-                                                rCellState = true;
+                                               return;
                                            }
+
+                                           rCellState = true;
                                        });
 
         onUpdateAllCellStatesEvent.Invoke();
