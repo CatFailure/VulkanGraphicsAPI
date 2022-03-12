@@ -171,12 +171,22 @@ namespace SolEngine::GUI
 
 	void GuiSettingsWindow::RenderGameOfLifeResetButton()
 	{
-		if (!ImGui::Button("Reset"))
+		if (ImGui::Button("Reset"))
+		{
+			_rGameOfLifeSettings.Reset();
+		}
+
+		// Tooltip - Reset Game of Life Ruleset
+		if (!ImGui::IsItemHovered())
 		{
 			return;
 		}
 
-		_rGameOfLifeSettings.Reset();
+		ImGui::BeginTooltip();
+		{
+			ImGui::Text(TOOLTIP_GAME_OF_LIFE_RESET);
+		}
+		ImGui::EndTooltip();
 	}
 
 	void GuiSettingsWindow::OnMinLiveNeighboursChanged(const int value)
