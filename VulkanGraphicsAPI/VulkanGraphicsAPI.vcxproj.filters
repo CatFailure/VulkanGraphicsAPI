@@ -284,14 +284,8 @@
     <ClInclude Include="Cells.hpp">
       <Filter>SolEngine\DOD</Filter>
     </ClInclude>
-    <ClInclude Include="MarchingCubesHelpers.hpp">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="GenericRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryHelpers.hpp">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Axis.hpp">
       <Filter>SolEngine\Enumeration</Filter>
@@ -301,9 +295,6 @@
     </ClInclude>
     <ClInclude Include="MarchingCubesSystem.hpp">
       <Filter>SolEngine\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GridHelpers.hpp">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="GameOfLifeSystem.hpp">
       <Filter>SolEngine\System</Filter>
@@ -328,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="GuiTooltips.hpp">
       <Filter>SolEngine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers.hpp">
+      <Filter>Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

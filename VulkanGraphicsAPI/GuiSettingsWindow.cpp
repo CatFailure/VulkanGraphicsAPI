@@ -47,6 +47,8 @@ namespace SolEngine::GUI
 			return;
 		}
 
+		// Make a copy of these values for input sanitation 
+		// (See OnMinLiveNeighboursChanged and OnMaxLiveNeighboursChanged)
 		int minLiveNeighbourCount = (int)_rGameOfLifeSettings.minLiveNeighbourCount;
 		int maxLiveNeighbourCount = (int)_rGameOfLifeSettings.maxLiveNeighbourCount;
 

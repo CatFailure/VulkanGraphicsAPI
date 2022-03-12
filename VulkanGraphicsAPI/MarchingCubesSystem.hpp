@@ -1,9 +1,6 @@
 #pragma once
-#include "MarchingCubesHelpers.hpp"
 #include "SolGrid.hpp"
 #include "SolGameObject.hpp"
-
-using namespace Utility;
 
 namespace SolEngine::System
 {

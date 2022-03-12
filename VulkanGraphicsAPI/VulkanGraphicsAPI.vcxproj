@@ -374,8 +374,8 @@
     <ClInclude Include="GameOfLifeSettings.hpp" />
     <ClInclude Include="GameOfLifeSystem.hpp" />
     <ClInclude Include="GridSettings.hpp" />
-    <ClInclude Include="GridHelpers.hpp" />
     <ClInclude Include="GuiSettingsWindow.hpp" />
+    <ClInclude Include="Helpers.hpp" />
     <ClInclude Include="MarchingCubesSystem.hpp" />
     <ClInclude Include="GeneralSettings.hpp" />
     <ClInclude Include="SolGrid.hpp" />
@@ -394,9 +394,7 @@
     <ClInclude Include="imstb_rectpack.h" />
     <ClInclude Include="imstb_textedit.h" />
     <ClInclude Include="imstb_truetype.h" />
-    <ClInclude Include="MarchingCubesHelpers.hpp" />
     <ClInclude Include="MatrixUtility.hpp" />
-    <ClInclude Include="MemoryHelpers.hpp" />
     <ClInclude Include="PipelineConfigInfo.hpp" />
     <ClInclude Include="QueueFamilyIndices.hpp" />
     <ClInclude Include="Rect.hpp" />

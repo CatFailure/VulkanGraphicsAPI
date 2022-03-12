@@ -1,11 +1,9 @@
 #pragma once
 #include "SolGrid.hpp"
-#include "MarchingCubesHelpers.hpp"
 #include "SolEvent.hpp"
 #include "GameOfLifeSettings.hpp"
 #include "GeneralSettings.hpp"
 
-using namespace Utility;
 using namespace SolEngine::Events;
 using namespace SolEngine::Settings;
 
