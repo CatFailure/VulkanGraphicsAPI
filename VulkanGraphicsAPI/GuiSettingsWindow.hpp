@@ -28,12 +28,12 @@ namespace SolEngine::GUI
 		static constexpr float SIMULATION_SPEED_SLIDER_STEP		{ 0.05f };
 		static constexpr float SIMULATION_SPEED_SLIDER_FAST_STEP{ 0.1f };
 
-		void RenderGeneralSettings();
+		void RenderSimulationSettings();
 		void RenderGameOfLifeSettings();
 
-		void RenderGeneralGenerationText();
-		void RenderGeneralSimulationSpeedInputFloat();
-		void RenderGeneralPauseButton();
+		void RenderSimulationGenerationText();
+		void RenderSimulationSimulationSpeedInputFloat();
+		void RenderSimulationPauseButton();
 
 		void RenderGameOfLifeMinLiveNeighbours(int& rMinLiveNeighbourCount, const int maxLiveNeighbourCount);
 		void RenderGameOfLifeMaxLiveNeighbours(int& rMaxLiveNeighbourCount, const int minLiveNeighbourCount);
@@ -44,6 +44,9 @@ namespace SolEngine::GUI
 		void OnMaxLiveNeighboursChanged(const int value);
 		void OnReproLiveNeighboursChanged(const int value);
 		void OnSimulationSpeedChanged();
+
+		GameOfLifeSettings  _defaultGameOfLifeSettings{};
+		SimulationSettings  _defaultSimulationSettings{};
 
 		GameOfLifeSettings& _rGameOfLifeSettings;
 		SimulationSettings&	_rSimulationSettings;

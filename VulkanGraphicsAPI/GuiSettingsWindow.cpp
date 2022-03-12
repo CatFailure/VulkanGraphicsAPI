@@ -22,22 +22,22 @@ namespace SolEngine::GUI
 					 &_isActive, 
 					 _windowFlags);
 
-		RenderGeneralSettings();
+		RenderSimulationSettings();
 		RenderGameOfLifeSettings();
 
 		ImGui::End();
 	}
 
-	void GuiSettingsWindow::RenderGeneralSettings()
+	void GuiSettingsWindow::RenderSimulationSettings()
 	{
 		if (!ImGui::CollapsingHeader("Simulation"))
 		{
 			return;
 		}
 
-		RenderGeneralGenerationText();
-		RenderGeneralSimulationSpeedInputFloat();
-		RenderGeneralPauseButton();
+		RenderSimulationGenerationText();
+		RenderSimulationSimulationSpeedInputFloat();
+		RenderSimulationPauseButton();
 	}
 
 	void GuiSettingsWindow::RenderGameOfLifeSettings()
@@ -59,7 +59,7 @@ namespace SolEngine::GUI
 		RenderGameOfLifeResetButton();
 	}
 
-	void GuiSettingsWindow::RenderGeneralGenerationText()
+	void GuiSettingsWindow::RenderSimulationGenerationText()
 	{
 		ImGui::Text("Generation: %zu", 
 					_rSimulationSettings.generation);
@@ -77,7 +77,7 @@ namespace SolEngine::GUI
 		ImGui::EndTooltip();
 	}
 
-	void GuiSettingsWindow::RenderGeneralSimulationSpeedInputFloat()
+	void GuiSettingsWindow::RenderSimulationSimulationSpeedInputFloat()
 	{
 		if (ImGui::InputFloat("Simulation Speed",
 							  &_simulationSpeed,
@@ -98,15 +98,16 @@ namespace SolEngine::GUI
 		ImGui::BeginTooltip();
 		{
 			ImGui::Text(TOOLTIP_SIMULATION_SPEED, 
-						MIN_SIMULATION_SPEED,
-						MAX_SIMULATION_SPEED);
+						MIN_SIMULATION_SPEED,								// Min Value
+						MAX_SIMULATION_SPEED,								// Max Value
+						_defaultSimulationSettings.nextGenerationDelay);	// Default Value
 		}
 		ImGui::EndTooltip();
 	}
 
-	void GuiSettingsWindow::RenderGeneralPauseButton()
+	void GuiSettingsWindow::RenderSimulationPauseButton()
 	{
-		ImGui::Checkbox("Pause", 
+		ImGui::Checkbox("Pause Simulation", 
 						&_rSimulationSettings.isPaused);
 
 		// Tooltip - Pause Simulation
@@ -142,7 +143,8 @@ namespace SolEngine::GUI
 		ImGui::BeginTooltip();
 		{
 			ImGui::Text(TOOLTIP_MIN_LIVE_NEIGHBOURS, 
-						rMinLiveNeighbourCount);
+						rMinLiveNeighbourCount,										// Current Value
+						(size_t)_defaultGameOfLifeSettings.minLiveNeighbourCount);	// Default Value
 		}
 		ImGui::EndTooltip();
 	}
@@ -167,8 +169,9 @@ namespace SolEngine::GUI
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_MAX_LIVE_NEIGHBOURS, 
-						rMaxLiveNeighbourCount);
+			ImGui::Text(TOOLTIP_MAX_LIVE_NEIGHBOURS,
+						rMaxLiveNeighbourCount,										// Current Value
+						(size_t)_defaultGameOfLifeSettings.maxLiveNeighbourCount);	// Default Value
 		}
 		ImGui::EndTooltip();
 	}
@@ -193,7 +196,10 @@ namespace SolEngine::GUI
 		ImGui::BeginTooltip();
 		{
 			ImGui::Text(TOOLTIP_REPRODUCE_LIVE_NEIGHBOURS, 
-						rReproductionLiveNeighbourCount);
+						rReproductionLiveNeighbourCount,										// Current Value
+						0U,																		// Min Value
+						CELL_NEIGHBOURS_COUNT,													// Max Value
+						(size_t)_defaultGameOfLifeSettings.reproductionLiveNeighbourCount);		// Default Value
 		}
 		ImGui::EndTooltip();
 	}

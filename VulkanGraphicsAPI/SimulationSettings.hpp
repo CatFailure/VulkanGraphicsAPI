@@ -19,7 +19,7 @@ namespace SolEngine::Settings
 
 		size_t generation		  { 0U };
 		float  nextGenerationDelay{ 1.f };
-		bool   isPaused			  { false };
+		bool   isPaused			  { true };
 		bool   isResetRequested	  { false };
 	};
 }
