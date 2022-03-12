@@ -37,7 +37,7 @@ namespace SolEngine::GUI
 		}
 
 		RenderSimulationGenerationText();
-		RenderSimulationSimulationSpeedInputFloat();
+		RenderSimulationSimulationSpeedInput();
 		RenderSimulationPauseButton();
 	}
 
@@ -54,9 +54,9 @@ namespace SolEngine::GUI
 		int maxLiveNeighbourCount	= (int)_rGameOfLifeSettings.maxLiveNeighbourCount;
 		int reproLiveNeighbourCount = (int)_rGameOfLifeSettings.reproductionLiveNeighbourCount;
 
-		RenderGameOfLifeMinLiveNeighbours(minLiveNeighbourCount, maxLiveNeighbourCount);
-		RenderGameOfLifeMaxLiveNeighbours(maxLiveNeighbourCount, minLiveNeighbourCount);
-		RenderGameOfLifeReproductionLiveNeighbours(reproLiveNeighbourCount);
+		RenderGameOfLifeMinLiveNeighboursSlider(minLiveNeighbourCount, maxLiveNeighbourCount);
+		RenderGameOfLifeMaxLiveNeighboursSlider(maxLiveNeighbourCount, minLiveNeighbourCount);
+		RenderGameOfLifeReproductionLiveNeighboursSlider(reproLiveNeighbourCount);
 		RenderGameOfLifeResetButton();
 	}
 
@@ -78,7 +78,7 @@ namespace SolEngine::GUI
 		ImGui::EndTooltip();
 	}
 
-	void GuiSettingsWindow::RenderSimulationSimulationSpeedInputFloat()
+	void GuiSettingsWindow::RenderSimulationSimulationSpeedInput()
 	{
 		if (ImGui::InputFloat("Simulation Speed",
 							  &_simulationSpeed,
@@ -124,8 +124,8 @@ namespace SolEngine::GUI
 		ImGui::EndTooltip();
 	}
 
-	void GuiSettingsWindow::RenderGameOfLifeMinLiveNeighbours(int& rMinLiveNeighbourCount, 
-															  const int maxLiveNeighbourCount)
+	void GuiSettingsWindow::RenderGameOfLifeMinLiveNeighboursSlider(int& rMinLiveNeighbourCount, 
+																	const int maxLiveNeighbourCount)
 	{
 		if (ImGui::SliderInt("Min. Live Neighbours",
 							 &rMinLiveNeighbourCount,
@@ -150,8 +150,8 @@ namespace SolEngine::GUI
 		ImGui::EndTooltip();
 	}
 
-	void GuiSettingsWindow::RenderGameOfLifeMaxLiveNeighbours(int& rMaxLiveNeighbourCount, 
-															  const int minLiveNeighbourCount)
+	void GuiSettingsWindow::RenderGameOfLifeMaxLiveNeighboursSlider(int& rMaxLiveNeighbourCount, 
+																	const int minLiveNeighbourCount)
 	{
 		if (ImGui::SliderInt("Max. Live Neighbours",
 							 &rMaxLiveNeighbourCount,
@@ -177,7 +177,7 @@ namespace SolEngine::GUI
 		ImGui::EndTooltip();
 	}
 
-	void GuiSettingsWindow::RenderGameOfLifeReproductionLiveNeighbours(int& rReproductionLiveNeighbourCount)
+	void GuiSettingsWindow::RenderGameOfLifeReproductionLiveNeighboursSlider(int& rReproductionLiveNeighbourCount)
 	{
 		if (ImGui::SliderInt("Repro. Live Neighbours",
 							 &rReproductionLiveNeighbourCount,
