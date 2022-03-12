@@ -28,6 +28,18 @@ namespace SolEngine::GUI
 		ImGui::End();
 	}
 
+	void GuiSettingsWindow::RenderGeneralSettings()
+	{
+		if (!ImGui::CollapsingHeader("General"))
+		{
+			return;
+		}
+
+		RenderGeneralGenerationText();
+		RenderGeneralSimulationSpeedInputFloat();
+		RenderGeneralPauseButton();
+	}
+
 	void GuiSettingsWindow::RenderGameOfLifeSettings()
 	{
 		if (!ImGui::CollapsingHeader("Game of Life"))
@@ -38,56 +50,30 @@ namespace SolEngine::GUI
 		int minLiveNeighbourCount = (int)_rGameOfLifeSettings.minLiveNeighbourCount;
 		int maxLiveNeighbourCount = (int)_rGameOfLifeSettings.maxLiveNeighbourCount;
 
-		if (ImGui::SliderInt("Min. Live Neighbours",
-							 &minLiveNeighbourCount,
-							 0,
-							 maxLiveNeighbourCount - 1))
-		{
-			OnMinLiveNeighboursChanged(minLiveNeighbourCount);
-		}
-
-		if (ImGui::SliderInt("Max. Live Neighbours",
-							 &maxLiveNeighbourCount,
-							 minLiveNeighbourCount + 1,
-							 CELL_NEIGHBOURS_COUNT))
-		{
-			OnMaxLiveNeighboursChanged(maxLiveNeighbourCount);
-		}
-
-		if (ImGui::Button("Reset"))
-		{
-			_rGameOfLifeSettings.Reset();
-		}
+		RenderGameOfLifeMinLiveNeighbours(minLiveNeighbourCount, maxLiveNeighbourCount);
+		RenderGameOfLifeMaxLiveNeighbours(minLiveNeighbourCount, maxLiveNeighbourCount);
+		RenderGameOfLifeResetButton();
 	}
 
-	void GuiSettingsWindow::RenderGeneralSettings()
-	{
-		if (!ImGui::CollapsingHeader("General"))
-		{
-			return;
-		}
-
-		RenderGenerationText();
-		RenderSimulationSpeedInputFloat();
-		RenderPauseButton();
-	}
-
-	void GuiSettingsWindow::RenderGenerationText()
+	void GuiSettingsWindow::RenderGeneralGenerationText()
 	{
 		ImGui::Text("Generation: %zu", 
 					_rGeneralSettings.generation);
 
+		// Tooltip - Game of Life Generation
 		if (!ImGui::IsItemHovered())
 		{
 			return;
 		}
 
 		ImGui::BeginTooltip();
-		ImGui::Text("Current Game of Life Generation.");
+		{
+			ImGui::Text(TOOLTIP_GAME_OF_LIFE_GENERATION);
+		}
 		ImGui::EndTooltip();
 	}
 
-	void GuiSettingsWindow::RenderSimulationSpeedInputFloat()
+	void GuiSettingsWindow::RenderGeneralSimulationSpeedInputFloat()
 	{
 		if (ImGui::InputFloat("Simulation Speed",
 							  &_simulationSpeed,
@@ -99,32 +85,98 @@ namespace SolEngine::GUI
 			OnSimulationSpeedChanged();
 		}
 
+		// Tooltip - Simulation Speed
 		if (!ImGui::IsItemHovered())
 		{
 			return;
 		}
 
 		ImGui::BeginTooltip();
-		ImGui::Text("Adjusts Next Generation Delay.\n(Lower = Faster, Higher = Slower)");
-		ImGui::Text("(Min: %.2f, Max: %.2f)", 
-					MIN_SIMULATION_SPEED,
-					MAX_SIMULATION_SPEED);
+		{
+			ImGui::Text(TOOLTIP_SIMULATION_SPEED, 
+						MIN_SIMULATION_SPEED,
+						MAX_SIMULATION_SPEED);
+		}
 		ImGui::EndTooltip();
 	}
 
-	void GuiSettingsWindow::RenderPauseButton()
+	void GuiSettingsWindow::RenderGeneralPauseButton()
 	{
 		ImGui::Checkbox("Pause", 
 						&_rGeneralSettings.isPaused);
 
+		// Tooltip - Pause Simulation
 		if (!ImGui::IsItemHovered())
 		{
 			return;
 		}
 
 		ImGui::BeginTooltip();
-		ImGui::Text("Pauses and Resumes the Simulation.");
+		{
+			ImGui::Text(TOOLTIP_PAUSE_SIMULATION);
+		}
 		ImGui::EndTooltip();
+	}
+
+	void GuiSettingsWindow::RenderGameOfLifeMinLiveNeighbours(int& rMinLiveNeighbourCount, 
+															  const int maxLiveNeighbourCount)
+	{
+		if (ImGui::SliderInt("Min. Live Neighbours",
+							 &rMinLiveNeighbourCount,
+							 0,
+							 maxLiveNeighbourCount - 1))
+		{
+			OnMinLiveNeighboursChanged(rMinLiveNeighbourCount);
+		}
+
+		// Tooltip - Minimum Live Neighbours Slider
+		if (!ImGui::IsItemHovered())
+		{
+			return;
+		}
+
+		ImGui::BeginTooltip();
+		{
+			ImGui::Text(TOOLTIP_MIN_LIVE_NEIGHBOURS, 
+						rMinLiveNeighbourCount);
+		}
+		ImGui::EndTooltip();
+	}
+
+	void GuiSettingsWindow::RenderGameOfLifeMaxLiveNeighbours(const int minLiveNeighbourCount, 
+															  int& rMaxLiveNeighbourCount)
+	{
+		if (ImGui::SliderInt("Max. Live Neighbours",
+							 &rMaxLiveNeighbourCount,
+							 minLiveNeighbourCount + 1,
+							 CELL_NEIGHBOURS_COUNT))
+		{
+			OnMaxLiveNeighboursChanged(rMaxLiveNeighbourCount);
+		}
+
+
+		// Tooltip - Maximum Live Neighbours Slider
+		if (!ImGui::IsItemHovered())
+		{
+			return;
+		}
+
+		ImGui::BeginTooltip();
+		{
+			ImGui::Text(TOOLTIP_MAX_LIVE_NEIGHBOURS, 
+						rMaxLiveNeighbourCount);
+		}
+		ImGui::EndTooltip();
+	}
+
+	void GuiSettingsWindow::RenderGameOfLifeResetButton()
+	{
+		if (!ImGui::Button("Reset"))
+		{
+			return;
+		}
+
+		_rGameOfLifeSettings.Reset();
 	}
 
 	void GuiSettingsWindow::OnMinLiveNeighboursChanged(const int value)

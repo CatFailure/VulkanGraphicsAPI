@@ -3,6 +3,7 @@
 #include "Constants.hpp"
 #include "GameOfLifeSettings.hpp"
 #include "GeneralSettings.hpp"
+#include "GuiTooltips.hpp"
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Interface;
@@ -24,12 +25,16 @@ namespace SolEngine::GUI
 		static constexpr float MIN_SIMULATION_SPEED{ 0.f };
 		static constexpr float MAX_SIMULATION_SPEED{ 5.f };
 
-		void RenderGameOfLifeSettings();
 		void RenderGeneralSettings();
+		void RenderGameOfLifeSettings();
 
-		void RenderGenerationText();
-		void RenderSimulationSpeedInputFloat();
-		void RenderPauseButton();
+		void RenderGeneralGenerationText();
+		void RenderGeneralSimulationSpeedInputFloat();
+		void RenderGeneralPauseButton();
+
+		void RenderGameOfLifeMinLiveNeighbours(int& rMinLiveNeighbourCount, const int maxLiveNeighbourCount);
+		void RenderGameOfLifeMaxLiveNeighbours(const int minLiveNeighbourCount, int& rMaxLiveNeighbourCount);
+		void RenderGameOfLifeResetButton();
 
 		void OnMinLiveNeighboursChanged(const int value);
 		void OnMaxLiveNeighboursChanged(const int value);
