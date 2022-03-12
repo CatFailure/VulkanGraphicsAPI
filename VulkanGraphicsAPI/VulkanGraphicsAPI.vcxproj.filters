@@ -311,7 +311,7 @@
     <ClInclude Include="Typedefs.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="GeneralSettings.hpp">
+    <ClInclude Include="SimulationSettings.hpp">
       <Filter>SolEngine\Settings</Filter>
     </ClInclude>
     <ClInclude Include="GuiSettingsWindow.hpp">

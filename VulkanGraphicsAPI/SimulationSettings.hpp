@@ -5,11 +5,11 @@ using namespace SolEngine::Events;
 
 namespace SolEngine::Settings
 {
-	struct GeneralSettings
+	struct SimulationSettings
 	{
 		void Reset()
 		{
-			GeneralSettings defaultSettings{};
+			SimulationSettings defaultSettings{};
 
 			generation		    = 0U;
 			nextGenerationDelay = defaultSettings.nextGenerationDelay;

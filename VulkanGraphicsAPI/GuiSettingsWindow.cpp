@@ -6,14 +6,14 @@ namespace SolEngine::GUI
 										 const bool isActive, 
 										 const ImGuiWindowFlags windowFlags,
 										 GameOfLifeSettings& rGameOfLifeSettings, 
-										 GeneralSettings& rGeneralSettings)
+										 SimulationSettings& rSimulationSettings)
 		: IGuiWindow(windowTitle,
 					 isActive,
 					 windowFlags),
 		  _rGameOfLifeSettings(rGameOfLifeSettings),
-		  _rGeneralSettings(rGeneralSettings)
+		  _rSimulationSettings(rSimulationSettings)
 	{
-		_simulationSpeed = _rGeneralSettings.nextGenerationDelay;
+		_simulationSpeed = _rSimulationSettings.nextGenerationDelay;
 	}
 
 	void GuiSettingsWindow::RenderWindowContents()
@@ -30,7 +30,7 @@ namespace SolEngine::GUI
 
 	void GuiSettingsWindow::RenderGeneralSettings()
 	{
-		if (!ImGui::CollapsingHeader("General"))
+		if (!ImGui::CollapsingHeader("Simulation"))
 		{
 			return;
 		}
@@ -60,7 +60,7 @@ namespace SolEngine::GUI
 	void GuiSettingsWindow::RenderGeneralGenerationText()
 	{
 		ImGui::Text("Generation: %zu", 
-					_rGeneralSettings.generation);
+					_rSimulationSettings.generation);
 
 		// Tooltip - Game of Life Generation
 		if (!ImGui::IsItemHovered())
@@ -79,8 +79,8 @@ namespace SolEngine::GUI
 	{
 		if (ImGui::InputFloat("Simulation Speed",
 							  &_simulationSpeed,
-							  _simulationSpeedStep,
-							  _simulationSpeedFastStep,
+							  SIMULATION_SPEED_SLIDER_STEP,
+							  SIMULATION_SPEED_SLIDER_FAST_STEP,
 							  "%.2f", 
 							  ImGuiInputTextFlags_EnterReturnsTrue))
 		{
@@ -105,7 +105,7 @@ namespace SolEngine::GUI
 	void GuiSettingsWindow::RenderGeneralPauseButton()
 	{
 		ImGui::Checkbox("Pause", 
-						&_rGeneralSettings.isPaused);
+						&_rSimulationSettings.isPaused);
 
 		// Tooltip - Pause Simulation
 		if (!ImGui::IsItemHovered())
@@ -208,6 +208,6 @@ namespace SolEngine::GUI
 								 MIN_SIMULATION_SPEED, 
 								 MAX_SIMULATION_SPEED);
 
-		_rGeneralSettings.nextGenerationDelay = _simulationSpeed;
+		_rSimulationSettings.nextGenerationDelay = _simulationSpeed;
 	}
 }

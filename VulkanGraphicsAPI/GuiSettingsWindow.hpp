@@ -2,7 +2,7 @@
 #include "IGuiWindow.hpp"
 #include "Constants.hpp"
 #include "GameOfLifeSettings.hpp"
-#include "GeneralSettings.hpp"
+#include "SimulationSettings.hpp"
 #include "GuiTooltips.hpp"
 #include "Helpers.hpp"
 
@@ -17,14 +17,16 @@ namespace SolEngine::GUI
 	public:
 		GuiSettingsWindow() = delete;
 		GuiSettingsWindow(const char* windowTitle, const bool isActive, const ImGuiWindowFlags windowFlags,
-						  GameOfLifeSettings& rGameOfLifeSettings, GeneralSettings& rGeneralSettings);
+						  GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
 
 		// Inherited via IGuiWindow
 		virtual void RenderWindowContents() override;
 
 	private:
-		static constexpr float MIN_SIMULATION_SPEED{ 0.f };
-		static constexpr float MAX_SIMULATION_SPEED{ 5.f };
+		static constexpr float MIN_SIMULATION_SPEED				{ 0.f };
+		static constexpr float MAX_SIMULATION_SPEED				{ 5.f };
+		static constexpr float SIMULATION_SPEED_SLIDER_STEP		{ 0.05f };
+		static constexpr float SIMULATION_SPEED_SLIDER_FAST_STEP{ 0.1f };
 
 		void RenderGeneralSettings();
 		void RenderGameOfLifeSettings();
@@ -42,10 +44,8 @@ namespace SolEngine::GUI
 		void OnSimulationSpeedChanged();
 
 		GameOfLifeSettings& _rGameOfLifeSettings;
-		GeneralSettings&	_rGeneralSettings;
+		SimulationSettings&	_rSimulationSettings;
 
-		float _simulationSpeed		  { 0.f };
-		float _simulationSpeedStep	  { 0.05f };
-		float _simulationSpeedFastStep{ 0.1f };
+		float _simulationSpeed{ 0.f };
 	};
 }

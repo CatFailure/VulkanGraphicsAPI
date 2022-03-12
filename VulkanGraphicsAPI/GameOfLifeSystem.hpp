@@ -2,7 +2,7 @@
 #include "SolGrid.hpp"
 #include "SolEvent.hpp"
 #include "GameOfLifeSettings.hpp"
-#include "GeneralSettings.hpp"
+#include "SimulationSettings.hpp"
 
 using namespace SolEngine::Events;
 using namespace SolEngine::Settings;
@@ -12,7 +12,7 @@ namespace SolEngine::System
     class GameOfLifeSystem
     {
     public:
-        GameOfLifeSystem(SolGrid& rSolGrid, GameOfLifeSettings& rGameOfLifeSettings, GeneralSettings& rGeneralSettings);
+        GameOfLifeSystem(SolGrid& rSolGrid, GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
 
         void CheckAllCellNeighbours();
         void UpdateAllCellStates();
@@ -33,6 +33,6 @@ namespace SolEngine::System
 
         SolGrid&            _rSolGrid;
         GameOfLifeSettings& _rGameOfLifeSettings;
-        GeneralSettings&    _rGeneralSettings;
+        SimulationSettings& _rSimulationSettings;
     };
 }

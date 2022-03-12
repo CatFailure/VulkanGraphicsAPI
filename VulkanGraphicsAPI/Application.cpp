@@ -4,7 +4,7 @@ Application::Application(const ApplicationData &appData,
                          DiagnosticData& rDiagnosticData,
                          GridSettings& rGridSettings, 
                          GameOfLifeSettings& rGameOfLifeSettings,
-                         GeneralSettings& rGeneralSettings)
+                         SimulationSettings& rSimulationSettings)
     : _solCamera(_solRenderer),
       _solRenderer(_appData,
                    _solWindow, 
@@ -17,7 +17,7 @@ Application::Application(const ApplicationData &appData,
       _rDiagnosticData(rDiagnosticData),
       _rGridSettings(rGridSettings),
       _rGameOfLifeSettings(rGameOfLifeSettings),
-      _rGeneralSettings(rGeneralSettings)
+      _rSimulationSettings(rSimulationSettings)
 {
     CreateDescriptorPool();
 
@@ -161,7 +161,7 @@ void Application::SetupGameOfLifeSystem()
 {
     _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
                                                             _rGameOfLifeSettings,
-                                                            _rGeneralSettings);
+                                                            _rSimulationSettings);
 
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
@@ -193,6 +193,6 @@ void Application::CreateGuiWindowManager()
                                                           true, 
                                                           flags, 
                                                           _rGameOfLifeSettings,
-                                                          _rGeneralSettings);
+                                                          _rSimulationSettings);
 }
 #endif // !DISABLE_IM_GUI

@@ -377,7 +377,7 @@
     <ClInclude Include="GuiSettingsWindow.hpp" />
     <ClInclude Include="Helpers.hpp" />
     <ClInclude Include="MarchingCubesSystem.hpp" />
-    <ClInclude Include="GeneralSettings.hpp" />
+    <ClInclude Include="SimulationSettings.hpp" />
     <ClInclude Include="SolGrid.hpp" />
     <ClInclude Include="Cells.hpp" />
     <ClInclude Include="GenericRenderSystem.hpp" />

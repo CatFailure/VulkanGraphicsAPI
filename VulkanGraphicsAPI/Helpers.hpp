@@ -19,7 +19,7 @@ namespace Utility
     }
 
     /// <summary>
-    /// Clamps a value between 2 bounds.
+    /// Clamps a value between a limit.
     /// </summary>
     static float Clamp(const float value,
                        const float min, 
