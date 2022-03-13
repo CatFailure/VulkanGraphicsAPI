@@ -3,10 +3,12 @@
 namespace SolEngine::System
 {
     GameOfLifeSystem::GameOfLifeSystem(SolGrid& rSolGrid, 
-                                       GameOfLifeSettings& rGameOfLifeSettings)
+                                       GameOfLifeSettings& rGameOfLifeSettings,
+                                       SimulationSettings& rSimulationSettings)
         : _rSolGrid(rSolGrid),
           _rGameOfLifeSettings(rGameOfLifeSettings),
-          _nextGenerationDelayRemaining(NEXT_GENERATION_DELAY)
+          _rSimulationSettings(rSimulationSettings),
+          _nextGenerationDelayRemaining(rSimulationSettings.speed)
     {}
 
     void GameOfLifeSystem::CheckAllCellNeighbours()
@@ -102,8 +104,9 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::UpdateAllCellStates()
     {
-        const NeighbourCount_t minLiveNeighbourCount = _rGameOfLifeSettings.minLiveNeighbourCount;
-        const NeighbourCount_t maxLiveNeighbourCount = _rGameOfLifeSettings.maxLiveNeighbourCount;
+        const NeighbourCount_t underpopulationCount          = _rGameOfLifeSettings.underpopulationCount;
+        const NeighbourCount_t overpopulationCount          = _rGameOfLifeSettings.overpopulationCount;
+        const NeighbourCount_t reproductionCount = _rGameOfLifeSettings.reproductionCount;
 
         const glm::uvec3 dimensions = _rSolGrid.GetDimensions();
 
@@ -130,18 +133,21 @@ namespace SolEngine::System
                                            // If alive
                                            if (rCellState)
                                            {
-                                               rCellState = !(cellNeighbourCount < minLiveNeighbourCount) && // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
-                                                            !(cellNeighbourCount > maxLiveNeighbourCount);   // Any live cell with more than three live neighbours dies, as if by overpopulation.
+                                               rCellState = !(cellNeighbourCount < underpopulationCount) && // Any live cell with fewer than minLiveNeighbourCount live neighbours dies, as if by underpopulation.
+                                                            !(cellNeighbourCount > overpopulationCount);   // Any live cell with more than maxLiveNeighbourCount live neighbours dies, as if by overpopulation.
                                        
-                                               // Any live cell with two or three live neighbours lives on to the next generation.
+                                               // Any live cell with minLiveNeighbourCount or maxLiveNeighbourCount 
+                                               // live neighbours lives on to the next generation.
                                                return;
                                            }
-                                       
-                                           // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-                                           if (cellNeighbourCount == maxLiveNeighbourCount)
+
+                                           // Any dead cell with exactly reproductionLiveNeighbourCount live neighbours becomes a live cell, as if by reproduction.
+                                           if (cellNeighbourCount != reproductionCount)
                                            {
-                                                rCellState = true;
+                                               return;
                                            }
+
+                                           rCellState = true;
                                        });
 
         onUpdateAllCellStatesEvent.Invoke();
@@ -149,6 +155,11 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::Update(const float deltaTime)
     {
+        if (_rSimulationSettings.state != SimulationState::PLAY)
+        {
+            return;
+        }
+
         if (_nextGenerationDelayRemaining > 0.f)
         {
             _nextGenerationDelayRemaining -= deltaTime;
@@ -163,9 +174,12 @@ namespace SolEngine::System
     {
         UpdateAllCellStates();
         CheckAllCellNeighbours();
+        ResetNextGenerationDelayRemaining();
+    }
 
-        // Reset the delay
-        _nextGenerationDelayRemaining = NEXT_GENERATION_DELAY;
+    void GameOfLifeSystem::ResetNextGenerationDelayRemaining()
+    {
+        _nextGenerationDelayRemaining = _rSimulationSettings.speed;
     }
 
     void GameOfLifeSystem::CheckNeighbourState(const uint32_t xIndex,
@@ -193,5 +207,7 @@ namespace SolEngine::System
     void GameOfLifeSystem::NextGeneration()
     {
         ForceUpdateCellStates();
+
+        ++_rSimulationSettings.generation;
     }
 }

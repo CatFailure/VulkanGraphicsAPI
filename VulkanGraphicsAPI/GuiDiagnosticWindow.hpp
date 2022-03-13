@@ -15,7 +15,7 @@ namespace SolEngine::GUI
 		GuiDiagnosticWindow(const char* windowTitle, const bool isActive, const ImGuiWindowFlags windowFlags, DiagnosticData& rDiagnosticData);
 
 		// Inherited via IGuiWindow
-		virtual void RenderWindowContents() override;
+		virtual void Render() override;
 
 	private:
 		void OnUpdateData_Method();

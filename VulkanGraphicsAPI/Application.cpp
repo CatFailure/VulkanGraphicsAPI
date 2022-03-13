@@ -3,7 +3,8 @@
 Application::Application(const ApplicationData &appData, 
                          DiagnosticData& rDiagnosticData,
                          GridSettings& rGridSettings, 
-                         GameOfLifeSettings& rGameOfLifeSettings)
+                         GameOfLifeSettings& rGameOfLifeSettings,
+                         SimulationSettings& rSimulationSettings)
     : _solCamera(_solRenderer),
       _solRenderer(_appData,
                    _solWindow, 
@@ -15,7 +16,8 @@ Application::Application(const ApplicationData &appData,
       _appData(appData),
       _rDiagnosticData(rDiagnosticData),
       _rGridSettings(rGridSettings),
-      _rGameOfLifeSettings(rGameOfLifeSettings)
+      _rGameOfLifeSettings(rGameOfLifeSettings),
+      _rSimulationSettings(rSimulationSettings)
 {
     CreateDescriptorPool();
 
@@ -23,6 +25,7 @@ Application::Application(const ApplicationData &appData,
     CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI
 
+    SetupRandomNumberGenerator();
     SetupCamera();
     SetupGrid();
     SetupMarchingCubesSystem();
@@ -71,6 +74,8 @@ void Application::Update(const float deltaTime)
                                            .position);
 
     _solCamera.Update(deltaTime);
+
+    CheckForSimulationResetFlag();
 
     if (_pSolGrid->IsGridDataValid())
     {
@@ -127,6 +132,11 @@ void Application::CreateDescriptorPool()
                                                                 .Build();
 }
 
+void Application::SetupRandomNumberGenerator()
+{
+    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+}
+
 void Application::SetupCamera()
 {
     const PerspectiveProjectionInfo projInfo
@@ -158,7 +168,8 @@ void Application::SetupMarchingCubesSystem()
 void Application::SetupGameOfLifeSystem()
 {
     _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
-                                                            _rGameOfLifeSettings);
+                                                            _rGameOfLifeSettings,
+                                                            _rSimulationSettings);
 
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
@@ -170,25 +181,54 @@ void Application::SetupEventCallbacks()
                       { 
                           _pMarchingCubesSystem->March(); 
                       });
+
+    _rSimulationSettings.onSimulationSpeedChangedEvent
+                        .AddListener([this](const float speed) 
+                        {
+                            // Force update the next generation delay to the new value
+                            _pGameOfLifeSystem->ResetNextGenerationDelayRemaining();
+                        });
+}
+
+void Application::CheckForSimulationResetFlag()
+{
+    if (!_rSimulationSettings.isSimulationResetRequested)
+    {
+        return;
+    }
+
+    // Reset the seed to generate new values 
+    // OR keep same values for repeatable simulations
+    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+
+    // Reset the grid nodes and re-generate node states
+    _pSolGrid->Reset();
+
+    // Force Game of Life to re-check live neighbours
+    _pGameOfLifeSystem->ForceUpdateCellStates();
+
+    // Finished!
+    _rSimulationSettings.isSimulationResetRequested = false;
 }
 
 #ifndef DISABLE_IM_GUI
 void Application::CreateGuiWindowManager()
 {
-    const ImGuiWindowFlags flags{ 0 };
+    const ImGuiWindowFlags flags{ ImGuiWindowFlags_AlwaysAutoResize };
 
     _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,  
                                                             _solWindow,
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
-    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", 
-                                                             true, 
-                                                             flags, 
+    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>(TITLE_DIAGNOSTICS,
+                                                             true,
+                                                             flags,
                                                              _rDiagnosticData)
-                      .CreateGuiWindow<GuiGameOfLifeWindow>("Game of Life Settings", 
-                                                            true, 
-                                                            flags, 
-                                                            _rGameOfLifeSettings);
+                      .CreateGuiWindow<GuiSettingsWindow>(TITLE_SETTINGS, 
+                                                          true, 
+                                                          flags, 
+                                                          _rGameOfLifeSettings,
+                                                          _rSimulationSettings);
 }
 #endif // !DISABLE_IM_GUI

@@ -61,6 +61,9 @@
     <Filter Include="SolEngine\Settings">
       <UniqueIdentifier>{0c8a191c-2dc0-4a7a-b988-5b118a17f2ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\GUI\View">
+      <UniqueIdentifier>{fce4f4dc-75cf-4031-bf3e-0c906ef18f97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -153,8 +156,17 @@
     <ClCompile Include="GameOfLifeSystem.cpp">
       <Filter>SolEngine\System</Filter>
     </ClCompile>
-    <ClCompile Include="GuiGameOfLifeWindow.cpp">
+    <ClCompile Include="GuiSettingsWindow.cpp">
       <Filter>SolEngine\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomNumberGenerator.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiSimulationView.cpp">
+      <Filter>SolEngine\GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiGameOfLifeView.cpp">
+      <Filter>SolEngine\GUI\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -284,14 +296,8 @@
     <ClInclude Include="Cells.hpp">
       <Filter>SolEngine\DOD</Filter>
     </ClInclude>
-    <ClInclude Include="MarchingCubesHelpers.hpp">
-      <Filter>Utility</Filter>
-    </ClInclude>
     <ClInclude Include="GenericRenderSystem.hpp">
       <Filter>SolEngine\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryHelpers.hpp">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Axis.hpp">
       <Filter>SolEngine\Enumeration</Filter>
@@ -301,9 +307,6 @@
     </ClInclude>
     <ClInclude Include="MarchingCubesSystem.hpp">
       <Filter>SolEngine\System</Filter>
-    </ClInclude>
-    <ClInclude Include="GridHelpers.hpp">
-      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="GameOfLifeSystem.hpp">
       <Filter>SolEngine\System</Filter>
@@ -320,8 +323,29 @@
     <ClInclude Include="Typedefs.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="GuiGameOfLifeWindow.hpp">
+    <ClInclude Include="SimulationSettings.hpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiSettingsWindow.hpp">
       <Filter>SolEngine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiStrings.hpp">
+      <Filter>SolEngine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulationState.hpp">
+      <Filter>SolEngine\Enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomNumberGenerator.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiSimulationView.hpp">
+      <Filter>SolEngine\GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiGameOfLifeView.hpp">
+      <Filter>SolEngine\GUI\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 #include "SolDevice.hpp"
 #include "SolRenderer.hpp"
 #include "GuiDiagnosticWindow.hpp"
-#include "GuiGameOfLifeWindow.hpp"
+#include "GuiSettingsWindow.hpp"
 
 using namespace SolEngine::Interface;
 

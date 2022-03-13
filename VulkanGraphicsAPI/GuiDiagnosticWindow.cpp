@@ -17,7 +17,7 @@ namespace SolEngine::GUI
         _onUpdateDataEvent.AddListener([this]() { OnUpdateData_Method(); });
     }
 
-    void GuiDiagnosticWindow::RenderWindowContents()
+    void GuiDiagnosticWindow::Render()
     {
         const float framesPerSecond = 1.f / _rDiagnosticData.deltaTimeSeconds;
         const float deltaTimeMS     = _rDiagnosticData.deltaTimeSeconds * SECONDS_TO_MILLISECONDS;

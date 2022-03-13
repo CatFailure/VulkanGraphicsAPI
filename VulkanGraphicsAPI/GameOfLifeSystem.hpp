@@ -1,10 +1,9 @@
 #pragma once
 #include "SolGrid.hpp"
-#include "MarchingCubesHelpers.hpp"
 #include "SolEvent.hpp"
 #include "GameOfLifeSettings.hpp"
+#include "SimulationSettings.hpp"
 
-using namespace Utility;
 using namespace SolEngine::Events;
 using namespace SolEngine::Settings;
 
@@ -13,13 +12,14 @@ namespace SolEngine::System
     class GameOfLifeSystem
     {
     public:
-        GameOfLifeSystem(SolGrid& rSolGrid, GameOfLifeSettings& rGameOfLifeSettings);
+        GameOfLifeSystem(SolGrid& rSolGrid, GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
 
         void CheckAllCellNeighbours();
         void UpdateAllCellStates();
 
         void Update(const float deltaTime);
         void ForceUpdateCellStates();
+        void ResetNextGenerationDelayRemaining();
 
         SolEvent<> onUpdateAllCellStatesEvent;
 
@@ -30,10 +30,10 @@ namespace SolEngine::System
 
         void NextGeneration();
 
-        static constexpr float NEXT_GENERATION_DELAY{ 0.1f };
         float _nextGenerationDelayRemaining;
 
         SolGrid&            _rSolGrid;
         GameOfLifeSettings& _rGameOfLifeSettings;
+        SimulationSettings& _rSimulationSettings;
     };
 }
