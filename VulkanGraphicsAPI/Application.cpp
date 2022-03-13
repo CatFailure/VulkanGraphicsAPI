@@ -181,6 +181,13 @@ void Application::SetupEventCallbacks()
                       { 
                           _pMarchingCubesSystem->March(); 
                       });
+
+    _rSimulationSettings.onSimulationSpeedChangedEvent
+                        .AddListener([this](const float speed) 
+                        {
+                            // Force update the next generation delay to the new value
+                            _pGameOfLifeSystem->ResetNextGenerationDelayRemaining();
+                        });
 }
 
 void Application::CheckForSimulationResetFlag()
@@ -214,11 +221,11 @@ void Application::CreateGuiWindowManager()
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
-    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics",
+    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>(TITLE_DIAGNOSTICS,
                                                              true,
                                                              flags,
                                                              _rDiagnosticData)
-                      .CreateGuiWindow<GuiSettingsWindow>("Settings", 
+                      .CreateGuiWindow<GuiSettingsWindow>(TITLE_SETTINGS, 
                                                           true, 
                                                           flags, 
                                                           _rGameOfLifeSettings,

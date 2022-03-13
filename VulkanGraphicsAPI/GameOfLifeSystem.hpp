@@ -19,6 +19,7 @@ namespace SolEngine::System
 
         void Update(const float deltaTime);
         void ForceUpdateCellStates();
+        void ResetNextGenerationDelayRemaining();
 
         SolEvent<> onUpdateAllCellStatesEvent;
 

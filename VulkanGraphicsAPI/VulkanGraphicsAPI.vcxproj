@@ -419,7 +419,7 @@
     <ClInclude Include="SolSwapchain.hpp" />
     <ClInclude Include="SolWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
-    <ClInclude Include="GuiTooltips.hpp" />
+    <ClInclude Include="GuiStrings.hpp" />
     <ClInclude Include="Typedefs.hpp" />
     <ClInclude Include="Vertex.hpp" />
   </ItemGroup>

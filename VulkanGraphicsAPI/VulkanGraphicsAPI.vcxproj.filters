@@ -320,7 +320,7 @@
     <ClInclude Include="GuiSettingsWindow.hpp">
       <Filter>SolEngine\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GuiTooltips.hpp">
+    <ClInclude Include="GuiStrings.hpp">
       <Filter>SolEngine\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Helpers.hpp">

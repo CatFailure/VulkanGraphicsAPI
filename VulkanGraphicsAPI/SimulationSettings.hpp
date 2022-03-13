@@ -13,18 +13,36 @@ namespace SolEngine::Settings
 		{
 			SimulationSettings defaultSettings{};
 
-			seed				= defaultSettings.seed;
-			generation		    = defaultSettings.generation;
-			nextGenerationDelay = defaultSettings.nextGenerationDelay;
-			simulationState		= defaultSettings.simulationState;
-			wasSimulationResetRequested	= true;
+			// For UX we won't reset the seed or simulation speed
+			// Those can be reset seperately...
+			generation					= defaultSettings.generation;
+			simulationState				= defaultSettings.simulationState;
+			wasSimulationResetRequested = true;
 		}
+
+		void ResetSimulationSeed()
+		{
+			SimulationSettings defaultSettings{};
+
+			seed = defaultSettings.seed;
+			wasSimulationResetRequested = true;	// Change in seed requires full reset
+		}
+
+		void ResetSimulationSpeed()
+		{
+			SimulationSettings defaultSettings{};
+
+			simulationSpeed = defaultSettings.simulationSpeed;
+			onSimulationSpeedChangedEvent.Invoke(simulationSpeed);
+		}
+
+		SolEvent<float> onSimulationSpeedChangedEvent;
 
 		bool wasSimulationResetRequested{ false };
 
-		int				seed			   { 0 };
-		size_t			generation		   { 0U };
-		float			nextGenerationDelay{ 1.f };
-		SimulationState simulationState	   { SimulationState::PAUSED };
+		int				seed		   { 0 };
+		size_t			generation	   { 0U };
+		float			simulationSpeed{ 1.f };
+		SimulationState simulationState{ SimulationState::PAUSED };
 	};
 }
