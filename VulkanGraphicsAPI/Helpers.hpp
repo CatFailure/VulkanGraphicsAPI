@@ -10,8 +10,6 @@ using namespace SolEngine::Enumeration;
 
 namespace Utility
 {
-	static float MinIsoValueGenerated(1000.f), MaxIsoValueGenerated(-1000.f);
-
     // TEMP
     static inline bool RandomBool()
     {
@@ -194,15 +192,6 @@ namespace Utility
         const float sqrY = y * y;
         const float sqrZ = z * z;
         const float generatedIsoValue = SPHERE_RADIUS - sqrtf(sqrX + sqrY + sqrZ);
-
-        if (generatedIsoValue < MinIsoValueGenerated)
-        {
-            MinIsoValueGenerated = generatedIsoValue;
-        }
-        else if (generatedIsoValue > MaxIsoValueGenerated)
-        {
-            MaxIsoValueGenerated = generatedIsoValue;
-        }
 
         // Creates a sphere
         *pOutIsoValue = generatedIsoValue;
