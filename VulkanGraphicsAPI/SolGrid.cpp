@@ -40,7 +40,6 @@ namespace SolEngine
 
     void SolGrid::TraverseAllGridCells(const TraverseCubesCallback_t& callback)
     {
-        //const float gridStep = _rGridSettings.step;
         const glm::uvec3 gridDimensions = GetDimensions();
 
         for (uint32_t z(0U); z < gridDimensions.z; ++z)
@@ -53,7 +52,28 @@ namespace SolEngine
                 }
             }
         }
+    }
 
+    void SolGrid::TraverseAllGridCells_Multithread(const TraverseCubesCallback_t& callback)
+    {
+        const glm::uvec3 gridDimensions = GetDimensions();
+
+        _threadPool.parallelize_loop(0, 
+                                     gridDimensions.z, 
+                                     [&gridDimensions, &callback]
+                                     (const uint32_t a, const uint32_t b) 
+                                     {
+                                         for (uint32_t z = a; z < b; ++z)
+                                         {
+                                             for (uint32_t y(0U); y < gridDimensions.y; ++y)
+                                             {
+                                                 for (uint32_t x(0U); x < gridDimensions.x; ++x)
+                                                 {
+                                                     callback(x, y, z);
+                                                 }
+                                             }
+                                         }
+                                     });
     }
 
     void SolGrid::InitialiseNodes()

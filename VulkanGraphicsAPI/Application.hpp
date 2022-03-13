@@ -6,7 +6,6 @@
 #include "SolGrid.hpp"
 #include "MarchingCubesSystem.hpp"
 #include "GameOfLifeSystem.hpp"
-#include "thread_pool.hpp"
 
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define DISABLE_IM_GUI  // Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
@@ -49,8 +48,6 @@ private:
 #ifndef DISABLE_IM_GUI
     void CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI
-
-    thread_pool _threadPool{ MAX_THREADS };
 
     ApplicationData     _appData;
     DiagnosticData&     _rDiagnosticData;

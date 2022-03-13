@@ -8,7 +8,7 @@ namespace SolEngine::Data
 {
     static constexpr size_t   INT_SIZE_BYTES         { sizeof(int) };
     static constexpr float    SECONDS_TO_MILLISECONDS{ 1000.f };
-    static constexpr uint32_t MAX_THREADS            { 4U };
+    static constexpr uint32_t MAX_THREADS            { 3U };
 
 	static constexpr glm::vec3 VEC3_RIGHT  { 1.f, 0.f, 0.f };
 	static constexpr glm::vec3 VEC3_UP     { 0.f, -1.f, 0.f };

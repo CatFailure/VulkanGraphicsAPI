@@ -3,11 +3,9 @@
 namespace SolEngine::System
 {
     GameOfLifeSystem::GameOfLifeSystem(SolGrid& rSolGrid, 
-                                       thread_pool& rThreadPool,
                                        GameOfLifeSettings& rGameOfLifeSettings,
                                        SimulationSettings& rSimulationSettings)
         : _rSolGrid(rSolGrid),
-          _rThreadPool(rThreadPool),
           _rGameOfLifeSettings(rGameOfLifeSettings),
           _rSimulationSettings(rSimulationSettings),
           _nextGenerationDelayRemaining(rSimulationSettings.speed)
@@ -35,7 +33,7 @@ namespace SolEngine::System
                                                gridNodes.pLiveNeighbourCounts[nodeIndex];
 
                                            rLiveNeighbourCount = 0U;  // Reset the neighbour count
-                                       
+
                                            // Is there a node to the left?
                                            if (xIndex > 0)
                                            {
@@ -46,7 +44,7 @@ namespace SolEngine::System
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
-                                       
+
                                            // Is there a node to the right?
                                            if (xIndex < validNeighbourDimensions.x)
                                            {
@@ -57,7 +55,7 @@ namespace SolEngine::System
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
-                                       
+
                                            // Is there a node above?
                                            if (yIndex > 0)
                                            {
@@ -68,7 +66,7 @@ namespace SolEngine::System
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
-                                       
+
                                            // Is there a node below?
                                            if (yIndex < validNeighbourDimensions.y)
                                            {
@@ -79,7 +77,7 @@ namespace SolEngine::System
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
-                                       
+
                                            // Is there a node to the back?
                                            if (zIndex > 0)
                                            {
@@ -90,7 +88,7 @@ namespace SolEngine::System
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
-                                       
+
                                            // Is there a node to the front?
                                            if (zIndex < validNeighbourDimensions.z)
                                            {
@@ -106,6 +104,7 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::UpdateAllCellStates()
     {
+        Cells&                 rGridNodes           = _rSolGrid.cells;
         const NeighbourCount_t underpopulationCount = _rGameOfLifeSettings.underpopulationCount;
         const NeighbourCount_t overpopulationCount  = _rGameOfLifeSettings.overpopulationCount;
         const NeighbourCount_t reproductionCount    = _rGameOfLifeSettings.reproductionCount;
@@ -116,8 +115,6 @@ namespace SolEngine::System
                                            const uint32_t yIndex,
                                            const uint32_t zIndex)
                                        {
-                                           Cells& rGridNodes = _rSolGrid.cells;
-                                       
                                            const size_t cellIndex = _3DTo1DIndex(xIndex, 
                                                                                  yIndex, 
                                                                                  zIndex, 

@@ -3,6 +3,7 @@
 #include "Helpers.hpp"
 #include "Cells.hpp"
 #include "GridSettings.hpp"
+#include "thread_pool.hpp"
 
 using namespace Utility;
 using namespace SolEngine::DOD;
@@ -32,6 +33,7 @@ namespace SolEngine
 
 		void Initialise();
 		void TraverseAllGridCells(const TraverseCubesCallback_t& callback);
+		void TraverseAllGridCells_Multithread(const TraverseCubesCallback_t& callback);
 
 		Cells cells;
 
@@ -43,6 +45,8 @@ namespace SolEngine
 
 		GridSettings&   _rGridSettings;
 		DiagnosticData& _rDiagnosticData;
+
+		thread_pool _threadPool{ MAX_THREADS };
 
 		glm::ivec3 _minBounds { 0 };
 		glm::ivec3 _maxBounds { 0 };

@@ -1,27 +1,27 @@
 #include "Application.hpp"
 
-void ThreadTest()
-{
-	const size_t threadCount(10);
-	const size_t arraySize(100);
-
-	thread_pool pool{ threadCount };
-	uint32_t squares[arraySize];
-
-	pool.parallelize_loop(0, 
-						  arraySize,
-						  [&squares](const uint32_t a, const uint32_t b) 
-						  {
-							  for (uint32_t i = a; i < b; ++i)
-							  {
-								  squares[i] = i * i;
-							  }
-						  });
-}
+//void ThreadTest()
+//{
+//	const size_t threadCount(10);
+//	const size_t arraySize(100);
+//
+//	thread_pool pool{ threadCount };
+//	uint32_t squares[arraySize];
+//
+//	pool.parallelize_loop(0, 
+//						  arraySize,
+//						  [&squares](const uint32_t a, const uint32_t b) 
+//						  {
+//							  for (uint32_t i = a; i < b; ++i)
+//							  {
+//								  squares[i] = i * i;
+//							  }
+//						  });
+//}
 
 int main()
 {
-	ThreadTest();
+	//ThreadTest();
 
 	const ApplicationData appData
 	{
