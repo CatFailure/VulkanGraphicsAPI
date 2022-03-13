@@ -424,6 +424,7 @@
     <ClInclude Include="SolWindow.hpp" />
     <ClInclude Include="SwapchainSupportDetails.hpp" />
     <ClInclude Include="GuiStrings.hpp" />
+    <ClInclude Include="thread_pool.hpp" />
     <ClInclude Include="Typedefs.hpp" />
     <ClInclude Include="Vertex.hpp" />
   </ItemGroup>

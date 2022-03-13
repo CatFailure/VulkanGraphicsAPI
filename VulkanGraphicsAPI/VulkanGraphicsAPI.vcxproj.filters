@@ -64,6 +64,9 @@
     <Filter Include="SolEngine\GUI\View">
       <UniqueIdentifier>{fce4f4dc-75cf-4031-bf3e-0c906ef18f97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Multithreading">
+      <UniqueIdentifier>{e180dd3a-673a-4a21-8557-0fc5e0e0fb67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="GuiGameOfLifeView.hpp">
       <Filter>SolEngine\GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="thread_pool.hpp">
+      <Filter>Multithreading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
