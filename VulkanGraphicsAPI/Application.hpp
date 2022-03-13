@@ -35,6 +35,8 @@ private:
     void Render();
 
     void CreateDescriptorPool();
+
+    void SetupRandomNumberGenerator();
     void SetupCamera();
     void SetupGrid();
     void SetupMarchingCubesSystem();

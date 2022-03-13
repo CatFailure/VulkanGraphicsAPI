@@ -27,13 +27,20 @@ namespace SolEngine::GUI
 	private:
 		static constexpr float MIN_SIMULATION_SPEED				{ 0.f };
 		static constexpr float MAX_SIMULATION_SPEED				{ 5.f };
+		static constexpr int   MIN_SIMULATION_SEED				{ 0 };
+		static constexpr int   MAX_SIMULATION_SEED				{ 2147483647 };
 		static constexpr float SIMULATION_SPEED_SLIDER_STEP		{ 0.05f };
 		static constexpr float SIMULATION_SPEED_SLIDER_FAST_STEP{ 0.1f };
+		static constexpr int   SIMULATION_SEED_INPUT_STEP		{ 1 };
+		static constexpr int   SIMULATION_SEED_INPUT_FAST_STEP	{ 100 };
+
+		bool IsSimulationPlaying() const { return _rSimulationSettings.simulationState == SimulationState::PLAY; }
 
 		void RenderSimulationSettings();
 		void RenderGameOfLifeSettings();
 
 		void RenderSimulationGenerationText();
+		void RenderSimulationSeedInput();
 		void RenderSimulationSimulationSpeedInput();
 		void RenderSimulationPauseButton();
 		void RenderSimulationResetButton();
@@ -46,6 +53,7 @@ namespace SolEngine::GUI
 		void OnMinLiveNeighboursChanged(const int value);
 		void OnMaxLiveNeighboursChanged(const int value);
 		void OnReproductionLiveNeighboursChanged(const int value);
+		void OnSimulationSeedChanged();
 		void OnSimulationSpeedChanged();
 		void OnSimulationStateToggled();
 		void OnSimulationReset();
@@ -58,6 +66,7 @@ namespace SolEngine::GUI
 		SimulationSettings&	_rSimulationSettings;
 
 		float			_simulationSpeed	  { 0.f };
+		int				_simulationSeed		  { 0 };
 		std::string     _toggleStateButtonText{};
 	};
 }

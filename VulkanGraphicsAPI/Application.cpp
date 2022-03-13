@@ -25,6 +25,7 @@ Application::Application(const ApplicationData &appData,
     CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI
 
+    SetupRandomNumberGenerator();
     SetupCamera();
     SetupGrid();
     SetupMarchingCubesSystem();
@@ -131,6 +132,11 @@ void Application::CreateDescriptorPool()
                                                                 .Build();
 }
 
+void Application::SetupRandomNumberGenerator()
+{
+    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+}
+
 void Application::SetupCamera()
 {
     const PerspectiveProjectionInfo projInfo
@@ -179,10 +185,14 @@ void Application::SetupEventCallbacks()
 
 void Application::CheckForSimulationResetFlag()
 {
-    if (!_rSimulationSettings.wasResetRequested)
+    if (!_rSimulationSettings.wasSimulationResetRequested)
     {
         return;
     }
+
+    // Reset the seed to generate new values 
+    // OR keep same values for repeatable simulations
+    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
 
     // Reset the grid nodes and re-generate node states
     _pSolGrid->Reset();
@@ -191,13 +201,13 @@ void Application::CheckForSimulationResetFlag()
     _pGameOfLifeSystem->ForceUpdateCellStates();
 
     // Finished!
-    _rSimulationSettings.wasResetRequested = false;
+    _rSimulationSettings.wasSimulationResetRequested = false;
 }
 
 #ifndef DISABLE_IM_GUI
 void Application::CreateGuiWindowManager()
 {
-    const ImGuiWindowFlags flags{ 0 };
+    const ImGuiWindowFlags flags{ ImGuiWindowFlags_AlwaysAutoResize };
 
     _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,  
                                                             _solWindow,

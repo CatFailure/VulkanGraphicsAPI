@@ -1,19 +1,26 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <time.h>
 
 #include "Axis.hpp"
 #include "Constants.hpp"
 #include "Typedefs.hpp"
+#include "RandomNumberGenerator.hpp"
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Enumeration;
 
 namespace Utility
 {
-    // TEMP
-    static inline bool RandomBool()
+
+    /// <summary>
+    /// Clamps a value between a limit.
+    /// </summary>
+    static int Clamp(const int value,
+                     const int min, 
+                     const int max)
     {
-        return rand() > (RAND_MAX / 2);
+        return (int)fmin(max, fmax(min, value));
     }
 
     /// <summary>
@@ -149,14 +156,15 @@ namespace Utility
     }
 
     static size_t GenerateRandomStates(bool* pOutNodeStates,
-                                       const size_t count)
+                                       const size_t count,
+                                       const unsigned int seed = 0U)
     {
         const size_t stateSizeBytes = sizeof(bool);
         size_t       bytesInUse     = 0;
 
         for (size_t i = 0; i < count; ++i)
         {
-            pOutNodeStates[i] = RandomBool();
+            pOutNodeStates[i] = RandomNumberGenerator::GetRandomBool();
 
             bytesInUse += stateSizeBytes;
         }

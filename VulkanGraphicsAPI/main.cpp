@@ -4,7 +4,7 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[09/03/22] Integrating Game of Life",
+		.windowTitle	  = "[13/03/22] Simulation Settings GUI",
 		.windowDimensions = glm::uvec2(1280, 720)
 	};
 

@@ -347,6 +347,7 @@
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MarchingCubesSystem.cpp" />
+    <ClCompile Include="RandomNumberGenerator.cpp" />
     <ClCompile Include="SolGrid.cpp" />
     <ClCompile Include="MatrixUtility.cpp" />
     <ClCompile Include="SimpleRenderSystem.cpp" />
@@ -377,6 +378,7 @@
     <ClInclude Include="GuiSettingsWindow.hpp" />
     <ClInclude Include="Helpers.hpp" />
     <ClInclude Include="MarchingCubesSystem.hpp" />
+    <ClInclude Include="RandomNumberGenerator.hpp" />
     <ClInclude Include="SimulationSettings.hpp" />
     <ClInclude Include="SimulationState.hpp" />
     <ClInclude Include="SolGrid.hpp" />

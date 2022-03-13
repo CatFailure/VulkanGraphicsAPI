@@ -24,6 +24,7 @@ namespace SolEngine::GUI
 					 _windowFlags);
 
 		RenderSimulationSettings();
+		ImGui::Separator();
 		RenderGameOfLifeSettings();
 
 		ImGui::End();
@@ -31,13 +32,14 @@ namespace SolEngine::GUI
 
 	void GuiSettingsWindow::RenderSimulationSettings()
 	{
-		if (!ImGui::CollapsingHeader("Simulation",
+		if (!ImGui::CollapsingHeader("Simulation ",
 									 ImGuiTreeNodeFlags_DefaultOpen))	// This header should be expanded by default
 		{
 			return;
 		}
 
 		RenderSimulationGenerationText();
+		RenderSimulationSeedInput();
 		RenderSimulationSimulationSpeedInput();
 		RenderSimulationPauseButton(); ImGui::SameLine();
 		RenderSimulationResetButton();
@@ -45,7 +47,7 @@ namespace SolEngine::GUI
 
 	void GuiSettingsWindow::RenderGameOfLifeSettings()
 	{
-		if (!ImGui::CollapsingHeader("Game of Life"))
+		if (!ImGui::CollapsingHeader("Game of Life "))
 		{
 			return;
 		}
@@ -75,7 +77,38 @@ namespace SolEngine::GUI
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_GAME_OF_LIFE_GENERATION);
+			ImGui::Text(TOOLTIP_SIMULATION_GENERATION);
+		}
+		ImGui::EndTooltip();
+	}
+
+	void GuiSettingsWindow::RenderSimulationSeedInput()
+	{
+		ImGui::BeginDisabled(IsSimulationPlaying());
+		{
+			if (ImGui::InputInt("Seed", 
+								&_simulationSeed, 
+								SIMULATION_SEED_INPUT_STEP,
+								SIMULATION_SEED_INPUT_FAST_STEP,
+								ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				OnSimulationSeedChanged();
+			}
+		}
+		ImGui::EndDisabled();
+
+		// Tooltip - Game of Life Seed
+		if (!ImGui::IsItemHovered())
+		{
+			return;
+		}
+
+		ImGui::BeginTooltip();
+		{
+			ImGui::Text(TOOLTIP_SIMULATION_SEED,
+						MIN_SIMULATION_SEED,
+						MAX_SIMULATION_SEED,
+						_defaultSimulationSettings.seed);
 		}
 		ImGui::EndTooltip();
 	}
@@ -123,14 +156,14 @@ namespace SolEngine::GUI
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_PAUSE_SIMULATION);
+			ImGui::Text(TOOLTIP_SIMULATION_PAUSE);
 		}
 		ImGui::EndTooltip();
 	}
 
 	void GuiSettingsWindow::RenderSimulationResetButton()
 	{
-		ImGui::BeginDisabled(_rSimulationSettings.simulationState == SimulationState::PLAY);
+		ImGui::BeginDisabled(IsSimulationPlaying());
 		{
 			if (ImGui::Button("Reset"))
 			{
@@ -171,7 +204,7 @@ namespace SolEngine::GUI
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_MIN_LIVE_NEIGHBOURS, 
+			ImGui::Text(TOOLTIP_GAME_OF_LIFE_MIN_LIVE_NEIGHBOURS, 
 						rMinLiveNeighbourCount,										// Current Value
 						(size_t)_defaultGameOfLifeSettings.minLiveNeighbourCount);	// Default Value
 		}
@@ -198,7 +231,7 @@ namespace SolEngine::GUI
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_MAX_LIVE_NEIGHBOURS,
+			ImGui::Text(TOOLTIP_GAME_OF_LIFE_MAX_LIVE_NEIGHBOURS,
 						rMaxLiveNeighbourCount,										// Current Value
 						(size_t)_defaultGameOfLifeSettings.maxLiveNeighbourCount);	// Default Value
 		}
@@ -224,7 +257,7 @@ namespace SolEngine::GUI
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_REPRODUCE_LIVE_NEIGHBOURS, 
+			ImGui::Text(TOOLTIP_GAME_OF_LIFE_REPRODUCE_LIVE_NEIGHBOURS, 
 						rReproductionLiveNeighbourCount,										// Current Value
 						0U,																		// Min Value
 						CELL_NEIGHBOURS_COUNT,													// Max Value
@@ -266,6 +299,16 @@ namespace SolEngine::GUI
 	void GuiSettingsWindow::OnReproductionLiveNeighboursChanged(const int value)
 	{
 		_rGameOfLifeSettings.reproductionLiveNeighbourCount = (NeighbourCount_t)value;
+	}
+
+	void GuiSettingsWindow::OnSimulationSeedChanged()
+	{
+		_simulationSeed	= Clamp(_simulationSeed, 
+								MIN_SIMULATION_SEED, 
+								MAX_SIMULATION_SEED);
+
+		_rSimulationSettings.seed = _simulationSeed;
+		_rSimulationSettings.wasSimulationResetRequested = true;
 	}
 
 	void GuiSettingsWindow::OnSimulationSpeedChanged()
