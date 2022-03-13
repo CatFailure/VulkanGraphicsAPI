@@ -61,6 +61,9 @@
     <Filter Include="SolEngine\Settings">
       <UniqueIdentifier>{0c8a191c-2dc0-4a7a-b988-5b118a17f2ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\GUI\View">
+      <UniqueIdentifier>{fce4f4dc-75cf-4031-bf3e-0c906ef18f97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -158,6 +161,9 @@
     </ClCompile>
     <ClCompile Include="RandomNumberGenerator.cpp">
       <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiSimulationView.cpp">
+      <Filter>SolEngine\GUI\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="RandomNumberGenerator.hpp">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiSimulationView.hpp">
+      <Filter>SolEngine\GUI\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

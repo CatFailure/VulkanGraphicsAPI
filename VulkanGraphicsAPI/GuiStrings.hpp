@@ -17,9 +17,9 @@ namespace SolEngine::GUI
 	static constexpr const char* LABEL_SIMULATION_STATE_PLAY { "Play" };
 	static constexpr const char* LABEL_SIMULATION_STATE_PAUSE{ "Pause" };
 
-	static constexpr const char* LABEL_GAME_OF_LIFE_MIN_LIVE_NEIGHBOURS  { "Underpopulation Live Neighbours" };
-	static constexpr const char* LABEL_GAME_OF_LIFE_MAX_LIVE_NEIGHBOURS  { "Overpopulation Live Neighbours" };
-	static constexpr const char* LABEL_GAME_OF_LIFE_REPRO_LIVE_NEIGHBOURS{ "Reproduction Live Neighbours" };
+	static constexpr const char* LABEL_GAME_OF_LIFE_MIN_LIVE_NEIGHBOURS  { "Underpopulation Value" };
+	static constexpr const char* LABEL_GAME_OF_LIFE_MAX_LIVE_NEIGHBOURS  { "Overpopulation Value" };
+	static constexpr const char* LABEL_GAME_OF_LIFE_REPRO_LIVE_NEIGHBOURS{ "Reproduction Value" };
 	static constexpr const char* LABEL_GAME_OF_LIFE_RESET				 { "Reset" };
 
 	static constexpr const char* TOOLTIP_SIMULATION_GENERATION { "Current Simulation Generation." };

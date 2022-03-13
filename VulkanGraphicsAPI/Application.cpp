@@ -192,7 +192,7 @@ void Application::SetupEventCallbacks()
 
 void Application::CheckForSimulationResetFlag()
 {
-    if (!_rSimulationSettings.wasSimulationResetRequested)
+    if (!_rSimulationSettings.isSimulationResetRequested)
     {
         return;
     }
@@ -208,7 +208,7 @@ void Application::CheckForSimulationResetFlag()
     _pGameOfLifeSystem->ForceUpdateCellStates();
 
     // Finished!
-    _rSimulationSettings.wasSimulationResetRequested = false;
+    _rSimulationSettings.isSimulationResetRequested = false;
 }
 
 #ifndef DISABLE_IM_GUI

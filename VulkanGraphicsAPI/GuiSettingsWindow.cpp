@@ -11,11 +11,8 @@ namespace SolEngine::GUI
 					 isActive,
 					 windowFlags),
 		  _rGameOfLifeSettings(rGameOfLifeSettings),
-		  _rSimulationSettings(rSimulationSettings)
-	{
-		_simulationSpeed = _rSimulationSettings.simulationSpeed;
-		SetSimulationState(_rSimulationSettings.simulationState);
-	}
+		  _simulationView(rSimulationSettings)
+	{}
 
 	void GuiSettingsWindow::RenderWindowContents()
 	{
@@ -23,36 +20,11 @@ namespace SolEngine::GUI
 					 &_isActive, 
 					 _windowFlags);
 
-		RenderSimulationSettings();
+		_simulationView.Render();
 		ImGui::Separator();
 		RenderGameOfLifeSettings();
 
 		ImGui::End();
-	}
-
-	void GuiSettingsWindow::RenderSimulationSettings()
-	{
-		if (!ImGui::CollapsingHeader(HEADER_SIMULATION,
-									 ImGuiTreeNodeFlags_DefaultOpen))	// This header should be expanded by default
-		{
-			return;
-		}
-
-		RenderSimulationGenerationText();
-
-		// Simulation Seed Controls
-		RenderSimulationSeedInput();
-		ImGui::SameLine(SIMULATION_RESET_SEED_OFFSET);
-		RenderSimulationResetSeedButton();
-
-		// Simulation Speed Controls
-		RenderSimulationSimulationSpeedInput();
-		ImGui::SameLine();
-		RenderSimulationResetSpeedButton();
-
-		RenderSimulationPauseButton(); 
-		ImGui::SameLine();
-		RenderSimulationResetButton();
 	}
 
 	void GuiSettingsWindow::RenderGameOfLifeSettings()
@@ -72,179 +44,6 @@ namespace SolEngine::GUI
 		RenderGameOfLifeMaxLiveNeighboursSlider(maxLiveNeighbourCount, minLiveNeighbourCount);
 		RenderGameOfLifeReproductionLiveNeighboursSlider(reproLiveNeighbourCount);
 		RenderGameOfLifeResetButton();
-	}
-
-	void GuiSettingsWindow::RenderSimulationGenerationText()
-	{
-		ImGui::Text(LABEL_SIMULATION_GENERATION, 
-					_rSimulationSettings.generation);
-
-		// Tooltip - Game of Life Generation
-		if (!ImGui::IsItemHovered())
-		{
-			return;
-		}
-
-		ImGui::BeginTooltip();
-		{
-			ImGui::Text(TOOLTIP_SIMULATION_GENERATION);
-		}
-		ImGui::EndTooltip();
-	}
-
-	void GuiSettingsWindow::RenderSimulationSeedInput()
-	{
-		// Prevent user interaction whilst a simulation is running
-		// Changing the Seed at runtime will cause Bad Things to Happen™
-		ImGui::BeginDisabled(IsSimulationPlaying());
-		{
-			if (ImGui::InputInt(LABEL_SIMULATION_SEED, 
-								&_simulationSeed, 
-								SIMULATION_SEED_INPUT_STEP,
-								SIMULATION_SEED_INPUT_FAST_STEP,
-								ImGuiInputTextFlags_EnterReturnsTrue))
-			{
-				OnSimulationSeedChanged();
-			}
-		}
-		ImGui::EndDisabled();
-
-		// Tooltip - Game of Life Seed
-		if (!ImGui::IsItemHovered())
-		{
-			return;
-		}
-
-		ImGui::BeginTooltip();
-		{
-			ImGui::Text(TOOLTIP_SIMULATION_SEED,
-						MIN_SIMULATION_SEED,
-						MAX_SIMULATION_SEED,
-						_simulationSettings_default.seed);
-		}
-		ImGui::EndTooltip();
-	}
-
-	void GuiSettingsWindow::RenderSimulationResetSeedButton()
-	{
-		// Prevent user interaction whilst a simulation is running
-		// Changing the Seed at runtime will cause Bad Things to Happen™
-		ImGui::BeginDisabled(IsSimulationPlaying());
-		{
-			ImGui::PushID(RESET_SEED_BUTTON_ID);	// Since there are multiple buttons with a "Reset" label, we have to define a unique ID here
-			if (ImGui::Button(LABEL_SIMULATION_SEED_RESET))
-			{
-				OnSimulationSeedReset();
-			}
-			ImGui::PopID();
-		}
-		ImGui::EndDisabled();
-
-		// Tooltip - Game of Life Seed Reset
-		if (!ImGui::IsItemHovered())
-		{
-			return;
-		}
-
-		ImGui::BeginTooltip();
-		{
-			ImGui::Text(TOOLTIP_SIMULATION_SEED_RESET);
-		}
-		ImGui::EndTooltip();
-	}
-
-	void GuiSettingsWindow::RenderSimulationSimulationSpeedInput()
-	{
-		if (ImGui::InputFloat(LABEL_SIMULATION_SPEED,
-							  &_simulationSpeed,
-							  SIMULATION_SPEED_SLIDER_STEP,
-							  SIMULATION_SPEED_SLIDER_FAST_STEP,
-							  "%.2f", 
-							  ImGuiInputTextFlags_EnterReturnsTrue))
-		{
-			OnSimulationSpeedChanged();
-		}
-
-		// Tooltip - Simulation Speed
-		if (!ImGui::IsItemHovered())
-		{
-			return;
-		}
-
-		ImGui::BeginTooltip();
-		{
-			ImGui::Text(TOOLTIP_SIMULATION_SPEED, 
-						MIN_SIMULATION_SPEED,							// Min Value
-						MAX_SIMULATION_SPEED,							// Max Value
-						_simulationSettings_default.simulationSpeed);	// Default Value
-		}
-		ImGui::EndTooltip();
-	}
-
-	void GuiSettingsWindow::RenderSimulationResetSpeedButton()
-	{
-		ImGui::PushID(RESET_SPEED_BUTTON_ID);	// Since there are multiple buttons with a "Reset" label, we have to define a unique ID here
-		if (ImGui::Button(LABEL_SIMULATION_SPEED_RESET))
-		{
-			OnSimulationSpeedReset();
-		}
-		ImGui::PopID();
-
-		// Tooltip - Game of Life Seed Reset
-		if (!ImGui::IsItemHovered())
-		{
-			return;
-		}
-
-		ImGui::BeginTooltip();
-		{
-			ImGui::Text(TOOLTIP_SIMULATION_SPEED_RESET);
-		}
-		ImGui::EndTooltip();
-	}
-
-	void GuiSettingsWindow::RenderSimulationPauseButton()
-	{
-		if (ImGui::Button(_toggleStateButtonText.c_str()))
-		{
-			OnSimulationStateToggled();
-		}
-
-		// Tooltip - Pause Simulation
-		if (!ImGui::IsItemHovered())
-		{
-			return;
-		}
-
-		ImGui::BeginTooltip();
-		{
-			ImGui::Text(TOOLTIP_SIMULATION_PAUSE);
-		}
-		ImGui::EndTooltip();
-	}
-
-	void GuiSettingsWindow::RenderSimulationResetButton()
-	{
-		ImGui::BeginDisabled(IsSimulationPlaying());
-		{
-			if (ImGui::Button(LABEL_SIMULATION_RESET))
-			{
-				OnSimulationReset();
-			}
-		}
-		ImGui::EndDisabled();
-
-		// Tooltip - Reset Simulation
-		if (!ImGui::IsItemHovered())
-		{
-			return;
-		}
-
-		ImGui::BeginTooltip();
-		{
-			ImGui::Text(TOOLTIP_SIMULATION_RESET);
-		}
-		ImGui::EndTooltip();
 	}
 
 	void GuiSettingsWindow::RenderGameOfLifeMinLiveNeighboursSlider(int& rMinLiveNeighbourCount, 
@@ -361,89 +160,5 @@ namespace SolEngine::GUI
 	void GuiSettingsWindow::OnReproductionLiveNeighboursChanged(const int value)
 	{
 		_rGameOfLifeSettings.reproductionLiveNeighbourCount = (NeighbourCount_t)value;
-	}
-
-	void GuiSettingsWindow::OnSimulationSeedChanged()
-	{
-		_simulationSeed	= Clamp(_simulationSeed, 
-								MIN_SIMULATION_SEED, 
-								MAX_SIMULATION_SEED);
-
-		_rSimulationSettings.seed = _simulationSeed;
-		_rSimulationSettings.wasSimulationResetRequested = true;
-	}
-
-	void GuiSettingsWindow::OnSimulationSpeedChanged()
-	{
-		// Keep simulation speed within limits
-		_simulationSpeed = Clamp(_simulationSpeed, 
-								 MIN_SIMULATION_SPEED, 
-								 MAX_SIMULATION_SPEED);
-
-		_rSimulationSettings.simulationSpeed = _simulationSpeed;
-		_rSimulationSettings.onSimulationSpeedChangedEvent.Invoke(_simulationSpeed);
-	}
-
-	void GuiSettingsWindow::OnSimulationSeedReset()
-	{
-		_rSimulationSettings.ResetSimulationSeed();
-		_simulationSeed = _rSimulationSettings.seed;
-	}
-
-	void GuiSettingsWindow::OnSimulationSpeedReset()
-	{
-		_rSimulationSettings.ResetSimulationSpeed();
-		_simulationSpeed = _rSimulationSettings.simulationSpeed;
-	}
-
-	void GuiSettingsWindow::OnSimulationReset()
-	{
-		_rSimulationSettings.Reset();
-		_simulationSpeed = _rSimulationSettings.simulationSpeed;
-	}
-
-	void GuiSettingsWindow::OnSimulationStateToggled()
-	{
-		SimulationState& rSimulationState = _rSimulationSettings.simulationState;
-
-		switch (rSimulationState)
-		{
-		case SimulationState::PAUSED:
-		{
-			SetSimulationState(SimulationState::PLAY);
-
-			return;
-		}
-		case SimulationState::PLAY:
-		default:	// Move simulation to a paused state if something goes wrong just in case...
-		{
-			SetSimulationState(SimulationState::PAUSED);
-
-			return;
-		}
-		}
-	}
-
-	void GuiSettingsWindow::SetSimulationState(const SimulationState state)
-	{
-		SimulationState& rSimulationState = _rSimulationSettings.simulationState;
-		rSimulationState				  = state;
-
-		switch (state)
-		{
-		case SimulationState::PAUSED:
-		{
-			_toggleStateButtonText = LABEL_SIMULATION_STATE_PLAY;
-
-			return;
-		}
-		case SimulationState::PLAY:
-		default:	// Move simulation to a paused state if something goes wrong just in case...
-		{
-			_toggleStateButtonText = LABEL_SIMULATION_STATE_PAUSE;
-
-			return;
-		}
-		}
 	}
 }

@@ -9,40 +9,32 @@ namespace SolEngine::Settings
 {
 	struct SimulationSettings
 	{
-		void Reset()
+		void ResetGeneration()
 		{
-			SimulationSettings defaultSettings{};
-
-			// For UX we won't reset the seed or simulation speed
-			// Those can be reset seperately...
-			generation					= defaultSettings.generation;
-			simulationState				= defaultSettings.simulationState;
-			wasSimulationResetRequested = true;
+			generation = 0U;
 		}
 
-		void ResetSimulationSeed()
+		void ResetSeed()
 		{
 			SimulationSettings defaultSettings{};
-
 			seed = defaultSettings.seed;
-			wasSimulationResetRequested = true;	// Change in seed requires full reset
 		}
 
-		void ResetSimulationSpeed()
+		void ResetSpeed()
 		{
 			SimulationSettings defaultSettings{};
 
-			simulationSpeed = defaultSettings.simulationSpeed;
-			onSimulationSpeedChangedEvent.Invoke(simulationSpeed);
+			speed = defaultSettings.speed;
+			onSimulationSpeedChangedEvent.Invoke(speed);
 		}
 
 		SolEvent<float> onSimulationSpeedChangedEvent;
 
-		bool wasSimulationResetRequested{ false };
+		bool isSimulationResetRequested{ false };
 
-		int				seed		   { 0 };
-		size_t			generation	   { 0U };
-		float			simulationSpeed{ 1.f };
-		SimulationState simulationState{ SimulationState::PAUSED };
+		int				seed	  { 0 };
+		size_t			generation{ 0U };
+		float			speed	  { 1.f };
+		SimulationState state	  { SimulationState::PAUSED };
 	};
 }
