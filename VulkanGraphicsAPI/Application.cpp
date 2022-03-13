@@ -168,6 +168,7 @@ void Application::SetupMarchingCubesSystem()
 void Application::SetupGameOfLifeSystem()
 {
     _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
+                                                            _threadPool,
                                                             _rGameOfLifeSettings,
                                                             _rSimulationSettings);
 

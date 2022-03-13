@@ -1,4 +1,5 @@
 #pragma once
+#include "thread_pool.hpp"
 #include "SolGrid.hpp"
 #include "SolEvent.hpp"
 #include "GameOfLifeSettings.hpp"
@@ -12,7 +13,7 @@ namespace SolEngine::System
     class GameOfLifeSystem
     {
     public:
-        GameOfLifeSystem(SolGrid& rSolGrid, GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
+        GameOfLifeSystem(SolGrid& rSolGrid, thread_pool& rThreadPool, GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
 
         void CheckAllCellNeighbours();
         void UpdateAllCellStates();
@@ -33,6 +34,7 @@ namespace SolEngine::System
         float _nextGenerationDelayRemaining;
 
         SolGrid&            _rSolGrid;
+        thread_pool&        _rThreadPool;
         GameOfLifeSettings& _rGameOfLifeSettings;
         SimulationSettings& _rSimulationSettings;
     };

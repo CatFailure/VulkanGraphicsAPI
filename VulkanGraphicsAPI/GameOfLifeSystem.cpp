@@ -3,9 +3,11 @@
 namespace SolEngine::System
 {
     GameOfLifeSystem::GameOfLifeSystem(SolGrid& rSolGrid, 
+                                       thread_pool& rThreadPool,
                                        GameOfLifeSettings& rGameOfLifeSettings,
                                        SimulationSettings& rSimulationSettings)
         : _rSolGrid(rSolGrid),
+          _rThreadPool(rThreadPool),
           _rGameOfLifeSettings(rGameOfLifeSettings),
           _rSimulationSettings(rSimulationSettings),
           _nextGenerationDelayRemaining(rSimulationSettings.speed)
@@ -104,9 +106,9 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::UpdateAllCellStates()
     {
-        const NeighbourCount_t underpopulationCount          = _rGameOfLifeSettings.underpopulationCount;
-        const NeighbourCount_t overpopulationCount          = _rGameOfLifeSettings.overpopulationCount;
-        const NeighbourCount_t reproductionCount = _rGameOfLifeSettings.reproductionCount;
+        const NeighbourCount_t underpopulationCount = _rGameOfLifeSettings.underpopulationCount;
+        const NeighbourCount_t overpopulationCount  = _rGameOfLifeSettings.overpopulationCount;
+        const NeighbourCount_t reproductionCount    = _rGameOfLifeSettings.reproductionCount;
 
         const glm::uvec3 dimensions = _rSolGrid.GetDimensions();
 
