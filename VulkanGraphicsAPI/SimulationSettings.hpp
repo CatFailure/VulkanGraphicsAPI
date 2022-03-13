@@ -16,12 +16,12 @@ namespace SolEngine::Settings
 			generation		    = 0U;
 			nextGenerationDelay = defaultSettings.nextGenerationDelay;
 			simulationState		= defaultSettings.simulationState;
-			isResetRequested	= false;
+			wasResetRequested	= true;
 		}
 
 		size_t			generation		   { 0U };
 		float			nextGenerationDelay{ 1.f };
 		SimulationState simulationState	   { SimulationState::PAUSED };
-		bool			isResetRequested   { false };
+		bool			wasResetRequested  { false };
 	};
 }

@@ -41,6 +41,8 @@ private:
     void SetupGameOfLifeSystem();
     void SetupEventCallbacks();
 
+    void CheckForSimulationResetFlag();
+
 #ifndef DISABLE_IM_GUI
     void CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI

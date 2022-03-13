@@ -74,6 +74,8 @@ void Application::Update(const float deltaTime)
 
     _solCamera.Update(deltaTime);
 
+    CheckForSimulationResetFlag();
+
     if (_pSolGrid->IsGridDataValid())
     {
         _pGameOfLifeSystem->Update(deltaTime);
@@ -173,6 +175,23 @@ void Application::SetupEventCallbacks()
                       { 
                           _pMarchingCubesSystem->March(); 
                       });
+}
+
+void Application::CheckForSimulationResetFlag()
+{
+    if (!_rSimulationSettings.wasResetRequested)
+    {
+        return;
+    }
+
+    // Reset the grid nodes and re-generate node states
+    _pSolGrid->Reset();
+
+    // Force Game of Life to re-check live neighbours
+    _pGameOfLifeSystem->ForceUpdateCellStates();
+
+    // Finished!
+    _rSimulationSettings.wasResetRequested = false;
 }
 
 #ifndef DISABLE_IM_GUI
