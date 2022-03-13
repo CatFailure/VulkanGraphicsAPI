@@ -13,14 +13,14 @@ namespace SolEngine::Settings
 		{
 			GameOfLifeSettings defaultSettings{};
 
-			minLiveNeighbourCount		   = defaultSettings.minLiveNeighbourCount;
-			maxLiveNeighbourCount		   = defaultSettings.maxLiveNeighbourCount;
-			reproductionLiveNeighbourCount = defaultSettings.reproductionLiveNeighbourCount;
+			underpopulationCount = defaultSettings.underpopulationCount;
+			overpopulationCount  = defaultSettings.overpopulationCount;
+			reproductionCount	 = defaultSettings.reproductionCount;
 		}
 
-		NeighbourCount_t minLiveNeighbourCount		   { 2U };	// Min number of live neighbours to keep a cell alive.
-		NeighbourCount_t maxLiveNeighbourCount		   { 3U };	// Max number of live neighbours to keep a cell alive.
-		NeighbourCount_t reproductionLiveNeighbourCount{ 3U };	// Exact number of live neighbours to reproduce a cell.
+		NeighbourCount_t underpopulationCount{ 2U };	// Min number of live neighbours to keep a cell alive.
+		NeighbourCount_t overpopulationCount { 3U };	// Max number of live neighbours to keep a cell alive.
+		NeighbourCount_t reproductionCount   { 3U };	// Exact number of live neighbours to reproduce a cell.
 
 		SolEvent<> onResetEvent;
 	};

@@ -165,6 +165,9 @@
     <ClCompile Include="GuiSimulationView.cpp">
       <Filter>SolEngine\GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="GuiGameOfLifeView.cpp">
+      <Filter>SolEngine\GUI\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -339,6 +342,9 @@
       <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="GuiSimulationView.hpp">
+      <Filter>SolEngine\GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiGameOfLifeView.hpp">
       <Filter>SolEngine\GUI\View</Filter>
     </ClInclude>
   </ItemGroup>

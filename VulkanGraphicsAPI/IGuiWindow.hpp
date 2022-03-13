@@ -35,7 +35,7 @@ namespace SolEngine::Interface
 			_onUpdateDataEvent.Invoke();
 		}
 
-		virtual void RenderWindowContents() = 0;
+		virtual void Render() = 0;
 
 	protected:
 		void TickUpdateDataDelayRemaining(const float deltaTime) { _updateDataDelayRemaining -= deltaTime; }

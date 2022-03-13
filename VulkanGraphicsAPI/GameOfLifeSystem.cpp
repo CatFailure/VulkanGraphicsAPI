@@ -104,9 +104,9 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::UpdateAllCellStates()
     {
-        const NeighbourCount_t minLiveNeighbourCount          = _rGameOfLifeSettings.minLiveNeighbourCount;
-        const NeighbourCount_t maxLiveNeighbourCount          = _rGameOfLifeSettings.maxLiveNeighbourCount;
-        const NeighbourCount_t reproductionLiveNeighbourCount = _rGameOfLifeSettings.reproductionLiveNeighbourCount;
+        const NeighbourCount_t underpopulationCount          = _rGameOfLifeSettings.underpopulationCount;
+        const NeighbourCount_t overpopulationCount          = _rGameOfLifeSettings.overpopulationCount;
+        const NeighbourCount_t reproductionCount = _rGameOfLifeSettings.reproductionCount;
 
         const glm::uvec3 dimensions = _rSolGrid.GetDimensions();
 
@@ -133,8 +133,8 @@ namespace SolEngine::System
                                            // If alive
                                            if (rCellState)
                                            {
-                                               rCellState = !(cellNeighbourCount < minLiveNeighbourCount) && // Any live cell with fewer than minLiveNeighbourCount live neighbours dies, as if by underpopulation.
-                                                            !(cellNeighbourCount > maxLiveNeighbourCount);   // Any live cell with more than maxLiveNeighbourCount live neighbours dies, as if by overpopulation.
+                                               rCellState = !(cellNeighbourCount < underpopulationCount) && // Any live cell with fewer than minLiveNeighbourCount live neighbours dies, as if by underpopulation.
+                                                            !(cellNeighbourCount > overpopulationCount);   // Any live cell with more than maxLiveNeighbourCount live neighbours dies, as if by overpopulation.
                                        
                                                // Any live cell with minLiveNeighbourCount or maxLiveNeighbourCount 
                                                // live neighbours lives on to the next generation.
@@ -142,7 +142,7 @@ namespace SolEngine::System
                                            }
 
                                            // Any dead cell with exactly reproductionLiveNeighbourCount live neighbours becomes a live cell, as if by reproduction.
-                                           if (cellNeighbourCount != reproductionLiveNeighbourCount)
+                                           if (cellNeighbourCount != reproductionCount)
                                            {
                                                return;
                                            }

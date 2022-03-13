@@ -9,7 +9,7 @@ namespace SolEngine::GUI::View
 		SetSimulationState(_rSimulationSettings.state);
 	}
 
-	void GuiSimulationView::Render()
+	void GuiSimulationView::RenderViewContents()
 	{
 		if (!ImGui::CollapsingHeader(HEADER_SIMULATION,
 									 ImGuiTreeNodeFlags_DefaultOpen))	// This header should be expanded by default

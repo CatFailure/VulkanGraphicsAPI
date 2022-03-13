@@ -31,7 +31,7 @@ namespace SolEngine::GUI
 	static constexpr const char* TOOLTIP_SIMULATION_RESET	   { "Reset Simulation.\nSimulation MUST be paused to reset." };
 
 	static constexpr const char* TOOLTIP_GAME_OF_LIFE_RESET					   { "Resets the Game of Life Ruleset to Default Settings." };
-	static constexpr const char* TOOLTIP_GAME_OF_LIFE_MIN_LIVE_NEIGHBOURS	   { "Currently ALIVE Cells with LESS than %zu Live Neighbouring Cell(s) will DIE next Generation.\n(Cannot exceed or equal Maximum Live Neighbours).\n(Default: %zu)." };
-	static constexpr const char* TOOLTIP_GAME_OF_LIFE_MAX_LIVE_NEIGHBOURS	   { "Currently ALIVE Cells with MORE than %zu Live Neighbouring Cell(s) will DIE next Generation.\n(Cannot receed or equal Minimum Live Neighbours).\n(Default: %zu)." };
+	static constexpr const char* TOOLTIP_GAME_OF_LIFE_MIN_LIVE_NEIGHBOURS	   { "Currently ALIVE Cells with LESS than %zu Live Neighbouring Cell(s) will DIE next Generation.\n(Cannot exceed above Maximum Live Neighbours).\n(Default: %zu)." };
+	static constexpr const char* TOOLTIP_GAME_OF_LIFE_MAX_LIVE_NEIGHBOURS	   { "Currently ALIVE Cells with MORE than %zu Live Neighbouring Cell(s) will DIE next Generation.\n(Cannot receed below Minimum Live Neighbours).\n(Default: %zu)." };
 	static constexpr const char* TOOLTIP_GAME_OF_LIFE_REPRODUCE_LIVE_NEIGHBOURS{ "Currently DEAD Cells with EXACTLY %zu Live Neighbouring Cell(s) will become ALIVE next Generation.\n(Min: %zu, Max: %zu, Default: %zu)." };
 }

@@ -28,7 +28,7 @@ namespace SolEngine::GUI
     {
         for (std::unique_ptr<IGuiWindow> &rGuiWindow : _guiWindows)
         {
-            rGuiWindow->RenderWindowContents();
+            rGuiWindow->Render();
         }
 
         ImGui::Render();

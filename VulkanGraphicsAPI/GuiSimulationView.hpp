@@ -15,7 +15,7 @@ namespace SolEngine::GUI::View
 		GuiSimulationView() = delete;
 		GuiSimulationView(SimulationSettings& rSimulationSettings);
 
-		void Render();
+		void RenderViewContents();
 
 		bool IsSimulationPlaying() const { return _rSimulationSettings.state == SimulationState::PLAY; }
 		void SetSimulationState(const SimulationState state);
