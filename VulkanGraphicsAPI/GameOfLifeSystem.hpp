@@ -24,9 +24,8 @@ namespace SolEngine::System
         SolEvent<> onUpdateAllCellStatesEvent;
 
     private:
-        void CheckNeighbourState(const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex,
-                                 const glm::vec3& scaledDimensions, const bool* pCellStates, 
-                                 NeighbourCount_t& rLiveNeighbourCount);
+        inline bool IsNeighbourAlive(const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex,
+                                     const glm::vec3& scaledDimensions, const bool* pCellStates);
 
         void NextGeneration();
 
