@@ -356,5 +356,8 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="cpp.hint" />
+    <None Include="Shaders\ComputeShader.comp">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

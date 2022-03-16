@@ -2,15 +2,29 @@
 
 namespace SolEngine
 {
-    SolPipeline::SolPipeline(SolDevice &rSolDevice, 
-                             const std::string &vertShaderFilePath, 
-                             const std::string &fragShaderFilePath, 
-                             const PipelineConfigInfo &configInfo)
+    SolPipeline::SolPipeline(SolDevice& rSolDevice, 
+                             const std::string& vertShaderFilePath, 
+                             const std::string& fragShaderFilePath, 
+                             const PipelineConfigInfo& configInfo)
         : _rSolDevice(rSolDevice)
     {
         CreateGraphicsPipeline(vertShaderFilePath, 
                                fragShaderFilePath, 
                                configInfo);
+    }
+
+    SolPipeline::SolPipeline(SolDevice& rSolDevice,
+                             const std::string& vertShaderFilePath,
+                             const std::string& fragShaderFilePath,
+                             const std::string& compShaderFilePath,
+                             const PipelineConfigInfo& configInfo)
+        : SolPipeline(rSolDevice,
+                      vertShaderFilePath,
+                      fragShaderFilePath, 
+                      configInfo)
+    {
+        CreateComputePipeline(compShaderFilePath, 
+                              configInfo);
     }
 
     SolPipeline::~SolPipeline()
@@ -136,16 +150,29 @@ namespace SolEngine
     {
         const VkDevice &device = _rSolDevice.GetDevice();
 
+        // Vertex
         vkDestroyShaderModule(device, 
                               _vertexShaderModule, 
                               NULL);
 
+        // Fragment
         vkDestroyShaderModule(device, 
                               _fragmentShaderModule,
                               NULL);
 
+        // Compute
+        vkDestroyShaderModule(device,
+                              _computeShaderModule,
+                              NULL);
+
+        // Graphics
         vkDestroyPipeline(device, 
                           _graphicsPipeline, 
+                          NULL);
+
+        // Compute
+        vkDestroyPipeline(device,
+                          _computePipeline,
                           NULL);
     }
 
@@ -255,6 +282,55 @@ namespace SolEngine
                                                           &graphicsPipelineCreateInfo, 
                                                           NULL, 
                                                           &_graphicsPipeline);
+
+        DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Graphics Pipeline.");
+    }
+
+    void SolPipeline::CreateComputePipeline(const std::string& compShaderFilePath, 
+                                            const PipelineConfigInfo& configInfo)
+    {
+        // Ensure Config Info is properly set up
+        DBG_ASSERT_MSG((configInfo.pipelineLayout != VK_NULL_HANDLE), 
+                       "Cannot create Graphics pipeline:: No pipelineLayout provided in configInfo!");
+
+        DBG_ASSERT_MSG((configInfo.renderPass != VK_NULL_HANDLE),
+                       "Cannot create Graphics pipeline:: No renderPass provided in configInfo!");
+
+        const std::vector<char> compShaderCode = ReadFile(compShaderFilePath);
+        const char *shaderStageName = "main";
+
+        CreateShaderModule(compShaderCode, &_computeShaderModule);
+
+        // Describe how to interpret Compute Buffer data
+        // that is the initial input into the Compute Pipeline
+        const VkPipelineShaderStageCreateInfo compShaderStageCreateInfo
+        {
+            .sType               = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
+            .pNext               = NULL,
+            .flags               = 0,
+            .stage               = VK_SHADER_STAGE_COMPUTE_BIT,
+            .module              = _computeShaderModule,
+            .pName               = shaderStageName,
+            .pSpecializationInfo = NULL             // Customise Shader functionality
+        };
+
+        const VkComputePipelineCreateInfo computePipelineCreateInfo
+        {
+            .sType              = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO,
+            .pNext              = NULL,
+            .flags              = 0,
+            .stage              = compShaderStageCreateInfo,
+            .layout             = configInfo.pipelineLayout,
+            .basePipelineHandle = VK_NULL_HANDLE,
+            .basePipelineIndex  = -1
+        };
+
+        const VkResult result = vkCreateComputePipelines(_rSolDevice.GetDevice(),
+                                                         VK_NULL_HANDLE,
+                                                         1, 
+                                                         &computePipelineCreateInfo,
+                                                         NULL, 
+                                                         &_computePipeline);
 
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Graphics Pipeline.");
     }

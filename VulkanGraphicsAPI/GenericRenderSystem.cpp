@@ -64,6 +64,7 @@ namespace SolEngine::Rendering
         _pSolPipeline = std::make_unique<SolPipeline>(_rSolDevice,
                                                       "Shaders/SimpleShader.vert.spv",
                                                       "Shaders/SimpleShader.frag.spv",
+                                                      "Shaders/ComputeShader.comp.spv",
                                                       pipelineConfigInfo);
     }
 }
