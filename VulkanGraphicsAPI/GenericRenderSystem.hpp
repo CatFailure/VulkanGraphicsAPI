@@ -13,14 +13,14 @@ namespace SolEngine::Rendering
 	{
 	public:
 		GenericRenderSystem() = delete;
-		GenericRenderSystem(SolDevice &rSolDevice, const VkRenderPass renderPass);
+		GenericRenderSystem(SolDevice &rSolDevice, const VkRenderPass renderPass, VkDescriptorSetLayout globalDescSetLayout);
 		virtual ~GenericRenderSystem();
 
 	protected:
 		// Inherited via IDisposable
 		virtual void Dispose() override;
 
-		virtual void CreatePipelineLayout();
+		virtual void CreatePipelineLayout(VkDescriptorSetLayout globalDescSetLayout);
 		virtual void CreatePipeline(const VkRenderPass renderPass);
 
 		SolDevice                   &_rSolDevice;

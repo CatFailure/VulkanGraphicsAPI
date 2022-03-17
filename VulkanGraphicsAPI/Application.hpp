@@ -19,7 +19,9 @@ using namespace SolEngine::Rendering;
 using namespace SolEngine::System;
 
 struct GlobalUniformBufferObject
-{};
+{
+    glm::mat4 projectionViewMatrix{ 1.f };
+};
 
 class Application : public IMonoBehaviour
 {
@@ -68,7 +70,9 @@ private:
     SolDevice   _solDevice;
     SolRenderer _solRenderer;
 
-    std::unique_ptr<SolDescriptorPool> _pSolDescriptorPool;
+    std::unique_ptr<SolDescriptorPool>      _pSolDescriptorPool;
+    std::vector<std::unique_ptr<SolBuffer>> _uniformBufferObjects;
+    std::vector<VkDescriptorSet>            _globalDescriptorSets;
 
 #ifndef DISABLE_IM_GUI
     std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;

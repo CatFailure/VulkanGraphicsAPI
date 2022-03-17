@@ -3,13 +3,16 @@
 namespace SolEngine::Rendering
 {
     SimpleRenderSystem::SimpleRenderSystem(SolDevice& rSolDevice, 
-                                           VkRenderPass renderPass)
+                                           const VkRenderPass renderPass,
+                                           VkDescriptorSetLayout globalDescSetLayout)
         : GenericRenderSystem(rSolDevice, 
-                              renderPass)
+                              renderPass,
+                              globalDescSetLayout)
     {}
 
     void SimpleRenderSystem::RenderGameObject(const SolCamera& solCamera,
                                               const VkCommandBuffer commandBuffer, 
+                                              const VkDescriptorSet globalDescriptorSet,
                                               const SolGameObject& gameObject) const
     {
         if (gameObject.GetModel() == nullptr)
@@ -18,16 +21,23 @@ namespace SolEngine::Rendering
             return;
         }
 
-        const glm::mat4 projectionView = solCamera.GetProjectionViewMatrix();
+        //const glm::mat4 projectionView = solCamera.GetProjectionViewMatrix();
 
         _pSolPipeline->Bind(commandBuffer);
 
-        const std::shared_ptr<SolModel>& pGameObjectModel = gameObject.GetModel();
+        vkCmdBindDescriptorSets(commandBuffer,
+                                VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                _pipelineLayout,
+                                0U, 
+                                1U, 
+                                &globalDescriptorSet, 
+                                0U, 
+                                nullptr);
 
         const SimplePushConstantData pushConstantData
         {
-            .transform = projectionView * gameObject.transform.TransformMatrix(),
-            .colour    = gameObject.GetColour()
+            .modelMatrix = gameObject.transform.GetModelMatrix(),
+            .colour      = gameObject.GetColour()
         };
 
         vkCmdPushConstants(commandBuffer,
@@ -37,6 +47,8 @@ namespace SolEngine::Rendering
                            sizeof(SimplePushConstantData),
                            &pushConstantData);
 
+
+        const std::shared_ptr<SolModel>& pGameObjectModel = gameObject.GetModel();
 
         pGameObjectModel->Bind(commandBuffer);
         pGameObjectModel->Draw(commandBuffer);
@@ -56,7 +68,7 @@ namespace SolEngine::Rendering
 
             const SimplePushConstantData pushConstantData
             {
-                .transform = projectionView * gameObject.transform.TransformMatrix(),
+                .modelMatrix = projectionView * gameObject.transform.GetModelMatrix(),
                 .colour    = gameObject.GetColour()
             };
 

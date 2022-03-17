@@ -15,7 +15,7 @@ namespace SolEngine
 		glm::vec3 scale	  { 1.f };
 		glm::vec3 rotation{ 0.f };
 
-		glm::mat4 TransformMatrix() const
+		glm::mat4 GetModelMatrix() const
 		{
 			return FastTransformMatrix(position, 
 									   scale,

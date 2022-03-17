@@ -3,10 +3,11 @@
 namespace SolEngine::Rendering
 {
     GenericRenderSystem::GenericRenderSystem(SolDevice &rSolDevice, 
-                                             const VkRenderPass renderPass)
+                                             const VkRenderPass renderPass, 
+                                             VkDescriptorSetLayout globalDescSetLayout)
         : _rSolDevice(rSolDevice)
     {
-        CreatePipelineLayout();
+        CreatePipelineLayout(globalDescSetLayout);
         CreatePipeline(renderPass);
     }
 
@@ -22,7 +23,7 @@ namespace SolEngine::Rendering
                                 nullptr);
     }
 
-    void GenericRenderSystem::CreatePipelineLayout()
+    void GenericRenderSystem::CreatePipelineLayout(VkDescriptorSetLayout globalDescSetLayout)
     {
         const VkPushConstantRange pushConstantRange
         {
@@ -31,11 +32,16 @@ namespace SolEngine::Rendering
             .size       = sizeof(SimplePushConstantData)
         };
 
+        const std::vector<VkDescriptorSetLayout> descriptorSetLayouts
+        {
+            globalDescSetLayout 
+        };
+
         const VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo
         {
             .sType                  = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
-            .setLayoutCount         = 0,
-            .pSetLayouts            = NULL,
+            .setLayoutCount         = (uint32_t)descriptorSetLayouts.size(),
+            .pSetLayouts            = descriptorSetLayouts.data(),
             .pushConstantRangeCount = 1,
             .pPushConstantRanges    = &pushConstantRange
         };

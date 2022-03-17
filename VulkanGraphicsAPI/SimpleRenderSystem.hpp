@@ -7,9 +7,10 @@ namespace SolEngine::Rendering
     {
     public:
         SimpleRenderSystem() = delete;
-        SimpleRenderSystem(SolDevice &rSolDevice, VkRenderPass renderPass);
+        SimpleRenderSystem(SolDevice &rSolDevice, const VkRenderPass renderPass, VkDescriptorSetLayout globalDescSetLayout);
 
-        void RenderGameObject(const SolCamera &solCamera, const VkCommandBuffer commandBuffer, const SolGameObject &gameObject) const;
+        void RenderGameObject(const SolCamera &solCamera, const VkCommandBuffer commandBuffer, 
+                              const VkDescriptorSet globalDescriptorSet, const SolGameObject &gameObject) const;
         void RenderGameObjects(const SolCamera &solCamera, const VkCommandBuffer commandBuffer, const std::vector<SolGameObject> &gameObjects) const;
     };
 }

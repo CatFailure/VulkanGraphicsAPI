@@ -47,18 +47,17 @@ Application::~Application()
 void Application::Run()
 {
     const uint32_t maxFramesInFlight = SolSwapchain::MAX_FRAMES_IN_FLIGHT;
-
-    std::unique_ptr<SolBuffer> uniformBufferObjects[maxFramesInFlight];
+    _uniformBufferObjects = std::vector<std::unique_ptr<SolBuffer>>(maxFramesInFlight);
 
     for (size_t i = 0; i < maxFramesInFlight; ++i)
     {
-        uniformBufferObjects[i] = std::make_unique<SolBuffer>(_solDevice,
-                                                              sizeof(GlobalUniformBufferObject),
-                                                              1U, 
-                                                              VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-                                                              VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+        _uniformBufferObjects.at(i) = std::make_unique<SolBuffer>(_solDevice,
+                                                                  sizeof(GlobalUniformBufferObject),
+                                                                  1U, 
+                                                                  VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+                                                                  VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
 
-        uniformBufferObjects[i]->Map();
+        _uniformBufferObjects.at(i)->Map();
     }
 
     std::unique_ptr<SolDescriptorSetLayout> pGlobalSetLayout = 
@@ -67,16 +66,17 @@ void Application::Run()
                                                                VK_SHADER_STAGE_VERTEX_BIT)
                                                    .Build();
 
-    VkDescriptorSet globalDescriptorSets[maxFramesInFlight];
+    _globalDescriptorSets = std::vector<VkDescriptorSet>(maxFramesInFlight);
 
     for (size_t i = 0; i < maxFramesInFlight; ++i)
     {
-        const VkDescriptorBufferInfo descriptorBufferInfo = uniformBufferObjects[i]->DescriptorBufferInfo();
+        const VkDescriptorBufferInfo descriptorBufferInfo = 
+            _uniformBufferObjects.at(i)->DescriptorBufferInfo();
 
         SolDescriptorWriter(*pGlobalSetLayout, 
                             *_pSolDescriptorPool).WriteBuffer(0U,
                                                               &descriptorBufferInfo)
-                                                 .Build(globalDescriptorSets[i]);
+                                                 .Build(_globalDescriptorSets.at(i));
     }
 
     while (!_solWindow.ShouldClose())
@@ -134,12 +134,23 @@ void Application::Render()
         return;
     }
 
+    const size_t frameIndex = _solRenderer.GetFrameIndex();
+
+    GlobalUniformBufferObject uniformBufferObject
+    {
+        .projectionViewMatrix = _solCamera.GetProjectionViewMatrix()
+    };
+
+    _uniformBufferObjects.at(frameIndex)->WriteToBuffer(&uniformBufferObject);
+    _uniformBufferObjects.at(frameIndex)->FlushBuffer();
+
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
     if (_pSolGrid->IsGridDataValid())
     {
         _pRenderSystem->RenderGameObject(_solCamera, 
                                          commandBuffer, 
+                                         _globalDescriptorSets.at(frameIndex),
                                          _pMarchingCubesSystem->GetGameObject());
     }
     else
@@ -172,7 +183,8 @@ void Application::SetupRandomNumberGenerator()
 void Application::SetupRenderSystem()
 {
     _pRenderSystem = std::make_unique<SimpleRenderSystem>(_solDevice, 
-                                                          _solRenderer.GetSwapchainRenderPass());
+                                                          _solRenderer.GetSwapchainRenderPass(),
+                                                          );
 }
 
 void Application::SetupCamera()
