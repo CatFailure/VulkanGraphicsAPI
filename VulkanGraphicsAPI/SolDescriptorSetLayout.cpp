@@ -8,23 +8,23 @@ namespace SolEngine::Descriptors
         : _rSolDevice(rSolDevice)
     {}
 
-    SolDescriptorSetLayout::Builder &SolDescriptorSetLayout::Builder::AddBinding(const uint32_t binding, 
+    SolDescriptorSetLayout::Builder &SolDescriptorSetLayout::Builder::AddBinding(const uint32_t bindingIndex, 
                                                                                  const VkDescriptorType descriptorType,
                                                                                  const VkShaderStageFlags stageFlags, 
                                                                                  const uint32_t count)
     {
-        DBG_ASSERT_MSG(_descSetLayoutBindings.count(binding) == 0, 
+        DBG_ASSERT_MSG(_descSetLayoutBindings.count(bindingIndex) == 0, 
                        "Binding already in use!");
 
         const VkDescriptorSetLayoutBinding descSetLayoutBinding
         {
-            .binding         = binding,
+            .binding         = bindingIndex,
             .descriptorType  = descriptorType,
             .descriptorCount = count,
             .stageFlags      = stageFlags
         };
 
-        _descSetLayoutBindings[binding] = descSetLayoutBinding;
+        _descSetLayoutBindings[bindingIndex] = descSetLayoutBinding;
 
         return *this;
     }
@@ -36,7 +36,8 @@ namespace SolEngine::Descriptors
 
     //======== Descriptor Set Layout ========//
 
-    SolDescriptorSetLayout::SolDescriptorSetLayout(SolDevice &rSolDevice, const DescSetLayoutBindingsUMap_t &bindings)
+    SolDescriptorSetLayout::SolDescriptorSetLayout(SolDevice& rSolDevice, 
+                                                   const DescSetLayoutBindingsUMap_t& bindings)
         : _rSolDevice(rSolDevice),
           _descSetLayoutBindings(bindings)
     {

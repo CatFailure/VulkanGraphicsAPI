@@ -25,7 +25,8 @@ namespace SolEngine::Descriptors
 			/// <param name="stageFlags">Which shader stages has access to this binding?</param>
 			/// <param name="count">Descriptor count held by the binding.</param>
 			/// <returns></returns>
-			Builder &AddBinding(const uint32_t binding, const VkDescriptorType descriptorType, const VkShaderStageFlags stageFlags, const uint32_t count = 1U);
+			Builder &AddBinding(const uint32_t bindingIndex, const VkDescriptorType descriptorType, 
+								const VkShaderStageFlags stageFlags, const uint32_t count = 1U);
 
 			/// <summary>
 			/// Creates instance of DescriptorSetLayout wrapper.

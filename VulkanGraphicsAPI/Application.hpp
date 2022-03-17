@@ -18,6 +18,9 @@ using namespace SolEngine::GUI;
 using namespace SolEngine::Rendering;
 using namespace SolEngine::System;
 
+struct GlobalUniformBufferObject
+{};
+
 class Application : public IMonoBehaviour
 {
 public:
@@ -30,6 +33,9 @@ public:
     void Run();
 
 private:
+    static constexpr float CAM_NEAR{ 0.01f };
+    static constexpr float CAM_FAR { 100.f };
+
     // Inherited via IMonoBehaviour
     virtual void Update(const float deltaTime) override;
     void Render();
@@ -37,6 +43,7 @@ private:
     void CreateDescriptorPool();
 
     void SetupRandomNumberGenerator();
+    void SetupRenderSystem();
     void SetupCamera();
     void SetupGrid();
     void SetupMarchingCubesSystem();
@@ -70,7 +77,5 @@ private:
     std::unique_ptr<SolGrid>             _pSolGrid            { nullptr };
     std::unique_ptr<MarchingCubesSystem> _pMarchingCubesSystem{ nullptr };
     std::unique_ptr<GameOfLifeSystem>    _pGameOfLifeSystem   { nullptr };
-
-    static constexpr float CAM_NEAR{ 0.01f };
-    static constexpr float CAM_FAR { 100.f };
+    std::unique_ptr<SimpleRenderSystem>  _pRenderSystem       { nullptr };
 };

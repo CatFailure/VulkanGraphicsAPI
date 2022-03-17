@@ -25,6 +25,7 @@ Application::Application(const ApplicationData &appData,
     CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI
 
+    SetupRenderSystem();
     SetupRandomNumberGenerator();
     SetupCamera();
     SetupGrid();
@@ -45,6 +46,39 @@ Application::~Application()
 
 void Application::Run()
 {
+    const uint32_t maxFramesInFlight = SolSwapchain::MAX_FRAMES_IN_FLIGHT;
+
+    std::unique_ptr<SolBuffer> uniformBufferObjects[maxFramesInFlight];
+
+    for (size_t i = 0; i < maxFramesInFlight; ++i)
+    {
+        uniformBufferObjects[i] = std::make_unique<SolBuffer>(_solDevice,
+                                                              sizeof(GlobalUniformBufferObject),
+                                                              1U, 
+                                                              VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+                                                              VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+
+        uniformBufferObjects[i]->Map();
+    }
+
+    std::unique_ptr<SolDescriptorSetLayout> pGlobalSetLayout = 
+        SolDescriptorSetLayout::Builder(_solDevice).AddBinding(0, 
+                                                               VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+                                                               VK_SHADER_STAGE_VERTEX_BIT)
+                                                   .Build();
+
+    VkDescriptorSet globalDescriptorSets[maxFramesInFlight];
+
+    for (size_t i = 0; i < maxFramesInFlight; ++i)
+    {
+        const VkDescriptorBufferInfo descriptorBufferInfo = uniformBufferObjects[i]->DescriptorBufferInfo();
+
+        SolDescriptorWriter(*pGlobalSetLayout, 
+                            *_pSolDescriptorPool).WriteBuffer(0U,
+                                                              &descriptorBufferInfo)
+                                                 .Build(globalDescriptorSets[i]);
+    }
+
     while (!_solWindow.ShouldClose())
     {
         glfwPollEvents();   // Poll Window Events
@@ -94,8 +128,6 @@ void Application::Update(const float deltaTime)
 void Application::Render()
 {
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
-    const SimpleRenderSystem renderSystem(_solDevice, 
-                                          _solRenderer.GetSwapchainRenderPass());
 
     if (commandBuffer == nullptr)
     {
@@ -106,9 +138,9 @@ void Application::Render()
 
     if (_pSolGrid->IsGridDataValid())
     {
-        renderSystem.RenderGameObject(_solCamera, 
-                                      commandBuffer, 
-                                      _pMarchingCubesSystem->GetGameObject());
+        _pRenderSystem->RenderGameObject(_solCamera, 
+                                         commandBuffer, 
+                                         _pMarchingCubesSystem->GetGameObject());
     }
     else
     {
@@ -135,6 +167,12 @@ void Application::CreateDescriptorPool()
 void Application::SetupRandomNumberGenerator()
 {
     RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+}
+
+void Application::SetupRenderSystem()
+{
+    _pRenderSystem = std::make_unique<SimpleRenderSystem>(_solDevice, 
+                                                          _solRenderer.GetSwapchainRenderPass());
 }
 
 void Application::SetupCamera()

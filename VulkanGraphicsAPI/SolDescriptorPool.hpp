@@ -11,9 +11,9 @@ namespace SolEngine::Descriptors
         public:
             Builder(SolDevice &rSolDevice);
 
-            Builder &AddPoolSize(const VkDescriptorType descriptorType, const uint32_t count);
-            Builder &SetPoolFlags(const VkDescriptorPoolCreateFlags flags);
-            Builder &SetMaxDescriptorSets(const uint32_t count);
+            Builder& AddPoolSize(const VkDescriptorType descriptorType, const uint32_t count);
+            Builder& SetPoolFlags(const VkDescriptorPoolCreateFlags flags);
+            Builder& SetMaxDescriptorSets(const uint32_t count);
 
             std::unique_ptr<SolDescriptorPool> Build() const;
 
@@ -40,7 +40,7 @@ namespace SolEngine::Descriptors
         // Inherited via IDisposable
         virtual void Dispose() override;
 
-        SolDevice &      _rSolDevice;
+        SolDevice&       _rSolDevice;
         VkDescriptorPool _descriptorPool;
 
         friend class SolDescriptorWriter;

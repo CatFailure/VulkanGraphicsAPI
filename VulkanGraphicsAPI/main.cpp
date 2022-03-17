@@ -11,7 +11,7 @@ int main()
 	DiagnosticData     diagnosticData    {};
 	GridSettings       gridSettings		 { .dimensions = glm::uvec3{ 30 } };
 	GameOfLifeSettings gameOfLifeSettings{};
-	SimulationSettings simulationSettings{};
+	SimulationSettings simulationSettings{ .state = SimulationState::PLAY };
 
 	Application application(appData, 
 							diagnosticData,

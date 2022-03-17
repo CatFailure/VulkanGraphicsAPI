@@ -9,8 +9,8 @@ namespace SolEngine::Descriptors
     public:
         SolDescriptorWriter(SolDescriptorSetLayout &rSolDescSetLayout, SolDescriptorPool &rSolDescPool);
 
-        SolDescriptorWriter &WriteBuffer(const uint32_t binding, const VkDescriptorBufferInfo *pBufferInfo);
-        SolDescriptorWriter &WriteImage(const uint32_t binding, const VkDescriptorImageInfo *pImageInfo);
+        SolDescriptorWriter& WriteBuffer(const uint32_t binding, const VkDescriptorBufferInfo *pBufferInfo);
+        SolDescriptorWriter& WriteImage(const uint32_t binding, const VkDescriptorImageInfo *pImageInfo);
 
         bool Build(VkDescriptorSet &rDescSet);
         void Overwrite(const VkDescriptorSet &newDescSet);
