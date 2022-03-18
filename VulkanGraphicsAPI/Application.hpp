@@ -1,6 +1,5 @@
 #pragma once
 #include "SolClock.hpp"
-#include "SolGameObject.hpp"
 #include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
@@ -16,7 +15,6 @@ using namespace SolEngine;
 using namespace SolEngine::Data;
 using namespace SolEngine::Descriptors;
 using namespace SolEngine::GUI;
-using namespace SolEngine::Interface;
 using namespace SolEngine::Rendering;
 using namespace SolEngine::System;
 
@@ -24,8 +22,9 @@ class Application : public IMonoBehaviour
 {
 public:
     Application() = delete;
-    Application(const ApplicationData &appData, DiagnosticData& rDiagnosticData, 
-                GridSettings& rGridSettings, GameOfLifeSettings& rGameOfLifeSettings);
+    Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData, 
+                GridSettings& rGridSettings, GameOfLifeSettings& rGameOfLifeSettings,
+                SimulationSettings& rSimulationSettings);
     ~Application();
         
     void Run();
@@ -36,17 +35,25 @@ private:
     void Render();
 
     void CreateDescriptorPool();
+
+    void SetupRandomNumberGenerator();
     void SetupCamera();
-    void SetupGrid(DiagnosticData& rDiagnosticData, GridSettings& rGridSettings);
-    void SetupMarchingCubesSystem(DiagnosticData& rDiagnosticData);
-    void SetupGameOfLifeSystem(GameOfLifeSettings& rGameOfLifeSettings);
-    void SetupMarchingCubesDataEventCallbacks();
+    void SetupGrid();
+    void SetupMarchingCubesSystem();
+    void SetupGameOfLifeSystem();
+    void SetupEventCallbacks();
+
+    void CheckForSimulationResetFlag();
 
 #ifndef DISABLE_IM_GUI
     void CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI
 
-    ApplicationData _appData;
+    ApplicationData     _appData;
+    DiagnosticData&     _rDiagnosticData;
+    GridSettings&       _rGridSettings;
+    GameOfLifeSettings& _rGameOfLifeSettings;
+    SimulationSettings& _rSimulationSettings;
 
     SolClock    _solClock;
     SolCamera   _solCamera;

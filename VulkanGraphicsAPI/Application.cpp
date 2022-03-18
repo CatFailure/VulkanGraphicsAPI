@@ -3,7 +3,8 @@
 Application::Application(const ApplicationData &appData, 
                          DiagnosticData& rDiagnosticData,
                          GridSettings& rGridSettings, 
-                         GameOfLifeSettings& rGameOfLifeSettings)
+                         GameOfLifeSettings& rGameOfLifeSettings,
+                         SimulationSettings& rSimulationSettings)
     : _solCamera(_solRenderer),
       _solRenderer(_appData,
                    _solWindow, 
@@ -12,7 +13,11 @@ Application::Application(const ApplicationData &appData,
                  _appData),
       _solWindow(_appData.windowTitle,
                  _appData.windowDimensions),
-      _appData(appData)
+      _appData(appData),
+      _rDiagnosticData(rDiagnosticData),
+      _rGridSettings(rGridSettings),
+      _rGameOfLifeSettings(rGameOfLifeSettings),
+      _rSimulationSettings(rSimulationSettings)
 {
     CreateDescriptorPool();
 
@@ -20,11 +25,12 @@ Application::Application(const ApplicationData &appData,
     CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI
 
+    SetupRandomNumberGenerator();
     SetupCamera();
-    SetupGrid(rDiagnosticData, rGridSettings);
-    SetupMarchingCubesSystem(rDiagnosticData);
-    SetupGameOfLifeSystem(rGameOfLifeSettings);
-    SetupMarchingCubesDataEventCallbacks();
+    SetupGrid();
+    SetupMarchingCubesSystem();
+    SetupGameOfLifeSystem();
+    SetupEventCallbacks();
 }
 
 Application::~Application()
@@ -46,8 +52,8 @@ void Application::Run()
         const float deltaTime = _solClock.Restart();
 
 #ifndef DISABLE_IM_GUI
-        _diagnosticData.deltaTimeSeconds = deltaTime;
-        _diagnosticData.totalTimeSeconds = _solClock.GetTotalTime();
+        _rDiagnosticData.deltaTimeSeconds = deltaTime;
+        _rDiagnosticData.totalTimeSeconds = _solClock.GetTotalTime();
 
         // Start Dear ImGui frame...
         _pGuiWindowManager->NewFrame();
@@ -68,6 +74,8 @@ void Application::Update(const float deltaTime)
                                            .position);
 
     _solCamera.Update(deltaTime);
+
+    CheckForSimulationResetFlag();
 
     if (_pSolGrid->IsGridDataValid())
     {
@@ -96,11 +104,6 @@ void Application::Render()
 
     _solRenderer.BeginSwapchainRenderPass(commandBuffer);
 
-#ifndef DISABLE_IM_GUI
-    // Render Dear ImGui...
-    _pGuiWindowManager->Render(commandBuffer);
-#endif  // !DISABLE_IM_GUI
-
     if (_pSolGrid->IsGridDataValid())
     {
         renderSystem.RenderGameObject(_solCamera, 
@@ -111,6 +114,11 @@ void Application::Render()
     {
         printf_s("Bad Grid data, cannot render GameObject!\n");
     }
+
+#ifndef DISABLE_IM_GUI
+    // Render Dear ImGui...
+    _pGuiWindowManager->Render(commandBuffer);
+#endif  // !DISABLE_IM_GUI
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
@@ -124,6 +132,11 @@ void Application::CreateDescriptorPool()
                                                                 .Build();
 }
 
+void Application::SetupRandomNumberGenerator()
+{
+    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+}
+
 void Application::SetupCamera()
 {
     const PerspectiveProjectionInfo projInfo
@@ -133,51 +146,89 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 35.f, 2.5f, 35.f })
+              .SetPosition({ 35.f, 2.5f, 55.f })
               .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
 }
 
-void Application::SetupGrid(DiagnosticData& rDiagnosticData,
-                            GridSettings& rGridSettings)
+void Application::SetupGrid()
 {
-    _pSolGrid = std::make_unique<SolGrid>(rGridSettings, 
-                                          rDiagnosticData);
+    _pSolGrid = std::make_unique<SolGrid>(_rGridSettings, 
+                                          _rDiagnosticData);
 }
 
-void Application::SetupMarchingCubesSystem(DiagnosticData& rDiagnosticData)
+void Application::SetupMarchingCubesSystem()
 {
     _pMarchingCubesSystem = std::make_unique<MarchingCubesSystem>(_solDevice, 
                                                                   *_pSolGrid,
-                                                                  rDiagnosticData);
+                                                                  _rDiagnosticData);
 
     _pMarchingCubesSystem->March();
 }
 
-void Application::SetupGameOfLifeSystem(GameOfLifeSettings& rGameOfLifeSettings)
+void Application::SetupGameOfLifeSystem()
 {
     _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
-                                                            rGameOfLifeSettings);
+                                                            _rGameOfLifeSettings,
+                                                            _rSimulationSettings);
 
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
 
-void Application::SetupMarchingCubesDataEventCallbacks()
+void Application::SetupEventCallbacks()
 {
     _pGameOfLifeSystem->onUpdateAllCellStatesEvent
                       .AddListener([this]() 
                       { 
                           _pMarchingCubesSystem->March(); 
                       });
+
+    _rSimulationSettings.onSimulationSpeedChangedEvent
+                        .AddListener([this](const float speed) 
+                        {
+                            // Force update the next generation delay to the new value
+                            _pGameOfLifeSystem->ResetNextGenerationDelayRemaining();
+                        });
+}
+
+void Application::CheckForSimulationResetFlag()
+{
+    if (!_rSimulationSettings.isSimulationResetRequested)
+    {
+        return;
+    }
+
+    // Reset the seed to generate new values 
+    // OR keep same values for repeatable simulations
+    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+
+    // Reset the grid nodes and re-generate node states
+    _pSolGrid->Reset();
+
+    // Force Game of Life to re-check live neighbours
+    _pGameOfLifeSystem->ForceUpdateCellStates();
+
+    // Finished!
+    _rSimulationSettings.isSimulationResetRequested = false;
 }
 
 #ifndef DISABLE_IM_GUI
 void Application::CreateGuiWindowManager()
 {
+    const ImGuiWindowFlags flags{ ImGuiWindowFlags_AlwaysAutoResize };
+
     _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,  
                                                             _solWindow,
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());
 
-    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>("Diagnostics", true, 0, _diagnosticData);
+    _pGuiWindowManager->CreateGuiWindow<GuiDiagnosticWindow>(TITLE_DIAGNOSTICS,
+                                                             true,
+                                                             flags,
+                                                             _rDiagnosticData)
+                      .CreateGuiWindow<GuiSettingsWindow>(TITLE_SETTINGS, 
+                                                          true, 
+                                                          flags, 
+                                                          _rGameOfLifeSettings,
+                                                          _rSimulationSettings);
 }
 #endif // !DISABLE_IM_GUI

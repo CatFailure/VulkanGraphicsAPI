@@ -3,6 +3,7 @@
 #include "SolDevice.hpp"
 #include "SolRenderer.hpp"
 #include "GuiDiagnosticWindow.hpp"
+#include "GuiSettingsWindow.hpp"
 
 using namespace SolEngine::Interface;
 
@@ -22,15 +23,17 @@ namespace SolEngine::GUI
         virtual void Update(const float deltaTime) override;
 
         template<typename _TyWindow, typename ...TyArgs>
-        void CreateGuiWindow(const char *windowTitle, 
-                             const bool isActive = true, 
-                             const ImGuiWindowFlags flags = 0, 
-                             TyArgs&&... args)
+        GuiWindowManager& CreateGuiWindow(const char *windowTitle, 
+                                          const bool isActive = true, 
+                                          const ImGuiWindowFlags flags = 0, 
+                                          TyArgs&&... args)
         {
             _guiWindows.push_back(std::make_unique<_TyWindow>(windowTitle, 
                                                               isActive, 
                                                               flags,
                                                               args...));
+
+            return *this;
         }
 
     private:

@@ -8,10 +8,16 @@ namespace SolEngine::Rendering
                               renderPass)
     {}
 
-    void SimpleRenderSystem::RenderGameObject(const SolCamera &solCamera,
+    void SimpleRenderSystem::RenderGameObject(const SolCamera& solCamera,
                                               const VkCommandBuffer commandBuffer, 
-                                              const SolGameObject &gameObject) const
+                                              const SolGameObject& gameObject) const
     {
+        if (gameObject.GetModel() == nullptr)
+        {
+            // No model to bind/draw
+            return;
+        }
+
         const glm::mat4 projectionView = solCamera.GetProjectionViewMatrix();
 
         _pSolPipeline->Bind(commandBuffer);

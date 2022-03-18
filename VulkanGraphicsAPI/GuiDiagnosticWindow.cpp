@@ -6,16 +6,18 @@ namespace SolEngine::GUI
                                              const bool isActive, 
                                              const ImGuiWindowFlags windowFlags, 
                                              DiagnosticData &rDiagnosticData)
-        : _rDiagnosticData(_rRealtimeDiagnosticData),
-          _rRealtimeDiagnosticData(rDiagnosticData),
-          IGuiWindow(windowTitle, isActive, windowFlags)
+        : IGuiWindow(windowTitle, 
+                     isActive, 
+                     windowFlags),
+        _rDiagnosticData(_rRealtimeDiagnosticData),
+        _rRealtimeDiagnosticData(rDiagnosticData)
     {
-        _updateFrequency = 5.f;
+        _updateDataFrequency = 5.f;
 
-        _onUpdateEvent.AddListener([this]() { OnUpdate_Method(); });
+        _onUpdateDataEvent.AddListener([this]() { OnUpdateData_Method(); });
     }
 
-    void GuiDiagnosticWindow::RenderWindowContents()
+    void GuiDiagnosticWindow::Render()
     {
         const float framesPerSecond = 1.f / _rDiagnosticData.deltaTimeSeconds;
         const float deltaTimeMS     = _rDiagnosticData.deltaTimeSeconds * SECONDS_TO_MILLISECONDS;
@@ -44,7 +46,7 @@ namespace SolEngine::GUI
         ImGui::End();
     }
 
-    void GuiDiagnosticWindow::OnUpdate_Method()
+    void GuiDiagnosticWindow::OnUpdateData_Method()
     {
         _rDiagnosticData = _rRealtimeDiagnosticData;
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "DebugHelpers.hpp"
-#include "GridHelpers.hpp"
+#include "Helpers.hpp"
 #include "Cells.hpp"
 #include "GridSettings.hpp"
 
@@ -25,14 +25,12 @@ namespace SolEngine
 		SolGrid(GridSettings& rGridData, DiagnosticData& rDiagnosticData);
 		~SolGrid();
 
+		void Reset();
+
+		bool			  IsGridDataValid() const { return _isGridDataValid; }
+		const glm::uvec3& GetDimensions()   const { return _rGridSettings.dimensions; }
+
 		void Initialise();
-
-		bool IsGridDataValid() const { return _isGridDataValid; }
-
-		const glm::uvec3& GetDimensions()	    const { return _rGridSettings.dimensions; }
-		float			  GetStep()				const { return _rGridSettings.step; }
-		glm::vec3		  GetScaledDimensions() const { return (glm::vec3)GetDimensions() / GetStep(); }
-
 		void TraverseAllGridCells(const TraverseCubesCallback_t& callback);
 
 		Cells cells;
@@ -40,14 +38,14 @@ namespace SolEngine
 	private:
 		void InitialiseNodes();
 		void SetBoundsWithDimensions(const glm::uvec3& dimensions);
-		bool AreCellLimitsExceeded(const glm::uvec3& dimensions, const float step);
-		bool IsMaxCellsPerAxisExceeded(const uint32_t axisSize, const float step);
+		bool AreCellLimitsExceeded(const glm::uvec3& dimensions);
+		bool IsMaxCellsPerAxisExceeded(const uint32_t axisSize);
 
 		GridSettings&   _rGridSettings;
 		DiagnosticData& _rDiagnosticData;
 
-		glm::vec3 _minBounds { 0 };
-		glm::vec3 _maxBounds { 0 };
+		glm::ivec3 _minBounds { 0 };
+		glm::ivec3 _maxBounds { 0 };
 
 		bool _isGridDataValid{ false };
 	};
