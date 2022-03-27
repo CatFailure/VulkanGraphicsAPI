@@ -10,7 +10,7 @@ int main()
 
 	DiagnosticData     diagnosticData    {};
 	GridSettings       gridSettings		 { .dimensions = glm::uvec3{ 30 } };
-	GameOfLifeSettings gameOfLifeSettings{};
+	GameOfLifeSettings gameOfLifeSettings{ .neighbourhoodType = NeighbourhoodType::VON_NEUMANN_NEIGHBOURHOOD };
 	SimulationSettings simulationSettings{};
 
 	Application application(appData, 
