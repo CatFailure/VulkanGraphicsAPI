@@ -19,6 +19,7 @@ namespace SolEngine::GUI::View
 	private:
 		static constexpr const char* RESET_SETTINGS_BUTTON_ID{"Label##ResetGameOfLifeSettings"};
 
+		void RenderGameOfLifeNeighbourhoodCombo(NeighbourhoodType& rNeighbourhoodType);
 		void RenderGameOfLifeUnderpopulationSlider(int& rUnderpopulationCount, const int overpopulationCount);
 		void RenderGameOfLifeOverpopulationSlider(int& rOverpopulationCount, const int underpopulationCount);
 		void RenderGameOfLifeReproductionSlider(int& rReproductionCount);
@@ -30,5 +31,7 @@ namespace SolEngine::GUI::View
 
 		GameOfLifeSettings  _defaultGameOfLifeSettings{};
 		GameOfLifeSettings& _rGameOfLifeSettings;
+
+		const char* _neighbourhoodTypes[(size_t)NeighbourhoodType::COUNT]{ "Moore", "Von Neumann" };
 	};
 }

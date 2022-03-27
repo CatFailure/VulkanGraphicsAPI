@@ -101,7 +101,7 @@ namespace SolEngine::System
                                            if (rCellState)
                                            {
                                                rCellState = !(cellNeighbourCount < underpopulationCount) && // Any live cell with fewer than minLiveNeighbourCount live neighbours dies, as if by underpopulation.
-                                                            !(cellNeighbourCount > overpopulationCount);   // Any live cell with more than maxLiveNeighbourCount live neighbours dies, as if by overpopulation.
+                                                            !(cellNeighbourCount > overpopulationCount);    // Any live cell with more than maxLiveNeighbourCount live neighbours dies, as if by overpopulation.
                                        
                                                // Any live cell with minLiveNeighbourCount or maxLiveNeighbourCount 
                                                // live neighbours lives on to the next generation.

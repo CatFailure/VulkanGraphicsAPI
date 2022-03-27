@@ -19,13 +19,40 @@ namespace SolEngine::GUI::View
 		int overpopulationCount	    = (int)_rGameOfLifeSettings.overpopulationCount;
 		int reproLiveNeighbourCount = (int)_rGameOfLifeSettings.reproductionCount;
 
+		RenderGameOfLifeNeighbourhoodCombo(_rGameOfLifeSettings.neighbourhoodType);
 		RenderGameOfLifeUnderpopulationSlider(underpopulationCount, overpopulationCount);
 		RenderGameOfLifeOverpopulationSlider(overpopulationCount, underpopulationCount);
 		RenderGameOfLifeReproductionSlider(reproLiveNeighbourCount);
 		RenderGameOfLifeResetButton();
 	}
 
-	void GuiGameOfLifeView::RenderGameOfLifeUnderpopulationSlider(int& rUnderpopulationCount, 
+	void GuiGameOfLifeView::RenderGameOfLifeNeighbourhoodCombo(NeighbourhoodType& rNeighbourhoodType)
+	{
+		int selectedType = (int)rNeighbourhoodType;
+
+		if (ImGui::Combo("Neighbourhood Type",
+						 &selectedType, 
+						 _neighbourhoodTypes, 
+						 IM_ARRAYSIZE(_neighbourhoodTypes)))
+		{
+			rNeighbourhoodType = (NeighbourhoodType)selectedType;
+		}
+
+		// Tooltip - Neighbourhood Type
+		if (!ImGui::IsItemHovered())
+		{
+			return;
+		}
+
+		ImGui::BeginTooltip();
+		{
+			ImGui::Text(TOOLTIP_GAME_OF_LIFE_NEIGHBOURHOOD_TYPE, 
+						_neighbourhoodTypes[(size_t)_defaultGameOfLifeSettings.neighbourhoodType]);	// Default Value
+		}
+		ImGui::EndTooltip();
+	}
+
+	void GuiGameOfLifeView::RenderGameOfLifeUnderpopulationSlider(int& rUnderpopulationCount,
 																  const int overpopulationCount)
 	{
 		if (ImGui::SliderInt(LABEL_GAME_OF_LIFE_MIN_LIVE_NEIGHBOURS,
