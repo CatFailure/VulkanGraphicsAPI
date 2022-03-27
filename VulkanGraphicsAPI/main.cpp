@@ -4,7 +4,7 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[13/03/22] Simulation Settings GUI",
+		.windowTitle	  = "[27/03/22] Neighbour Inclusion Type",
 		.windowDimensions = glm::uvec2(1280, 720)
 	};
 
