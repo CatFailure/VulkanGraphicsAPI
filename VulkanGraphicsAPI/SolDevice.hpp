@@ -1,5 +1,7 @@
 #pragma once
+#if _DEBUG
 #define ENABLE_VULKAN_DEBUG_CALLBACK
+#endif
 
 #include <set>
 
@@ -12,20 +14,18 @@ using namespace SolEngine::Data;
 
 namespace SolEngine
 {
-    class SolDevice;
-
-    typedef VkBool32(__stdcall SolDevice::*VulkanDebugReportCallback_t)(VkDebugReportFlagsEXT,
-                                                                        VkDebugReportObjectTypeEXT,
-                                                                        uint64_t,
-                                                                        size_t,
-                                                                        int32_t,
-                                                                        const char*,
-                                                                        const char*,
-                                                                        void*);
-
     class SolDevice : private IDisposable
     {
     public:
+        typedef VkBool32(__stdcall SolDevice::*VulkanDebugReportCallback_t)(VkDebugReportFlagsEXT,
+                                                                            VkDebugReportObjectTypeEXT,
+                                                                            uint64_t,
+                                                                            size_t,
+                                                                            int32_t,
+                                                                            const char*,
+                                                                            const char*,
+                                                                            void*);
+
         SolDevice(SolWindow& rSolWindow, const ApplicationData& appData);
         ~SolDevice();
 
