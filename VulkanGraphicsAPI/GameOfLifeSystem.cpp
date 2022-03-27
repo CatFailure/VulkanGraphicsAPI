@@ -99,6 +99,12 @@ namespace SolEngine::System
                                                                    gridNodes.pCellStates, 
                                                                    rLiveNeighbourCount);
                                            }
+
+                                           // Do diagonals need to be checked?
+                                           if (_rGameOfLifeSettings.neighbourhoodType != NeighbourhoodType::MOORE_NEIGHBOURHOOD)
+                                           {
+                                               return;
+                                           }
                                        });
     }
 

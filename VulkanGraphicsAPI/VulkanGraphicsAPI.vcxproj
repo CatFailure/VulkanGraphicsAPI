@@ -382,7 +382,7 @@
     <ClInclude Include="GuiSimulationView.hpp" />
     <ClInclude Include="Helpers.hpp" />
     <ClInclude Include="MarchingCubesSystem.hpp" />
-    <ClInclude Include="NeighbourType.hpp" />
+    <ClInclude Include="NeighbourhoodType.hpp" />
     <ClInclude Include="RandomNumberGenerator.hpp" />
     <ClInclude Include="SimulationSettings.hpp" />
     <ClInclude Include="SimulationState.hpp" />
