@@ -26,6 +26,12 @@ namespace SolEngine::GUI::View
 		RenderGameOfLifeResetButton();
 	}
 
+	uint32_t GuiGameOfLifeView::GetMaxCellNeighbourCount() const
+	{ 
+		return _rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::MOORE_NEIGHBOURHOOD ? 
+			CELL_NEIGHBOURS_COUNT_MOORE : CELL_NEIGHBOURS_COUNT_VON_NEUMANN; 
+	}
+
 	void GuiGameOfLifeView::RenderGameOfLifeNeighbourhoodCombo(NeighbourhoodType& rNeighbourhoodType)
 	{
 		int selectedType = (int)rNeighbourhoodType;
@@ -33,9 +39,10 @@ namespace SolEngine::GUI::View
 		if (ImGui::Combo("Neighbourhood Type",
 						 &selectedType, 
 						 _neighbourhoodTypes, 
-						 IM_ARRAYSIZE(_neighbourhoodTypes)))
+						 (int)NeighbourhoodType::COUNT))
 		{
 			rNeighbourhoodType = (NeighbourhoodType)selectedType;
+			OnNeighbourhoodTypeValueChanged(rNeighbourhoodType);
 		}
 
 		// Tooltip - Neighbourhood Type
@@ -46,8 +53,10 @@ namespace SolEngine::GUI::View
 
 		ImGui::BeginTooltip();
 		{
+			const size_t neighbourhoodTypeIndex = (size_t)_defaultGameOfLifeSettings.neighbourhoodType;
+
 			ImGui::Text(TOOLTIP_GAME_OF_LIFE_NEIGHBOURHOOD_TYPE, 
-						_neighbourhoodTypes[(size_t)_defaultGameOfLifeSettings.neighbourhoodType]);	// Default Value
+						_neighbourhoodTypes[neighbourhoodTypeIndex]);	// Default Value
 		}
 		ImGui::EndTooltip();
 	}
@@ -81,10 +90,12 @@ namespace SolEngine::GUI::View
 	void GuiGameOfLifeView::RenderGameOfLifeOverpopulationSlider(int& rOverpopulationCount, 
 																 const int underpopulationCount)
 	{
+		const uint32_t maxCellNeighbourCount = GetMaxCellNeighbourCount();
+
 		if (ImGui::SliderInt(LABEL_GAME_OF_LIFE_MAX_LIVE_NEIGHBOURS,
 							 &rOverpopulationCount,
 							 underpopulationCount,
-							 CELL_NEIGHBOURS_COUNT))
+							 maxCellNeighbourCount))
 		{
 			OnOverpopulationValueChanged(rOverpopulationCount);
 		}
@@ -107,10 +118,12 @@ namespace SolEngine::GUI::View
 
 	void GuiGameOfLifeView::RenderGameOfLifeReproductionSlider(int& rReproductionCount)
 	{
+		const uint32_t maxCellNeighbourCount = GetMaxCellNeighbourCount();
+
 		if (ImGui::SliderInt(LABEL_GAME_OF_LIFE_REPRO_LIVE_NEIGHBOURS,
 							 &rReproductionCount,
 							 0,
-							 CELL_NEIGHBOURS_COUNT))
+							 maxCellNeighbourCount))
 		{
 			OnReproductionValueChanged(rReproductionCount);
 		}
@@ -127,7 +140,7 @@ namespace SolEngine::GUI::View
 			ImGui::Text(TOOLTIP_GAME_OF_LIFE_REPRODUCE_LIVE_NEIGHBOURS, 
 						rReproductionCount,										// Current Value
 						0U,														// Min Value
-						CELL_NEIGHBOURS_COUNT,									// Max Value
+						maxCellNeighbourCount,									// Max Value
 						(size_t)_defaultGameOfLifeSettings.reproductionCount);	// Default Value
 		}
 		ImGui::EndTooltip();
@@ -153,6 +166,21 @@ namespace SolEngine::GUI::View
 			ImGui::Text(TOOLTIP_GAME_OF_LIFE_RESET);
 		}
 		ImGui::EndTooltip();
+	}
+
+	void GuiGameOfLifeView::OnNeighbourhoodTypeValueChanged(const NeighbourhoodType value)
+	{
+		// Clamp settings values on NeighbourhoodType change,
+		// So values are still valid
+		const uint32_t minCellNeighbourCount	= 0U;
+		const uint32_t maxCellNeighbourCount    = GetMaxCellNeighbourCount();
+		NeighbourCount_t& rUnderpopulationCount = _rGameOfLifeSettings.underpopulationCount;
+		NeighbourCount_t& rOverpopulationCount  = _rGameOfLifeSettings.overpopulationCount;
+		NeighbourCount_t& rReproductionCount	= _rGameOfLifeSettings.reproductionCount;
+
+		rOverpopulationCount  = Clamp(rOverpopulationCount, rUnderpopulationCount, maxCellNeighbourCount);
+		rUnderpopulationCount = Clamp(rUnderpopulationCount, minCellNeighbourCount, rOverpopulationCount);
+		rReproductionCount	  = Clamp(rReproductionCount, minCellNeighbourCount, maxCellNeighbourCount);
 	}
 
 	void GuiGameOfLifeView::OnUnderpopulationValueChanged(const int value)
