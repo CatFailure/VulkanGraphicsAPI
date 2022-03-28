@@ -337,6 +337,7 @@
     <ClCompile Include="GenericRenderSystem.cpp" />
     <ClCompile Include="GuiDiagnosticWindow.cpp" />
     <ClCompile Include="GuiGameOfLifeView.cpp" />
+    <ClCompile Include="GuiGridView.cpp" />
     <ClCompile Include="GuiSettingsWindow.cpp" />
     <ClCompile Include="GuiSimulationView.cpp" />
     <ClCompile Include="GuiWindowManager.cpp" />
@@ -378,6 +379,7 @@
     <ClInclude Include="GameOfLifeSystem.hpp" />
     <ClInclude Include="GridSettings.hpp" />
     <ClInclude Include="GuiGameOfLifeView.hpp" />
+    <ClInclude Include="GuiGridView.hpp" />
     <ClInclude Include="GuiSettingsWindow.hpp" />
     <ClInclude Include="GuiSimulationView.hpp" />
     <ClInclude Include="Helpers.hpp" />

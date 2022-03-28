@@ -168,6 +168,9 @@
     <ClCompile Include="GuiGameOfLifeView.cpp">
       <Filter>SolEngine\GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="GuiGridView.cpp">
+      <Filter>SolEngine\GUI\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -349,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="NeighbourhoodType.hpp">
       <Filter>SolEngine\Enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiGridView.hpp">
+      <Filter>SolEngine\GUI\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
