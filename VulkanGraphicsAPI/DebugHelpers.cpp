@@ -19,7 +19,7 @@ namespace Utility
         errno_t result = fopen_s(&pFile, logFileName, mode);    // Open file for writing
 
         DBG_ASSERT_MSG(pFile || result,
-            "Log file could not be opened.");
+                       "Log file could not be opened.");
 
         fprintf(pFile, "%s", buffer);   // Write to file
         fclose(pFile);                  // Close file

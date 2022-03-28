@@ -8,7 +8,7 @@ namespace SolEngine::Descriptors
         : _rSolDevice(rSolDevice)
     {}
 
-    SolDescriptorPool::Builder &SolDescriptorPool::Builder::AddPoolSize(const VkDescriptorType descriptorType, 
+    SolDescriptorPool::Builder& SolDescriptorPool::Builder::AddPoolSize(const VkDescriptorType descriptorType, 
                                                                         const uint32_t count)
     {
         _poolSizes.push_back({ descriptorType, count });
@@ -16,14 +16,14 @@ namespace SolEngine::Descriptors
         return *this;
     }
 
-    SolDescriptorPool::Builder &SolDescriptorPool::Builder::SetPoolFlags(const VkDescriptorPoolCreateFlags flags)
+    SolDescriptorPool::Builder& SolDescriptorPool::Builder::SetPoolFlags(const VkDescriptorPoolCreateFlags flags)
     {
         _poolFlags = flags;
 
         return *this;
     }
 
-    SolDescriptorPool::Builder &SolDescriptorPool::Builder::SetMaxDescriptorSets(const uint32_t count)
+    SolDescriptorPool::Builder& SolDescriptorPool::Builder::SetMaxDescriptorSets(const uint32_t count)
     {
         _maxDescriptorSets = count;
 
@@ -40,10 +40,10 @@ namespace SolEngine::Descriptors
 
     //======== SolDescriptorPool ========//
 
-    SolDescriptorPool::SolDescriptorPool(SolDevice &rSolDevice,
+    SolDescriptorPool::SolDescriptorPool(SolDevice& rSolDevice,
                                          const uint32_t maxDescriptorSets, 
                                          const VkDescriptorPoolCreateFlags poolFlags, 
-                                         const std::vector<VkDescriptorPoolSize> &poolSizes)
+                                         const std::vector<VkDescriptorPoolSize>& poolSizes)
         : _rSolDevice(rSolDevice)
     {
         const VkDescriptorPoolCreateInfo descPoolCreateInfo
@@ -68,7 +68,7 @@ namespace SolEngine::Descriptors
     }
 
     bool SolDescriptorPool::AllocateDescriptorSet(const VkDescriptorSetLayout descriptorSetLayout, 
-                                                  VkDescriptorSet &rDescriptor) const
+                                                  VkDescriptorSet& rDescriptor) const
     {
         const VkDescriptorSetAllocateInfo descSetAllocInfo
         {
@@ -85,7 +85,7 @@ namespace SolEngine::Descriptors
                                         &rDescriptor) == VK_SUCCESS;
     }
 
-    void SolDescriptorPool::FreeDescriptors(const std::vector<VkDescriptorSet> &descriptors) const
+    void SolDescriptorPool::FreeDescriptors(const std::vector<VkDescriptorSet>& descriptors) const
     {
         DBG_ASSERT_VULKAN_MSG(vkFreeDescriptorSets(_rSolDevice.GetDevice(), 
                                                    _descriptorPool, 

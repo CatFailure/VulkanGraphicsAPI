@@ -19,14 +19,14 @@ namespace SolEngine
                                                                         uint64_t,
                                                                         size_t,
                                                                         int32_t,
-                                                                        const char *,
-                                                                        const char *,
-                                                                        void *);
+                                                                        const char*,
+                                                                        const char*,
+                                                                        void*);
 
     class SolDevice : private IDisposable
     {
     public:
-        SolDevice(SolWindow &rSolWindow, const ApplicationData &appData);
+        SolDevice(SolWindow& rSolWindow, const ApplicationData& appData);
         ~SolDevice();
 
         // Public Accessors
@@ -41,24 +41,24 @@ namespace SolEngine
         uint32_t         GetEnabledExtensionCount() const { return static_cast<uint32_t>(_enabledExtensionNames.size()); }
         uint32_t         GetDeviceExtensionCount()  const { return static_cast<uint32_t>(_logicalDeviceExtensions.size()); }
 
-        void CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, const VkMemoryPropertyFlags properties, VkImage &rImage, VkDeviceMemory &rImageMemory);
+        void CreateImageWithInfo(const VkImageCreateInfo& imageCreateInfo, const VkMemoryPropertyFlags properties, VkImage& rImage, VkDeviceMemory& rImageMemory);
 
         SwapchainSupportDetails QueryPhysicalDeviceSwapchainSupport() const { return QuerySwapchainSupport(_physicalDevice); }
         QueueFamilyIndices      QueryPhysicalDeviceQueueFamilies()    const { return QueryQueueFamilies(_physicalDevice); }
 
         uint32_t FindMemoryType(const uint32_t typeFilter, const VkMemoryPropertyFlags properties) const;
-        VkFormat FindSupportedFormat(const std::vector<VkFormat> &candidates, const VkImageTiling tiling, const VkFormatFeatureFlags features) const;
+        VkFormat FindSupportedFormat(const std::vector<VkFormat>& candidates, const VkImageTiling tiling, const VkFormatFeatureFlags features) const;
 
         // Buffer Helper Functions
         VkCommandBuffer BeginOneTimeCommandBuffer();
         void            EndOneTimeCommandBuffer(const VkCommandBuffer commandBuffer);
-        void            CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer &rBuffer, VkDeviceMemory &rBufferMemory);
+        void            CreateBuffer(const VkDeviceSize bufferSize, const VkBufferUsageFlags usage, const VkMemoryPropertyFlags properties, VkBuffer& rBuffer, VkDeviceMemory& rBufferMemory);
         void            CopyBuffer(const VkBuffer srcBuffer, const VkBuffer dstBuffer, const VkDeviceSize size);
 
         /// <summary>
         /// Destroys the buffer and frees it's memory.
         /// </summary>
-        void DisposeBuffer(const VkBuffer buffer, const VkDeviceMemory memory, const VkAllocationCallbacks *pAllocator = NULL);
+        void DisposeBuffer(const VkBuffer buffer, const VkDeviceMemory memory, const VkAllocationCallbacks* pAllocator = NULL);
 
     private:
         // Inherited via IDisposable
@@ -74,15 +74,15 @@ namespace SolEngine
         void CreateVulkanDebugCallback();
 
         VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDebugReportCallback(VkDebugReportFlagsEXT flags, VkDebugReportObjectTypeEXT objectType, uint64_t object, size_t location,
-                                                                 int32_t messageCode, const char *layerPrefix, const char *message, void *pUserData);
+                                                                 int32_t messageCode, const char* layerPrefix, const char* message, void* pUserData);
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
         // Helper Functions
-        SwapchainSupportDetails QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice) const;
-        QueueFamilyIndices      QueryQueueFamilies(const VkPhysicalDevice &physicalDevice) const;
+        SwapchainSupportDetails QuerySwapchainSupport(const VkPhysicalDevice& physicalDevice) const;
+        QueueFamilyIndices      QueryQueueFamilies(const VkPhysicalDevice& physicalDevice) const;
 
-        SolWindow             &_rSolWindow;
-        const ApplicationData &_appData;
+        SolWindow&             _rSolWindow;
+        const ApplicationData& _appData;
 
         VkInstance       _instance      { NULL };
         VkDevice         _device        { NULL };
@@ -95,10 +95,10 @@ namespace SolEngine
 #if  _DEBUG_LAPTOP || NDEBUG_LAPTOP
         std::vector<const char*> _enabledLayerNames{};                          // Laptop
 #else
-        std::vector<const char *> _enabledLayerNames{ "VK_LAYER_NV_optimus" };  // Desktop
+        std::vector<const char*> _enabledLayerNames{ "VK_LAYER_NV_optimus" };   // Desktop
 #endif //  _DEBUG_LAPTOP
 
-        std::vector<const char *> _enabledExtensionNames;   // Defined in CreateVulkanInstance()
-        std::vector<const char *> _logicalDeviceExtensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+        std::vector<const char*> _enabledExtensionNames;   // Defined in CreateVulkanInstance()
+        std::vector<const char*> _logicalDeviceExtensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     };
 }
