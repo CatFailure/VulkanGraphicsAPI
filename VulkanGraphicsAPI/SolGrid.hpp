@@ -25,6 +25,7 @@ namespace SolEngine
 		SolGrid(GridSettings& rGridData, DiagnosticData& rDiagnosticData);
 		~SolGrid();
 
+		void Reconstruct();
 		void Reset();
 
 		bool			  IsGridDataValid() const { return _isGridDataValid; }

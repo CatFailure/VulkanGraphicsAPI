@@ -15,6 +15,12 @@ namespace SolEngine
         cells.Free();
     }
 
+    void SolGrid::Reconstruct()
+    {
+        cells.Free();
+        Initialise();
+    }
+
     void SolGrid::Reset()
     {
         const size_t nodeCount = _rGridSettings.GetNodeCount();
@@ -40,7 +46,6 @@ namespace SolEngine
 
     void SolGrid::TraverseAllGridCells(const TraverseCubesCallback_t& callback)
     {
-        //const float gridStep = _rGridSettings.step;
         const glm::uvec3 gridDimensions = GetDimensions();
 
         for (uint32_t z(0U); z < gridDimensions.z; ++z)
@@ -53,7 +58,6 @@ namespace SolEngine
                 }
             }
         }
-
     }
 
     void SolGrid::InitialiseNodes()

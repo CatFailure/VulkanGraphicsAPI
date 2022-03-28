@@ -33,6 +33,11 @@ namespace Utility
         return fminf(max, fmaxf(min, value));
     }
 
+    static int ForceEven(const int value)
+    {
+        return value & ~1;
+    }
+
     static int _3DTo1DIndex(const int xIndex, 
                             const int yIndex, 
                             const int zIndex,
@@ -58,8 +63,8 @@ namespace Utility
             return 0;
         }
 
-        const glm::vec3 sqrDimensions = dimensions * dimensions;
-        const int returnIndex = (int)((zIndex * sqrDimensions.x) + (yIndex * dimensions.y) + xIndex);
+        const uint32_t dimensionsX = dimensions.x;
+        const int returnIndex = (int)((zIndex * dimensionsX * dimensions.y) + (yIndex * dimensionsX) + xIndex);
 
         // Convert 3D array indexes into a 1D array index
         return returnIndex;
@@ -168,8 +173,7 @@ namespace Utility
     }
 
     static size_t GenerateRandomStates(bool* pOutNodeStates,
-                                       const size_t count,
-                                       const unsigned int seed = 0U)
+                                       const size_t count)
     {
         const size_t stateSizeBytes = sizeof(bool);
         size_t       bytesInUse     = 0;

@@ -79,7 +79,7 @@ namespace SolEngine::GUI::View
 	{
 		// Prevent user interaction whilst a simulation is running
 		// Changing the Seed at runtime will cause Bad Things to Happen™
-		ImGui::BeginDisabled(IsSimulationPlaying());
+		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
 		{
 			if (ImGui::InputInt(LABEL_SIMULATION_SEED, 
 								&_simulationSeed, 
@@ -112,7 +112,7 @@ namespace SolEngine::GUI::View
 	{
 		// Prevent user interaction whilst a simulation is running
 		// Changing the Seed at runtime will cause Bad Things to Happen™
-		ImGui::BeginDisabled(IsSimulationPlaying());
+		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
 		{
 			ImGui::PushID(RESET_SEED_BUTTON_ID);	// Since there are multiple buttons with a "Reset" label, we have to define a unique ID here
 			if (ImGui::Button(LABEL_SIMULATION_SEED_RESET))
@@ -157,8 +157,8 @@ namespace SolEngine::GUI::View
 		ImGui::BeginTooltip();
 		{
 			ImGui::Text(TOOLTIP_SIMULATION_SPEED, 
-						MIN_SIMULATION_SPEED,							// Min Value
-						MAX_SIMULATION_SPEED,							// Max Value
+						MIN_SIMULATION_SPEED,				// Min Value
+						MAX_SIMULATION_SPEED,				// Max Value
 						_defaultSimulationSettings.speed);	// Default Value
 		}
 		ImGui::EndTooltip();
@@ -208,7 +208,7 @@ namespace SolEngine::GUI::View
 
 	void GuiSimulationView::RenderSimulationResetButton()
 	{
-		ImGui::BeginDisabled(IsSimulationPlaying());
+		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
 		{
 			if (ImGui::Button(LABEL_SIMULATION_RESET))
 			{

@@ -13,7 +13,8 @@ namespace SolEngine::GUI
 					 windowFlags),
 		  _gameOfLifeView(rGameOfLifeSettings),
 		  _simulationView(rSimulationSettings),
-		  _gridView(rGridSettings)
+		  _gridView(rGridSettings, 
+					rSimulationSettings)
 	{}
 
 	void GuiSettingsWindow::Render()
