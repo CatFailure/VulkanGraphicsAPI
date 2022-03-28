@@ -14,112 +14,79 @@ namespace SolEngine::System
     void GameOfLifeSystem::CheckAllCellNeighbours()
     {
         const uint32_t   neighbourOffset          = 1U;
-        const Cells&     gridNodes                = _rSolGrid.cells;
+        const Cells&     gridCells                = _rSolGrid.cells;
+        const bool*      pCellStates              = gridCells.pCellStates;
         const glm::uvec3 gridDimensions           = _rSolGrid.GetDimensions();
         const glm::uvec3 validNeighbourDimensions = gridDimensions - glm::uvec3(1U);
+        const bool       areDiagonalsChecked      = _rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::MOORE_NEIGHBOURHOOD;
 
         uint32_t neighbourIndex(0);
                                           
-        _rSolGrid.TraverseAllGridCells([&](const uint32_t xIndex, 
-                                           const uint32_t yIndex, 
-                                           const uint32_t zIndex)
+        _rSolGrid.TraverseAllGridCells([&](const int xIndex, 
+                                           const int yIndex, 
+                                           const int zIndex)
                                        {
-                                           const uint32_t nodeIndex = _3DTo1DIndex(xIndex, 
-                                                                                   yIndex, 
-                                                                                   zIndex, 
-                                                                                   gridDimensions);
+                                           const int cellIndex = _3DTo1DIndex(xIndex, 
+                                                                              yIndex, 
+                                                                              zIndex, 
+                                                                              gridDimensions);
+
+                                           if (cellIndex == -1)
+                                           {
+                                               // Cell Index is invalid, don't bother checking anything...
+
+                                               return;
+                                           }
 
                                            NeighbourCount_t& rLiveNeighbourCount = 
-                                               gridNodes.pLiveNeighbourCounts[nodeIndex];
+                                               gridCells.pLiveNeighbourCounts[cellIndex];
 
                                            rLiveNeighbourCount = 0U;  // Reset the neighbour count
-                                       
-                                           // Is there a node to the left?
-                                           if (xIndex > 0)
+
+                                           CheckAdjacentNeighbourStates(xIndex,
+                                                                        yIndex, 
+                                                                        zIndex, 
+                                                                        gridDimensions, 
+                                                                        pCellStates, 
+                                                                        rLiveNeighbourCount);
+
+                                           if (!areDiagonalsChecked)
                                            {
-                                               CheckNeighbourState(xIndex - neighbourOffset, 
-                                                                   yIndex,
-                                                                   zIndex,
-                                                                   gridDimensions, 
-                                                                   gridNodes.pCellStates, 
-                                                                   rLiveNeighbourCount);
+                                               return;
                                            }
-                                       
-                                           // Is there a node to the right?
-                                           if (xIndex < validNeighbourDimensions.x)
-                                           {
-                                               CheckNeighbourState(xIndex + neighbourOffset, 
-                                                                   yIndex,
-                                                                   zIndex,
-                                                                   gridDimensions, 
-                                                                   gridNodes.pCellStates, 
-                                                                   rLiveNeighbourCount);
-                                           }
-                                       
-                                           // Is there a node above?
-                                           if (yIndex > 0)
-                                           {
-                                               CheckNeighbourState(xIndex, 
-                                                                   yIndex - neighbourOffset,
-                                                                   zIndex,
-                                                                   gridDimensions, 
-                                                                   gridNodes.pCellStates, 
-                                                                   rLiveNeighbourCount);
-                                           }
-                                       
-                                           // Is there a node below?
-                                           if (yIndex < validNeighbourDimensions.y)
-                                           {
-                                               CheckNeighbourState(xIndex, 
-                                                                   yIndex + neighbourOffset,
-                                                                   zIndex,
-                                                                   gridDimensions, 
-                                                                   gridNodes.pCellStates, 
-                                                                   rLiveNeighbourCount);
-                                           }
-                                       
-                                           // Is there a node to the back?
-                                           if (zIndex > 0)
-                                           {
-                                               CheckNeighbourState(xIndex, 
-                                                                   yIndex,
-                                                                   zIndex - neighbourOffset,
-                                                                   gridDimensions, 
-                                                                   gridNodes.pCellStates, 
-                                                                   rLiveNeighbourCount);
-                                           }
-                                       
-                                           // Is there a node to the front?
-                                           if (zIndex < validNeighbourDimensions.z)
-                                           {
-                                               CheckNeighbourState(xIndex, 
-                                                                   yIndex,
-                                                                   zIndex + neighbourOffset,
-                                                                   gridDimensions, 
-                                                                   gridNodes.pCellStates, 
-                                                                   rLiveNeighbourCount);
-                                           }
+
+                                           CheckDiagonalNeighbourStates(xIndex, 
+                                                                        yIndex, 
+                                                                        zIndex, 
+                                                                        gridDimensions, 
+                                                                        pCellStates, 
+                                                                        rLiveNeighbourCount);
                                        });
     }
 
     void GameOfLifeSystem::UpdateAllCellStates()
     {
-        const NeighbourCount_t underpopulationCount          = _rGameOfLifeSettings.underpopulationCount;
-        const NeighbourCount_t overpopulationCount          = _rGameOfLifeSettings.overpopulationCount;
-        const NeighbourCount_t reproductionCount = _rGameOfLifeSettings.reproductionCount;
+        const NeighbourCount_t underpopulationCount = _rGameOfLifeSettings.underpopulationCount;
+        const NeighbourCount_t overpopulationCount  = _rGameOfLifeSettings.overpopulationCount;
+        const NeighbourCount_t reproductionCount    = _rGameOfLifeSettings.reproductionCount;
 
         const glm::uvec3 dimensions = _rSolGrid.GetDimensions();
 
-        _rSolGrid.TraverseAllGridCells([&](const uint32_t xIndex,
-                                           const uint32_t yIndex,
-                                           const uint32_t zIndex)
+        _rSolGrid.TraverseAllGridCells([&](const int xIndex,
+                                           const int yIndex,
+                                           const int zIndex)
                                        {
                                            Cells& rGridNodes = _rSolGrid.cells;
                                        
-                                           const size_t cellIndex = _3DTo1DIndex(xIndex, 
-                                                                                 yIndex, 
-                                                                                 zIndex, 
-                                                                                 dimensions);
+                                           const int cellIndex = _3DTo1DIndex(xIndex, 
+                                                                              yIndex, 
+                                                                              zIndex, 
+                                                                              dimensions);
+
+                                           if (cellIndex == -1)
+                                           {
+                                               return;
+                                           }
                                        
                                            bool&                  rCellState         = rGridNodes.pCellStates[cellIndex];
                                            const NeighbourCount_t cellNeighbourCount = rGridNodes.pLiveNeighbourCounts[cellIndex];
@@ -134,7 +101,7 @@ namespace SolEngine::System
                                            if (rCellState)
                                            {
                                                rCellState = !(cellNeighbourCount < underpopulationCount) && // Any live cell with fewer than minLiveNeighbourCount live neighbours dies, as if by underpopulation.
-                                                            !(cellNeighbourCount > overpopulationCount);   // Any live cell with more than maxLiveNeighbourCount live neighbours dies, as if by overpopulation.
+                                                            !(cellNeighbourCount > overpopulationCount);    // Any live cell with more than maxLiveNeighbourCount live neighbours dies, as if by overpopulation.
                                        
                                                // Any live cell with minLiveNeighbourCount or maxLiveNeighbourCount 
                                                // live neighbours lives on to the next generation.
@@ -182,18 +149,167 @@ namespace SolEngine::System
         _nextGenerationDelayRemaining = _rSimulationSettings.speed;
     }
 
-    void GameOfLifeSystem::CheckNeighbourState(const uint32_t xIndex,
-                                               const uint32_t yIndex, 
-                                               const uint32_t zIndex, 
-                                               const glm::vec3& scaledDimensions, 
+    inline void GameOfLifeSystem::CheckAdjacentNeighbourStates(const int xIndex,
+                                                               const int yIndex, 
+                                                               const int zIndex, 
+                                                               const glm::uvec3& gridDimensions, 
+                                                               const bool* pCellStates, 
+                                                               NeighbourCount_t& rLiveNeighbourCount)
+    {
+        const uint32_t neighbourOffset = 1U;
+        const int      leftCellIndex   = xIndex - neighbourOffset;
+        const int      rightCellIndex  = xIndex + neighbourOffset;
+        const int      aboveCellIndex  = yIndex - neighbourOffset;
+        const int      belowCellIndex  = yIndex + neighbourOffset;
+        const int      backCellIndex   = zIndex - neighbourOffset;
+        const int      frontCellIndex  = zIndex + neighbourOffset;
+
+        // Left Cell Neighbour
+        CheckNeighbourState(leftCellIndex, 
+                            yIndex,
+                            zIndex,
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Right Cell Neighbour
+        CheckNeighbourState(rightCellIndex, 
+                            yIndex,
+                            zIndex,
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Above Cell Neighbour
+        CheckNeighbourState(xIndex, 
+                            aboveCellIndex,
+                            zIndex,
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Below Cell Neighbour
+        CheckNeighbourState(xIndex, 
+                            belowCellIndex,
+                            zIndex,
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Back Cell Neighbour
+        CheckNeighbourState(xIndex, 
+                            yIndex,
+                            backCellIndex,
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front Cell Neighbour
+        CheckNeighbourState(xIndex, 
+                            yIndex,
+                            frontCellIndex,
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+    }
+
+    inline void GameOfLifeSystem::CheckDiagonalNeighbourStates(const int xIndex, 
+                                                               const int yIndex, 
+                                                               const int zIndex, 
+                                                               const glm::uvec3& gridDimensions,
+                                                               const bool* pCellStates, 
+                                                               NeighbourCount_t& rLiveNeighbourCount)
+    {
+        const uint32_t neighbourOffset = 1U;
+        const int      leftCellIndex   = xIndex - neighbourOffset;
+        const int      rightCellIndex  = xIndex + neighbourOffset;
+        const int      aboveCellIndex  = yIndex - neighbourOffset;
+        const int      belowCellIndex  = yIndex + neighbourOffset;
+        const int      backCellIndex   = zIndex - neighbourOffset;
+        const int      frontCellIndex  = zIndex + neighbourOffset;
+
+        // Back-Top-Left Cell Neighbour
+        CheckNeighbourState(leftCellIndex, 
+                            aboveCellIndex, 
+                            backCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Back-Top-Right Cell Neighbour
+        CheckNeighbourState(rightCellIndex, 
+                            aboveCellIndex, 
+                            backCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Back-Bottom-Left Cell Neighbour
+        CheckNeighbourState(leftCellIndex, 
+                            belowCellIndex, 
+                            backCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Back-Bottom-Right Cell Neighbour
+        CheckNeighbourState(rightCellIndex, 
+                            belowCellIndex, 
+                            backCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front-Top-Left Cell Neighbour
+        CheckNeighbourState(leftCellIndex, 
+                            aboveCellIndex, 
+                            frontCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front-Top-Right Cell Neighbour
+        CheckNeighbourState(rightCellIndex, 
+                            aboveCellIndex, 
+                            frontCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front-Bottom-Left Cell Neighbour
+        CheckNeighbourState(leftCellIndex, 
+                            belowCellIndex, 
+                            frontCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front-Bottom-Right Cell Neighbour
+        CheckNeighbourState(rightCellIndex, 
+                            belowCellIndex, 
+                            frontCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+    }
+
+    void GameOfLifeSystem::CheckNeighbourState(const int xIndex,
+                                               const int yIndex, 
+                                               const int zIndex, 
+                                               const glm::uvec3& gridDimensions, 
                                                const bool* pCellStates, 
                                                NeighbourCount_t& rLiveNeighbourCount)
     {
-        const uint32_t neighbourIndex = 
+        const int neighbourIndex = 
             _3DTo1DIndex(xIndex, 
                          yIndex, 
                          zIndex, 
-                         scaledDimensions);
+                         gridDimensions);
+
+        if (neighbourIndex == -1)
+        {
+            return;
+        }
 
         // Is this cell alive?
         if (!pCellStates[neighbourIndex])

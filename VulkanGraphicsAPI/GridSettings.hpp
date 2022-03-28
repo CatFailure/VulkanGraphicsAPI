@@ -10,6 +10,6 @@ namespace SolEngine::Settings
 			return (size_t)((double)dimensions.x * dimensions.y * dimensions.z);
 		}
 
-		glm::uvec3 dimensions{ 10 };	// Adjusts the size of the grid
+		glm::uvec3 dimensions{ 30U };	// Adjusts the size of the grid
 	};
 }

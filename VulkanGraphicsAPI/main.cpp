@@ -4,12 +4,12 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[13/03/22] Simulation Settings GUI",
+		.windowTitle	  = "[28/03/22] Cellular Automata | Release Candidate 2",
 		.windowDimensions = glm::uvec2(1280, 720)
 	};
 
 	DiagnosticData     diagnosticData    {};
-	GridSettings       gridSettings		 { .dimensions = glm::uvec3{ 30 } };
+	GridSettings       gridSettings		 {};
 	GameOfLifeSettings gameOfLifeSettings{};
 	SimulationSettings simulationSettings{};
 

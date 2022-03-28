@@ -2,8 +2,8 @@
 
 namespace SolEngine
 {
-    SolWindow::SolWindow(const std::string &winTitle, 
-                         const glm::uvec2 &winDimensions)
+    SolWindow::SolWindow(const std::string& winTitle, 
+                         const glm::uvec2& winDimensions)
         : _winTitle(winTitle),
           _winDimensions(winDimensions)
     {
@@ -15,9 +15,12 @@ namespace SolEngine
         Dispose();
     }
 
-    void SolWindow::CreateWindowSurface(const VkInstance &vkInstance, VkSurfaceKHR *pSurface)
+    void SolWindow::CreateWindowSurface(const VkInstance& vkInstance, VkSurfaceKHR* pSurface)
     {
-        const VkResult result = glfwCreateWindowSurface(vkInstance, _pWindow, NULL, pSurface);
+        const VkResult result = glfwCreateWindowSurface(vkInstance, 
+                                                        _pWindow, 
+                                                        NULL,
+                                                        pSurface);
 
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Window Surface.");
     }
@@ -28,11 +31,11 @@ namespace SolEngine
         glfwTerminate();
     }
 
-    void SolWindow::FramebufferResizeCallback(GLFWwindow *pWindow, 
+    void SolWindow::FramebufferResizeCallback(GLFWwindow* pWindow, 
                                               const int width, 
                                               const int height)
     {
-        SolWindow *pSolWindow = reinterpret_cast<SolWindow *>(glfwGetWindowUserPointer(pWindow));
+        SolWindow* pSolWindow = reinterpret_cast<SolWindow*>(glfwGetWindowUserPointer(pWindow));
 
         pSolWindow->_isFramebufferResized = true;
         pSolWindow->_winDimensions = { width, height };

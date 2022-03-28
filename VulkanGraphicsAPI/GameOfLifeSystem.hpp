@@ -24,8 +24,16 @@ namespace SolEngine::System
         SolEvent<> onUpdateAllCellStatesEvent;
 
     private:
-        void CheckNeighbourState(const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex,
-                                 const glm::vec3& scaledDimensions, const bool* pCellStates, 
+        inline void CheckAdjacentNeighbourStates(const int xIndex, const int yIndex, const int zIndex, 
+                                                 const glm::uvec3& gridDimensions, const bool* pCellStates, 
+                                                 NeighbourCount_t& rLiveNeighbourCount);
+
+        inline void CheckDiagonalNeighbourStates(const int xIndex, const int yIndex, const int zIndex,
+                                                 const glm::uvec3& gridDimensions, const bool* pCellStates,
+                                                 NeighbourCount_t& rLiveNeighbourCount);
+
+        void CheckNeighbourState(const int xIndex, const int yIndex, const int zIndex,
+                                 const glm::uvec3& gridDimensions, const bool* pCellStates, 
                                  NeighbourCount_t& rLiveNeighbourCount);
 
         void NextGeneration();

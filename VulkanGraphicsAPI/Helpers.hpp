@@ -33,11 +33,23 @@ namespace Utility
         return fminf(max, fmaxf(min, value));
     }
 
-    static uint32_t _3DTo1DIndex(const uint32_t xIndex, 
-                                 const uint32_t yIndex, 
-                                 const uint32_t zIndex,
-                                 const glm::vec3 &dimensions)
+    static int _3DTo1DIndex(const int xIndex, 
+                            const int yIndex, 
+                            const int zIndex,
+                            const glm::uvec3 &dimensions)
     {
+        const glm::uvec3 validNeighbourDimensions = dimensions - glm::uvec3(1U);
+
+        if (xIndex < 0 ||
+            yIndex < 0 ||
+            zIndex < 0 ||
+            (uint32_t)xIndex > validNeighbourDimensions.x ||
+            (uint32_t)yIndex > validNeighbourDimensions.y ||
+            (uint32_t)zIndex > validNeighbourDimensions.z)
+        {
+            return -1;
+        }
+
         // Always 0
         if (xIndex == 0 && 
             yIndex == 0 && 
@@ -47,7 +59,7 @@ namespace Utility
         }
 
         const glm::vec3 sqrDimensions = dimensions * dimensions;
-        const uint32_t returnIndex = (uint32_t)((zIndex * sqrDimensions.x) + (yIndex * dimensions.y) + xIndex);
+        const int returnIndex = (int)((zIndex * sqrDimensions.x) + (yIndex * dimensions.y) + xIndex);
 
         // Convert 3D array indexes into a 1D array index
         return returnIndex;
