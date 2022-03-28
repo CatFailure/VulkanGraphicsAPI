@@ -1,6 +1,6 @@
 #include "Application.hpp"
 
-Application::Application(const ApplicationData &appData, 
+Application::Application(const ApplicationData& appData, 
                          DiagnosticData& rDiagnosticData,
                          GridSettings& rGridSettings, 
                          GameOfLifeSettings& rGameOfLifeSettings,
