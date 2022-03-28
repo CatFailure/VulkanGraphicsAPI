@@ -63,6 +63,7 @@ namespace Utility
             return 0;
         }
 
+        // https://stackoverflow.com/a/34363187
         const uint32_t dimensionsX = dimensions.x;
         const int returnIndex = (int)((zIndex * dimensionsX * dimensions.y) + (yIndex * dimensionsX) + xIndex);
 
