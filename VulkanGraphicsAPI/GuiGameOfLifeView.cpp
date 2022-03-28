@@ -53,8 +53,6 @@ namespace SolEngine::GUI::View
 
 		ImGui::BeginTooltip();
 		{
-			const size_t neighbourhoodTypeIndex = (size_t)_defaultGameOfLifeSettings.neighbourhoodType;
-
 			ImGui::Text(TOOLTIP_GAME_OF_LIFE_NEIGHBOURHOOD_TYPE);
 		}
 		ImGui::EndTooltip();
