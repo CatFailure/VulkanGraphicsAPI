@@ -7,6 +7,7 @@ namespace SolEngine::GUI
 
 	static constexpr const char* HEADER_SIMULATION	{ "Simulation " };		// Added Space for quick padding
 	static constexpr const char* HEADER_GAME_OF_LIFE{ "Game of Life " };	// Added Space for quick padding
+	static constexpr const char* HEADER_GRID		{ "Grid " };			// Added Space for quick padding
 
 	static constexpr const char* LABEL_SIMULATION_GENERATION { "Generation: %zu" };
 	static constexpr const char* LABEL_SIMULATION_SEED		 { "Seed" };

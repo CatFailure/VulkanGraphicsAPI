@@ -230,6 +230,7 @@ void Application::CreateGuiWindowManager()
                                                           true, 
                                                           flags, 
                                                           _rGameOfLifeSettings,
-                                                          _rSimulationSettings);
+                                                          _rSimulationSettings,
+                                                          _rGridSettings);
 }
 #endif // !DISABLE_IM_GUI

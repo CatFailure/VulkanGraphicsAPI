@@ -8,7 +8,7 @@ namespace SolEngine::GUI::View
 
 	void GuiGameOfLifeView::RenderViewContents()
 	{
-		if (!ImGui::CollapsingHeader(HEADER_GAME_OF_LIFE))
+		if (!ImGui::CollapsingHeader(HEADER_GAME_OF_LIFE))	// This header should be collapsed by default
 		{
 			return;
 		}
