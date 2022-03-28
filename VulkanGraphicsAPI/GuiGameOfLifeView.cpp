@@ -82,7 +82,7 @@ namespace SolEngine::GUI::View
 		{
 			ImGui::Text(TOOLTIP_GAME_OF_LIFE_MIN_LIVE_NEIGHBOURS, 
 						rUnderpopulationCount,										// Current Value
-						(size_t)_defaultGameOfLifeSettings.underpopulationCount);	// Default Value
+						_rGameOfLifeSettings.GetDefaultUnderpopulationCount());		// Default Value
 		}
 		ImGui::EndTooltip();
 	}
@@ -111,7 +111,7 @@ namespace SolEngine::GUI::View
 		{
 			ImGui::Text(TOOLTIP_GAME_OF_LIFE_MAX_LIVE_NEIGHBOURS,
 						rOverpopulationCount,										// Current Value
-						(size_t)_defaultGameOfLifeSettings.overpopulationCount);	// Default Value
+						_rGameOfLifeSettings.GetDefaultOverpopulationCount());		// Default Value
 		}
 		ImGui::EndTooltip();
 	}
@@ -138,10 +138,10 @@ namespace SolEngine::GUI::View
 		ImGui::BeginTooltip();
 		{
 			ImGui::Text(TOOLTIP_GAME_OF_LIFE_REPRODUCE_LIVE_NEIGHBOURS, 
-						rReproductionCount,										// Current Value
-						0U,														// Min Value
-						maxCellNeighbourCount,									// Max Value
-						(size_t)_defaultGameOfLifeSettings.reproductionCount);	// Default Value
+						rReproductionCount,												// Current Value
+						0U,																// Min Value
+						maxCellNeighbourCount,											// Max Value
+						(size_t)_rGameOfLifeSettings.GetDefaultReproductionCount());	// Default Value
 		}
 		ImGui::EndTooltip();
 	}
@@ -170,17 +170,7 @@ namespace SolEngine::GUI::View
 
 	void GuiGameOfLifeView::OnNeighbourhoodTypeValueChanged(const NeighbourhoodType value)
 	{
-		// Clamp settings values on NeighbourhoodType change,
-		// So values are still valid
-		const uint32_t minCellNeighbourCount	= 0U;
-		const uint32_t maxCellNeighbourCount    = GetMaxCellNeighbourCount();
-		NeighbourCount_t& rUnderpopulationCount = _rGameOfLifeSettings.underpopulationCount;
-		NeighbourCount_t& rOverpopulationCount  = _rGameOfLifeSettings.overpopulationCount;
-		NeighbourCount_t& rReproductionCount	= _rGameOfLifeSettings.reproductionCount;
-
-		rOverpopulationCount  = Clamp(rOverpopulationCount, rUnderpopulationCount, maxCellNeighbourCount);
-		rUnderpopulationCount = Clamp(rUnderpopulationCount, minCellNeighbourCount, rOverpopulationCount);
-		rReproductionCount	  = Clamp(rReproductionCount, minCellNeighbourCount, maxCellNeighbourCount);
+		_rGameOfLifeSettings.Reset();
 	}
 
 	void GuiGameOfLifeView::OnUnderpopulationValueChanged(const int value)
