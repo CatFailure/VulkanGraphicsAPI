@@ -2,12 +2,12 @@
 
 namespace SolEngine
 {
-    SolCamera::SolCamera(SolRenderer &rRenderer)
+    SolCamera::SolCamera(SolRenderer& rRenderer)
         : _rRenderer(rRenderer)
     {}
 
-    SolCamera::SolCamera(SolRenderer &rRenderer, 
-                         const PerspectiveProjectionInfo &projectionInfo)
+    SolCamera::SolCamera(SolRenderer& rRenderer, 
+                         const PerspectiveProjectionInfo& projectionInfo)
         : _rRenderer(rRenderer),
           _projectionInfo(projectionInfo)
     {}
@@ -49,7 +49,7 @@ namespace SolEngine
         return *this;
     }
 
-    SolCamera &SolCamera::SetPerspectiveProjection(const PerspectiveProjectionInfo &projInfo)
+    SolCamera& SolCamera::SetPerspectiveProjection(const PerspectiveProjectionInfo& projInfo)
     {
         return SetPerspectiveProjection(projInfo.fovDeg, 
                                         _rRenderer.GetAspectRatio(),
@@ -57,14 +57,14 @@ namespace SolEngine
                                         projInfo.far);
     }
 
-    SolCamera &SolCamera::LookAt(const glm::vec3 &target, const glm::vec3 &up)
+    SolCamera& SolCamera::LookAt(const glm::vec3& target, const glm::vec3& up)
     {
         _viewMatrix = glm::lookAtLH(_position, target, up);
 
         return *this;
     }
 
-    SolCamera &SolCamera::SetProjectionInfo(const PerspectiveProjectionInfo &info)
+    SolCamera& SolCamera::SetProjectionInfo(const PerspectiveProjectionInfo& info)
     {
         _projectionInfo = info;
 
@@ -73,7 +73,7 @@ namespace SolEngine
         return *this;
     }
 
-    SolCamera &SolCamera::SetPosition(const glm::vec3 &position)
+    SolCamera& SolCamera::SetPosition(const glm::vec3& position)
     { 
         _position = position; 
 

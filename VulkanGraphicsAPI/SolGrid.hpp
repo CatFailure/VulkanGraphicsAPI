@@ -18,9 +18,9 @@ namespace SolEngine
 		/// Arg1 = Y-Index
 		/// Arg2 = Z-Index
 		/// </summary>
-		typedef std::function<void(const uint32_t xIndex, 
-								   const uint32_t yIndex, 
-								   const uint32_t zIndex)> TraverseCubesCallback_t;
+		typedef std::function<void(const int xIndex, 
+								   const int yIndex, 
+								   const int zIndex)> TraverseCubesCallback_t;
 
 		SolGrid(GridSettings& rGridData, DiagnosticData& rDiagnosticData);
 		~SolGrid();

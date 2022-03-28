@@ -34,7 +34,7 @@ namespace SolEngine::Settings
 
 		int				seed	  { 0 };
 		size_t			generation{ 0U };
-		float			speed	  { 1.f };
+		float			speed	  { 0.1f };
 		SimulationState state	  { SimulationState::PAUSED };
 	};
 }

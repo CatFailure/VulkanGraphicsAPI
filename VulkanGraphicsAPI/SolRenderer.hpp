@@ -12,7 +12,7 @@ namespace SolEngine
 	{
 	public:
 		SolRenderer() = delete;
-		SolRenderer(const ApplicationData &appData, SolWindow &rSolWindow, SolDevice &rSolDevice);
+		SolRenderer(const ApplicationData& appData, SolWindow& rSolWindow, SolDevice& rSolDevice);
         ~SolRenderer();
 
         bool IsFrameInProgress() const { return _isFrameStarted; }
@@ -65,8 +65,8 @@ namespace SolEngine
 
         ApplicationData _appData;
 
-        SolWindow &_rSolWindow;
-        SolDevice &_rSolDevice;
+        SolWindow& _rSolWindow;
+        SolDevice& _rSolDevice;
         std::unique_ptr<SolSwapchain> _pSolSwapchain;
 
         std::vector<VkCommandBuffer> _commandBuffers;

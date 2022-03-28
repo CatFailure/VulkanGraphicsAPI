@@ -2,9 +2,9 @@
 
 namespace SolEngine
 {
-	SolRenderer::SolRenderer(const ApplicationData &appData, 
-										 SolWindow &rSolWindow, 
-										 SolDevice &rSolDevice)
+	SolRenderer::SolRenderer(const ApplicationData& appData, 
+	                         SolWindow& rSolWindow, 
+	                         SolDevice& rSolDevice)
 		: _appData(appData),
 		  _rSolWindow(rSolWindow),
 		  _rSolDevice(rSolDevice)
@@ -200,7 +200,7 @@ namespace SolEngine
 
 	void SolRenderer::PrintDeviceMemoryCapabilities()
 	{
-        const VkPhysicalDevice &physicalDevice = _rSolDevice.GetPhysicalDevice();
+        const VkPhysicalDevice& physicalDevice = _rSolDevice.GetPhysicalDevice();
 
         // Query device for memory count
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice,

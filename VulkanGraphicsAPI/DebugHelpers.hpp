@@ -1,6 +1,9 @@
 #pragma once
 #define WIN32_LEAN_AND_MEAN
-//#define ENABLE_LOGGING        // Debug Logging
+
+#if _DEBUG || _DEBUG_LAPTOP 
+#define ENABLE_LOGGING        // Debug Logging
+#endif
 
 #include <stdarg.h>             // Variable argument functions, e.g., dprintf(..)
 #include <stdio.h>              // vsprintf_s

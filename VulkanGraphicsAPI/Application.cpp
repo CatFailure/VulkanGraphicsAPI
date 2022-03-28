@@ -1,6 +1,6 @@
 #include "Application.hpp"
 
-Application::Application(const ApplicationData &appData, 
+Application::Application(const ApplicationData& appData, 
                          DiagnosticData& rDiagnosticData,
                          GridSettings& rGridSettings, 
                          GameOfLifeSettings& rGameOfLifeSettings,
@@ -94,6 +94,7 @@ void Application::Update(const float deltaTime)
 void Application::Render()
 {
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
+
     const SimpleRenderSystem renderSystem(_solDevice, 
                                           _solRenderer.GetSwapchainRenderPass());
 

@@ -2,8 +2,8 @@
 
 namespace SolEngine
 {
-    SolDevice::SolDevice(SolWindow &rSolWindow,
-                         const ApplicationData &appData)
+    SolDevice::SolDevice(SolWindow& rSolWindow,
+                         const ApplicationData& appData)
         : _rSolWindow(rSolWindow),
           _appData(appData)
     {
@@ -26,10 +26,10 @@ namespace SolEngine
         Dispose();
     }
 
-    void SolDevice::CreateImageWithInfo(const VkImageCreateInfo &imageCreateInfo, 
+    void SolDevice::CreateImageWithInfo(const VkImageCreateInfo& imageCreateInfo, 
                                         const VkMemoryPropertyFlags properties, 
-                                        VkImage &rImage, 
-                                        VkDeviceMemory &rImageMemory)
+                                        VkImage& rImage, 
+                                        VkDeviceMemory& rImageMemory)
     {
         VkResult result = vkCreateImage(_device, 
                                         &imageCreateInfo,
@@ -44,7 +44,7 @@ namespace SolEngine
                                      rImage,
                                      &imageMemoryRequirements);
 
-        VkMemoryAllocateInfo memoryAllocateInfo
+        const VkMemoryAllocateInfo memoryAllocateInfo
         {
             .sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
             .allocationSize  = imageMemoryRequirements.size,
@@ -86,11 +86,11 @@ namespace SolEngine
         return -1;
     }
 
-    VkFormat SolDevice::FindSupportedFormat(const std::vector<VkFormat> &candidates,
+    VkFormat SolDevice::FindSupportedFormat(const std::vector<VkFormat>& candidates,
                                             const VkImageTiling tiling, 
                                             const VkFormatFeatureFlags features) const
     {
-        for (const VkFormat &format : candidates)
+        for (const VkFormat& format : candidates)
         {
             VkFormatProperties properties{};
 
@@ -113,8 +113,8 @@ namespace SolEngine
     void SolDevice::CreateBuffer(const VkDeviceSize bufferSize,
                                  const VkBufferUsageFlags usage, 
                                  const VkMemoryPropertyFlags properties, 
-                                 VkBuffer &rBuffer, 
-                                 VkDeviceMemory &rBufferMemory)
+                                 VkBuffer& rBuffer, 
+                                 VkDeviceMemory& rBufferMemory)
     {
         const VkBufferCreateInfo bufferCreateInfo
         {
@@ -178,7 +178,7 @@ namespace SolEngine
 
     void SolDevice::DisposeBuffer(const VkBuffer buffer, 
                                   const VkDeviceMemory memory,
-                                  const VkAllocationCallbacks *pAllocator)
+                                  const VkAllocationCallbacks* pAllocator)
     {
         vkDestroyBuffer(_device, buffer, pAllocator);
         vkFreeMemory(_device, memory, pAllocator);
@@ -274,7 +274,7 @@ namespace SolEngine
         _physicalDevice = physicalDevices.at(0);
 
         // Print out details of all found devices.
-        for (VkPhysicalDevice &rDevice : physicalDevices)
+        for (VkPhysicalDevice& rDevice : physicalDevices)
         {
             VkPhysicalDeviceProperties deviceProperties{};
             ZeroMemory(&deviceProperties, sizeof(VkPhysicalDeviceProperties));
@@ -440,8 +440,8 @@ namespace SolEngine
         VkDebugReportCallbackEXT warningCallback{ VK_NULL_HANDLE }, errorCallback{ VK_NULL_HANDLE };
         PFN_vkCreateDebugReportCallbackEXT vkCreateDebugReportCallbackEXT{ NULL };
 
-        *(void **)&vkCreateDebugReportCallbackEXT = vkGetInstanceProcAddr(_instance, 
-                                                                          "vkCreateDebugReportCallbackEXT");
+        *(void**)&vkCreateDebugReportCallbackEXT = vkGetInstanceProcAddr(_instance, 
+                                                                         "vkCreateDebugReportCallbackEXT");
 
         DBG_ASSERT(vkCreateDebugReportCallbackEXT);
 
@@ -479,9 +479,9 @@ namespace SolEngine
                                                                         uint64_t object, 
                                                                         size_t location, 
                                                                         int32_t messageCode, 
-                                                                        const char *layerPrefix, 
-                                                                        const char *message, 
-                                                                        void *pUserData)
+                                                                        const char* layerPrefix, 
+                                                                        const char* message, 
+                                                                        void* pUserData)
     {
         DebugHelpers::DPrintf(layerPrefix);
         DebugHelpers::DPrintf(" ");
@@ -494,7 +494,7 @@ namespace SolEngine
     }
 #endif // ENABLE_VULKAN_DEBUG_CALLBACK
 
-    SwapchainSupportDetails SolDevice::QuerySwapchainSupport(const VkPhysicalDevice &physicalDevice) const
+    SwapchainSupportDetails SolDevice::QuerySwapchainSupport(const VkPhysicalDevice& physicalDevice) const
     {
         VkResult result;
         SwapchainSupportDetails supportDetails{};
@@ -543,7 +543,7 @@ namespace SolEngine
         return supportDetails;
     }
 
-    QueueFamilyIndices SolDevice::QueryQueueFamilies(const VkPhysicalDevice &physicalDevice) const
+    QueueFamilyIndices SolDevice::QueryQueueFamilies(const VkPhysicalDevice& physicalDevice) const
     {
         QueueFamilyIndices queueFamilyIndices{};
         uint32_t queueFamilyCount;

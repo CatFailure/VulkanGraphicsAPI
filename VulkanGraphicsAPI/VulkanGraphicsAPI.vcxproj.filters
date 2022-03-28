@@ -347,6 +347,9 @@
     <ClInclude Include="GuiGameOfLifeView.hpp">
       <Filter>SolEngine\GUI\View</Filter>
     </ClInclude>
+    <ClInclude Include="NeighbourhoodType.hpp">
+      <Filter>SolEngine\Enumeration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">
