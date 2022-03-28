@@ -9,7 +9,7 @@ int main()
 	};
 
 	DiagnosticData     diagnosticData    {};
-	GridSettings       gridSettings		 { .dimensions = glm::uvec3{ 30 } };
+	GridSettings       gridSettings		 {};
 	GameOfLifeSettings gameOfLifeSettings{};
 	SimulationSettings simulationSettings{};
 
