@@ -40,5 +40,6 @@ namespace SolEngine::GUI
 	static constexpr const char* TOOLTIP_GAME_OF_LIFE_MAX_LIVE_NEIGHBOURS	   { "Currently ALIVE Cells with MORE than %zu Live Neighbouring Cell(s) will DIE next Generation.\n(Cannot receed below Minimum Live Neighbours).\n(Default: %zu)." };
 	static constexpr const char* TOOLTIP_GAME_OF_LIFE_REPRODUCE_LIVE_NEIGHBOURS{ "Currently DEAD Cells with EXACTLY %zu Live Neighbouring Cell(s) will become ALIVE next Generation.\n(Min: %zu, Max: %zu, Default: %zu)." };
 
-	static constexpr const char* TOOLTIP_GRID_DIMENSIONS{ "TODO" };
+	static constexpr const char* TOOLTIP_GRID_DIMENSIONS	  { "Sets the Grid Dimensions.\nSimulation MUST be paused to edit.\n(Default: x: %zu, y: %zu, z: %zu)." };
+	static constexpr const char* TOOLTIP_GRID_DIMENSIONS_RESET{ "Reset Grid Dimensions.\nSimulation MUST be paused to reset." };
 }

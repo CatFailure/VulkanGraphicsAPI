@@ -138,8 +138,8 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::ForceUpdateCellStates()
     {
-        CheckAllCellNeighbours();
         UpdateAllCellStates();
+        CheckAllCellNeighbours();
         ResetNextGenerationDelayRemaining();
     }
 

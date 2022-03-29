@@ -3,9 +3,9 @@
 namespace SolEngine::GUI::View
 {
 	GuiGridView::GuiGridView(GridSettings& rGridSettings, 
-							 const SimulationSettings& simulationSettings)
+							 SimulationSettings& rSimulationSettings)
 		: _rGridSettings(rGridSettings),
-		  _simulationSettings(simulationSettings)
+		  _rSimulationSettings(rSimulationSettings)
 	{
 		InitGuiGridDimensions();
 	}
@@ -17,7 +17,7 @@ namespace SolEngine::GUI::View
 			return;
 		}
 
-		RenderGridSizeInputInt3();
+		RenderGridDimensionsInputInt3();
 		RenderResetGridSizeButton();
 	}
 
@@ -30,19 +30,35 @@ namespace SolEngine::GUI::View
 		_guiGridDimensions[2] = gridDimensions.z;
 	}
 
-	void GuiGridView::RenderGridSizeInputInt3()
+	void GuiGridView::RenderGridDimensionsInputInt3()
 	{
+		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
 		if (ImGui::InputInt3(LABEL_GRID_DIMENSIONS, 
 							 _guiGridDimensions,
 							 ImGuiInputTextFlags_EnterReturnsTrue))
 		{
 			OnGridSizeChanged();
 		}
+		ImGui::EndDisabled();
+
+		// Tooltip - Change Grid Dimensions
+		if (!ImGui::IsItemHovered())
+		{
+			return;
+		}
+
+		ImGui::BeginTooltip();
+		{
+			const glm::uvec3 defaultGridDimensions = _defaultGridSettings.dimensions;
+
+			ImGui::Text(TOOLTIP_GRID_DIMENSIONS, defaultGridDimensions.x, defaultGridDimensions.y, defaultGridDimensions.z);
+		}
+		ImGui::EndTooltip();
 	}
 
 	void GuiGridView::RenderResetGridSizeButton()
 	{
-		ImGui::BeginDisabled(_simulationSettings.IsSimulationPlaying());
+		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
 		{
 			ImGui::PushID(RESET_GRID_DIMENSIONS_BUTTON_ID);	// Since there are multiple buttons with a "Reset" label, we have to define a unique ID here
 			if (ImGui::Button(LABEL_GRID_DIMENSIONS_RESET))
@@ -53,7 +69,7 @@ namespace SolEngine::GUI::View
 		}
 		ImGui::EndDisabled();
 
-		// Tooltip - Reset Simulation
+		// Tooltip - Reset Grid Dimensions
 		if (!ImGui::IsItemHovered())
 		{
 			return;
@@ -61,7 +77,7 @@ namespace SolEngine::GUI::View
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_SIMULATION_RESET);
+			ImGui::Text(TOOLTIP_GRID_DIMENSIONS_RESET);
 		}
 		ImGui::EndTooltip();
 	}
@@ -83,6 +99,10 @@ namespace SolEngine::GUI::View
 		rGuiGridDimensionsY = ForceEven(rGuiGridDimensionsY);
 		rGuiGridDimensionsZ = ForceEven(rGuiGridDimensionsZ);
 
+		// Changing grid dimensions re-generates cells so start over
+		_rSimulationSettings.ResetGeneration();
+
+		// Update grid settings and raise flags
 		_rGridSettings.dimensions = glm::uvec3(rGuiGridDimensionsX, 
 											   rGuiGridDimensionsY, 
 											   rGuiGridDimensionsZ);
@@ -92,6 +112,10 @@ namespace SolEngine::GUI::View
 
 	void GuiGridView::OnGridSizeReset()
 	{
+		// Changing grid dimensions re-generates cells so start over
+		_rSimulationSettings.ResetGeneration();
+
+		// Reset Grid to defaults
 		_rGridSettings.Reset();
 		_rGridSettings.isGridDimensionsChangeRequested = true;
 
