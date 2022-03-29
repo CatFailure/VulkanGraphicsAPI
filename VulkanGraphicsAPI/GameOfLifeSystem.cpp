@@ -136,13 +136,6 @@ namespace SolEngine::System
         NextGeneration();
     }
 
-    void GameOfLifeSystem::ForceUpdateCellStates()
-    {
-        UpdateAllCellStates();
-        CheckAllCellNeighbours();
-        ResetNextGenerationDelayRemaining();
-    }
-
     void GameOfLifeSystem::ResetNextGenerationDelayRemaining()
     {
         _nextGenerationDelayRemaining = _rSimulationSettings.speed;
@@ -321,7 +314,9 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::NextGeneration()
     {
-        ForceUpdateCellStates();
+        UpdateAllCellStates();                  // Update all cell states to the next generation
+        CheckAllCellNeighbours();               // Check what state they will be in the generation after
+        ResetNextGenerationDelayRemaining();
 
         ++_rSimulationSettings.generation;
     }

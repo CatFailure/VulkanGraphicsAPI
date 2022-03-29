@@ -205,11 +205,9 @@ void Application::CheckForSimulationResetFlag()
     // OR keep same values for repeatable simulations
     RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
 
-    // Reset the grid nodes and re-generate node states
-    _pSolGrid->Reset();
-
-    // Force Game of Life to re-check live neighbours
-    _pGameOfLifeSystem->ForceUpdateCellStates();
+    _pSolGrid->Reset();                             // Reset the grid nodes and re-generate initial node states
+    _pMarchingCubesSystem->March();                 // Create the reset vertices
+    _pGameOfLifeSystem->CheckAllCellNeighbours();   // Retrieve the next generation state
 
     // Finished!
     _rSimulationSettings.isSimulationResetRequested = false;
@@ -226,11 +224,9 @@ void Application::CheckForGridDimenionsChangedFlag()
     // OR keep same values for repeatable simulations
     RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
 
-    // Re-construct the Grid
-    _pSolGrid->Reconstruct();
-
-    // Force Game of Life to re-check live neighbours
-    _pGameOfLifeSystem->ForceUpdateCellStates();
+    _pSolGrid->Reconstruct();                       // Re-construct the Grid
+    _pMarchingCubesSystem->March();                 // Create the new vertices
+    _pGameOfLifeSystem->CheckAllCellNeighbours();   // Retrieve the next generation state
 
     // Finished!
     _rGridSettings.isGridDimensionsChangeRequested = false;
