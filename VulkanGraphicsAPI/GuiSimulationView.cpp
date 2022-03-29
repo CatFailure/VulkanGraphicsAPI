@@ -79,18 +79,20 @@ namespace SolEngine::GUI::View
 	{
 		// Prevent user interaction whilst a simulation is running
 		// Changing the Seed at runtime will cause Bad Things to Happen™
-		ImGui::BeginDisabled(IsSimulationPlaying());
+		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
 		{
-			if (ImGui::InputInt(LABEL_SIMULATION_SEED, 
-								&_simulationSeed, 
-								SIMULATION_SEED_INPUT_STEP,
-								SIMULATION_SEED_INPUT_FAST_STEP,
-								ImGuiInputTextFlags_EnterReturnsTrue))
-			{
-				OnSimulationSeedChanged();
-			}
+			ImGui::InputInt(LABEL_SIMULATION_SEED,
+							&_simulationSeed,
+							SIMULATION_SEED_INPUT_STEP,
+							SIMULATION_SEED_INPUT_FAST_STEP);
 		}
 		ImGui::EndDisabled();
+
+		// Update values after user is finished
+		if (ImGui::IsItemDeactivatedAfterEdit())
+		{
+			OnSimulationSeedChanged();
+		}
 
 		// Tooltip - Game of Life Seed
 		if (!ImGui::IsItemHovered())
@@ -112,7 +114,7 @@ namespace SolEngine::GUI::View
 	{
 		// Prevent user interaction whilst a simulation is running
 		// Changing the Seed at runtime will cause Bad Things to Happen™
-		ImGui::BeginDisabled(IsSimulationPlaying());
+		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
 		{
 			ImGui::PushID(RESET_SEED_BUTTON_ID);	// Since there are multiple buttons with a "Reset" label, we have to define a unique ID here
 			if (ImGui::Button(LABEL_SIMULATION_SEED_RESET))
@@ -138,12 +140,14 @@ namespace SolEngine::GUI::View
 
 	void GuiSimulationView::RenderSimulationSimulationSpeedInput()
 	{
-		if (ImGui::InputFloat(LABEL_SIMULATION_SPEED,
-							  &_simulationSpeed,
-							  SIMULATION_SPEED_SLIDER_STEP,
-							  SIMULATION_SPEED_SLIDER_FAST_STEP,
-							  "%.2f", 
-							  ImGuiInputTextFlags_EnterReturnsTrue))
+		ImGui::InputFloat(LABEL_SIMULATION_SPEED,
+						  &_simulationSpeed,
+						  SIMULATION_SPEED_SLIDER_STEP,
+						  SIMULATION_SPEED_SLIDER_FAST_STEP,
+						  "%.2f");
+
+		// Update values after user is finished
+		if (ImGui::IsItemDeactivatedAfterEdit())
 		{
 			OnSimulationSpeedChanged();
 		}
@@ -157,8 +161,8 @@ namespace SolEngine::GUI::View
 		ImGui::BeginTooltip();
 		{
 			ImGui::Text(TOOLTIP_SIMULATION_SPEED, 
-						MIN_SIMULATION_SPEED,							// Min Value
-						MAX_SIMULATION_SPEED,							// Max Value
+						MIN_SIMULATION_SPEED,				// Min Value
+						MAX_SIMULATION_SPEED,				// Max Value
 						_defaultSimulationSettings.speed);	// Default Value
 		}
 		ImGui::EndTooltip();
@@ -208,7 +212,7 @@ namespace SolEngine::GUI::View
 
 	void GuiSimulationView::RenderSimulationResetButton()
 	{
-		ImGui::BeginDisabled(IsSimulationPlaying());
+		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
 		{
 			if (ImGui::Button(LABEL_SIMULATION_RESET))
 			{

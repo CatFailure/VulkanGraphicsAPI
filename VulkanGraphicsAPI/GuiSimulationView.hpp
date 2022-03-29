@@ -17,7 +17,6 @@ namespace SolEngine::GUI::View
 
 		void RenderViewContents();
 
-		bool IsSimulationPlaying() const { return _rSimulationSettings.state == SimulationState::PLAY; }
 		void SetSimulationState(const SimulationState state);
 
 	private:

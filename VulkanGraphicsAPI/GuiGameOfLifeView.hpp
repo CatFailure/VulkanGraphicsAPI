@@ -34,7 +34,6 @@ namespace SolEngine::GUI::View
 		void OnOverpopulationValueChanged(const int value);
 		void OnReproductionValueChanged(const int value);
 
-		GameOfLifeSettings  _defaultGameOfLifeSettings{};
 		GameOfLifeSettings& _rGameOfLifeSettings;
 
 		const char* _neighbourhoodTypes[(size_t)NeighbourhoodType::COUNT]{ "Moore", "Von Neumann" };

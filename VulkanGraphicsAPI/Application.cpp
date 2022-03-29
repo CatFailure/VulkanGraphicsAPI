@@ -69,13 +69,16 @@ void Application::Run()
 
 void Application::Update(const float deltaTime)
 {
-    _solCamera.LookAt(_pMarchingCubesSystem->GetGameObject()
-                                           .transform
-                                           .position);
+    const glm::vec3 gameObjPosition = _pMarchingCubesSystem->GetGameObject()
+                                                           .transform
+                                                           .position;
+
+    _solCamera.LookAt(gameObjPosition);
 
     _solCamera.Update(deltaTime);
 
     CheckForSimulationResetFlag();
+    CheckForGridDimenionsChangedFlag();
 
     if (_pSolGrid->IsGridDataValid())
     {
@@ -147,8 +150,8 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 35.f, 2.5f, 55.f })
-              .LookAt(_solCamera.GetPosition() + VEC3_FORWARD);    // Look forwards
+              .SetPosition({ 25.f, 0.f, 55.f })
+              .LookAt(_solCamera.GetPosition() - VEC3_FORWARD);    // Look forwards
 }
 
 void Application::SetupGrid()
@@ -202,14 +205,31 @@ void Application::CheckForSimulationResetFlag()
     // OR keep same values for repeatable simulations
     RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
 
-    // Reset the grid nodes and re-generate node states
-    _pSolGrid->Reset();
-
-    // Force Game of Life to re-check live neighbours
-    _pGameOfLifeSystem->ForceUpdateCellStates();
+    _pSolGrid->Reset();                             // Reset the grid nodes and re-generate initial node states
+    _pMarchingCubesSystem->March();                 // Create the reset vertices
+    _pGameOfLifeSystem->CheckAllCellNeighbours();   // Retrieve the next generation state
 
     // Finished!
     _rSimulationSettings.isSimulationResetRequested = false;
+}
+
+void Application::CheckForGridDimenionsChangedFlag()
+{
+    if (!_rGridSettings.isGridDimensionsChangeRequested)
+    {
+        return;
+    }
+
+    // Reset the seed to generate new values 
+    // OR keep same values for repeatable simulations
+    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+
+    _pSolGrid->Reconstruct();                       // Re-construct the Grid
+    _pMarchingCubesSystem->March();                 // Create the new vertices
+    _pGameOfLifeSystem->CheckAllCellNeighbours();   // Retrieve the next generation state
+
+    // Finished!
+    _rGridSettings.isGridDimensionsChangeRequested = false;
 }
 
 #ifndef DISABLE_IM_GUI
@@ -230,6 +250,7 @@ void Application::CreateGuiWindowManager()
                                                           true, 
                                                           flags, 
                                                           _rGameOfLifeSettings,
-                                                          _rSimulationSettings);
+                                                          _rSimulationSettings,
+                                                          _rGridSettings);
 }
 #endif // !DISABLE_IM_GUI

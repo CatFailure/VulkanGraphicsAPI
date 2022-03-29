@@ -33,6 +33,12 @@ namespace Utility
         return fminf(max, fmaxf(min, value));
     }
 
+    static int ForceEven(const int value)
+    {
+        // yup
+        return value & ~1;
+    }
+
     static int _3DTo1DIndex(const int xIndex, 
                             const int yIndex, 
                             const int zIndex,
@@ -47,6 +53,7 @@ namespace Utility
             (uint32_t)yIndex > validNeighbourDimensions.y ||
             (uint32_t)zIndex > validNeighbourDimensions.z)
         {
+            // Out-of-range
             return -1;
         }
 
@@ -58,10 +65,11 @@ namespace Utility
             return 0;
         }
 
-        const glm::vec3 sqrDimensions = dimensions * dimensions;
-        const int returnIndex = (int)((zIndex * sqrDimensions.x) + (yIndex * dimensions.y) + xIndex);
-
         // Convert 3D array indexes into a 1D array index
+        // https://stackoverflow.com/a/34363187
+        const uint32_t dimensionsX = dimensions.x;
+        const int returnIndex = (int)((zIndex * dimensionsX * dimensions.y) + (yIndex * dimensionsX) + xIndex);
+
         return returnIndex;
     }
 
@@ -168,8 +176,7 @@ namespace Utility
     }
 
     static size_t GenerateRandomStates(bool* pOutNodeStates,
-                                       const size_t count,
-                                       const unsigned int seed = 0U)
+                                       const size_t count)
     {
         const size_t stateSizeBytes = sizeof(bool);
         size_t       bytesInUse     = 0;

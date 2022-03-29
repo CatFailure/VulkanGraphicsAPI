@@ -28,6 +28,8 @@ namespace SolEngine::Settings
 			onSimulationSpeedChangedEvent.Invoke(speed);
 		}
 
+		bool IsSimulationPlaying() const { return state == SimulationState::PLAY; }
+
 		SolEvent<float> onSimulationSpeedChangedEvent;
 
 		bool isSimulationResetRequested{ false };

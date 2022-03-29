@@ -88,23 +88,22 @@ namespace SolEngine::System
                                                return;
                                            }
                                        
-                                           bool&                  rCellState         = rGridNodes.pCellStates[cellIndex];
+                                           bool&                  rIsCellAlive       = rGridNodes.pCellStates[cellIndex];
                                            const NeighbourCount_t cellNeighbourCount = rGridNodes.pLiveNeighbourCounts[cellIndex];
                                        
-                                           // Nothing to do
+                                           // Nothing to do - guarenteed dead
                                            if (cellNeighbourCount == 0)
                                            {
+                                               rIsCellAlive = false;
+
                                                return;
                                            }
-                                       
-                                           // If alive
-                                           if (rCellState)
+
+                                           if (rIsCellAlive)
                                            {
-                                               rCellState = !(cellNeighbourCount < underpopulationCount) && // Any live cell with fewer than minLiveNeighbourCount live neighbours dies, as if by underpopulation.
-                                                            !(cellNeighbourCount > overpopulationCount);    // Any live cell with more than maxLiveNeighbourCount live neighbours dies, as if by overpopulation.
-                                       
-                                               // Any live cell with minLiveNeighbourCount or maxLiveNeighbourCount 
-                                               // live neighbours lives on to the next generation.
+                                               rIsCellAlive = !(cellNeighbourCount < underpopulationCount ||    // Any live cell with fewer than underpopulationCount live neighbours dies, as if by underpopulation.
+                                                                cellNeighbourCount > overpopulationCount);      // Any live cell with more than overpopulationCount live neighbours dies, as if by overpopulation.
+
                                                return;
                                            }
 
@@ -114,7 +113,7 @@ namespace SolEngine::System
                                                return;
                                            }
 
-                                           rCellState = true;
+                                           rIsCellAlive = true;
                                        });
 
         onUpdateAllCellStatesEvent.Invoke();
@@ -135,13 +134,6 @@ namespace SolEngine::System
         }
 
         NextGeneration();
-    }
-
-    void GameOfLifeSystem::ForceUpdateCellStates()
-    {
-        UpdateAllCellStates();
-        CheckAllCellNeighbours();
-        ResetNextGenerationDelayRemaining();
     }
 
     void GameOfLifeSystem::ResetNextGenerationDelayRemaining()
@@ -322,7 +314,9 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::NextGeneration()
     {
-        ForceUpdateCellStates();
+        UpdateAllCellStates();                  // Update all cell states to the next generation
+        CheckAllCellNeighbours();               // Check what state they will be in the generation after
+        ResetNextGenerationDelayRemaining();
 
         ++_rSimulationSettings.generation;
     }

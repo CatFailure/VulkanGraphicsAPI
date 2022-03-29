@@ -1,3 +1,372 @@
-Debug Assert - line 43 of file E:\Users\camso\Source\Repos\VulkanGraphicsAPI\VulkanGraphicsAPI\main.cpp (function main)
-Debug Assert - line 43 of file E:\Users\camso\Source\Repos\VulkanGraphicsAPI\VulkanGraphicsAPI\main.cpp (function main)
-Debug Assert - line 43 of file E:\Users\camso\Source\Repos\VulkanGraphicsAPI\VulkanGraphicsAPI\main.cpp (function main)
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: -2147237888
+Device Name: NVIDIA GeForce RTX 2070
+Device Type: 2
+API Version: 1.1.194
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Present mode: VK_PRESENT_MODE_MAILBOX_KHR

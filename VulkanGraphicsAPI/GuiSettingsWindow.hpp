@@ -2,6 +2,7 @@
 #include "IGuiWindow.hpp"
 #include "GuiSimulationView.hpp"
 #include "GuiGameOfLifeView.hpp"
+#include "GuiGridView.hpp"
 
 using namespace SolEngine::GUI::View;
 using namespace SolEngine::Interface;
@@ -13,7 +14,8 @@ namespace SolEngine::GUI
 	public:
 		GuiSettingsWindow() = delete;
 		GuiSettingsWindow(const char* windowTitle, const bool isActive, const ImGuiWindowFlags windowFlags,
-						  GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
+						  GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings, 
+						  GridSettings& rGridSettings);
 
 		// Inherited via IGuiWindow
 		virtual void Render() override;
@@ -21,5 +23,6 @@ namespace SolEngine::GUI
 	private:
 		GuiSimulationView _simulationView;
 		GuiGameOfLifeView _gameOfLifeView;
+		GuiGridView		  _gridView;
 	};
 }

@@ -44,6 +44,7 @@ private:
     void SetupEventCallbacks();
 
     void CheckForSimulationResetFlag();
+    void CheckForGridDimenionsChangedFlag();
 
 #ifndef DISABLE_IM_GUI
     void CreateGuiWindowManager();
