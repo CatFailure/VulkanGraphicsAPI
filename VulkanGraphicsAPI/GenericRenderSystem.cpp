@@ -2,7 +2,7 @@
 
 namespace SolEngine::Rendering
 {
-    GenericRenderSystem::GenericRenderSystem(SolDevice &rSolDevice, 
+    GenericRenderSystem::GenericRenderSystem(SolDevice& rSolDevice, 
                                              const VkRenderPass renderPass)
         : _rSolDevice(rSolDevice)
     {
