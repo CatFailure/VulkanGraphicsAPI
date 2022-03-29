@@ -182,17 +182,17 @@ namespace SolEngine::System
             return;
         }
 
-        std::shared_ptr<SolModel> marchingCubeModel = 
+        std::shared_ptr<SolModel> pMarchingCubeModel = 
             std::make_shared<SolModel>(_rSolDevice, 
                                        _vertices.data(), 
                                        (uint32_t)_vertices.size());
 
         // Any model to work with?
-        if (marchingCubeModel == nullptr)
+        if (pMarchingCubeModel == nullptr)
         {
             return;
         }
 
-        _marchingCubesObject.SetModel(marchingCubeModel);
+        _marchingCubesObject.SetModel(pMarchingCubeModel);
     }
 }
