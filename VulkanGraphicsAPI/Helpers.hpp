@@ -35,6 +35,7 @@ namespace Utility
 
     static int ForceEven(const int value)
     {
+        // yup
         return value & ~1;
     }
 
