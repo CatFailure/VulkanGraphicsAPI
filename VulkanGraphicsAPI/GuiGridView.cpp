@@ -52,7 +52,12 @@ namespace SolEngine::GUI::View
 		{
 			const glm::uvec3 defaultGridDimensions = _defaultGridSettings.dimensions;
 
-			ImGui::Text(TOOLTIP_GRID_DIMENSIONS, defaultGridDimensions.x, defaultGridDimensions.y, defaultGridDimensions.z);
+			ImGui::Text(TOOLTIP_GRID_DIMENSIONS, 
+						MIN_CELLS_PER_AXIS_COUNT,	// Minimum Value
+						MAX_CELLS_PER_AXIS_COUNT,	// Maximum Value
+						defaultGridDimensions.x,	// Default x
+						defaultGridDimensions.y,	// Default y
+						defaultGridDimensions.z);	// Default z
 		}
 		ImGui::EndTooltip();
 	}
