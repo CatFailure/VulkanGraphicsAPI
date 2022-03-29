@@ -33,13 +33,14 @@ namespace SolEngine::GUI::View
 	void GuiGridView::RenderGridDimensionsInputInt3()
 	{
 		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
-		if (ImGui::InputInt3(LABEL_GRID_DIMENSIONS, 
-							 _guiGridDimensions,
-							 ImGuiInputTextFlags_EnterReturnsTrue))
+		ImGui::InputInt3(LABEL_GRID_DIMENSIONS, _guiGridDimensions);
+		ImGui::EndDisabled();
+
+		// Update values after user is finished
+		if (ImGui::IsItemDeactivatedAfterEdit())
 		{
 			OnGridSizeChanged();
 		}
-		ImGui::EndDisabled();
 
 		// Tooltip - Change Grid Dimensions
 		if (!ImGui::IsItemHovered())
@@ -84,15 +85,14 @@ namespace SolEngine::GUI::View
 
 	void GuiGridView::OnGridSizeChanged()
 	{
-		const int minGridAxisDimension = 1U;
 		int& rGuiGridDimensionsX = _guiGridDimensions[0];
 		int& rGuiGridDimensionsY = _guiGridDimensions[1];
 		int& rGuiGridDimensionsZ = _guiGridDimensions[2];
 
 		// Clamp the GUI Grid Dimensions so they can't go out of range.
-		rGuiGridDimensionsX = Clamp(rGuiGridDimensionsX, minGridAxisDimension, MAX_CELLS_PER_AXIS_COUNT);
-		rGuiGridDimensionsY = Clamp(rGuiGridDimensionsY, minGridAxisDimension, MAX_CELLS_PER_AXIS_COUNT);
-		rGuiGridDimensionsZ = Clamp(rGuiGridDimensionsZ, minGridAxisDimension, MAX_CELLS_PER_AXIS_COUNT);
+		rGuiGridDimensionsX = Clamp(rGuiGridDimensionsX, MIN_CELLS_PER_AXIS_COUNT, MAX_CELLS_PER_AXIS_COUNT);
+		rGuiGridDimensionsY = Clamp(rGuiGridDimensionsY, MIN_CELLS_PER_AXIS_COUNT, MAX_CELLS_PER_AXIS_COUNT);
+		rGuiGridDimensionsZ = Clamp(rGuiGridDimensionsZ, MIN_CELLS_PER_AXIS_COUNT, MAX_CELLS_PER_AXIS_COUNT);
 
 		// Force the grid dimensions to be even for whole number grid bounds
 		rGuiGridDimensionsX = ForceEven(rGuiGridDimensionsX);

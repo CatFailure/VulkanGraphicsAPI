@@ -28,7 +28,7 @@ namespace SolEngine::GUI
 
 	static constexpr const char* TOOLTIP_SIMULATION_GENERATION { "Current Simulation Generation." };
 	static constexpr const char* TOOLTIP_SIMULATION_SEED	   { "Seed used for Generating Random Cell States.\n(Min: %i, Max: %i, Default: %i)" };
-	static constexpr const char* TOOLTIP_SIMULATION_SEED_RESET { "Resets the Simulation Seed to Default." };
+	static constexpr const char* TOOLTIP_SIMULATION_SEED_RESET { "Resets the Simulation Seed to Default.\nSimulation MUST be paused to reset." };
 	static constexpr const char* TOOLTIP_SIMULATION_SPEED	   { "Adjusts Delay between Generations (Seconds).\n(Min: %.2f, Max: %.2f, Default: %.2f)" };
 	static constexpr const char* TOOLTIP_SIMULATION_SPEED_RESET{ "Resets the Simulation Speed to Default." };
 	static constexpr const char* TOOLTIP_SIMULATION_PAUSE	   { "Pauses and Resumes the Simulation." };

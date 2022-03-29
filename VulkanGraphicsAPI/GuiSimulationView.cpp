@@ -81,16 +81,18 @@ namespace SolEngine::GUI::View
 		// Changing the Seed at runtime will cause Bad Things to Happen™
 		ImGui::BeginDisabled(_rSimulationSettings.IsSimulationPlaying());
 		{
-			if (ImGui::InputInt(LABEL_SIMULATION_SEED, 
-								&_simulationSeed, 
-								SIMULATION_SEED_INPUT_STEP,
-								SIMULATION_SEED_INPUT_FAST_STEP,
-								ImGuiInputTextFlags_EnterReturnsTrue))
-			{
-				OnSimulationSeedChanged();
-			}
+			ImGui::InputInt(LABEL_SIMULATION_SEED,
+							&_simulationSeed,
+							SIMULATION_SEED_INPUT_STEP,
+							SIMULATION_SEED_INPUT_FAST_STEP);
 		}
 		ImGui::EndDisabled();
+
+		// Update values after user is finished
+		if (ImGui::IsItemDeactivatedAfterEdit())
+		{
+			OnSimulationSeedChanged();
+		}
 
 		// Tooltip - Game of Life Seed
 		if (!ImGui::IsItemHovered())
@@ -138,12 +140,14 @@ namespace SolEngine::GUI::View
 
 	void GuiSimulationView::RenderSimulationSimulationSpeedInput()
 	{
-		if (ImGui::InputFloat(LABEL_SIMULATION_SPEED,
-							  &_simulationSpeed,
-							  SIMULATION_SPEED_SLIDER_STEP,
-							  SIMULATION_SPEED_SLIDER_FAST_STEP,
-							  "%.2f", 
-							  ImGuiInputTextFlags_EnterReturnsTrue))
+		ImGui::InputFloat(LABEL_SIMULATION_SPEED,
+						  &_simulationSpeed,
+						  SIMULATION_SPEED_SLIDER_STEP,
+						  SIMULATION_SPEED_SLIDER_FAST_STEP,
+						  "%.2f");
+
+		// Update values after user is finished
+		if (ImGui::IsItemDeactivatedAfterEdit())
 		{
 			OnSimulationSpeedChanged();
 		}
