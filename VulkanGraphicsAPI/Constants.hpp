@@ -17,7 +17,7 @@ namespace SolEngine::Data
     static constexpr float    SPHERE_RADIUS        { 5.f };
     static constexpr uint32_t CUBE_VERTEX_COUNT    { 8U };
 
-    static constexpr uint32_t CELL_NEIGHBOURS_COUNT_MOORE      { 14U };
+    static constexpr uint32_t CELL_NEIGHBOURS_COUNT_MOORE      { 26U };
     static constexpr uint32_t CELL_NEIGHBOURS_COUNT_VON_NEUMANN{ 6U };
 
     static constexpr uint32_t MIN_CELLS_PER_AXIS_COUNT{ 2U };
