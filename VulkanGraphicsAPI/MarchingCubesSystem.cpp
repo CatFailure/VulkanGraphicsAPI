@@ -135,15 +135,17 @@ namespace SolEngine::System
                                                            zIndex, 
                                                            cornerIndices);
 
+            const glm::uvec3 gridDimensions = _rSolGrid.GetDimensions();
+
             // Compact Voxel Array
             // Push back vertex...
             _vertices.push_back(
                 {
                     vertex, 
                     { 
-                        (float)xIndex / zIndex, 
-                        (float)yIndex / xIndex, 
-                        (float)zIndex / yIndex 
+                        (float)xIndex / gridDimensions.x, 
+                        (float)yIndex / gridDimensions.y, 
+                        (float)zIndex / gridDimensions.z 
                     } 
                 });
         }
