@@ -18,7 +18,7 @@ namespace SolEngine::System
         const bool*      pCellStates              = gridCells.pCellStates;
         const glm::uvec3 gridDimensions           = _rSolGrid.GetDimensions();
         const glm::uvec3 validNeighbourDimensions = gridDimensions - glm::uvec3(1U);
-        const bool       areDiagonalsChecked      = _rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::MOORE_NEIGHBOURHOOD;
+        const bool       areDiagonalsChecked      = _rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::MOORE;
 
         uint32_t neighbourIndex(0);
                                           

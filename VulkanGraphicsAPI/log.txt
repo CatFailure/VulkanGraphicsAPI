@@ -370,3 +370,375 @@ Device Type: 2
 API Version: 1.1.194
 Present mode: VK_PRESENT_MODE_MAILBOX_KHR
 Present mode: VK_PRESENT_MODE_MAILBOX_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+[vulkan] ErrorDriver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+[vulkan] ErrorDriver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Driver Version: 8388745
+Device Name: AMD Radeon(TM) Vega 8 Graphics
+Device Type: 1
+API Version: 1.1.133
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR
+Present mode: VK_PRESENT_MODE_IMMEDIATE_KHR

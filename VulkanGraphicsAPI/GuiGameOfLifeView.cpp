@@ -28,7 +28,7 @@ namespace SolEngine::GUI::View
 
 	uint32_t GuiGameOfLifeView::GetMaxCellNeighbourCount() const
 	{ 
-		return _rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::MOORE_NEIGHBOURHOOD ? 
+		return _rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::MOORE ? 
 			CELL_NEIGHBOURS_COUNT_MOORE : CELL_NEIGHBOURS_COUNT_VON_NEUMANN; 
 	}
 

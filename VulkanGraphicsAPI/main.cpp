@@ -13,6 +13,10 @@ int main()
 	GameOfLifeSettings gameOfLifeSettings{};
 	SimulationSettings simulationSettings{};
 
+#ifdef LAPTOP_BUILD
+	simulationSettings.state = SimulationState::PLAY;
+#endif // _DEBUG_LAPTOP || _NDEBUG_LAPTOP
+
 	Application application(appData, 
 							diagnosticData,
 							gridSettings,
