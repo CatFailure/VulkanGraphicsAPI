@@ -2,10 +2,10 @@
 
 namespace SolEngine
 {
-    SolPipeline::SolPipeline(SolDevice &rSolDevice, 
-                             const std::string &vertShaderFilePath, 
-                             const std::string &fragShaderFilePath, 
-                             const PipelineConfigInfo &configInfo)
+    SolPipeline::SolPipeline(SolDevice& rSolDevice, 
+                             const std::string& vertShaderFilePath, 
+                             const std::string& fragShaderFilePath, 
+                             const PipelineConfigInfo& configInfo)
         : _rSolDevice(rSolDevice)
     {
         CreateGraphicsPipeline(vertShaderFilePath, 
@@ -25,7 +25,7 @@ namespace SolEngine
                           _graphicsPipeline);
     }
 
-    void SolPipeline::DefaultPipelineConfigInfo(PipelineConfigInfo &rConfigInfo)
+    void SolPipeline::DefaultPipelineConfigInfo(PipelineConfigInfo& rConfigInfo)
     {
         rConfigInfo = PipelineConfigInfo
         {
@@ -134,7 +134,7 @@ namespace SolEngine
 
     void SolPipeline::Dispose()
     {
-        const VkDevice &device = _rSolDevice.GetDevice();
+        const VkDevice& device = _rSolDevice.GetDevice();
 
         vkDestroyShaderModule(device, 
                               _vertexShaderModule, 
@@ -149,7 +149,7 @@ namespace SolEngine
                           NULL);
     }
 
-    std::vector<char> SolPipeline::ReadFile(const std::string &filePath)
+    std::vector<char> SolPipeline::ReadFile(const std::string& filePath)
     {
         const std::string openFileFailedMessage = "Failed to open file: " + filePath;
 
@@ -171,9 +171,9 @@ namespace SolEngine
         return fileBuffer;
     }
 
-    void SolPipeline::CreateGraphicsPipeline(const std::string &vertShaderFilePath, 
-                                             const std::string &fragShaderFilePath, 
-                                             const PipelineConfigInfo &configInfo)
+    void SolPipeline::CreateGraphicsPipeline(const std::string& vertShaderFilePath, 
+                                             const std::string& fragShaderFilePath, 
+                                             const PipelineConfigInfo& configInfo)
     {
         // Ensure Config Info is properly set up
         DBG_ASSERT_MSG((configInfo.pipelineLayout != VK_NULL_HANDLE), 
@@ -259,14 +259,14 @@ namespace SolEngine
         DBG_ASSERT_VULKAN_MSG(result, "Failed to Create Graphics Pipeline.");
     }
 
-    void SolPipeline::CreateShaderModule(const std::vector<char> &shaderCode, 
-                                               VkShaderModule *pOutShaderModule)
+    void SolPipeline::CreateShaderModule(const std::vector<char>& shaderCode, 
+                                               VkShaderModule* pOutShaderModule)
     {
         const VkShaderModuleCreateInfo shaderModuleCreateInfo
         {
             .sType    = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
             .codeSize = shaderCode.size(),
-            .pCode    = reinterpret_cast<const uint32_t *>(shaderCode.data())
+            .pCode    = reinterpret_cast<const uint32_t*>(shaderCode.data())
         };
 
         const VkResult result = vkCreateShaderModule(_rSolDevice.GetDevice(), 

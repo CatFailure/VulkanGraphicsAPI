@@ -18,7 +18,7 @@ namespace SolEngine::System
         const bool*      pCellStates              = gridCells.pCellStates;
         const glm::uvec3 gridDimensions           = _rSolGrid.GetDimensions();
         const glm::uvec3 validNeighbourDimensions = gridDimensions - glm::uvec3(1U);
-        const bool       areDiagonalsChecked      = _rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::MOORE_NEIGHBOURHOOD;
+        const bool       areDiagonalsChecked      = _rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::MOORE;
 
         uint32_t neighbourIndex(0);
                                           
@@ -156,7 +156,7 @@ namespace SolEngine::System
         const int      backCellIndex   = zIndex - neighbourOffset;
         const int      frontCellIndex  = zIndex + neighbourOffset;
 
-        // Left Cell Neighbour
+        // Left Cell Neighbour - 1
         CheckNeighbourState(leftCellIndex, 
                             yIndex,
                             zIndex,
@@ -164,7 +164,7 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Right Cell Neighbour
+        // Right Cell Neighbour - 2
         CheckNeighbourState(rightCellIndex, 
                             yIndex,
                             zIndex,
@@ -172,7 +172,7 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Above Cell Neighbour
+        // Above Cell Neighbour - 3
         CheckNeighbourState(xIndex, 
                             aboveCellIndex,
                             zIndex,
@@ -180,7 +180,7 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Below Cell Neighbour
+        // Below Cell Neighbour - 4
         CheckNeighbourState(xIndex, 
                             belowCellIndex,
                             zIndex,
@@ -188,7 +188,7 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Back Cell Neighbour
+        // Back Cell Neighbour - 5
         CheckNeighbourState(xIndex, 
                             yIndex,
                             backCellIndex,
@@ -196,7 +196,7 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Front Cell Neighbour
+        // Front Cell Neighbour - 6
         CheckNeighbourState(xIndex, 
                             yIndex,
                             frontCellIndex,
@@ -220,7 +220,7 @@ namespace SolEngine::System
         const int      backCellIndex   = zIndex - neighbourOffset;
         const int      frontCellIndex  = zIndex + neighbourOffset;
 
-        // Back-Top-Left Cell Neighbour
+        // Back-Top-Left Cell Neighbour - 7
         CheckNeighbourState(leftCellIndex, 
                             aboveCellIndex, 
                             backCellIndex, 
@@ -228,7 +228,15 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Back-Top-Right Cell Neighbour
+        // Back-Top-Middle Cell Neighbour - 8
+        CheckNeighbourState(xIndex, 
+                            aboveCellIndex, 
+                            backCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Back-Top-Right Cell Neighbour - 9
         CheckNeighbourState(rightCellIndex, 
                             aboveCellIndex, 
                             backCellIndex, 
@@ -236,7 +244,23 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Back-Bottom-Left Cell Neighbour
+        // Back-Middle-Left Cell Neighbour - 10
+        CheckNeighbourState(leftCellIndex, 
+                            yIndex, 
+                            backCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Back-Middle-Right Cell Neighbour - 11
+        CheckNeighbourState(rightCellIndex, 
+                            yIndex, 
+                            backCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Back-Bottom-Left Cell Neighbour - 12
         CheckNeighbourState(leftCellIndex, 
                             belowCellIndex, 
                             backCellIndex, 
@@ -244,7 +268,15 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Back-Bottom-Right Cell Neighbour
+        // Back-Bottom-Middle Cell Neighbour - 13
+        CheckNeighbourState(xIndex, 
+                            belowCellIndex, 
+                            backCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Back-Bottom-Right Cell Neighbour - 14
         CheckNeighbourState(rightCellIndex, 
                             belowCellIndex, 
                             backCellIndex, 
@@ -252,7 +284,39 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Front-Top-Left Cell Neighbour
+        // Middle-Top-Left - 15
+        CheckNeighbourState(leftCellIndex, 
+                            aboveCellIndex, 
+                            zIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Middle-Top-Right - 16
+        CheckNeighbourState(rightCellIndex, 
+                            aboveCellIndex, 
+                            zIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Middle-Bottom-Left - 17
+        CheckNeighbourState(leftCellIndex, 
+                            belowCellIndex, 
+                            zIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Middle-Bottom-Right - 18
+        CheckNeighbourState(rightCellIndex, 
+                            belowCellIndex, 
+                            zIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front-Top-Left Cell Neighbour - 19
         CheckNeighbourState(leftCellIndex, 
                             aboveCellIndex, 
                             frontCellIndex, 
@@ -260,7 +324,15 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Front-Top-Right Cell Neighbour
+        // Front-Top-Middle Cell Neighbour - 20
+        CheckNeighbourState(xIndex, 
+                            aboveCellIndex, 
+                            frontCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front-Top-Right Cell Neighbour - 21
         CheckNeighbourState(rightCellIndex, 
                             aboveCellIndex, 
                             frontCellIndex, 
@@ -268,7 +340,23 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Front-Bottom-Left Cell Neighbour
+        // Front-Middle-Left Cell Neighbour - 22
+        CheckNeighbourState(leftCellIndex, 
+                            yIndex, 
+                            frontCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front-Middle-Right Cell Neighbour - 23
+        CheckNeighbourState(rightCellIndex, 
+                            yIndex, 
+                            frontCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front-Bottom-Left Cell Neighbour - 24
         CheckNeighbourState(leftCellIndex, 
                             belowCellIndex, 
                             frontCellIndex, 
@@ -276,7 +364,15 @@ namespace SolEngine::System
                             pCellStates, 
                             rLiveNeighbourCount);
 
-        // Front-Bottom-Right Cell Neighbour
+        // Front-Bottom-Middle Cell Neighbour - 25
+        CheckNeighbourState(xIndex, 
+                            belowCellIndex, 
+                            frontCellIndex, 
+                            gridDimensions, 
+                            pCellStates, 
+                            rLiveNeighbourCount);
+
+        // Front-Bottom-Right Cell Neighbour - 26
         CheckNeighbourState(rightCellIndex, 
                             belowCellIndex, 
                             frontCellIndex, 
