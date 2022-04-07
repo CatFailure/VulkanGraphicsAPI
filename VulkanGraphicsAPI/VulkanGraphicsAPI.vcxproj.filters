@@ -362,6 +362,9 @@
     <ClInclude Include="Cursor.hpp">
       <Filter>SolEngine\Input</Filter>
     </ClInclude>
+    <ClInclude Include="MouseButton.hpp">
+      <Filter>SolEngine\Enumeration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">
