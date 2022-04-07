@@ -31,6 +31,7 @@ namespace SolEngine
         SolCamera& SetPerspectiveProjection(const float fovDeg, const float aspect, const float near = CAM_NEAR_DEFAULT, const float far = CAM_FAR_DEFAULT);
         SolCamera& SetPerspectiveProjection(const PerspectiveProjectionInfo& projInfo);
 
+        SolCamera& Move(const glm::vec3& delta);
         SolCamera& LookAt(const glm::vec3& target, const glm::vec3& up = VEC3_UP);
 
         const glm::vec3& GetPosition()             const { return _position; }

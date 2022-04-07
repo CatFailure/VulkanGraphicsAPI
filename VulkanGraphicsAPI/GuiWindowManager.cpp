@@ -61,7 +61,7 @@ namespace SolEngine::GUI
 
         ImGui_ImplGlfw_InitForVulkan(solWindow.GetWindow(), true);
 
-        const ImGui_ImplVulkan_InitInfo initInfo
+        ImGui_ImplVulkan_InitInfo initInfo
         {
             .Instance        = rSolDevice.GetInstance(),
             .PhysicalDevice  = rSolDevice.GetPhysicalDevice(),

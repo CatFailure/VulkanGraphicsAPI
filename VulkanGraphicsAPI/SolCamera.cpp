@@ -57,6 +57,13 @@ namespace SolEngine
                                         projInfo.far);
     }
 
+    SolCamera& SolCamera::Move(const glm::vec3& delta)
+    {
+        _position += delta;
+
+        return *this;
+    }
+
     SolCamera& SolCamera::LookAt(const glm::vec3& target, const glm::vec3& up)
     {
         _viewMatrix = glm::lookAtLH(_position, target, up);

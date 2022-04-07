@@ -69,26 +69,32 @@ void Application::Run()
 
 void Application::Update(const float deltaTime)
 {
-    const glm::vec3 gameObjPosition = _pMarchingCubesSystem->GetGameObject()
-                                                           .transform
-                                                           .position;
-
-    _solCamera.LookAt(gameObjPosition);
-
-    _solCamera.Update(deltaTime);
-
     Cursor& rCursor = Cursor::GetInstance();
+    Transform& rGameObjTransform = _pMarchingCubesSystem->GetGameObject().transform;
 
-    printf_s("Mouse Position: (%f, %f)\nMouse Delta: (%f, %f)\n", 
-             rCursor.mousePosition.x, 
-             rCursor.mousePosition.y,
-             rCursor.getMouseDelta().x,
-             rCursor.getMouseDelta().y);
+    // User-mouse controls
+    {
+        const glm::dvec2 mouseDelta = rCursor.getMouseDelta();
+        const float moveSpeed = 2.5f;
+        constexpr float rotationAmount = glm::radians(.5f);
 
-    printf_s("Mouse Buttons: (%i | %i | %i)\n", 
-             rCursor.isButtonDown(MouseButton::LEFT),
-             rCursor.isButtonDown(MouseButton::MIDDLE),
-             rCursor.isButtonDown(MouseButton::RIGHT));
+        if (rCursor.isButtonDown(MouseButton::LEFT))
+        {
+            rGameObjTransform.rotation += (glm::vec3(0.f, 
+                                                     mouseDelta.x, 
+                                                     -mouseDelta.y) * rotationAmount);
+        }
+
+        if (rCursor.isButtonDown(MouseButton::RIGHT))
+        {
+            _solCamera.Move({ 0.f,
+                              0.f,
+                              mouseDelta.y * moveSpeed });
+        }
+    }
+
+    _solCamera.LookAt(rGameObjTransform.position);
+    _solCamera.Update(deltaTime);
 
     CheckForSimulationResetFlag();
     CheckForGridDimenionsChangedFlag();
@@ -165,7 +171,7 @@ void Application::SetupCamera()
     };
 
     _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 25.f, 0.f, 55.f })
+              .SetPosition({ 0.f, 0.f, 55.f })
               .LookAt(_solCamera.GetPosition() - VEC3_FORWARD);    // Look forwards
 }
 
