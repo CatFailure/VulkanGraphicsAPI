@@ -1,5 +1,5 @@
 #pragma once
-#include "IGuiWindow.hpp"
+#include "GuiWindowBase.hpp"
 #include "DiagnosticData.hpp"
 #include "Constants.hpp"
 
@@ -8,7 +8,7 @@ using namespace SolEngine::Interface;
 
 namespace SolEngine::GUI
 {
-	class GuiDiagnosticWindow : public IGuiWindow
+	class GuiDiagnosticWindow : public GuiWindowBase
 	{
 	public:
 		GuiDiagnosticWindow() = delete;

@@ -399,7 +399,7 @@
     <ClInclude Include="GuiDiagnosticWindow.hpp" />
     <ClInclude Include="GuiWindowManager.hpp" />
     <ClInclude Include="IDisposable.hpp" />
-    <ClInclude Include="IGuiWindow.hpp" />
+    <ClInclude Include="GuiWindowBase.hpp" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_glfw.h" />

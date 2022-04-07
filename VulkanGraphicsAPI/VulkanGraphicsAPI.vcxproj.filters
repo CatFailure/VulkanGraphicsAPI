@@ -290,9 +290,6 @@
     <ClInclude Include="GuiDiagnosticWindow.hpp">
       <Filter>SolEngine\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="IGuiWindow.hpp">
-      <Filter>SolEngine\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="GuiWindowManager.hpp">
       <Filter>SolEngine\GUI</Filter>
     </ClInclude>
@@ -373,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="RenderSettings.hpp">
       <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiWindowBase.hpp">
+      <Filter>SolEngine\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

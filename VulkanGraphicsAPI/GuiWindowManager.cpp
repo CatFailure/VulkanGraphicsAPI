@@ -30,7 +30,7 @@ namespace SolEngine::GUI
 
     void GuiWindowManager::Render(const VkCommandBuffer commandBuffer)
     {
-        for (std::unique_ptr<IGuiWindow>& rpGuiWindow : _guiWindows)
+        for (std::unique_ptr<GuiWindowBase>& rpGuiWindow : _guiWindows)
         {
             rpGuiWindow->Render();
         }
@@ -41,7 +41,7 @@ namespace SolEngine::GUI
 
 	void GuiWindowManager::Update(const float deltaTime)
 	{
-        for (std::unique_ptr<IGuiWindow>& rpGuiWindow : _guiWindows)
+        for (std::unique_ptr<GuiWindowBase>& rpGuiWindow : _guiWindows)
         {
             rpGuiWindow->Update(deltaTime);
         }

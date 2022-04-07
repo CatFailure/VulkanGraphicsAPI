@@ -43,7 +43,7 @@ namespace SolEngine::GUI
         // Inherited via IDisposable
         virtual void Dispose() override;
 
-        std::vector<std::unique_ptr<IGuiWindow>> _guiWindows;
+        std::vector<std::unique_ptr<GuiWindowBase>> _guiWindows;
     };
 }
 

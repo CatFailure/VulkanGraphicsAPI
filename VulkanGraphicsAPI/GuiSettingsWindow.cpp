@@ -8,7 +8,7 @@ namespace SolEngine::GUI
 										 GameOfLifeSettings& rGameOfLifeSettings, 
 										 SimulationSettings& rSimulationSettings, 
 										 GridSettings& rGridSettings)
-		: IGuiWindow(windowTitle,
+		: GuiWindowBase(windowTitle,
 					 isActive,
 					 windowFlags),
 		  _gameOfLifeView(rGameOfLifeSettings),
