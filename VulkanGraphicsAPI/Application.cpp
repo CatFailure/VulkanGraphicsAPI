@@ -201,7 +201,15 @@ void Application::SetupEventCallbacks()
 
 void Application::HandleUserInput(Transform& rGameObjectTransform)
 {
-    Cursor&          rCursor       = Cursor::GetInstance();
+    Cursor& rCursor = Cursor::GetInstance();
+
+    if (_rCameraSettings.isMouseOverGUI)
+    {
+        rCursor.UpdateLastMousePosition();
+
+        return;
+    }
+
     const glm::dvec2 mouseDelta    = rCursor.GetMouseDelta();
     const float      moveSpeed     = 1.5f;
     constexpr float  rotationSpeed = glm::radians(.5f);
@@ -263,7 +271,8 @@ void Application::CreateGuiWindowManager()
 {
     const ImGuiWindowFlags flags{ ImGuiWindowFlags_AlwaysAutoResize };
 
-    _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,  
+    _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,
+                                                            _rCameraSettings,
                                                             _solWindow,
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());

@@ -5,10 +5,10 @@
 #include "SolEvent.hpp"
 #include "IMonoBehaviour.hpp"
 
-using namespace SolEngine::Interface;
 using namespace SolEngine::Events;
+using namespace SolEngine::Interface;
 
-namespace SolEngine::Interface
+namespace SolEngine::GUI
 {
 	class GuiWindowBase : public IMonoBehaviour
 	{
@@ -38,6 +38,8 @@ namespace SolEngine::Interface
 		}
 
 		virtual void Render() = 0;
+
+		bool IsWindowHovered() const { return ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem); }
 
 	protected:
 		void TickUpdateDataDelayRemaining(const float deltaTime) { _updateDataDelayRemaining -= deltaTime; }

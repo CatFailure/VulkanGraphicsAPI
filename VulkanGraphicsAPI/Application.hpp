@@ -1,7 +1,7 @@
 #pragma once
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
-#define LAPTOP_BUILD
-#define DISABLE_IM_GUI	// Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
+//#define LAPTOP_BUILD
+//#define DISABLE_IM_GUI	// Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
 #endif // _DEBUG_LAPTOP || NDEBUG_LAPTOP
 
 #include "SolClock.hpp"

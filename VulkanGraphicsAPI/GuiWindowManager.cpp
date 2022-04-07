@@ -3,9 +3,11 @@
 namespace SolEngine::GUI
 {
 	GuiWindowManager::GuiWindowManager(SolDevice& rSolDevice, 
+                                       CameraSettings& rCameraSettings,
                                        const SolWindow& solWindow,                                
                                        const SolRenderer& solRenderer, 
                                        const VkDescriptorPool& descriptorPool)
+        : _rCameraSettings(rCameraSettings)
 	{
         InitialiseImGui(rSolDevice, 
                         solWindow, 
@@ -30,9 +32,12 @@ namespace SolEngine::GUI
 
     void GuiWindowManager::Render(const VkCommandBuffer commandBuffer)
     {
+        _rCameraSettings.isMouseOverGUI = false;
+
         for (std::unique_ptr<GuiWindowBase>& rpGuiWindow : _guiWindows)
         {
             rpGuiWindow->Render();
+            _rCameraSettings.isMouseOverGUI |= rpGuiWindow->IsWindowHovered();
         }
 
         ImGui::Render();

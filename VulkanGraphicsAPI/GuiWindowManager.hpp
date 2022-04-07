@@ -4,8 +4,9 @@
 #include "SolRenderer.hpp"
 #include "GuiDiagnosticWindow.hpp"
 #include "GuiSettingsWindow.hpp"
+#include "CameraSettings.hpp"
 
-using namespace SolEngine::Interface;
+using namespace SolEngine::Settings;
 
 namespace SolEngine::GUI
 {
@@ -13,7 +14,8 @@ namespace SolEngine::GUI
     {
     public:
         GuiWindowManager() = default;
-        GuiWindowManager(SolDevice& rSolDevice, const SolWindow& solWindow, const SolRenderer& solRenderer, const VkDescriptorPool& descriptorPool);
+        GuiWindowManager(SolDevice& rSolDevice, CameraSettings& rCameraSettings, const SolWindow& solWindow, 
+                         const SolRenderer& solRenderer, const VkDescriptorPool& descriptorPool);
         ~GuiWindowManager();
 
         void NewFrame();
@@ -37,12 +39,14 @@ namespace SolEngine::GUI
         }
 
     private:
-        void InitialiseImGui(SolDevice& rSolDevice, const SolWindow& solWindow, const SolRenderer& solRenderer, const VkDescriptorPool& descriptorPool);
+        void InitialiseImGui(SolDevice& rSolDevice, const SolWindow& solWindow, 
+                             const SolRenderer& solRenderer, const VkDescriptorPool& descriptorPool);
         void InitialiseImGuiFont(SolDevice& rSolDevice);
 
         // Inherited via IDisposable
         virtual void Dispose() override;
 
+        CameraSettings& _rCameraSettings;
         std::vector<std::unique_ptr<GuiWindowBase>> _guiWindows;
     };
 }
