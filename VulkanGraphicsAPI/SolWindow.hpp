@@ -4,8 +4,10 @@
 #include "ApplicationData.hpp"
 #include "DebugHelpers.hpp"
 #include "IDisposable.hpp"
+#include "Cursor.hpp"
 
 using namespace SolEngine::Interface;
+using namespace SolEngine::Input;
 using namespace Utility;
 
 namespace SolEngine

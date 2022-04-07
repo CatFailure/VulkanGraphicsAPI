@@ -1,11 +1,13 @@
 #pragma once
+#include "Singleton.hpp"
 #include "MouseButton.hpp"
 
+using namespace Utility;
 using namespace SolEngine::Enumeration;
 
 namespace SolEngine::Input
 {
-    struct Cursor
+    struct Cursor : Singleton<Cursor>
     {
         bool mouseButtons[(size_t)MouseButton::COUNT]{ false };
 

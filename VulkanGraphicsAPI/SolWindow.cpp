@@ -50,7 +50,26 @@ namespace SolEngine
                                         const int button,
                                         const int action,
                                         const int mods)
-    {}
+    {
+        Cursor& rCursor = Cursor::GetInstance();
+
+        const bool isButtonPressed = action == GLFW_PRESS;
+
+        switch (button)
+        {
+        case GLFW_MOUSE_BUTTON_LEFT:
+            rCursor.mouseButtons[(size_t)MouseButton::LEFT] = isButtonPressed;
+            return;
+        case GLFW_MOUSE_BUTTON_RIGHT:
+            rCursor.mouseButtons[(size_t)MouseButton::RIGHT] = isButtonPressed;
+            return;
+        case GLFW_MOUSE_BUTTON_MIDDLE:
+            rCursor.mouseButtons[(size_t)MouseButton::MIDDLE] = isButtonPressed;
+            return;
+        default:
+            return;
+        }
+    }
 
     void SolWindow::CreateGLFWWindow()
     {
