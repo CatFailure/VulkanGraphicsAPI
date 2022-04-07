@@ -76,13 +76,12 @@ void Application::Update(const float deltaTime)
     {
         const glm::dvec2 mouseDelta = rCursor.getMouseDelta();
         const float moveSpeed = 2.5f;
-        constexpr float rotationAmount = glm::radians(.5f);
+        constexpr float rotationSpeed = glm::radians(.5f);
 
         if (rCursor.isButtonDown(MouseButton::LEFT))
         {
-            rGameObjTransform.rotation += (glm::vec3(0.f, 
-                                                     mouseDelta.x, 
-                                                     -mouseDelta.y) * rotationAmount);
+            const glm::vec3 rotation(0.f, mouseDelta.x, -mouseDelta.y);
+            rGameObjTransform.rotation += (rotation * rotationSpeed);
         }
 
         if (rCursor.isButtonDown(MouseButton::RIGHT))
