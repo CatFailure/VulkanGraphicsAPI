@@ -41,6 +41,17 @@ namespace SolEngine
         pSolWindow->_winDimensions = { width, height };
     }
 
+    void SolWindow::CursorPositionCallback(GLFWwindow* pWindow, 
+                                           const double xPos, 
+                                           const double yPos)
+    {}
+
+    void SolWindow::MouseButtonCallback(GLFWwindow* pWindow,
+                                        const int button,
+                                        const int action,
+                                        const int mods)
+    {}
+
     void SolWindow::CreateGLFWWindow()
     {
         glfwInit();                                    // Initialise GLFW Library
@@ -55,5 +66,7 @@ namespace SolEngine
 
         glfwSetWindowUserPointer(_pWindow, this);
         glfwSetFramebufferSizeCallback(_pWindow, FramebufferResizeCallback);    // Bind Resize Callback
+        glfwSetCursorPosCallback(_pWindow, CursorPositionCallback);             // Bind Mouse Position Callback
+        glfwSetMouseButtonCallback(_pWindow, MouseButtonCallback);              // Bind Mouse Button Callback
     }
 }

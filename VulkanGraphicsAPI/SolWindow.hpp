@@ -28,6 +28,8 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         static void FramebufferResizeCallback(GLFWwindow* pWindow, const int width, const int height);
+        static void CursorPositionCallback(GLFWwindow* pWindow, const double xPos, const double yPos);
+        static void MouseButtonCallback(GLFWwindow* pWindow, const int button, const int action, const int mods);
 
         void CreateGLFWWindow();
 

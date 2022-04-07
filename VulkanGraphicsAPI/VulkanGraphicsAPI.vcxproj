@@ -373,6 +373,7 @@
     <ClInclude Include="Axis.hpp" />
     <ClInclude Include="CameraProjectionInfo.hpp" />
     <ClInclude Include="Constants.hpp" />
+    <ClInclude Include="Cursor.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="DiagnosticData.hpp" />
     <ClInclude Include="GameOfLifeSettings.hpp" />

@@ -64,6 +64,9 @@
     <Filter Include="SolEngine\GUI\View">
       <UniqueIdentifier>{fce4f4dc-75cf-4031-bf3e-0c906ef18f97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\Input">
+      <UniqueIdentifier>{cdf4c170-75b4-4530-808a-df1148e0c5d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -355,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="GuiGridView.hpp">
       <Filter>SolEngine\GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.hpp">
+      <Filter>SolEngine\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
