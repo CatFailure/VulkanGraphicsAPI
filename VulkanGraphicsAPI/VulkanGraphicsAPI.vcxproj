@@ -332,6 +332,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="DebugHelpers.cpp" />
     <ClCompile Include="GameOfLifeSystem.cpp" />
     <ClCompile Include="GenericRenderSystem.cpp" />
@@ -371,8 +372,10 @@
     <ClInclude Include="Application.hpp" />
     <ClInclude Include="ApplicationData.hpp" />
     <ClInclude Include="Axis.hpp" />
-    <ClInclude Include="CameraProjectionInfo.hpp" />
+    <ClInclude Include="CameraController.hpp" />
+    <ClInclude Include="CameraSettings.hpp" />
     <ClInclude Include="Constants.hpp" />
+    <ClInclude Include="Cursor.hpp" />
     <ClInclude Include="DebugHelpers.hpp" />
     <ClInclude Include="DiagnosticData.hpp" />
     <ClInclude Include="GameOfLifeSettings.hpp" />
@@ -384,8 +387,10 @@
     <ClInclude Include="GuiSimulationView.hpp" />
     <ClInclude Include="Helpers.hpp" />
     <ClInclude Include="MarchingCubesSystem.hpp" />
+    <ClInclude Include="MouseButton.hpp" />
     <ClInclude Include="NeighbourhoodType.hpp" />
     <ClInclude Include="RandomNumberGenerator.hpp" />
+    <ClInclude Include="RenderSettings.hpp" />
     <ClInclude Include="SimulationSettings.hpp" />
     <ClInclude Include="SimulationState.hpp" />
     <ClInclude Include="SolGrid.hpp" />
@@ -394,7 +399,7 @@
     <ClInclude Include="GuiDiagnosticWindow.hpp" />
     <ClInclude Include="GuiWindowManager.hpp" />
     <ClInclude Include="IDisposable.hpp" />
-    <ClInclude Include="IGuiWindow.hpp" />
+    <ClInclude Include="GuiWindowBase.hpp" />
     <ClInclude Include="imconfig.h" />
     <ClInclude Include="imgui.h" />
     <ClInclude Include="imgui_impl_glfw.h" />

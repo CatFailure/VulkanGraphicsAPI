@@ -1,7 +1,7 @@
 #pragma once
 #if _DEBUG_LAPTOP || NDEBUG_LAPTOP
-#define LAPTOP_BUILD
-#define DISABLE_IM_GUI	// Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
+//#define LAPTOP_BUILD
+//#define DISABLE_IM_GUI	// Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
 #endif // _DEBUG_LAPTOP || NDEBUG_LAPTOP
 
 #include "SolClock.hpp"
@@ -11,6 +11,7 @@
 #include "SolGrid.hpp"
 #include "MarchingCubesSystem.hpp"
 #include "GameOfLifeSystem.hpp"
+#include "CameraController.hpp"
 
 using namespace SolEngine;
 using namespace SolEngine::Data;
@@ -23,9 +24,9 @@ class Application : public IMonoBehaviour
 {
 public:
     Application() = delete;
-    Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData, 
-                GridSettings& rGridSettings, GameOfLifeSettings& rGameOfLifeSettings,
-                SimulationSettings& rSimulationSettings);
+    Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData,
+                RenderSettings& rRenderSettings, CameraSettings& rCameraSettings, GridSettings& rGridSettings, 
+                GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
     ~Application();
         
     void Run();
@@ -44,6 +45,8 @@ private:
     void SetupGameOfLifeSystem();
     void SetupEventCallbacks();
 
+    void HandleUserInput(Transform& rGameObjectTransform);
+
     void CheckForSimulationResetFlag();
     void CheckForGridDimenionsChangedFlag();
 
@@ -52,13 +55,14 @@ private:
 #endif  // !DISABLE_IM_GUI
 
     ApplicationData     _appData;
+    CameraSettings&     _rCameraSettings;
     DiagnosticData&     _rDiagnosticData;
+    RenderSettings&     _rRenderSettings;
     GridSettings&       _rGridSettings;
     GameOfLifeSettings& _rGameOfLifeSettings;
     SimulationSettings& _rSimulationSettings;
 
     SolClock    _solClock;
-    SolCamera   _solCamera;
     SolWindow   _solWindow;
     SolDevice   _solDevice;
     SolRenderer _solRenderer;
@@ -69,10 +73,9 @@ private:
     std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;
 #endif  // !DISABLE_IM_GUI
 
+    std::unique_ptr<SolCamera>           _pSolCamera          { nullptr };
     std::unique_ptr<SolGrid>             _pSolGrid            { nullptr };
+    std::unique_ptr<SimpleRenderSystem>  _pRenderSystem       { nullptr };
     std::unique_ptr<MarchingCubesSystem> _pMarchingCubesSystem{ nullptr };
     std::unique_ptr<GameOfLifeSystem>    _pGameOfLifeSystem   { nullptr };
-
-    static constexpr float CAM_NEAR{ 0.01f };
-    static constexpr float CAM_FAR { 100.f };
 };

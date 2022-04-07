@@ -1,23 +1,26 @@
 #include "Application.hpp"
 
-Application::Application(const ApplicationData& appData, 
+Application::Application(const ApplicationData& appData,
                          DiagnosticData& rDiagnosticData,
-                         GridSettings& rGridSettings, 
+                         RenderSettings& rRenderSettings,
+                         CameraSettings& rCameraSettings,
+                         GridSettings& rGridSettings,
                          GameOfLifeSettings& rGameOfLifeSettings,
                          SimulationSettings& rSimulationSettings)
-    : _solCamera(_solRenderer),
-      _solRenderer(_appData,
-                   _solWindow, 
+    : _solRenderer(_appData,
+                   _solWindow,
                    _solDevice),
-      _solDevice(_solWindow,
-                 _appData),
-      _solWindow(_appData.windowTitle,
-                 _appData.windowDimensions),
-      _appData(appData),
-      _rDiagnosticData(rDiagnosticData),
-      _rGridSettings(rGridSettings),
-      _rGameOfLifeSettings(rGameOfLifeSettings),
-      _rSimulationSettings(rSimulationSettings)
+    _solDevice(_solWindow,
+               _appData),
+    _solWindow(_appData.windowTitle,
+               _appData.windowDimensions),
+    _appData(appData),
+    _rDiagnosticData(rDiagnosticData),
+    _rRenderSettings(rRenderSettings),
+    _rGridSettings(rGridSettings),
+    _rGameOfLifeSettings(rGameOfLifeSettings),
+    _rSimulationSettings(rSimulationSettings),
+    _rCameraSettings(rCameraSettings)
 {
     CreateDescriptorPool();
 
@@ -69,13 +72,13 @@ void Application::Run()
 
 void Application::Update(const float deltaTime)
 {
-    const glm::vec3 gameObjPosition = _pMarchingCubesSystem->GetGameObject()
-                                                           .transform
-                                                           .position;
+    Cursor&    rCursor           = Cursor::GetInstance();
+    Transform& rGameObjTransform = _pMarchingCubesSystem->GetGameObject().transform;
 
-    _solCamera.LookAt(gameObjPosition);
+    HandleUserInput(rGameObjTransform);
 
-    _solCamera.Update(deltaTime);
+    _pSolCamera->LookAt(rGameObjTransform.position);
+    _pSolCamera->Update(deltaTime);
 
     CheckForSimulationResetFlag();
     CheckForGridDimenionsChangedFlag();
@@ -98,8 +101,14 @@ void Application::Render()
 {
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
 
-    const SimpleRenderSystem renderSystem(_solDevice, 
-                                          _solRenderer.GetSwapchainRenderPass());
+    if (_rRenderSettings.isRendererOutOfDate)
+    {
+        _pRenderSystem = std::make_unique<SimpleRenderSystem>(_solDevice, 
+                                                              _rRenderSettings, 
+                                                              _solRenderer.GetSwapchainRenderPass());
+
+        _rRenderSettings.isRendererOutOfDate = false;
+    }
 
     if (commandBuffer == nullptr)
     {
@@ -110,9 +119,9 @@ void Application::Render()
 
     if (_pSolGrid->IsGridDataValid())
     {
-        renderSystem.RenderGameObject(_solCamera, 
-                                      commandBuffer, 
-                                      _pMarchingCubesSystem->GetGameObject());
+        _pRenderSystem->RenderGameObject(*_pSolCamera, 
+                                         commandBuffer, 
+                                         _pMarchingCubesSystem->GetGameObject());
     }
     else
     {
@@ -143,15 +152,11 @@ void Application::SetupRandomNumberGenerator()
 
 void Application::SetupCamera()
 {
-    const PerspectiveProjectionInfo projInfo
-    {
-        .fovDeg = 50.f,
-        .far    = 250.f
-    };
+    _pSolCamera = std::make_unique<SolCamera>(_solRenderer,
+                                              _rCameraSettings);
 
-    _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 25.f, 0.f, 55.f })
-              .LookAt(_solCamera.GetPosition() - VEC3_FORWARD);    // Look forwards
+    _pSolCamera->SetPosition({ 0.f, 0.f, 55.f })
+               .LookAt(_pSolCamera->GetPosition() - VEC3_FORWARD);    // Look forwards
 }
 
 void Application::SetupGrid()
@@ -192,6 +197,35 @@ void Application::SetupEventCallbacks()
                             // Force update the next generation delay to the new value
                             _pGameOfLifeSystem->ResetNextGenerationDelayRemaining();
                         });
+}
+
+void Application::HandleUserInput(Transform& rGameObjectTransform)
+{
+    Cursor& rCursor = Cursor::GetInstance();
+
+    if (_rCameraSettings.isMouseOverGUI)
+    {
+        rCursor.UpdateLastMousePosition();
+
+        return;
+    }
+
+    const glm::dvec2 mouseDelta    = rCursor.GetMouseDelta();
+    const float      moveSpeed     = 1.5f;
+    constexpr float  rotationSpeed = glm::radians(.5f);
+
+    if (rCursor.IsButtonDown(MouseButton::LEFT))
+    {
+        const glm::vec3 rotation(0.f, mouseDelta.x, -mouseDelta.y);
+        rGameObjectTransform.rotation += (rotation * rotationSpeed);
+    }
+
+    if (rCursor.IsButtonDown(MouseButton::RIGHT))
+    {
+        _pSolCamera->Move({ 0.f, 0.f, mouseDelta.y * moveSpeed });
+    }
+
+    rCursor.UpdateLastMousePosition();
 }
 
 void Application::CheckForSimulationResetFlag()
@@ -237,7 +271,8 @@ void Application::CreateGuiWindowManager()
 {
     const ImGuiWindowFlags flags{ ImGuiWindowFlags_AlwaysAutoResize };
 
-    _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,  
+    _pGuiWindowManager = std::make_unique<GuiWindowManager>(_solDevice,
+                                                            _rCameraSettings,
                                                             _solWindow,
                                                             _solRenderer, 
                                                             _pSolDescriptorPool->GetDescriptorPool());

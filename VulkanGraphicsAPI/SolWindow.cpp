@@ -41,6 +41,56 @@ namespace SolEngine
         pSolWindow->_winDimensions = { width, height };
     }
 
+    void SolWindow::CursorPositionCallback(GLFWwindow* pWindow, 
+                                           const double xPos, 
+                                           const double yPos)
+    {
+        Cursor& rCursor = Cursor::GetInstance();
+
+        if (!rCursor.isMouseEntered)
+        {
+            return;
+        }
+
+        rCursor.mousePosition = { xPos, yPos };
+    }
+
+    void SolWindow::CursorEnterCallback(GLFWwindow* pWindow, 
+                                        const int entered)
+    {
+        Cursor::GetInstance().isMouseEntered = entered;
+    }
+
+    void SolWindow::MouseButtonCallback(GLFWwindow* pWindow,
+                                        const int button,
+                                        const int action,
+                                        const int mods)
+    {
+        Cursor& rCursor = Cursor::GetInstance();
+
+        if (!rCursor.isMouseEntered)
+        {
+            return;
+        }
+
+        const bool isButtonPressed = action == GLFW_PRESS;
+
+        switch (button)
+        {
+        case GLFW_MOUSE_BUTTON_LEFT:
+            rCursor.mouseButtons[(size_t)MouseButton::LEFT] = isButtonPressed;
+            return;
+        case GLFW_MOUSE_BUTTON_RIGHT:
+            rCursor.mouseButtons[(size_t)MouseButton::RIGHT] = isButtonPressed;
+            return;
+        case GLFW_MOUSE_BUTTON_MIDDLE:
+            rCursor.mouseButtons[(size_t)MouseButton::MIDDLE] = isButtonPressed;
+            return;
+        default:
+            return;
+        }
+    }
+
     void SolWindow::CreateGLFWWindow()
     {
         glfwInit();                                    // Initialise GLFW Library
@@ -55,5 +105,8 @@ namespace SolEngine
 
         glfwSetWindowUserPointer(_pWindow, this);
         glfwSetFramebufferSizeCallback(_pWindow, FramebufferResizeCallback);    // Bind Resize Callback
+        glfwSetCursorPosCallback(_pWindow, CursorPositionCallback);             // Bind Mouse Position Callback
+        glfwSetCursorEnterCallback(_pWindow, CursorEnterCallback);              // Bind Mouse Enter Callback
+        glfwSetMouseButtonCallback(_pWindow, MouseButtonCallback);              // Bind Mouse Button Callback
     }
 }

@@ -2,9 +2,11 @@
 
 namespace SolEngine::Rendering
 {
-    GenericRenderSystem::GenericRenderSystem(SolDevice& rSolDevice, 
+    GenericRenderSystem::GenericRenderSystem(SolDevice& rSolDevice,
+                                             RenderSettings& rRenderSettings,
                                              const VkRenderPass renderPass)
-        : _rSolDevice(rSolDevice)
+        : _rSolDevice(rSolDevice),
+          _rRenderSettings(rRenderSettings)
     {
         CreatePipelineLayout();
         CreatePipeline(renderPass);
@@ -57,9 +59,10 @@ namespace SolEngine::Rendering
         PipelineConfigInfo pipelineConfigInfo{};
         SolPipeline::DefaultPipelineConfigInfo(pipelineConfigInfo);
 
-        // TEMP
-        pipelineConfigInfo.renderPass     = renderPass;
-        pipelineConfigInfo.pipelineLayout = _pipelineLayout;
+        pipelineConfigInfo.renderPass                               = renderPass;
+        pipelineConfigInfo.pipelineLayout                           = _pipelineLayout;
+        pipelineConfigInfo.rasterizationStateCreateInfo.cullMode    = _rRenderSettings.cullMode;
+        pipelineConfigInfo.rasterizationStateCreateInfo.polygonMode = _rRenderSettings.polygonMode;
 
         _pSolPipeline = std::make_unique<SolPipeline>(_rSolDevice,
                                                       "Shaders/SimpleShader.vert.spv",

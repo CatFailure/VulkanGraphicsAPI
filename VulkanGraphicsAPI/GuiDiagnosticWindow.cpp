@@ -6,7 +6,7 @@ namespace SolEngine::GUI
                                              const bool isActive, 
                                              const ImGuiWindowFlags windowFlags, 
                                              DiagnosticData &rDiagnosticData)
-        : IGuiWindow(windowTitle, 
+        : GuiWindowBase(windowTitle, 
                      isActive, 
                      windowFlags),
         _rDiagnosticData(_rRealtimeDiagnosticData),

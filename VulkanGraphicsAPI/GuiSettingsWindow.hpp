@@ -1,5 +1,5 @@
 #pragma once
-#include "IGuiWindow.hpp"
+#include "GuiWindowBase.hpp"
 #include "GuiSimulationView.hpp"
 #include "GuiGameOfLifeView.hpp"
 #include "GuiGridView.hpp"
@@ -9,7 +9,7 @@ using namespace SolEngine::Interface;
 
 namespace SolEngine::GUI
 {
-	class GuiSettingsWindow : public IGuiWindow
+	class GuiSettingsWindow : public GuiWindowBase
 	{
 	public:
 		GuiSettingsWindow() = delete;
