@@ -30,8 +30,8 @@ namespace SolEngine::System
 		DiagnosticData& _rDiagnosticData;
 		SolGameObject	_marchingCubesObject;
 
-		size_t _isoValuesGeneratedCount{ 0 };
-		size_t _verticesInUse		   { 0U };
-		Vertex _vertices[MAX_MARCHING_CUBES_VERTICES];
+		size_t				_isoValuesGeneratedCount{ 0 };
+		size_t				_verticesInUse		    { 0U };
+		std::vector<Vertex> _vertices				{};
 	};
 }

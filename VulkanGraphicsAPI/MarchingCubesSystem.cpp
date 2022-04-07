@@ -142,9 +142,17 @@ namespace SolEngine::System
                 (float)zIndex / gridDimensions.z   // b
             };
 
-            // Re-use initialised vertices
-            _vertices[_verticesInUse].position = vertexPosition;
-            _vertices[_verticesInUse].colour   = vertexColour;
+            if (_verticesInUse < _vertices.size())
+            {
+                // Re-use initialised vertices...
+                _vertices.at(_verticesInUse).position = vertexPosition;
+                _vertices.at(_verticesInUse).colour   = vertexColour;
+            }
+            else
+            {
+                // Expand storage if necessary...
+                _vertices.push_back(Vertex{ vertexPosition, vertexColour });
+            }
 
             ++_verticesInUse;
         }
@@ -184,7 +192,7 @@ namespace SolEngine::System
 
         std::shared_ptr<SolModel> pMarchingCubeModel = 
             std::make_shared<SolModel>(_rSolDevice, 
-                                       _vertices, 
+                                       _vertices.data(), 
                                        (uint32_t)_verticesInUse);
 
         // Any model to work with?
