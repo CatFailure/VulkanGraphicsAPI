@@ -15,7 +15,7 @@ namespace SolEngine::System
     {
         // Start back at the beginning of the array
         // To re-use vertices.
-        _verticesInUse = 0U;
+        _vertexCount = 0U;
 
         const glm::uvec3  gridDimensions  = _rSolGrid.GetDimensions();
         const bool*       pGridCellStates = _rSolGrid.cells.pCellStates;
@@ -54,8 +54,8 @@ namespace SolEngine::System
 
         UpdateGameObjectModel();
 
-        _rDiagnosticData.vertexCount = _verticesInUse;
-        _rDiagnosticData.triCount    = _verticesInUse / 3U;
+        _rDiagnosticData.vertexCount = _vertexCount;
+        _rDiagnosticData.triCount    = _vertexCount / 3U;
 
         //printf_s("Created: %zu Vertices\n", vertexCount);
         //printf_s("Created: %zu Tris\n", triCount);
@@ -142,11 +142,11 @@ namespace SolEngine::System
                 (float)zIndex / gridDimensions.z   // b
             };
 
-            if (_verticesInUse < _vertices.size())
+            if (_vertexCount < _vertices.size())
             {
                 // Re-use initialised vertices...
-                _vertices.at(_verticesInUse).position = vertexPosition;
-                _vertices.at(_verticesInUse).colour   = vertexColour;
+                _vertices.at(_vertexCount).position = vertexPosition;
+                _vertices.at(_vertexCount).colour   = vertexColour;
             }
             else
             {
@@ -154,7 +154,7 @@ namespace SolEngine::System
                 _vertices.push_back(Vertex{ vertexPosition, vertexColour });
             }
 
-            ++_verticesInUse;
+            ++_vertexCount;
         }
     }
 
@@ -185,7 +185,7 @@ namespace SolEngine::System
     void MarchingCubesSystem::UpdateGameObjectModel()
     {
         // Any vertices to work with?
-        if (_verticesInUse == 0U)
+        if (_vertexCount == 0U)
         {
             return;
         }
@@ -193,7 +193,7 @@ namespace SolEngine::System
         std::shared_ptr<SolModel> pMarchingCubeModel = 
             std::make_shared<SolModel>(_rSolDevice, 
                                        _vertices.data(), 
-                                       (uint32_t)_verticesInUse);
+                                       (uint32_t)_vertexCount);
 
         // Any model to work with?
         if (pMarchingCubeModel == nullptr)

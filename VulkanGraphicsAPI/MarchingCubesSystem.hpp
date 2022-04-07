@@ -31,7 +31,7 @@ namespace SolEngine::System
 		SolGameObject	_marchingCubesObject;
 
 		size_t				_isoValuesGeneratedCount{ 0 };
-		size_t				_verticesInUse		    { 0U };
+		size_t				_vertexCount		    { 0U };
 		std::vector<Vertex> _vertices				{};
 	};
 }
