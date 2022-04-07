@@ -101,9 +101,14 @@ void Application::Render()
 {
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
 
-    const SimpleRenderSystem renderSystem(_solDevice, 
-                                          _rRenderSettings,
-                                          _solRenderer.GetSwapchainRenderPass());
+    if (_rRenderSettings.isRendererOutOfDate)
+    {
+        _pRenderSystem = std::make_unique<SimpleRenderSystem>(_solDevice, 
+                                                              _rRenderSettings, 
+                                                              _solRenderer.GetSwapchainRenderPass());
+
+        _rRenderSettings.isRendererOutOfDate = false;
+    }
 
     if (commandBuffer == nullptr)
     {
@@ -114,9 +119,9 @@ void Application::Render()
 
     if (_pSolGrid->IsGridDataValid())
     {
-        renderSystem.RenderGameObject(*_pSolCamera, 
-                                      commandBuffer, 
-                                      _pMarchingCubesSystem->GetGameObject());
+        _pRenderSystem->RenderGameObject(*_pSolCamera, 
+                                         commandBuffer, 
+                                         _pMarchingCubesSystem->GetGameObject());
     }
     else
     {

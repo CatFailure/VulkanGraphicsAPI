@@ -75,6 +75,7 @@ private:
 
     std::unique_ptr<SolCamera>           _pSolCamera          { nullptr };
     std::unique_ptr<SolGrid>             _pSolGrid            { nullptr };
+    std::unique_ptr<SimpleRenderSystem>  _pRenderSystem       { nullptr };
     std::unique_ptr<MarchingCubesSystem> _pMarchingCubesSystem{ nullptr };
     std::unique_ptr<GameOfLifeSystem>    _pGameOfLifeSystem   { nullptr };
 };
