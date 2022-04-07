@@ -44,7 +44,22 @@ namespace SolEngine
     void SolWindow::CursorPositionCallback(GLFWwindow* pWindow, 
                                            const double xPos, 
                                            const double yPos)
-    {}
+    {
+        Cursor& rCursor = Cursor::GetInstance();
+
+        if (!rCursor.isMouseEntered)
+        {
+            return;
+        }
+
+        rCursor.mousePosition = { xPos, yPos };
+    }
+
+    void SolWindow::CursorEnterCallback(GLFWwindow* pWindow, 
+                                        const int entered)
+    {
+        Cursor::GetInstance().isMouseEntered = entered;
+    }
 
     void SolWindow::MouseButtonCallback(GLFWwindow* pWindow,
                                         const int button,
@@ -52,6 +67,11 @@ namespace SolEngine
                                         const int mods)
     {
         Cursor& rCursor = Cursor::GetInstance();
+
+        if (!rCursor.isMouseEntered)
+        {
+            return;
+        }
 
         const bool isButtonPressed = action == GLFW_PRESS;
 
@@ -86,6 +106,7 @@ namespace SolEngine
         glfwSetWindowUserPointer(_pWindow, this);
         glfwSetFramebufferSizeCallback(_pWindow, FramebufferResizeCallback);    // Bind Resize Callback
         glfwSetCursorPosCallback(_pWindow, CursorPositionCallback);             // Bind Mouse Position Callback
+        glfwSetCursorEnterCallback(_pWindow, CursorEnterCallback);              // Bind Mouse Enter Callback
         glfwSetMouseButtonCallback(_pWindow, MouseButtonCallback);              // Bind Mouse Button Callback
     }
 }

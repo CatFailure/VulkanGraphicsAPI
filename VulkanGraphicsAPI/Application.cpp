@@ -77,6 +77,17 @@ void Application::Update(const float deltaTime)
 
     _solCamera.Update(deltaTime);
 
+    Cursor& rCursor = Cursor::GetInstance();
+
+    printf_s("Mouse Position: (%f, %f)\n", 
+             rCursor.mousePosition.x, 
+             rCursor.mousePosition.y);
+
+    printf_s("Mouse Buttons: (%i | %i | %i)\n", 
+             rCursor.isButtonDown(MouseButton::LEFT),
+             rCursor.isButtonDown(MouseButton::MIDDLE),
+             rCursor.isButtonDown(MouseButton::RIGHT));
+
     CheckForSimulationResetFlag();
     CheckForGridDimenionsChangedFlag();
 
