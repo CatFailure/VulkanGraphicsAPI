@@ -7,7 +7,11 @@ namespace SolEngine::GUI
                                        const SolRenderer &solRenderer, 
                                        const VkDescriptorPool &descriptorPool)
 	{
-        InitialiseImGui(rSolDevice, solWindow, solRenderer, descriptorPool);
+        InitialiseImGui(rSolDevice, 
+                        solWindow, 
+                        solRenderer, 
+                        descriptorPool);
+
         InitialiseImGuiFont(rSolDevice);
 	}
 
@@ -54,7 +58,6 @@ namespace SolEngine::GUI
         ImGuiIO &rIo = ImGui::GetIO(); (void)rIo;
 
         ImGui::StyleColorsDark();
-        //ImGui::StyleColorsClassic();
 
         ImGui_ImplGlfw_InitForVulkan(solWindow.GetWindow(), true);
 
