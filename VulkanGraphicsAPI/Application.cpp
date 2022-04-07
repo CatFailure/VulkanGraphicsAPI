@@ -79,9 +79,11 @@ void Application::Update(const float deltaTime)
 
     Cursor& rCursor = Cursor::GetInstance();
 
-    printf_s("Mouse Position: (%f, %f)\n", 
+    printf_s("Mouse Position: (%f, %f)\nMouse Delta: (%f, %f)\n", 
              rCursor.mousePosition.x, 
-             rCursor.mousePosition.y);
+             rCursor.mousePosition.y,
+             rCursor.getMouseDelta().x,
+             rCursor.getMouseDelta().y);
 
     printf_s("Mouse Buttons: (%i | %i | %i)\n", 
              rCursor.isButtonDown(MouseButton::LEFT),
@@ -103,6 +105,8 @@ void Application::Update(const float deltaTime)
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
 #endif  // !DISABLE_IM_GUI
+
+    rCursor.onUpdateEnd();
 }
 
 void Application::Render()
