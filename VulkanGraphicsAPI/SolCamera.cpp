@@ -2,41 +2,39 @@
 
 namespace SolEngine
 {
-    SolCamera::SolCamera(SolRenderer& rRenderer)
-        : _rRenderer(rRenderer)
-    {}
-
     SolCamera::SolCamera(SolRenderer& rRenderer, 
-                         const PerspectiveProjectionInfo& projectionInfo)
-        : _rRenderer(rRenderer),
-          _projectionInfo(projectionInfo)
-    {}
-
-    void SolCamera::Update(const float deltaTime)
+                         CameraSettings& rCameraSettings)
+        : _rRenderer(rRenderer), 
+          _rCameraSettings(rCameraSettings)
     {
-        SetPerspectiveProjection(_projectionInfo);
+        UpdatePerspectiveProjection();
     }
 
-    SolCamera &SolCamera::SetPerspectiveProjection(const float fovDeg,
-                                                   const float aspect, 
-                                                   const float near,
-                                                   const float far)
+    void SolCamera::Update(const float deltaTime)
+    {}
+
+    SolCamera &SolCamera::UpdatePerspectiveProjection()
     {
-        DBG_ASSERT_MSG((glm::abs(aspect - glm::epsilon<float>()) > 0.f),
-            "Aspect must be greater than 0!");
+        const float aspectRatio = _rRenderer.GetAspectRatio();
 
-        const float tanHalfFOV = tan(glm::radians(fovDeg) * .5f);
+        DBG_ASSERT_MSG((glm::abs(aspectRatio - glm::epsilon<float>()) > 0.f),
+                       "Aspect must be greater than 0!");
 
-        float aspectNom = aspect;
+        const float tanHalfFOV = tan(glm::radians(_rCameraSettings.fieldOfViewDegrees) * .5f);
+
+        float aspectNom = aspectRatio;
         float aspectDen = 1.f;
 
         // When the window has a smaller width than height,
-        // This will scale the cube to be smaller instead of staying the same size.
-        if (aspect < 1.f)
+        // This will scale the model to be smaller instead of staying the same size.
+        if (aspectRatio < 1.f)
         {
             aspectNom = 1.f;
-            aspectDen = 1.f / aspect;
+            aspectDen = 1.f / aspectRatio;
         }
+
+        const float& near = _rCameraSettings.near;
+        const float& far  = _rCameraSettings.far;
 
         _projectionMatrix = glm::mat4{ 0.f };
 
@@ -49,40 +47,23 @@ namespace SolEngine
         return *this;
     }
 
-    SolCamera& SolCamera::SetPerspectiveProjection(const PerspectiveProjectionInfo& projInfo)
-    {
-        return SetPerspectiveProjection(projInfo.fovDeg, 
-                                        _rRenderer.GetAspectRatio(),
-                                        projInfo.near, 
-                                        projInfo.far);
-    }
-
     SolCamera& SolCamera::Move(const glm::vec3& delta)
     {
-        _position += delta;
+        _rCameraSettings.position += delta;
 
         return *this;
     }
 
     SolCamera& SolCamera::LookAt(const glm::vec3& target, const glm::vec3& up)
     {
-        _viewMatrix = glm::lookAtLH(_position, target, up);
-
-        return *this;
-    }
-
-    SolCamera& SolCamera::SetProjectionInfo(const PerspectiveProjectionInfo& info)
-    {
-        _projectionInfo = info;
-
-        SetPerspectiveProjection(_projectionInfo);
+        _viewMatrix = glm::lookAtLH(_rCameraSettings.position, target, up);
 
         return *this;
     }
 
     SolCamera& SolCamera::SetPosition(const glm::vec3& position)
     { 
-        _position = position; 
+        _rCameraSettings.position = position; 
 
         return *this;
     }

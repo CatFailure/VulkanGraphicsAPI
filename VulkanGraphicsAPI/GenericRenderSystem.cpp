@@ -57,7 +57,6 @@ namespace SolEngine::Rendering
         PipelineConfigInfo pipelineConfigInfo{};
         SolPipeline::DefaultPipelineConfigInfo(pipelineConfigInfo);
 
-        // TEMP
         pipelineConfigInfo.renderPass     = renderPass;
         pipelineConfigInfo.pipelineLayout = _pipelineLayout;
 

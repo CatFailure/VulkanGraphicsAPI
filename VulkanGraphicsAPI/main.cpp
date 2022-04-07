@@ -9,6 +9,7 @@ int main()
 	};
 
 	DiagnosticData     diagnosticData    {};
+	CameraSettings     cameraSettings    {};
 	GridSettings       gridSettings		 {};
 	GameOfLifeSettings gameOfLifeSettings{};
 	SimulationSettings simulationSettings{};
@@ -17,8 +18,9 @@ int main()
 	simulationSettings.state = SimulationState::PLAY;
 #endif // _DEBUG_LAPTOP || _NDEBUG_LAPTOP
 
-	Application application(appData, 
+	Application application(appData,
 							diagnosticData,
+							cameraSettings,
 							gridSettings,
 							gameOfLifeSettings,
 							simulationSettings);

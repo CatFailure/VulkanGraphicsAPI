@@ -1,23 +1,24 @@
 #include "Application.hpp"
 
-Application::Application(const ApplicationData& appData, 
+Application::Application(const ApplicationData& appData,
                          DiagnosticData& rDiagnosticData,
-                         GridSettings& rGridSettings, 
+                         CameraSettings& rCameraSettings,
+                         GridSettings& rGridSettings,
                          GameOfLifeSettings& rGameOfLifeSettings,
                          SimulationSettings& rSimulationSettings)
-    : _solCamera(_solRenderer),
-      _solRenderer(_appData,
-                   _solWindow, 
+    : _solRenderer(_appData,
+                   _solWindow,
                    _solDevice),
-      _solDevice(_solWindow,
-                 _appData),
-      _solWindow(_appData.windowTitle,
-                 _appData.windowDimensions),
-      _appData(appData),
-      _rDiagnosticData(rDiagnosticData),
-      _rGridSettings(rGridSettings),
-      _rGameOfLifeSettings(rGameOfLifeSettings),
-      _rSimulationSettings(rSimulationSettings)
+    _solDevice(_solWindow,
+               _appData),
+    _solWindow(_appData.windowTitle,
+               _appData.windowDimensions),
+    _appData(appData),
+    _rDiagnosticData(rDiagnosticData),
+    _rGridSettings(rGridSettings),
+    _rGameOfLifeSettings(rGameOfLifeSettings),
+    _rSimulationSettings(rSimulationSettings),
+    _rCameraSettings(rCameraSettings)
 {
     CreateDescriptorPool();
 
@@ -69,31 +70,13 @@ void Application::Run()
 
 void Application::Update(const float deltaTime)
 {
-    Cursor& rCursor = Cursor::GetInstance();
+    Cursor&    rCursor           = Cursor::GetInstance();
     Transform& rGameObjTransform = _pMarchingCubesSystem->GetGameObject().transform;
 
-    // User-mouse controls
-    {
-        const glm::dvec2 mouseDelta = rCursor.getMouseDelta();
-        const float moveSpeed = 2.5f;
-        constexpr float rotationSpeed = glm::radians(.5f);
+    HandleUserInput(rGameObjTransform);
 
-        if (rCursor.isButtonDown(MouseButton::LEFT))
-        {
-            const glm::vec3 rotation(0.f, mouseDelta.x, -mouseDelta.y);
-            rGameObjTransform.rotation += (rotation * rotationSpeed);
-        }
-
-        if (rCursor.isButtonDown(MouseButton::RIGHT))
-        {
-            _solCamera.Move({ 0.f,
-                              0.f,
-                              mouseDelta.y * moveSpeed });
-        }
-    }
-
-    _solCamera.LookAt(rGameObjTransform.position);
-    _solCamera.Update(deltaTime);
+    _pSolCamera->LookAt(rGameObjTransform.position);
+    _pSolCamera->Update(deltaTime);
 
     CheckForSimulationResetFlag();
     CheckForGridDimenionsChangedFlag();
@@ -110,8 +93,6 @@ void Application::Update(const float deltaTime)
 #ifndef DISABLE_IM_GUI
     _pGuiWindowManager->Update(deltaTime);
 #endif  // !DISABLE_IM_GUI
-
-    rCursor.onUpdateEnd();
 }
 
 void Application::Render()
@@ -130,7 +111,7 @@ void Application::Render()
 
     if (_pSolGrid->IsGridDataValid())
     {
-        renderSystem.RenderGameObject(_solCamera, 
+        renderSystem.RenderGameObject(*_pSolCamera, 
                                       commandBuffer, 
                                       _pMarchingCubesSystem->GetGameObject());
     }
@@ -163,15 +144,11 @@ void Application::SetupRandomNumberGenerator()
 
 void Application::SetupCamera()
 {
-    const PerspectiveProjectionInfo projInfo
-    {
-        .fovDeg = 50.f,
-        .far    = 250.f
-    };
+    _pSolCamera = std::make_unique<SolCamera>(_solRenderer,
+                                              _rCameraSettings);
 
-    _solCamera.SetProjectionInfo(projInfo)
-              .SetPosition({ 0.f, 0.f, 55.f })
-              .LookAt(_solCamera.GetPosition() - VEC3_FORWARD);    // Look forwards
+    _pSolCamera->SetPosition({ 0.f, 0.f, 55.f })
+               .LookAt(_pSolCamera->GetPosition() - VEC3_FORWARD);    // Look forwards
 }
 
 void Application::SetupGrid()
@@ -212,6 +189,27 @@ void Application::SetupEventCallbacks()
                             // Force update the next generation delay to the new value
                             _pGameOfLifeSystem->ResetNextGenerationDelayRemaining();
                         });
+}
+
+void Application::HandleUserInput(Transform& rGameObjectTransform)
+{
+    Cursor&          rCursor       = Cursor::GetInstance();
+    const glm::dvec2 mouseDelta    = rCursor.GetMouseDelta();
+    const float      moveSpeed     = 2.5f;
+    constexpr float  rotationSpeed = glm::radians(.5f);
+
+    if (rCursor.IsButtonDown(MouseButton::LEFT))
+    {
+        const glm::vec3 rotation(0.f, mouseDelta.x, -mouseDelta.y);
+        rGameObjectTransform.rotation += (rotation * rotationSpeed);
+    }
+
+    if (rCursor.IsButtonDown(MouseButton::RIGHT))
+    {
+        _pSolCamera->Move({ 0.f, 0.f, mouseDelta.y * moveSpeed });
+    }
+
+    rCursor.UpdateLastMousePosition();
 }
 
 void Application::CheckForSimulationResetFlag()

@@ -174,6 +174,9 @@
     <ClCompile Include="GuiGridView.cpp">
       <Filter>SolEngine\GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>SolEngine\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -247,9 +250,6 @@
     </ClInclude>
     <ClInclude Include="Application.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraProjectionInfo.hpp">
-      <Filter>SolEngine\Data</Filter>
     </ClInclude>
     <ClInclude Include="SolBuffer.hpp">
       <Filter>SolEngine</Filter>
@@ -364,6 +364,12 @@
     </ClInclude>
     <ClInclude Include="MouseButton.hpp">
       <Filter>SolEngine\Enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.hpp">
+      <Filter>SolEngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSettings.hpp">
+      <Filter>SolEngine\Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -260,7 +260,7 @@ namespace SolEngine
     }
 
     void SolPipeline::CreateShaderModule(const std::vector<char>& shaderCode, 
-                                               VkShaderModule* pOutShaderModule)
+                                         VkShaderModule* pOutShaderModule)
     {
         const VkShaderModuleCreateInfo shaderModuleCreateInfo
         {
