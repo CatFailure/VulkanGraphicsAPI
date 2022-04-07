@@ -203,7 +203,7 @@ void Application::HandleUserInput(Transform& rGameObjectTransform)
 {
     Cursor&          rCursor       = Cursor::GetInstance();
     const glm::dvec2 mouseDelta    = rCursor.GetMouseDelta();
-    const float      moveSpeed     = 2.5f;
+    const float      moveSpeed     = 1.5f;
     constexpr float  rotationSpeed = glm::radians(.5f);
 
     if (rCursor.IsButtonDown(MouseButton::LEFT))
