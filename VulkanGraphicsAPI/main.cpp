@@ -17,7 +17,7 @@ int main()
 
 #ifdef LAPTOP_BUILD
 	simulationSettings.state = SimulationState::PLAY;
-	gridSettings.dimensions  = { 64 };
+	gridSettings.dimensions  = { 32 };
 #endif // _DEBUG_LAPTOP || _NDEBUG_LAPTOP
 
 	Application application(appData,

@@ -13,8 +13,9 @@ namespace SolEngine::System
 
     void MarchingCubesSystem::March()
     {
-        // Delete all previous vertices
-        _vertices.clear();
+        // Start back at the beginning of the array
+        // To re-use vertices.
+        _verticesInUse = 0U;
 
         const glm::uvec3  gridDimensions  = _rSolGrid.GetDimensions();
         const bool*       pGridCellStates = _rSolGrid.cells.pCellStates;
@@ -53,11 +54,8 @@ namespace SolEngine::System
 
         UpdateGameObjectModel();
 
-        const size_t vertexCount = _vertices.size();
-        const size_t triCount    = vertexCount / 3U;
-
-        _rDiagnosticData.vertexCount = vertexCount;
-        _rDiagnosticData.triCount    = triCount;
+        _rDiagnosticData.vertexCount = _verticesInUse;
+        _rDiagnosticData.triCount    = _verticesInUse / 3U;
 
         //printf_s("Created: %zu Vertices\n", vertexCount);
         //printf_s("Created: %zu Tris\n", triCount);
@@ -144,9 +142,11 @@ namespace SolEngine::System
                 (float)zIndex / gridDimensions.z   // b
             };
 
-            // Compact Voxel Array
-            // Push back vertex...
-            _vertices.push_back(Vertex(vertexPosition, vertexColour));
+            // Re-use initialised vertices
+            _vertices[_verticesInUse].position = vertexPosition;
+            _vertices[_verticesInUse].colour   = vertexColour;
+
+            ++_verticesInUse;
         }
     }
 
@@ -177,15 +177,15 @@ namespace SolEngine::System
     void MarchingCubesSystem::UpdateGameObjectModel()
     {
         // Any vertices to work with?
-        if (_vertices.empty())
+        if (_verticesInUse == 0U)
         {
             return;
         }
 
         std::shared_ptr<SolModel> pMarchingCubeModel = 
             std::make_shared<SolModel>(_rSolDevice, 
-                                       _vertices.data(), 
-                                       (uint32_t)_vertices.size());
+                                       _vertices, 
+                                       (uint32_t)_verticesInUse);
 
         // Any model to work with?
         if (pMarchingCubeModel == nullptr)

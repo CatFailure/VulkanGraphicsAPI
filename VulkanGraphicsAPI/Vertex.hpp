@@ -7,6 +7,8 @@ namespace SolEngine::Data
 {
 	struct Vertex
 	{
+		Vertex() = default;
+
 		Vertex(const glm::vec3& pos, 
 			   const glm::vec3& col)
 			: position(pos),
