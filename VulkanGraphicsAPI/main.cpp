@@ -4,11 +4,12 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[28/03/22] Cellular Automata | Release Candidate 2",
+		.windowTitle	  = "[07/04/22] Cellular Automata | Final Release Candidate",
 		.windowDimensions = glm::uvec2(1280, 720)
 	};
 
 	DiagnosticData     diagnosticData    {};
+	RenderSettings     renderSettings    {};
 	CameraSettings     cameraSettings    {};
 	GridSettings       gridSettings		 {};
 	GameOfLifeSettings gameOfLifeSettings{};
@@ -20,6 +21,7 @@ int main()
 
 	Application application(appData,
 							diagnosticData,
+							renderSettings,
 							cameraSettings,
 							gridSettings,
 							gameOfLifeSettings,

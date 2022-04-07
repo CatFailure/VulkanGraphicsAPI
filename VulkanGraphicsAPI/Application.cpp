@@ -2,6 +2,7 @@
 
 Application::Application(const ApplicationData& appData,
                          DiagnosticData& rDiagnosticData,
+                         RenderSettings& rRenderSettings,
                          CameraSettings& rCameraSettings,
                          GridSettings& rGridSettings,
                          GameOfLifeSettings& rGameOfLifeSettings,
@@ -15,6 +16,7 @@ Application::Application(const ApplicationData& appData,
                _appData.windowDimensions),
     _appData(appData),
     _rDiagnosticData(rDiagnosticData),
+    _rRenderSettings(rRenderSettings),
     _rGridSettings(rGridSettings),
     _rGameOfLifeSettings(rGameOfLifeSettings),
     _rSimulationSettings(rSimulationSettings),
@@ -100,6 +102,7 @@ void Application::Render()
     const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
 
     const SimpleRenderSystem renderSystem(_solDevice, 
+                                          _rRenderSettings,
                                           _solRenderer.GetSwapchainRenderPass());
 
     if (commandBuffer == nullptr)

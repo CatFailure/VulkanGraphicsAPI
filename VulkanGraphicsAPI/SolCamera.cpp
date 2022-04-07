@@ -13,7 +13,7 @@ namespace SolEngine
     void SolCamera::Update(const float deltaTime)
     {}
 
-    SolCamera &SolCamera::UpdatePerspectiveProjection()
+    SolCamera& SolCamera::UpdatePerspectiveProjection()
     {
         const float aspectRatio = _rRenderer.GetAspectRatio();
 

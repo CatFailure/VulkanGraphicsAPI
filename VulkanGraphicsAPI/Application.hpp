@@ -25,7 +25,7 @@ class Application : public IMonoBehaviour
 public:
     Application() = delete;
     Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData,
-                CameraSettings& rCameraSettings, GridSettings& rGridSettings, 
+                RenderSettings& rRenderSettings, CameraSettings& rCameraSettings, GridSettings& rGridSettings, 
                 GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
     ~Application();
         
@@ -57,6 +57,7 @@ private:
     ApplicationData     _appData;
     CameraSettings&     _rCameraSettings;
     DiagnosticData&     _rDiagnosticData;
+    RenderSettings&     _rRenderSettings;
     GridSettings&       _rGridSettings;
     GameOfLifeSettings& _rGameOfLifeSettings;
     SimulationSettings& _rSimulationSettings;
@@ -76,7 +77,4 @@ private:
     std::unique_ptr<SolGrid>             _pSolGrid            { nullptr };
     std::unique_ptr<MarchingCubesSystem> _pMarchingCubesSystem{ nullptr };
     std::unique_ptr<GameOfLifeSystem>    _pGameOfLifeSystem   { nullptr };
-
-    //static constexpr float CAM_NEAR{ 0.01f };
-    //static constexpr float CAM_FAR { 100.f };
 };

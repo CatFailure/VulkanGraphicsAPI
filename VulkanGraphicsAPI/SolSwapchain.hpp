@@ -8,8 +8,8 @@ namespace SolEngine
     class SolSwapchain : public IDisposable
     {
     public:
-        SolSwapchain(SolDevice &rSolDevice, const VkExtent2D &windowExtent);
-        SolSwapchain(SolDevice &rSolDevice, const VkExtent2D &windowExtent, std::shared_ptr<SolSwapchain> pOldSwapchain);
+        SolSwapchain(SolDevice& rSolDevice, const VkExtent2D& windowExtent);
+        SolSwapchain(SolDevice& rSolDevice, const VkExtent2D& windowExtent, std::shared_ptr<SolSwapchain> pOldSwapchain);
         ~SolSwapchain();
 
         static constexpr uint32_t MAX_FRAMES_IN_FLIGHT{ 2 };
@@ -26,27 +26,27 @@ namespace SolEngine
 
         VkFormat FindDepthFormat();
 
-        VkResult AcquireNextImage(uint32_t *pImageIndex);
-        VkResult SubmitCommandBuffers(const VkCommandBuffer *pCommandBuffers, const uint32_t *pImageIndex);
+        VkResult AcquireNextImage(uint32_t* pImageIndex);
+        VkResult SubmitCommandBuffers(const VkCommandBuffer* pCommandBuffers, const uint32_t* pImageIndex);
 
         bool CompareSwapchanFormats(const SolSwapchain& swapchain) const;
 
         // Inherited via IDisposable
         virtual void Dispose() override;
     private:
-        void CreateSwapchain(uint32_t *pOutImageCount, VkSurfaceFormatKHR *pOutSurfaceImageFormat, VkExtent2D *pOutSwapchainExtent);
-        void CreateSwapchainImages(uint32_t &rImageCount, const VkSurfaceFormatKHR &surfaceImageFormat, const VkExtent2D &swapchainExtent);
+        void CreateSwapchain(uint32_t* pOutImageCount, VkSurfaceFormatKHR* pOutSurfaceImageFormat, VkExtent2D* pOutSwapchainExtent);
+        void CreateSwapchainImages(uint32_t& rImageCount, const VkSurfaceFormatKHR& surfaceImageFormat, const VkExtent2D& swapchainExtent);
         void CreateSwapchainImageViews();
         void CreateDepthResources();
         void CreateRenderPass();
         void CreateFramebuffers();
         void CreateSyncObjects();
 
-        VkSurfaceFormatKHR ChooseImageFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats);
-        VkPresentModeKHR   ChoosePresentMode(const std::vector<VkPresentModeKHR> &availablePresentModes);
-        VkExtent2D         ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR &capabilities);
+        VkSurfaceFormatKHR ChooseImageFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+        VkPresentModeKHR   ChoosePresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+        VkExtent2D         ChooseSwapchainExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 
-        SolDevice &_rSolDevice;
+        SolDevice& _rSolDevice;
         VkExtent2D _windowExtent;
 
         // Swapchain
@@ -83,7 +83,7 @@ namespace SolEngine
         std::vector<VkFence>     _inFlightFences;
         std::vector<VkFence>     _inFlightImages;
 
-        size_t   _currentFrame{ 0 };
+        size_t   _currentFrame   { 0 };
         uint64_t _timeoutDuration{ (std::numeric_limits<uint64_t>::max)() };
     };
 }

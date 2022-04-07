@@ -371,6 +371,9 @@
     <ClInclude Include="CameraSettings.hpp">
       <Filter>SolEngine\Settings</Filter>
     </ClInclude>
+    <ClInclude Include="RenderSettings.hpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">
