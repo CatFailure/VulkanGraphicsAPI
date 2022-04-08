@@ -197,6 +197,14 @@ void Application::SetupEventCallbacks()
                             // Force update the next generation delay to the new value
                             _pGameOfLifeSystem->ResetNextGenerationDelayRemaining();
                         });
+
+    _rGameOfLifeSettings.onNeighbourhoodTypeChangedEvent
+                        .AddListener([this]() 
+                        {
+                            // Re-check neighbours in accordance
+                            // to new neighbourhood ruleset
+                            _pGameOfLifeSystem->CheckAllCellNeighbours();
+                        });
 }
 
 void Application::HandleUserInput(Transform& rGameObjectTransform)
@@ -258,7 +266,7 @@ void Application::CheckForGridDimenionsChangedFlag()
     // OR keep same values for repeatable simulations
     RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
 
-    _pSolGrid->Reconstruct();                       // Re-construct the Grid
+    _pSolGrid->Initialise();                        // Re-initialise the Grid
     _pMarchingCubesSystem->March();                 // Create the new vertices
     _pGameOfLifeSystem->CheckAllCellNeighbours();   // Retrieve the next generation state
 

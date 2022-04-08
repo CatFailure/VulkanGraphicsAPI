@@ -7,18 +7,15 @@ namespace SolEngine
         : _rDiagnosticData(rDiagnosticData),
           _rGridSettings(rGridData)
     {
+        // Allocate the cells
+        _rDiagnosticData.memoryAllocatedBytes = cells.AllocateDataArrays();
+
         Initialise();
     }
 
     SolGrid::~SolGrid()
     {
         cells.Free();
-    }
-
-    void SolGrid::Reconstruct()
-    {
-        cells.Free();
-        Initialise();
     }
 
     void SolGrid::Reset()
@@ -64,8 +61,6 @@ namespace SolEngine
     {
         const size_t nodeCount = _rGridSettings.GetNodeCount();
         size_t bytesInUse(0);
-
-        _rDiagnosticData.memoryAllocatedBytes = cells.AllocateDataArrays();
 
         bytesInUse += GenerateVertices<Axis::X>(cells.pXVertices, _minBounds.x, _maxBounds.x);
         bytesInUse += GenerateVertices<Axis::Y>(cells.pYVertices, _minBounds.y, _maxBounds.y);

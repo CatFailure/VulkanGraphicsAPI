@@ -28,8 +28,8 @@ namespace SolEngine::DOD
             memoryAllocatedBytes += AlignedMallocContiguous2DArray(pYVertices, MAX_CELLS_PER_AXIS_COUNT, CUBE_VERTEX_COUNT, intAlign);
             memoryAllocatedBytes += AlignedMallocContiguous2DArray(pZVertices, MAX_CELLS_PER_AXIS_COUNT, CUBE_VERTEX_COUNT, intAlign);
 
-            memoryAllocatedBytes += AlignedMallocContiguousArray(pCellStates,          MAX_CUBE_VERTEX_COUNT, boolAlign);
-            memoryAllocatedBytes += AlignedMallocContiguousArray(pLiveNeighbourCounts, MAX_CUBE_VERTEX_COUNT, neighbourStateAlign);
+            memoryAllocatedBytes += AlignedMallocContiguousArray(pCellStates,          MAX_CELLS_VERTEX_COUNT, boolAlign);
+            memoryAllocatedBytes += AlignedMallocContiguousArray(pLiveNeighbourCounts, MAX_CELLS_VERTEX_COUNT, neighbourStateAlign);
 
             return memoryAllocatedBytes;
         }

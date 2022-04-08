@@ -35,6 +35,6 @@ namespace SolEngine::Settings
 		NeighbourCount_t  overpopulationCount { 13U };						// Max number of live neighbours to keep a cell alive.
 		NeighbourCount_t  reproductionCount   { 12U };						// Exact number of live neighbours to reproduce a cell.
 
-		SolEvent<> onResetEvent;
+		SolEvent<> onNeighbourhoodTypeChangedEvent;
 	};
 }
