@@ -13,6 +13,7 @@ namespace SolEngine::System
 		size_t		   GetIsoValuesGeneratedCount() const { return _isoValuesGeneratedCount; }
 
 		void March();
+		void ResetVerticesContainerSize() { _vertices.clear(); }
 
 	private:
 		uint32_t  GetCubeIndex(const bool* pNodeStates);
@@ -31,10 +32,7 @@ namespace SolEngine::System
 		SolGameObject	_marchingCubesObject;
 
 		size_t				_isoValuesGeneratedCount{ 0 };
-		size_t				_verticesUsedCount		{ 0U };
+		size_t				_verticesInUseCount		{ 0U };
 		std::vector<Vertex> _vertices				{};
-
-		size_t _vertexMemoryAllocatedBytes{ 0U };
-		size_t _vertexMemoryUsedBytes	  { 0U };
 	};
 }

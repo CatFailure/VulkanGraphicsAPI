@@ -30,7 +30,7 @@ namespace SolEngine
         std::unique_ptr<SolBuffer> _pVertexBuffer;
         std::unique_ptr<SolBuffer> _pIndexBuffer;
 
-        uint32_t _verticesUsedCount{ 0 };
+        uint32_t _verticesInUseCount{ 0 };
         uint32_t _indexCount{ 0 };
         uint32_t _instanceCount{ 1U };
     };

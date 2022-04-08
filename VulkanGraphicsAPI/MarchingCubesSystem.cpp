@@ -15,7 +15,7 @@ namespace SolEngine::System
     {
         // Start back at the beginning of the array
         // To re-use vertices.
-        _verticesUsedCount = 0U;
+        _verticesInUseCount = 0U;
 
         const glm::uvec3  gridDimensions  = _rSolGrid.GetDimensions();
         const bool*       pGridCellStates = _rSolGrid.cells.pCellStates;
@@ -54,8 +54,12 @@ namespace SolEngine::System
 
         UpdateGameObjectModel();
 
-        _rDiagnosticData.vertexCount = _verticesUsedCount;
-        _rDiagnosticData.triCount    = _verticesUsedCount / 3U;
+        // Update Diagnostic Data
+        const size_t vertexSizeBytes = sizeof(Vertex);
+        _rDiagnosticData.vertexCount                  = _verticesInUseCount;
+        _rDiagnosticData.triCount                     = _verticesInUseCount / 3U;
+        _rDiagnosticData.verticesMemoryAllocatedBytes = _vertices.size() * vertexSizeBytes;
+        _rDiagnosticData.verticesMemoryUsedBytes      = _verticesInUseCount * vertexSizeBytes;
     }
 
     uint32_t MarchingCubesSystem::GetCubeIndex(const bool* pNodeStates)
@@ -139,11 +143,11 @@ namespace SolEngine::System
                 (float)zIndex / gridDimensions.z   // b
             };
 
-            if (_verticesUsedCount < _vertices.size())
+            if (_verticesInUseCount < _vertices.size())
             {
                 // Re-use initialised vertices...
-                _vertices.at(_verticesUsedCount).position = vertexPosition;
-                _vertices.at(_verticesUsedCount).colour   = vertexColour;
+                _vertices.at(_verticesInUseCount).position = vertexPosition;
+                _vertices.at(_verticesInUseCount).colour   = vertexColour;
             }
             else
             {
@@ -151,7 +155,7 @@ namespace SolEngine::System
                 _vertices.push_back(Vertex{ vertexPosition, vertexColour });
             }
 
-            ++_verticesUsedCount;
+            ++_verticesInUseCount;
         }
     }
 
@@ -182,7 +186,7 @@ namespace SolEngine::System
     void MarchingCubesSystem::UpdateGameObjectModel()
     {
         // Any vertices to work with?
-        if (_verticesUsedCount == 0U)
+        if (_verticesInUseCount == 0U)
         {
             return;
         }
@@ -190,7 +194,7 @@ namespace SolEngine::System
         std::shared_ptr<SolModel> pMarchingCubeModel = 
             std::make_shared<SolModel>(_rSolDevice, 
                                        _vertices.data(), 
-                                       (uint32_t)_verticesUsedCount);
+                                       (uint32_t)_verticesInUseCount);
 
         // Any model to work with?
         if (pMarchingCubeModel == nullptr)
