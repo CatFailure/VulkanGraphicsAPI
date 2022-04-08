@@ -44,6 +44,15 @@ namespace SolEngine::GUI
 	static constexpr const char* TOOLTIP_GRID_DIMENSIONS	  { "Sets the Grid Dimensions.\nSimulation MUST be paused to edit.\n(Min: %u, Max: %u, Default: x: %u, y: %u, z: %u)." };
 	static constexpr const char* TOOLTIP_GRID_DIMENSIONS_RESET{ "Reset Grid Dimensions.\nSimulation MUST be paused to reset." };
 
-	static constexpr const char* TOOLTIP_RENDER_POLYGON_MODE{};
-	static constexpr const char* TOOLTIP_RENDER_CULL_MODE{};
+	static constexpr const char* TOOLTIP_RENDER_POLYGON_MODE{ "Specifies the method of rasterization for polygons.\n\
+Fill: Polygons are rendered using the polygon rasterization rules.\n\
+Wireframe: Polygon edges are drawn as line segments.\n\
+Point: Polygon vertices are drawn as points.\n\
+Default: %s"};
+	static constexpr const char* TOOLTIP_RENDER_CULL_MODE{"Specifies the orientation of triangles that are culled out of the render.\n\
+None: No triangles are discarded.\n\
+Front: Front-facing triangles are discarded.\n\
+Back: Back-facing triangles are discarded.\n\
+Front and Back: All triangles are discarded.\n\
+Default: %s"};
 }

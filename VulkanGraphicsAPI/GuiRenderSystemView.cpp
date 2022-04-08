@@ -37,7 +37,8 @@ namespace SolEngine::GUI::View
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_RENDER_POLYGON_MODE);
+			ImGui::Text(TOOLTIP_RENDER_POLYGON_MODE,
+						_polygonModes[(size_t)_defaultRenderSettings.polygonMode]);
 		}
 		ImGui::EndTooltip();
 	}
@@ -62,7 +63,8 @@ namespace SolEngine::GUI::View
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_RENDER_CULL_MODE);
+			ImGui::Text(TOOLTIP_RENDER_CULL_MODE,
+						_cullModes[(size_t)_defaultRenderSettings.cullMode]);
 		}
 		ImGui::EndTooltip();
 	}
