@@ -197,6 +197,14 @@ void Application::SetupEventCallbacks()
                             // Force update the next generation delay to the new value
                             _pGameOfLifeSystem->ResetNextGenerationDelayRemaining();
                         });
+
+    _rGameOfLifeSettings.onNeighbourhoodTypeChangedEvent
+                        .AddListener([this]() 
+                        {
+                            // Re-check neighbours in accordance
+                            // to new neighbourhood ruleset
+                            _pGameOfLifeSystem->CheckAllCellNeighbours();
+                        });
 }
 
 void Application::HandleUserInput(Transform& rGameObjectTransform)

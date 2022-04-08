@@ -167,6 +167,7 @@ namespace SolEngine::GUI::View
 
 	void GuiGameOfLifeView::OnNeighbourhoodTypeValueChanged(const NeighbourhoodType value)
 	{
+		_rGameOfLifeSettings.onNeighbourhoodTypeChangedEvent.Invoke();
 		_rGameOfLifeSettings.Reset();
 	}
 
