@@ -9,7 +9,7 @@ int main()
 	};
 
 	DiagnosticData     diagnosticData    {};
-	RenderSettings     renderSettings    { .polygonMode = VK_POLYGON_MODE_FILL };
+	RenderSettings     renderSettings    {};
 	CameraSettings     cameraSettings    {};
 	GridSettings       gridSettings		 {};
 	GameOfLifeSettings gameOfLifeSettings{};
