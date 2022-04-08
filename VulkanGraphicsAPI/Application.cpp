@@ -266,9 +266,10 @@ void Application::CheckForGridDimenionsChangedFlag()
     // OR keep same values for repeatable simulations
     RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
 
-    _pSolGrid->Initialise();                        // Re-initialise the Grid
-    _pMarchingCubesSystem->March();                 // Create the new vertices
-    _pGameOfLifeSystem->CheckAllCellNeighbours();   // Retrieve the next generation state
+    _pSolGrid->Initialise();                                // Re-initialise the Grid
+    _pMarchingCubesSystem->ResetVerticesContainerSize();    // Shrink vertex container to free up wasted memory
+    _pMarchingCubesSystem->March();                         // Create the new vertices
+    _pGameOfLifeSystem->CheckAllCellNeighbours();           // Retrieve the next generation state
 
     // Finished!
     _rGridSettings.isGridDimensionsChangeRequested = false;

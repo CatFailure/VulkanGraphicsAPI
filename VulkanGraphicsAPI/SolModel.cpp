@@ -45,7 +45,7 @@ namespace SolEngine
         if (!_hasIndexBuffer)
         {
             vkCmdDraw(commandBuffer, 
-                      _verticesUsedCount,
+                      _verticesInUseCount,
                       _instanceCount, 
                       0,
                       0);
@@ -71,7 +71,7 @@ namespace SolEngine
 
     void SolModel::CreateVertexBuffers(const Vertex* pVertices, const uint32_t vertexCount)
     {
-        _verticesUsedCount = vertexCount;
+        _verticesInUseCount = vertexCount;
 
         const size_t vertexSize = sizeof(Vertex);
         const VkDeviceSize bufferSize = vertexSize * vertexCount;
