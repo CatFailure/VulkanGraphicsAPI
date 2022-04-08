@@ -14,7 +14,11 @@ namespace SolEngine::GUI::View
 		}
 
 		RenderPolygonModeCombo();
+		ImGui::SameLine();
+		RenderResetPolygonModeButton();
 		RenderCullModeCombo();
+		ImGui::SameLine(RESET_CULL_MODE_BUTTON_PADDING);
+		RenderResetCullModeButton();
 	}
 
 	void GuiRenderSystemView::RenderPolygonModeCombo()
@@ -35,6 +39,7 @@ namespace SolEngine::GUI::View
 			return;
 		}
 
+		// Tooltip - Polygon Mode
 		ImGui::BeginTooltip();
 		{
 			ImGui::Text(TOOLTIP_RENDER_POLYGON_MODE,
@@ -55,7 +60,7 @@ namespace SolEngine::GUI::View
 			OnCullModeChanged(selectedMode);
 		}
 
-		// Tooltip - Neighbourhood Type
+		// Tooltip - Cull Mode
 		if (!ImGui::IsItemHovered())
 		{
 			return;
@@ -69,6 +74,26 @@ namespace SolEngine::GUI::View
 		ImGui::EndTooltip();
 	}
 
+	void GuiRenderSystemView::RenderResetPolygonModeButton()
+	{
+		ImGui::PushID(RESET_POLYGON_MODE_BUTTON_ID);	// Since there are multiple buttons with a "Reset" label, we have to define a unique ID here
+		if (ImGui::Button(LABEL_RENDER_POLYGON_MODE_RESET))
+		{
+			OnPolygonModeReset();
+		}
+		ImGui::PopID();
+	}
+
+	void GuiRenderSystemView::RenderResetCullModeButton()
+	{
+		ImGui::PushID(RESET_CULL_MODE_BUTTON_ID);	// Since there are multiple buttons with a "Reset" label, we have to define a unique ID here
+		if (ImGui::Button(LABEL_RENDER_CULL_MODE_RESET))
+		{
+			OnCullModeReset();
+		}
+		ImGui::PopID();
+	}
+
 	void GuiRenderSystemView::OnPolygonModeChanged(const int mode)
 	{
 		_rRenderSettings.polygonMode = (VkPolygonMode)mode;
@@ -79,5 +104,15 @@ namespace SolEngine::GUI::View
 	{
 		_rRenderSettings.cullMode = (VkCullModeFlagBits)mode;
 		_rRenderSettings.isRendererOutOfDate = true;
+	}
+
+	void GuiRenderSystemView::OnPolygonModeReset()
+	{
+		OnPolygonModeChanged(_defaultRenderSettings.polygonMode);
+	}
+
+	void GuiRenderSystemView::OnCullModeReset()
+	{
+		OnCullModeChanged(_defaultRenderSettings.cullMode);
 	}
 }

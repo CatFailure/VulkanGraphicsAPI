@@ -27,6 +27,9 @@ namespace SolEngine::GUI
 	static constexpr const char* LABEL_GRID_DIMENSIONS		 { "Grid Dimensions" };
 	static constexpr const char* LABEL_GRID_DIMENSIONS_RESET { "Reset" };
 
+	static constexpr const char* LABEL_RENDER_POLYGON_MODE_RESET { "Reset" };
+	static constexpr const char* LABEL_RENDER_CULL_MODE_RESET	 { "Reset" };
+
 	static constexpr const char* TOOLTIP_SIMULATION_GENERATION { "Current Simulation Generation." };
 	static constexpr const char* TOOLTIP_SIMULATION_SEED	   { "Seed used for Generating Random Cell States.\n(Min: %i, Max: %i, Default: %i)" };
 	static constexpr const char* TOOLTIP_SIMULATION_SEED_RESET { "Resets the Simulation Seed to Default.\nSimulation MUST be paused to reset." };
