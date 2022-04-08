@@ -177,6 +177,9 @@
     <ClCompile Include="CameraController.cpp">
       <Filter>SolEngine\Input</Filter>
     </ClCompile>
+    <ClCompile Include="GuiRenderSystemView.cpp">
+      <Filter>SolEngine\GUI\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="GuiWindowBase.hpp">
       <Filter>SolEngine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiRenderSystemView.hpp">
+      <Filter>SolEngine\GUI\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
