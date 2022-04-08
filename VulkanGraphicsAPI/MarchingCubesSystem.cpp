@@ -15,7 +15,7 @@ namespace SolEngine::System
     {
         // Start back at the beginning of the array
         // To re-use vertices.
-        _vertexCount = 0U;
+        _verticesUsedCount = 0U;
 
         const glm::uvec3  gridDimensions  = _rSolGrid.GetDimensions();
         const bool*       pGridCellStates = _rSolGrid.cells.pCellStates;
@@ -54,11 +54,8 @@ namespace SolEngine::System
 
         UpdateGameObjectModel();
 
-        _rDiagnosticData.vertexCount = _vertexCount;
-        _rDiagnosticData.triCount    = _vertexCount / 3U;
-
-        //printf_s("Created: %zu Vertices\n", vertexCount);
-        //printf_s("Created: %zu Tris\n", triCount);
+        _rDiagnosticData.vertexCount = _verticesUsedCount;
+        _rDiagnosticData.triCount    = _verticesUsedCount / 3U;
     }
 
     uint32_t MarchingCubesSystem::GetCubeIndex(const bool* pNodeStates)
@@ -142,11 +139,11 @@ namespace SolEngine::System
                 (float)zIndex / gridDimensions.z   // b
             };
 
-            if (_vertexCount < _vertices.size())
+            if (_verticesUsedCount < _vertices.size())
             {
                 // Re-use initialised vertices...
-                _vertices.at(_vertexCount).position = vertexPosition;
-                _vertices.at(_vertexCount).colour   = vertexColour;
+                _vertices.at(_verticesUsedCount).position = vertexPosition;
+                _vertices.at(_verticesUsedCount).colour   = vertexColour;
             }
             else
             {
@@ -154,7 +151,7 @@ namespace SolEngine::System
                 _vertices.push_back(Vertex{ vertexPosition, vertexColour });
             }
 
-            ++_vertexCount;
+            ++_verticesUsedCount;
         }
     }
 
@@ -185,7 +182,7 @@ namespace SolEngine::System
     void MarchingCubesSystem::UpdateGameObjectModel()
     {
         // Any vertices to work with?
-        if (_vertexCount == 0U)
+        if (_verticesUsedCount == 0U)
         {
             return;
         }
@@ -193,7 +190,7 @@ namespace SolEngine::System
         std::shared_ptr<SolModel> pMarchingCubeModel = 
             std::make_shared<SolModel>(_rSolDevice, 
                                        _vertices.data(), 
-                                       (uint32_t)_vertexCount);
+                                       (uint32_t)_verticesUsedCount);
 
         // Any model to work with?
         if (pMarchingCubeModel == nullptr)
