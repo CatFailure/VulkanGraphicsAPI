@@ -24,7 +24,8 @@ namespace SolEngine::GUI::View
 		void OnPolygonModeChanged(const int mode);
 		void OnCullModeChanged(const int mode);
 
-		RenderSettings& _rRenderSettings;
+		const RenderSettings _defaultRenderSettings{};
+		RenderSettings&		 _rRenderSettings;
 
 		const char* _polygonModes[POLYGON_MODE_COUNT]{ "Fill", "Wireframe", "Point" };
 		const char* _cullModes[CULL_MODE_COUNT]		 { "None", "Front", "Back", "Front and Back" };

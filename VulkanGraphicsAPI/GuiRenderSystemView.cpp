@@ -37,7 +37,7 @@ namespace SolEngine::GUI::View
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_GAME_OF_LIFE_NEIGHBOURHOOD_TYPE);
+			ImGui::Text(TOOLTIP_RENDER_POLYGON_MODE);
 		}
 		ImGui::EndTooltip();
 	}
@@ -62,7 +62,7 @@ namespace SolEngine::GUI::View
 
 		ImGui::BeginTooltip();
 		{
-			ImGui::Text(TOOLTIP_GAME_OF_LIFE_NEIGHBOURHOOD_TYPE);
+			ImGui::Text(TOOLTIP_RENDER_CULL_MODE);
 		}
 		ImGui::EndTooltip();
 	}

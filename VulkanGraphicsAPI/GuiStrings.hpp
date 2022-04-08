@@ -43,4 +43,7 @@ namespace SolEngine::GUI
 
 	static constexpr const char* TOOLTIP_GRID_DIMENSIONS	  { "Sets the Grid Dimensions.\nSimulation MUST be paused to edit.\n(Min: %u, Max: %u, Default: x: %u, y: %u, z: %u)." };
 	static constexpr const char* TOOLTIP_GRID_DIMENSIONS_RESET{ "Reset Grid Dimensions.\nSimulation MUST be paused to reset." };
+
+	static constexpr const char* TOOLTIP_RENDER_POLYGON_MODE{};
+	static constexpr const char* TOOLTIP_RENDER_CULL_MODE{};
 }

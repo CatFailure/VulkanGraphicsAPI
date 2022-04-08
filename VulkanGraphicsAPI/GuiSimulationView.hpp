@@ -50,8 +50,8 @@ namespace SolEngine::GUI::View
 
 		void OnSimulationStateToggled();
 
-		SimulationSettings  _defaultSimulationSettings{};
-		SimulationSettings& _rSimulationSettings;
+		const SimulationSettings _defaultSimulationSettings{};
+		SimulationSettings&		 _rSimulationSettings;
 
 		float		_simulationSpeed	  { 0.f };
 		int			_simulationSeed		  { 0 };
