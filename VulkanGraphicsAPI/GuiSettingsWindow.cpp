@@ -7,16 +7,14 @@ namespace SolEngine::GUI
 										 const ImGuiWindowFlags windowFlags,
 										 GameOfLifeSettings& rGameOfLifeSettings, 
 										 SimulationSettings& rSimulationSettings, 
-										 GridSettings& rGridSettings,
-										 RenderSettings& rRenderSettings)
+										 GridSettings& rGridSettings)
 		: GuiWindowBase(windowTitle,
 					 isActive,
 					 windowFlags),
 		  _gameOfLifeView(rGameOfLifeSettings),
 		  _simulationView(rSimulationSettings),
 		  _gridView(rGridSettings, 
-					rSimulationSettings),
-		  _renderSystemView(rRenderSettings)
+					rSimulationSettings)
 	{}
 
 	void GuiSettingsWindow::Render()
@@ -30,8 +28,6 @@ namespace SolEngine::GUI
 		_gameOfLifeView.RenderViewContents();
 		ImGui::Separator();
 		_gridView.RenderViewContents();
-		ImGui::Separator();
-		_renderSystemView.RenderViewContents();
 
 		ImGui::End();
 	}
