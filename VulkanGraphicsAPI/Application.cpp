@@ -294,6 +294,7 @@ void Application::CreateGuiWindowManager()
                                                           flags, 
                                                           _rGameOfLifeSettings,
                                                           _rSimulationSettings,
-                                                          _rGridSettings);
+                                                          _rGridSettings,
+                                                          _rRenderSettings);
 }
 #endif // !DISABLE_IM_GUI
