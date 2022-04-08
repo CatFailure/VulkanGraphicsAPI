@@ -21,7 +21,7 @@ namespace SolEngine::Data
     static constexpr uint32_t CELL_NEIGHBOURS_COUNT_VON_NEUMANN{ 6U };
 
     static constexpr uint32_t MIN_CELLS_PER_AXIS_COUNT          { 2U };
-    static constexpr uint32_t MAX_CELLS_PER_AXIS_COUNT          { 1 << 6 };   // Currently can only go upto 9 (134,217,728 Cubes)
+    static constexpr uint32_t MAX_CELLS_PER_AXIS_COUNT          { 1 << 7 };   // Currently can only go upto 9 (134,217,728 Cubes)
     static constexpr uint32_t MAX_CELLS_COUNT                   { MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT };
     static constexpr uint32_t MAX_CELLS_VERTEX_COUNT            { MAX_CELLS_COUNT * CUBE_VERTEX_COUNT };
 

@@ -29,7 +29,7 @@ namespace SolEngine::GUI::View
 		void OnGridSizeChanged();
 		void OnGridSizeReset();
 
-		GridSettings		_defaultGridSettings{};
+		const GridSettings  _defaultGridSettings{};
 		GridSettings&		_rGridSettings;
 		SimulationSettings& _rSimulationSettings;
 

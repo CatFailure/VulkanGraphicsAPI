@@ -21,7 +21,7 @@ namespace SolEngine::GUI::View
 
 		// Simulation Seed Controls
 		RenderSimulationSeedInput();
-		ImGui::SameLine(SIMULATION_RESET_SEED_OFFSET);
+		ImGui::SameLine(RESET_SEED_BUTTON_PADDING);
 		RenderSimulationResetSeedButton();
 
 		// Simulation Speed Controls

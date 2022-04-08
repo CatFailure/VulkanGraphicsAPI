@@ -51,6 +51,12 @@ namespace SolEngine
     {
         _rCameraSettings.position += delta;
 
+        // Prevent camera from going behind the model
+        if (_rCameraSettings.position.z <= 0.f)
+        {
+            _rCameraSettings.position.z = DBL_EPSILON;
+        }
+
         return *this;
     }
 

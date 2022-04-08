@@ -4,12 +4,12 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[07/04/22] Cellular Automata | Final Release Candidate",
+		.windowTitle	  = "[07/04/22] Cellular Automata | Pre-Release Candidate",
 		.windowDimensions = glm::uvec2(1280, 720)
 	};
 
 	DiagnosticData     diagnosticData    {};
-	RenderSettings     renderSettings    { .polygonMode = VK_POLYGON_MODE_FILL };
+	RenderSettings     renderSettings    {};
 	CameraSettings     cameraSettings    {};
 	GridSettings       gridSettings		 {};
 	GameOfLifeSettings gameOfLifeSettings{};
