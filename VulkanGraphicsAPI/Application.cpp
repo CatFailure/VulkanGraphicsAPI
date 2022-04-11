@@ -22,8 +22,6 @@ Application::Application(const ApplicationData& appData,
     _rSimulationSettings(rSimulationSettings),
     _rCameraSettings(rCameraSettings)
 {
-    CreateDescriptorPool();
-
 #ifndef DISABLE_IM_GUI
     CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI
@@ -34,16 +32,6 @@ Application::Application(const ApplicationData& appData,
     SetupMarchingCubesSystem();
     SetupGameOfLifeSystem();
     SetupEventCallbacks();
-}
-
-Application::~Application()
-{
-    // Guarantee Descriptor Pool and GuiWindowManager are destructed before SolDevice
-    _pSolDescriptorPool = nullptr;
-
-#ifndef DISABLE_IM_GUI
-    _pGuiWindowManager = nullptr;
-#endif
 }
 
 void Application::Run()
@@ -135,14 +123,6 @@ void Application::Render()
 
     _solRenderer.EndSwapchainRenderPass(commandBuffer);
     _solRenderer.EndFrame();
-}
-
-void Application::CreateDescriptorPool()
-{
-    _pSolDescriptorPool = SolDescriptorPool::Builder(_solDevice).SetMaxDescriptorSets(SolSwapchain::MAX_FRAMES_IN_FLIGHT)
-                                                                .AddPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 
-                                                                             SolSwapchain::MAX_FRAMES_IN_FLIGHT)
-                                                                .Build();
 }
 
 void Application::SetupRandomNumberGenerator()

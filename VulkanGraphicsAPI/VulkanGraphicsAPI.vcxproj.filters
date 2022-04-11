@@ -43,9 +43,6 @@
     <Filter Include="ImGui\Backends">
       <UniqueIdentifier>{6c0105b6-091f-477a-a11d-383e4888411b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SolEngine\Descriptors">
-      <UniqueIdentifier>{0add9c7d-c5ca-4625-b876-7de24d2dce2a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SolEngine\GUI">
       <UniqueIdentifier>{d5712963-e0e8-44e2-aaab-2542669ad924}</UniqueIdentifier>
     </Filter>
@@ -128,15 +125,6 @@
     </ClCompile>
     <ClCompile Include="imgui_impl_vulkan.cpp">
       <Filter>ImGui\Backends</Filter>
-    </ClCompile>
-    <ClCompile Include="SolDescriptorSetLayout.cpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="SolDescriptorPool.cpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClCompile>
-    <ClCompile Include="SolDescriptorWriter.cpp">
-      <Filter>SolEngine\Descriptors</Filter>
     </ClCompile>
     <ClCompile Include="GuiDiagnosticWindow.cpp">
       <Filter>SolEngine\GUI</Filter>
@@ -280,15 +268,6 @@
     </ClInclude>
     <ClInclude Include="imgui_impl_vulkan.h">
       <Filter>ImGui\Backends</Filter>
-    </ClInclude>
-    <ClInclude Include="SolDescriptorSetLayout.hpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="SolDescriptorPool.hpp">
-      <Filter>SolEngine\Descriptors</Filter>
-    </ClInclude>
-    <ClInclude Include="SolDescriptorWriter.hpp">
-      <Filter>SolEngine\Descriptors</Filter>
     </ClInclude>
     <ClInclude Include="GuiDiagnosticWindow.hpp">
       <Filter>SolEngine\GUI</Filter>

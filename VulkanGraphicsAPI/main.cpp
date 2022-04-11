@@ -32,7 +32,7 @@ int main()
 	{
 		application.Run();
 	}
-	catch (const std::exception &e)
+	catch (const std::exception& e)
 	{
 		std::cerr << e.what() << '\n';
 

@@ -380,9 +380,6 @@
     <ClCompile Include="SimpleRenderSystem.cpp" />
     <ClCompile Include="SolBuffer.cpp" />
     <ClCompile Include="SolCamera.cpp" />
-    <ClCompile Include="SolDescriptorPool.cpp" />
-    <ClCompile Include="SolDescriptorSetLayout.cpp" />
-    <ClCompile Include="SolDescriptorWriter.cpp" />
     <ClCompile Include="SolClock.cpp" />
     <ClCompile Include="SolDevice.cpp" />
     <ClCompile Include="SolModel.cpp" />
@@ -442,9 +439,6 @@
     <ClInclude Include="Singleton.hpp" />
     <ClInclude Include="SolBuffer.hpp" />
     <ClInclude Include="SolCamera.hpp" />
-    <ClInclude Include="SolDescriptorPool.hpp" />
-    <ClInclude Include="SolDescriptorSetLayout.hpp" />
-    <ClInclude Include="SolDescriptorWriter.hpp" />
     <ClInclude Include="SolClock.hpp" />
     <ClInclude Include="SolDevice.hpp" />
     <ClInclude Include="SolEvent.hpp" />

@@ -5,7 +5,6 @@
 #endif // _DEBUG_LAPTOP || NDEBUG_LAPTOP
 
 #include "SolClock.hpp"
-#include "SolDescriptorWriter.hpp"
 #include "SimpleRenderSystem.hpp"
 #include "GuiWindowManager.hpp"
 #include "SolGrid.hpp"
@@ -15,7 +14,6 @@
 
 using namespace SolEngine;
 using namespace SolEngine::Data;
-using namespace SolEngine::Descriptors;
 using namespace SolEngine::GUI;
 using namespace SolEngine::Rendering;
 using namespace SolEngine::System;
@@ -27,7 +25,6 @@ public:
     Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData,
                 RenderSettings& rRenderSettings, CameraSettings& rCameraSettings, GridSettings& rGridSettings, 
                 GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
-    ~Application();
         
     void Run();
 
@@ -35,8 +32,6 @@ private:
     // Inherited via IMonoBehaviour
     virtual void Update(const float deltaTime) override;
     void Render();
-
-    void CreateDescriptorPool();
 
     void SetupRandomNumberGenerator();
     void SetupCamera();
@@ -66,8 +61,6 @@ private:
     SolWindow   _solWindow;
     SolDevice   _solDevice;
     SolRenderer _solRenderer;
-
-    std::unique_ptr<SolDescriptorPool> _pSolDescriptorPool;
 
 #ifndef DISABLE_IM_GUI
     std::unique_ptr<GuiWindowManager>  _pGuiWindowManager;
