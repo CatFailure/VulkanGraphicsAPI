@@ -219,18 +219,16 @@ void Application::HandleUserInput(Transform& rGameObjectTransform)
     }
 
     const glm::dvec2 mouseDelta    = rCursor.GetMouseDelta();
-    const float      moveSpeed     = 1.5f;
-    constexpr float  rotationSpeed = glm::radians(.5f);
 
     if (rCursor.IsButtonDown(MouseButton::LEFT))
     {
         const glm::vec3 rotation(0.f, mouseDelta.x, -mouseDelta.y);
-        rGameObjectTransform.rotation += (rotation * rotationSpeed);
+        rGameObjectTransform.rotation += (rotation * GAME_OBJECT_ROT_SPEED);
     }
 
     if (rCursor.IsButtonDown(MouseButton::RIGHT))
     {
-        _pSolCamera->Move({ 0.f, 0.f, mouseDelta.y * moveSpeed });
+        _pSolCamera->Move({ 0.f, 0.f, mouseDelta.y * CAMERA_MOVE_SPEED });
     }
 
     rCursor.UpdateLastMousePosition();
