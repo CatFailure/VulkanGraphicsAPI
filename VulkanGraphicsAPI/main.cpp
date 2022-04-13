@@ -4,7 +4,7 @@ int main()
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[07/04/22] Cellular Automata | Pre-Release Candidate",
+		.windowTitle	  = "[13/04/22] Marching Cubes Cellular Automata",
 		.windowDimensions = glm::uvec2(1280, 720)
 	};
 
