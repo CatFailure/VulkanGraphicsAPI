@@ -8,30 +8,32 @@ int main(size_t argc, char* argv[])
 		.windowDimensions = glm::uvec2(1280, 720)
 	};
 
-	DiagnosticData     diagnosticData    {};
-	RenderSettings     renderSettings    {};
-	CameraSettings     cameraSettings    {};
-	GridSettings       gridSettings		 {};
-	GameOfLifeSettings gameOfLifeSettings{};
-	SimulationSettings simulationSettings{};
+	DiagnosticData diagnosticData{};
+	SettingsBundle settings		 {};
+
+	// Are any settings being passed by cmd?
+	if (argc == MAX_CMD_ARG_COUNT)
+	{
+		const std::string settingsFilepath = argv[1];
+
+		if (!settings.DeserializeFromFile(settingsFilepath))
+		{
+			printf_s("One (or More) Settings failed to load from: %s!\n", 
+					 settingsFilepath.c_str());
+		}
+	}
+	else if (argc > MAX_CMD_ARG_COUNT)
+	{
+		printf_s("Too many Arguments passed - Possible multiple files uploaded (This is not allowed).\nNo Settings Loaded.");
+	}
 
 #ifdef LAPTOP_BUILD
-	simulationSettings.state = SimulationState::PLAY;
+	settings.simulationSettings.state = SimulationState::PLAY;
 #endif // _DEBUG_LAPTOP || _NDEBUG_LAPTOP
-
-	// Have any additional command line arguments been provided?
-	if (argc > 1)
-	{
-
-	}
 
 	Application application(appData,
 							diagnosticData,
-							renderSettings,
-							cameraSettings,
-							gridSettings,
-							gameOfLifeSettings,
-							simulationSettings);
+							settings);
 
 	try
 	{

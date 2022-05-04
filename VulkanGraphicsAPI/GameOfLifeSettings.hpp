@@ -3,11 +3,13 @@
 #include "Typedefs.hpp"
 #include "NeighbourhoodType.hpp"
 #include "ISerializable.hpp"
+#include "DebugHelpers.hpp"
 #include "Helpers.hpp"
 
 using namespace Utility;
 using namespace SolEngine::Events;
 using namespace SolEngine::Enumeration;
+using namespace SolEngine::Interface;
 
 namespace SolEngine::Settings
 {

@@ -23,7 +23,7 @@
         }
     },
     "render_settings": {
-        "fill_mode": 1,
+        "poly_mode": 1,
         "cull_mode": 2
     },
     "simulation_settings": {

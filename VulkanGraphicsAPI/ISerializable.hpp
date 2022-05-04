@@ -5,8 +5,10 @@
 #include <rapidjson/document.h>
 #include <string>
 
+#include "DebugHelpers.hpp"
 #include "Constants.hpp"
 
+using namespace Utility;
 using namespace SolEngine::Data;
 
 namespace SolEngine::Interface
@@ -16,18 +18,22 @@ namespace SolEngine::Interface
         bool DeserializeFromFile(const std::string& filepath)
         {
             FILE* pFile;
-            char* fileBuffer = (char*)malloc(FILE_BUFFER_SIZE);
 
             if (fopen_s(&pFile, 
                         filepath.c_str(), 
-                        "rb") == 0 ||
+                        "rb") != 0 ||
                 pFile == NULL)
             {
-                free(fileBuffer);
+                // Uh-oh!
+                const std::string errMsg{ "Failed to open file." + filepath };
+
+                DBG_ASSERT_MSG(false, 
+                               errMsg.c_str());
 
                 return false;
             }
 
+            char* fileBuffer = (char*)malloc(FILE_BUFFER_SIZE);
             rapidjson::FileReadStream readStream(pFile,
                                                  fileBuffer,
                                                  FILE_BUFFER_SIZE);

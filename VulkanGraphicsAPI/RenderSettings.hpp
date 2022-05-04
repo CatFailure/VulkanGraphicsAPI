@@ -2,6 +2,7 @@
 #include <vulkan/vulkan.hpp>
 
 #include "ISerializable.hpp"
+#include "DebugHelpers.hpp"
 #include "Helpers.hpp"
 
 using namespace Utility;
@@ -33,7 +34,7 @@ namespace SolEngine::Settings
         VkCullModeFlagBits cullMode           { VK_CULL_MODE_BACK_BIT };
 
     private:
-        static constexpr const char* PROP_POLY_MODE{ "polygon_mode" };
+        static constexpr const char* PROP_POLY_MODE{ "poly_mode" };
         static constexpr const char* PROP_CULL_MODE{ "cull_mode" };
     };
 }

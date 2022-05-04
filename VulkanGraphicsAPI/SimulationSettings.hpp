@@ -3,6 +3,7 @@
 #include "SimulationState.hpp"
 #include "ISerializable.hpp"
 #include "Helpers.hpp"
+#include "DebugHelpers.hpp"
 
 using namespace Utility;
 using namespace SolEngine::Enumeration;

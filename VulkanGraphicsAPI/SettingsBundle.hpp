@@ -23,13 +23,12 @@ namespace SolEngine::Settings
 				return false;
 			}
 
-			cameraSettings.Deserialize(obj[PROP_SETTINGS_CAMERA].GetObj());
-			gameOfLifeSettings.Deserialize(obj[PROP_SETTINGS_GAME_OF_LIFE].GetObj());
-			gridSettings.Deserialize(obj[PROP_SETTINGS_GRID].GetObj());
-			renderSettings.Deserialize(obj[PROP_SETTINGS_RENDER].GetObj());
-			simulationSettings.Deserialize(obj[PROP_SETTINGS_SIMULATION].GetObj());
-
-			return true;    // OK!
+			// Deserialize each setting...
+			return cameraSettings.Deserialize(obj[PROP_SETTINGS_CAMERA].GetObj()) &&
+				   gameOfLifeSettings.Deserialize(obj[PROP_SETTINGS_GAME_OF_LIFE].GetObj()) &&
+				   gridSettings.Deserialize(obj[PROP_SETTINGS_GRID].GetObj()) &&
+				   renderSettings.Deserialize(obj[PROP_SETTINGS_RENDER].GetObj()) &&
+				   simulationSettings.Deserialize(obj[PROP_SETTINGS_SIMULATION].GetObj());
 		}
 
         CameraSettings     cameraSettings    {};

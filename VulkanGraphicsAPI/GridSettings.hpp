@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 
 #include "ISerializable.hpp"
+#include "DebugHelpers.hpp"
 #include "Helpers.hpp"
 
 using namespace Utility;
