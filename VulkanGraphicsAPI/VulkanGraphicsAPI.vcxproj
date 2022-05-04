@@ -155,7 +155,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
@@ -173,7 +173,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_DEBUG_LAPTOP;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
     </ClCompile>
@@ -193,7 +193,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -222,7 +222,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -249,7 +249,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -272,7 +272,7 @@
       <PreprocessorDefinitions>_DEBUG;_DEBUG_LAPTOP;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -296,7 +296,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -328,7 +328,7 @@
       <PreprocessorDefinitions>NDEBUG;NDEBUG_LAPTOP;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
