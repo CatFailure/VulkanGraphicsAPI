@@ -3,9 +3,13 @@
 #undef far
 #include <glm/glm.hpp>
 
+#include "ISerializable.hpp"
+
+using namespace SolEngine::Interface;
+
 namespace SolEngine::Settings
 {
-    struct CameraSettings
+    struct CameraSettings : public ISerializable
     {
         bool      isMouseOverGUI    { false };  // Is the mouse hovering over any GUI windows currently?
 

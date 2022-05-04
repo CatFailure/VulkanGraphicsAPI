@@ -410,11 +410,13 @@
     <ClInclude Include="GuiSettingsWindow.hpp" />
     <ClInclude Include="GuiSimulationView.hpp" />
     <ClInclude Include="Helpers.hpp" />
+    <ClInclude Include="ISerializable.hpp" />
     <ClInclude Include="MarchingCubesSystem.hpp" />
     <ClInclude Include="MouseButton.hpp" />
     <ClInclude Include="NeighbourhoodType.hpp" />
     <ClInclude Include="RandomNumberGenerator.hpp" />
     <ClInclude Include="RenderSettings.hpp" />
+    <ClInclude Include="SettingsBundle.hpp" />
     <ClInclude Include="SimulationSettings.hpp" />
     <ClInclude Include="SimulationState.hpp" />
     <ClInclude Include="SolGrid.hpp" />

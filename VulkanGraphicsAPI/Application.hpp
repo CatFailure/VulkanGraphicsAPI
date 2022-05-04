@@ -12,6 +12,7 @@
 #include "MarchingCubesSystem.hpp"
 #include "GameOfLifeSystem.hpp"
 #include "CameraController.hpp"
+#include "SettingsBundle.hpp"
 
 using namespace SolEngine;
 using namespace SolEngine::Data;
@@ -24,6 +25,7 @@ class Application : public IMonoBehaviour
 {
 public:
     Application() = delete;
+    Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData, SettingsBundle& rSettings);
     Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData,
                 RenderSettings& rRenderSettings, CameraSettings& rCameraSettings, GridSettings& rGridSettings, 
                 GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);

@@ -6,7 +6,8 @@ using namespace Utility;
 
 namespace SolEngine::Data
 {
-    static constexpr size_t INT_SIZE_BYTES{ sizeof(int) };
+    static constexpr size_t INT_SIZE_BYTES  { sizeof(int) };
+    static constexpr size_t FILE_BUFFER_SIZE{ 65535U };
 
     static constexpr float SECONDS_TO_MILLISECONDS{ 1000.f };
 

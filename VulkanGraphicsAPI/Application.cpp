@@ -1,5 +1,17 @@
 #include "Application.hpp"
 
+Application::Application(const ApplicationData& appData, 
+                         DiagnosticData& rDiagnosticData, 
+                         SettingsBundle& rSettings)
+    : Application(appData, 
+                  rDiagnosticData,
+                  rSettings.renderSettings,
+                  rSettings.cameraSettings,
+                  rSettings.gridSettings,
+                  rSettings.gameOfLifeSettings,
+                  rSettings.simulationSettings)
+{}
+
 Application::Application(const ApplicationData& appData,
                          DiagnosticData& rDiagnosticData,
                          RenderSettings& rRenderSettings,
