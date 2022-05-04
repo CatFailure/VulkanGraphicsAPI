@@ -10,6 +10,9 @@
         }
     },
     "game_of_life_settings": {
-
+        "neighbourhood_type": 0,
+        "underpopulation": 7,
+        "overpopulation": 13,
+        "reproduction": 12
     }
 }
