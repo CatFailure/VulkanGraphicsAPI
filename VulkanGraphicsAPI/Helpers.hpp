@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <time.h>
+#include <rapidjson/document.h>
 
 #include "Axis.hpp"
 #include "Constants.hpp"
@@ -338,5 +339,21 @@ namespace Utility
         printf_s("%s - Allocated: %zu bytes.\n", __FUNCTION__, arraySizeBytes);
 
         return arraySizeBytes;
+    }
+
+    template<typename _TyArg>
+    static bool JsonHasMembers(const rapidjson::Value& obj, 
+                               _TyArg&& arg)
+    {
+        return obj.HasMember(arg);
+    }
+
+    template<typename _TyArg, typename... _TyArgs>
+    static bool JsonHasMembers(const rapidjson::Value& obj,
+                               _TyArg&& arg,
+                               _TyArgs&&... args)
+    {
+        return JsonHasMembers(obj, arg) && 
+               JsonHasMembers(obj, args...);
     }
 }

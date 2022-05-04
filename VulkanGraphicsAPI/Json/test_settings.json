@@ -1,0 +1,15 @@
+{
+    "camera_settings": {
+        "near": 0.01,
+        "far": 1000,
+        "field_of_view": 50,
+        "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+        }
+    },
+    "game_of_life_settings": {
+
+    }
+}
