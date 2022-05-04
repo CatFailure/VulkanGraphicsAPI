@@ -1,7 +1,12 @@
 #include "Application.hpp"
 
-int main()
+int main(size_t argc, char* argv[])
 {
+	for (size_t i = 0; i < argc; i++)
+	{
+		printf_s("%s\n", argv[i]);
+	}
+
 	const ApplicationData appData
 	{
 		.windowTitle	  = "[13/04/22] Marching Cubes Cellular Automata",
@@ -9,7 +14,7 @@ int main()
 	};
 
 	DiagnosticData     diagnosticData    {};
-	RenderSettings     renderSettings    { .polygonMode = VK_POLYGON_MODE_FILL };
+	RenderSettings     renderSettings    {};
 	CameraSettings     cameraSettings    {};
 	GridSettings       gridSettings		 {};
 	GameOfLifeSettings gameOfLifeSettings{};
@@ -17,7 +22,6 @@ int main()
 
 #ifdef LAPTOP_BUILD
 	simulationSettings.state = SimulationState::PLAY;
-	gridSettings.dimensions  = { 64 };
 #endif // _DEBUG_LAPTOP || _NDEBUG_LAPTOP
 
 	Application application(appData,
