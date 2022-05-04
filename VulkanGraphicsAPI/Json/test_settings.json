@@ -21,5 +21,9 @@
             "y": 32,
             "z": 32
         }
+    },
+    "render_settings": {
+        "fill_mode": 1,
+        "cull_mode": 2
     }
 }
