@@ -14,5 +14,12 @@
         "underpopulation": 7,
         "overpopulation": 13,
         "reproduction": 12
+    },
+    "grid_settings": {
+        "dimensions": {
+            "x": 32,
+            "y": 32,
+            "z": 32
+        }
     }
 }
