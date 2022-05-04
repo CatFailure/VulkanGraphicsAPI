@@ -42,7 +42,7 @@ namespace Utility
     static int _3DTo1DIndex(const int xIndex, 
                             const int yIndex, 
                             const int zIndex,
-                            const glm::uvec3 &dimensions)
+                            const glm::uvec3& dimensions)
     {
         const glm::uvec3 validNeighbourDimensions = dimensions - glm::uvec3(1U);
 
@@ -78,12 +78,12 @@ namespace Utility
     /// </summary>
     /// <returns>Bytes used.</returns>
     template<Axis>
-    static size_t GenerateVertices(int *pOutPositions,
+    static size_t GenerateVertices(int* pOutPositions,
                                    const int minValue, 
                                    const int maxValue) = delete;
 
     template<>
-    static size_t GenerateVertices<Axis::X>(int *pOutXPositions,
+    static size_t GenerateVertices<Axis::X>(int* pOutXPositions,
                                             const int minValue, 
                                             const int maxValue)
     {
@@ -114,7 +114,7 @@ namespace Utility
     }
 
     template<>
-    static size_t GenerateVertices<Axis::Y>(int *pOutYPositions,
+    static size_t GenerateVertices<Axis::Y>(int* pOutYPositions,
                                             const int minValue, 
                                             const int maxValue)
     {
@@ -145,7 +145,7 @@ namespace Utility
     }
 
     template<>
-    static size_t GenerateVertices<Axis::Z>(int *pOutZPositions,
+    static size_t GenerateVertices<Axis::Z>(int* pOutZPositions,
                                             const int minValue, 
                                             const int maxValue)
     {
@@ -213,7 +213,7 @@ namespace Utility
     static void CoordToIsoValue(const float x, 
                                 const float y, 
                                 const float z, 
-                                float *pOutIsoValue)
+                                float* pOutIsoValue)
     {
         const float sqrX = x * x;
         const float sqrY = y * y;
@@ -224,9 +224,9 @@ namespace Utility
         *pOutIsoValue = generatedIsoValue;
     }
 
-    static void VerticesToIsoValues(const float *pXVertices, 
-                                    const float *pYVertices, 
-                                    const float *pZVertices,
+    static void VerticesToIsoValues(const float* pXVertices, 
+                                    const float* pYVertices, 
+                                    const float* pZVertices,
                                     float *pOutIsoValues)
     {
         for (size_t i = 0; i < CUBE_VERTEX_COUNT; ++i)
@@ -279,9 +279,9 @@ namespace Utility
         }
     }
 
-    static void DimensionsToBounds(const glm::vec3 &dimensions, 
-                                   glm::vec3 *pOutMinBounds, 
-                                   glm::vec3 *pOutMaxBounds)
+    static void DimensionsToBounds(const glm::vec3& dimensions, 
+                                   glm::vec3* pOutMinBounds, 
+                                   glm::vec3* pOutMaxBounds)
     {
         const glm::vec3 halfExtents = dimensions * 0.5f;    // Get half dimensions
 
@@ -290,14 +290,14 @@ namespace Utility
     }
 
     template<typename _Ty>
-    static void SafeDispose(_Ty *p)
+    static void SafeDispose(_Ty*& p)
     {
         delete p;
         p = nullptr;
     }
 
     template<typename _Ty>
-    static void FreeAlignedMallocArray(_Ty *pArr)
+    static void FreeAlignedMallocArray(_Ty* pArr)
     {
         _aligned_free(pArr);
 
@@ -323,7 +323,7 @@ namespace Utility
     }
 
     template<typename _Ty>
-    static size_t AlignedMallocContiguous2DArray(_Ty *&prArr, 
+    static size_t AlignedMallocContiguous2DArray(_Ty*& prArr, 
                                                  const size_t rowCount, 
                                                  const size_t columnCount,
                                                  const size_t align = 16U)
