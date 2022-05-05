@@ -380,6 +380,12 @@
     <ClInclude Include="GuiRenderSystemView.hpp">
       <Filter>SolEngine\GUI\View</Filter>
     </ClInclude>
+    <ClInclude Include="ISerializable.hpp">
+      <Filter>SolEngine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsBundle.hpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">

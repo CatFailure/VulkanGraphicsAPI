@@ -6,6 +6,9 @@
 #include <vulkan/vulkan.hpp>
 #include <glm/glm.hpp>
 #include <GLFW/glfw3.h>
+#include <filesystem>
+
+using path = std::filesystem::path;
 
 namespace SolEngine::Data
 {
@@ -17,6 +20,7 @@ namespace SolEngine::Data
         const char*       engineName      { "Sol Engine" };
         const char*       appName         {"VulkanGraphicsAPI"};
         glm::uvec2        windowDimensions{ 800, 600 };
+        path              exeDirectory    {};
 
         VkExtent2D GetExtent() const { return { windowDimensions.x, windowDimensions.y }; }
     };

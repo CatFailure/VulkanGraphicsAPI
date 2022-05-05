@@ -1,5 +1,17 @@
 #include "Application.hpp"
 
+Application::Application(const ApplicationData& appData, 
+                         DiagnosticData& rDiagnosticData, 
+                         SettingsBundle& rSettings)
+    : Application(appData, 
+                  rDiagnosticData,
+                  rSettings.renderSettings,
+                  rSettings.cameraSettings,
+                  rSettings.gridSettings,
+                  rSettings.gameOfLifeSettings,
+                  rSettings.simulationSettings)
+{}
+
 Application::Application(const ApplicationData& appData,
                          DiagnosticData& rDiagnosticData,
                          RenderSettings& rRenderSettings,
@@ -103,7 +115,8 @@ void Application::Render()
 
     if (_rRenderSettings.isRendererOutOfDate)
     {
-        _pRenderSystem = std::make_unique<SimpleRenderSystem>(_solDevice, 
+        _pRenderSystem = std::make_unique<SimpleRenderSystem>(_appData.exeDirectory.string(),
+                                                              _solDevice, 
                                                               _rRenderSettings, 
                                                               _solRenderer.GetSwapchainRenderPass());
 
@@ -155,8 +168,7 @@ void Application::SetupCamera()
     _pSolCamera = std::make_unique<SolCamera>(_solRenderer,
                                               _rCameraSettings);
 
-    _pSolCamera->SetPosition({ 0.f, 0.f, 55.f })
-               .LookAt(_pSolCamera->GetPosition() - VEC3_FORWARD);    // Look forwards
+    _pSolCamera->LookAt(_pSolCamera->GetPosition() - VEC3_FORWARD);    // Look forwards
 }
 
 void Application::SetupGrid()
@@ -218,7 +230,7 @@ void Application::HandleUserInput(Transform& rGameObjectTransform)
         return;
     }
 
-    const glm::dvec2 mouseDelta    = rCursor.GetMouseDelta();
+    const glm::dvec2 mouseDelta = rCursor.GetMouseDelta();
 
     if (rCursor.IsButtonDown(MouseButton::LEFT))
     {

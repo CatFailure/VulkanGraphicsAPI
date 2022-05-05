@@ -15,7 +15,7 @@ namespace SolEngine::Rendering
 	{
 	public:
 		GenericRenderSystem() = delete;
-		GenericRenderSystem(SolDevice& rSolDevice, RenderSettings& rRenderSettings, const VkRenderPass renderPass);
+		GenericRenderSystem(const std::string& workingDir, SolDevice& rSolDevice, RenderSettings& rRenderSettings, const VkRenderPass renderPass);
 		virtual ~GenericRenderSystem();
 
 	protected:
@@ -25,6 +25,7 @@ namespace SolEngine::Rendering
 		virtual void CreatePipelineLayout();
 		virtual void CreatePipeline(const VkRenderPass renderPass);
 
+		const std::string&			 _workingDir;
 		SolDevice&					 _rSolDevice;
 		RenderSettings&				 _rRenderSettings;
 		std::unique_ptr<SolPipeline> _pSolPipeline{ nullptr };

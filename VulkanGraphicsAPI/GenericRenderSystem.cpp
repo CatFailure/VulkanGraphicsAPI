@@ -2,10 +2,12 @@
 
 namespace SolEngine::Rendering
 {
-    GenericRenderSystem::GenericRenderSystem(SolDevice& rSolDevice,
+    GenericRenderSystem::GenericRenderSystem(const std::string& workingDir,
+                                             SolDevice& rSolDevice,
                                              RenderSettings& rRenderSettings,
                                              const VkRenderPass renderPass)
-        : _rSolDevice(rSolDevice),
+        : _workingDir(workingDir),
+          _rSolDevice(rSolDevice),
           _rRenderSettings(rRenderSettings)
     {
         CreatePipelineLayout();
@@ -64,9 +66,12 @@ namespace SolEngine::Rendering
         pipelineConfigInfo.rasterizationStateCreateInfo.cullMode    = _rRenderSettings.cullMode;
         pipelineConfigInfo.rasterizationStateCreateInfo.polygonMode = _rRenderSettings.polygonMode;
 
+        const std::string vertShaderPath = _workingDir + "\\Shaders\\SimpleShader.vert.spv";
+        const std::string fragShaderPath = _workingDir + "\\Shaders\\SimpleShader.frag.spv";
+
         _pSolPipeline = std::make_unique<SolPipeline>(_rSolDevice,
-                                                      "Shaders/SimpleShader.vert.spv",
-                                                      "Shaders/SimpleShader.frag.spv",
+                                                      vertShaderPath,
+                                                      fragShaderPath,
                                                       pipelineConfigInfo);
     }
 }
