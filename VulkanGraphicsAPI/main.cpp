@@ -6,7 +6,7 @@ int main(size_t argc, char* argv[])
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "[13/04/22] Marching Cubes Cellular Automata",
+		.windowTitle	  = "Marching Cubes Cellular Automata [v1.1 External Settings Support]",
 		.windowDimensions = glm::uvec2(1280, 720),
 		.exeDirectory	  = path(argv[ARG_EXE_PATH]).parent_path()
 	};
