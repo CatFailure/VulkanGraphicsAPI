@@ -9,18 +9,20 @@ namespace SolEngine::System
 	public:
 		MarchingCubesSystem(SolDevice& rSolDevice, SolGrid& rSolGrid, DiagnosticData& rDiagnosticData);
 
-		const SolGameObject& GetGameObject()			  const { return _marchingCubesObject; }
-		size_t				 GetIsoValuesGeneratedCount() const { return _isoValuesGeneratedCount; }
+		SolGameObject& GetGameObject()					  { return _marchingCubesObject; }
+		size_t		   GetIsoValuesGeneratedCount() const { return _isoValuesGeneratedCount; }
 
 		void March();
+		void ResetVerticesContainerSize() { _vertices.clear(); }
 
 	private:
 		uint32_t  GetCubeIndex(const bool* pNodeStates);
-		void	  GetCubeIsoValues(bool* pOutCubeIsoValues, const bool* pGridCellStates, const uint32_t xIndex, 
-								   const uint32_t yIndex, const uint32_t zIndex, const glm::vec3& scaledGridDimensions);
+		void	  GetCubeIsoValues(bool* pOutCubeIsoValues, const bool* pGridCellStates, 
+								   const int xIndex, const int yIndex, const int zIndex, 
+								   const glm::vec3& scaledGridDimensions);
 
-		void	  CreateVertices(Cells& rNodes, const Index_t* pEdgeIndices, const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex);
-		glm::vec3 GetEdgeVertexPosition(Cells& rNodes, const uint32_t xIndex, const uint32_t yIndex, const uint32_t zIndex,
+		void	  CreateVertices(Cells& rNodes, const Index_t* pEdgeIndices, const int xIndex, const int yIndex, const int zIndex);
+		glm::vec3 GetEdgeVertexPosition(Cells& rNodes, const int xIndex, const int yIndex, const int zIndex,
 										const std::pair<Index_t, Index_t>& cornerIndices);
 		void UpdateGameObjectModel();
 
@@ -30,6 +32,7 @@ namespace SolEngine::System
 		SolGameObject	_marchingCubesObject;
 
 		size_t				_isoValuesGeneratedCount{ 0 };
-		std::vector<Vertex> _vertices;
+		size_t				_verticesInUseCount		{ 0U };
+		std::vector<Vertex> _vertices				{};
 	};
 }

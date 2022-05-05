@@ -1,23 +1,28 @@
 #pragma once
 namespace Utility
 {
+	/// <summary>
+	/// <para>Used to create Single Instances of an object.</para>
+	/// <para>https://stackoverflow.com/a/1008289</para>
+	/// </summary>
+	template<typename _TyInstance>
 	class Singleton
 	{
-	public:
-		Singleton(const Singleton &) = delete;
-		Singleton(Singleton &&) = delete;
-		
-		void operator=(const Singleton &) = delete;
-		void operator=(Singleton &&) = delete;
+	protected:
+		typedef Singleton<_TyInstance> SingletonObject_t;
 
-		static Singleton &GetInstance()
+	public:
+		Singleton(const SingletonObject_t&)	     = delete;
+		void operator=(const SingletonObject_t&) = delete;
+
+		static _TyInstance& GetInstance()
 		{
-			static Singleton instance;
+			static _TyInstance instance;
 
 			return instance;
 		}
 
-	private:
-		Singleton() {};
+	protected:
+		Singleton() = default;
 	};
 }

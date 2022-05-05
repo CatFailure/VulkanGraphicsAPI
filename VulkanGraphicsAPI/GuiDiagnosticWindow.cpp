@@ -6,7 +6,7 @@ namespace SolEngine::GUI
                                              const bool isActive, 
                                              const ImGuiWindowFlags windowFlags, 
                                              DiagnosticData &rDiagnosticData)
-        : IGuiWindow(windowTitle, 
+        : GuiWindowBase(windowTitle, 
                      isActive, 
                      windowFlags),
         _rDiagnosticData(_rRealtimeDiagnosticData),
@@ -39,9 +39,9 @@ namespace SolEngine::GUI
         ImGui::Text("Vert Count: %zu", _rDiagnosticData.vertexCount);
         ImGui::Text("Tri Count: %zu", _rDiagnosticData.triCount);
         ImGui::Text("In-use Memory (Bytes): %zu/%zu (%.3f%%)", 
-                    _rDiagnosticData.memoryUsedBytes, 
-                    _rDiagnosticData.memoryAllocatedBytes,
-                    _rDiagnosticData.MemoryUsedPercentage());
+                    _rDiagnosticData.GetTotalMemoryUsedBytes(), 
+                    _rDiagnosticData.GetTotalMemoryAllocatedBytes(),
+                    _rDiagnosticData.GetMemoryUsedPercentage());
 
         ImGui::End();
     }

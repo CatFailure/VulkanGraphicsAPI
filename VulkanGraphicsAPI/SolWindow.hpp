@@ -4,8 +4,10 @@
 #include "ApplicationData.hpp"
 #include "DebugHelpers.hpp"
 #include "IDisposable.hpp"
+#include "Cursor.hpp"
 
 using namespace SolEngine::Interface;
+using namespace SolEngine::Input;
 using namespace Utility;
 
 namespace SolEngine
@@ -28,6 +30,9 @@ namespace SolEngine
         virtual void Dispose() override;
     private:
         static void FramebufferResizeCallback(GLFWwindow* pWindow, const int width, const int height);
+        static void CursorPositionCallback(GLFWwindow* pWindow, const double xPos, const double yPos);
+        static void CursorEnterCallback(GLFWwindow* pWindow, const int entered);
+        static void MouseButtonCallback(GLFWwindow* pWindow, const int button, const int action, const int mods);
 
         void CreateGLFWWindow();
 

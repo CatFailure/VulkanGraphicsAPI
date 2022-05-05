@@ -2,12 +2,18 @@
 
 namespace SolEngine::GUI
 {
-	GuiWindowManager::GuiWindowManager(SolDevice &rSolDevice, 
-                                       const SolWindow &solWindow,                                
-                                       const SolRenderer &solRenderer, 
-                                       const VkDescriptorPool &descriptorPool)
+	GuiWindowManager::GuiWindowManager(SolDevice& rSolDevice, 
+                                       CameraSettings& rCameraSettings,
+                                       const SolWindow& solWindow,                                
+                                       const SolRenderer& solRenderer, 
+                                       const VkDescriptorPool& descriptorPool)
+        : _rCameraSettings(rCameraSettings)
 	{
-        InitialiseImGui(rSolDevice, solWindow, solRenderer, descriptorPool);
+        InitialiseImGui(rSolDevice, 
+                        solWindow, 
+                        solRenderer, 
+                        descriptorPool);
+
         InitialiseImGuiFont(rSolDevice);
 	}
 
@@ -26,9 +32,12 @@ namespace SolEngine::GUI
 
     void GuiWindowManager::Render(const VkCommandBuffer commandBuffer)
     {
-        for (std::unique_ptr<IGuiWindow> &rGuiWindow : _guiWindows)
+        _rCameraSettings.isMouseOverGUI = false;
+
+        for (std::unique_ptr<GuiWindowBase>& rpGuiWindow : _guiWindows)
         {
-            rGuiWindow->Render();
+            rpGuiWindow->Render();
+            _rCameraSettings.isMouseOverGUI |= rpGuiWindow->IsWindowHovered();
         }
 
         ImGui::Render();
@@ -37,24 +46,23 @@ namespace SolEngine::GUI
 
 	void GuiWindowManager::Update(const float deltaTime)
 	{
-        for (std::unique_ptr<IGuiWindow> &rGuiWindow : _guiWindows)
+        for (std::unique_ptr<GuiWindowBase>& rpGuiWindow : _guiWindows)
         {
-            rGuiWindow->Update(deltaTime);
+            rpGuiWindow->Update(deltaTime);
         }
 	}
 
-	void GuiWindowManager::InitialiseImGui(SolDevice &rSolDevice,
-                                           const SolWindow &solWindow, 
-                                           const SolRenderer &solRenderer, 
-                                           const VkDescriptorPool &descriptorPool)
+	void GuiWindowManager::InitialiseImGui(SolDevice& rSolDevice,
+                                           const SolWindow& solWindow, 
+                                           const SolRenderer& solRenderer, 
+                                           const VkDescriptorPool& descriptorPool)
 	{
         IMGUI_CHECKVERSION();
 
         ImGui::CreateContext();
-        ImGuiIO &rIo = ImGui::GetIO(); (void)rIo;
+        ImGuiIO& rIo = ImGui::GetIO(); (void)rIo;
 
         ImGui::StyleColorsDark();
-        //ImGui::StyleColorsClassic();
 
         ImGui_ImplGlfw_InitForVulkan(solWindow.GetWindow(), true);
 
@@ -78,7 +86,7 @@ namespace SolEngine::GUI
         ImGui_ImplVulkan_Init(&initInfo, solRenderer.GetSwapchainRenderPass());
 	}
 
-    void GuiWindowManager::InitialiseImGuiFont(SolDevice &rSolDevice)
+    void GuiWindowManager::InitialiseImGuiFont(SolDevice& rSolDevice)
     {
         const VkCommandBuffer commandBuffer = rSolDevice.BeginOneTimeCommandBuffer();
 

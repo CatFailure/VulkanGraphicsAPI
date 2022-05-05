@@ -1,3 +1,0 @@
-Debug Assert - line 43 of file E:\Users\camso\Source\Repos\VulkanGraphicsAPI\VulkanGraphicsAPI\main.cpp (function main)
-Debug Assert - line 43 of file E:\Users\camso\Source\Repos\VulkanGraphicsAPI\VulkanGraphicsAPI\main.cpp (function main)
-Debug Assert - line 43 of file E:\Users\camso\Source\Repos\VulkanGraphicsAPI\VulkanGraphicsAPI\main.cpp (function main)

@@ -13,15 +13,16 @@ namespace SolEngine::System
 
     void MarchingCubesSystem::March()
     {
-        // Delete all previous vertices
-        _vertices.clear();
+        // Start back at the beginning of the array
+        // To re-use vertices.
+        _verticesInUseCount = 0U;
 
         const glm::uvec3  gridDimensions  = _rSolGrid.GetDimensions();
         const bool*       pGridCellStates = _rSolGrid.cells.pCellStates;
 
-        _rSolGrid.TraverseAllGridCells([&](const uint32_t xIndex, 
-                                           const uint32_t yIndex, 
-                                           const uint32_t zIndex) 
+        _rSolGrid.TraverseAllGridCells([&](const int xIndex, 
+                                           const int yIndex, 
+                                           const int zIndex) 
                                        {
                                            bool cubeIsoValues[CUBE_VERTEX_COUNT]{ 0 };
 
@@ -53,14 +54,12 @@ namespace SolEngine::System
 
         UpdateGameObjectModel();
 
-        const size_t vertexCount = _vertices.size();
-        const size_t triCount    = vertexCount / 3U;
-
-        _rDiagnosticData.vertexCount = vertexCount;
-        _rDiagnosticData.triCount    = triCount;
-
-        //printf_s("Created: %zu Vertices\n", vertexCount);
-        //printf_s("Created: %zu Tris\n", triCount);
+        // Update Diagnostic Data
+        const size_t vertexSizeBytes = sizeof(Vertex);
+        _rDiagnosticData.vertexCount                  = _verticesInUseCount;
+        _rDiagnosticData.triCount                     = _verticesInUseCount / 3U;
+        _rDiagnosticData.verticesMemoryAllocatedBytes = _vertices.size() * vertexSizeBytes;
+        _rDiagnosticData.verticesMemoryUsedBytes      = _verticesInUseCount * vertexSizeBytes;
     }
 
     uint32_t MarchingCubesSystem::GetCubeIndex(const bool* pNodeStates)
@@ -82,15 +81,15 @@ namespace SolEngine::System
 
     void MarchingCubesSystem::GetCubeIsoValues(bool* pOutCubeIsoValues, 
                                                const bool* pGridCellStates, 
-                                               const uint32_t xIndex, 
-                                               const uint32_t yIndex, 
-                                               const uint32_t zIndex, 
+                                               const int xIndex, 
+                                               const int yIndex, 
+                                               const int zIndex, 
                                                const glm::vec3& gridDimensions)
     {
-        const uint32_t adjOffset = 1U;
-        const uint32_t adjXIndex = xIndex + adjOffset;
-        const uint32_t adjYIndex = yIndex + adjOffset;
-        const uint32_t adjZIndex = zIndex + adjOffset;
+        const int adjOffset = 1;
+        const int adjXIndex = xIndex + adjOffset;
+        const int adjYIndex = yIndex + adjOffset;
+        const int adjZIndex = zIndex + adjOffset;
 
         if (!(adjXIndex < gridDimensions.x) ||
             !(adjYIndex < gridDimensions.y) ||
@@ -113,10 +112,12 @@ namespace SolEngine::System
 
     void MarchingCubesSystem::CreateVertices(Cells& rNodes,
                                              const Index_t* pEdgeIndices, 
-                                             const uint32_t xIndex, 
-                                             const uint32_t yIndex, 
-                                             const uint32_t zIndex)
+                                             const int xIndex, 
+                                             const int yIndex, 
+                                             const int zIndex)
     {
+        const glm::uvec3 gridDimensions = _rSolGrid.GetDimensions();
+
         for (uint32_t i(0); i < TRI_TABLE_INDEX_COUNT; ++i)
         {
             if (pEdgeIndices[i] == -1)
@@ -129,35 +130,44 @@ namespace SolEngine::System
                 CornerIndicesFromEdgeIndex(pEdgeIndices[i]);
 
             // Find edge midpoint
-            const glm::vec3 vertex = GetEdgeVertexPosition(rNodes,
-                                                           xIndex,
-                                                           yIndex,
-                                                           zIndex, 
-                                                           cornerIndices);
+            const glm::vec3 vertexPosition = GetEdgeVertexPosition(rNodes,
+                                                                   xIndex,
+                                                                   yIndex,
+                                                                   zIndex, 
+                                                                   cornerIndices);
 
-            // Compact Voxel Array
-            // Push back vertex...
-            _vertices.push_back(
-                {
-                    vertex, 
-                    { 
-                        (float)xIndex / zIndex, 
-                        (float)yIndex / xIndex, 
-                        (float)zIndex / yIndex 
-                    } 
-                });
+            const glm::vec3 vertexColour
+            {
+                (float)xIndex / gridDimensions.x,  // r
+                (float)yIndex / gridDimensions.y,  // g
+                (float)zIndex / gridDimensions.z   // b
+            };
+
+            if (_verticesInUseCount < _vertices.size())
+            {
+                // Re-use initialised vertices...
+                _vertices.at(_verticesInUseCount).position = vertexPosition;
+                _vertices.at(_verticesInUseCount).colour   = vertexColour;
+            }
+            else
+            {
+                // Expand storage if necessary...
+                _vertices.push_back(Vertex{ vertexPosition, vertexColour });
+            }
+
+            ++_verticesInUseCount;
         }
     }
 
     glm::vec3 MarchingCubesSystem::GetEdgeVertexPosition(Cells& rNodes, 
-                                                         const uint32_t xIndex,
-                                                         const uint32_t yIndex, 
-                                                         const uint32_t zIndex, 
+                                                         const int xIndex,
+                                                         const int yIndex, 
+                                                         const int zIndex, 
                                                          const std::pair<Index_t, Index_t>& cornerIndices)
     {
-        const uint32_t xRowWidth = xIndex * CUBE_VERTEX_COUNT;
-        const uint32_t yRowWidth = yIndex * CUBE_VERTEX_COUNT;
-        const uint32_t zRowWidth = zIndex * CUBE_VERTEX_COUNT;
+        const int xRowWidth = xIndex * CUBE_VERTEX_COUNT;
+        const int yRowWidth = yIndex * CUBE_VERTEX_COUNT;
+        const int zRowWidth = zIndex * CUBE_VERTEX_COUNT;
 
         const int* pXVertices = &rNodes.pXVertices[xRowWidth];
         const int* pYVertices = &rNodes.pYVertices[yRowWidth];
@@ -176,22 +186,22 @@ namespace SolEngine::System
     void MarchingCubesSystem::UpdateGameObjectModel()
     {
         // Any vertices to work with?
-        if (_vertices.empty())
+        if (_verticesInUseCount == 0U)
         {
             return;
         }
 
-        std::shared_ptr<SolModel> marchingCubeModel = 
+        std::shared_ptr<SolModel> pMarchingCubeModel = 
             std::make_shared<SolModel>(_rSolDevice, 
                                        _vertices.data(), 
-                                       (uint32_t)_vertices.size());
+                                       (uint32_t)_verticesInUseCount);
 
         // Any model to work with?
-        if (marchingCubeModel == nullptr)
+        if (pMarchingCubeModel == nullptr)
         {
             return;
         }
 
-        _marchingCubesObject.SetModel(marchingCubeModel);
+        _marchingCubesObject.SetModel(pMarchingCubeModel);
     }
 }

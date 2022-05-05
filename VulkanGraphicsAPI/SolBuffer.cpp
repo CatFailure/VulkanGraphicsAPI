@@ -2,8 +2,8 @@
 
 namespace SolEngine
 {
-    SolBuffer::SolBuffer(SolDevice &rDevice, 
-                         const VkDeviceSize &instanceSize,
+    SolBuffer::SolBuffer(SolDevice& rDevice, 
+                         const VkDeviceSize& instanceSize,
                          const uint32_t instanceCount, 
                          const VkBufferUsageFlags usageFlags, 
                          const VkMemoryPropertyFlags memPropertyFlags, 
@@ -53,7 +53,7 @@ namespace SolEngine
         _pMappedData = nullptr;
     }
 
-    void SolBuffer::WriteToBuffer(void *pData, 
+    void SolBuffer::WriteToBuffer(void* pData, 
                                   const VkDeviceSize size, 
                                   const VkDeviceSize offset) const
     {
@@ -64,7 +64,7 @@ namespace SolEngine
             return;
         }
 
-        char *pMemOffset = (char *)_pMappedData;
+        char* pMemOffset = (char*)_pMappedData;
 
         pMemOffset += offset;
 
@@ -113,7 +113,7 @@ namespace SolEngine
                                               &mappedMemRange);
     }
 
-    void SolBuffer::WriteToIndex(void *pData, const size_t index) const
+    void SolBuffer::WriteToIndex(void* pData, const size_t index) const
     {
         WriteToBuffer(pData, _instanceSize, index * _alignmentSize);
     }

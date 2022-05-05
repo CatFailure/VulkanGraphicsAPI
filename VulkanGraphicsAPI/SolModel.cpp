@@ -2,10 +2,10 @@
 
 namespace SolEngine
 {
-    SolModel::SolModel(SolDevice &rSolDevice, 
-                       const Vertex *pVertices, 
+    SolModel::SolModel(SolDevice& rSolDevice, 
+                       const Vertex* pVertices, 
                        const uint32_t vertexCount, 
-                       const UIndex_t *pIndices, 
+                       const UIndex_t* pIndices, 
                        const uint32_t indexCount)
         : _rSolDevice(rSolDevice)
     {
@@ -45,7 +45,7 @@ namespace SolEngine
         if (!_hasIndexBuffer)
         {
             vkCmdDraw(commandBuffer, 
-                      _vertexCount,
+                      _verticesInUseCount,
                       _instanceCount, 
                       0,
                       0);
@@ -69,9 +69,9 @@ namespace SolEngine
     void SolModel::Dispose()
     {}
 
-    void SolModel::CreateVertexBuffers(const Vertex *pVertices, const uint32_t vertexCount)
+    void SolModel::CreateVertexBuffers(const Vertex* pVertices, const uint32_t vertexCount)
     {
-        _vertexCount = vertexCount;
+        _verticesInUseCount = vertexCount;
 
         const size_t vertexSize = sizeof(Vertex);
         const VkDeviceSize bufferSize = vertexSize * vertexCount;
@@ -118,7 +118,7 @@ namespace SolEngine
                                bufferSize);
     }
 
-    void SolModel::CreateIndexBuffer(const UIndex_t *pIndices, const uint32_t indexCount)
+    void SolModel::CreateIndexBuffer(const UIndex_t* pIndices, const uint32_t indexCount)
     {
         if (pIndices == nullptr)
         {
@@ -157,7 +157,7 @@ namespace SolEngine
                                 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
         stagingBuffer.Map();
-        stagingBuffer.WriteToBuffer((void *)pIndices);
+        stagingBuffer.WriteToBuffer((void*)pIndices);
 
         // Create buffer in Device Local Memory
         _pIndexBuffer = std::make_unique<SolBuffer>(_rSolDevice,

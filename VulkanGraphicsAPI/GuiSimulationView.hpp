@@ -17,7 +17,6 @@ namespace SolEngine::GUI::View
 
 		void RenderViewContents();
 
-		bool IsSimulationPlaying() const { return _rSimulationSettings.state == SimulationState::PLAY; }
 		void SetSimulationState(const SimulationState state);
 
 	private:
@@ -29,7 +28,7 @@ namespace SolEngine::GUI::View
 		static constexpr float SIMULATION_SPEED_SLIDER_FAST_STEP{ 0.1f };
 		static constexpr int   SIMULATION_SEED_INPUT_STEP		{ 1 };
 		static constexpr int   SIMULATION_SEED_INPUT_FAST_STEP  { 100 };
-		static constexpr float SIMULATION_RESET_SEED_OFFSET	    { 263.f };	// Makes Reset Buttons line up - Since the GUI is auto-scaled this will never change
+		static constexpr float RESET_SEED_BUTTON_PADDING	    { 263.f };	// Makes Reset Buttons line up - Since the GUI is auto-scaled this will never change
 
 		static constexpr const char* RESET_SEED_BUTTON_ID {"Label##ResetSimulationSeed"};
 		static constexpr const char* RESET_SPEED_BUTTON_ID{"Label##ResetSimulationSpeed"};
@@ -51,8 +50,8 @@ namespace SolEngine::GUI::View
 
 		void OnSimulationStateToggled();
 
-		SimulationSettings  _defaultSimulationSettings{};
-		SimulationSettings& _rSimulationSettings;
+		const SimulationSettings _defaultSimulationSettings{};
+		SimulationSettings&		 _rSimulationSettings;
 
 		float		_simulationSpeed	  { 0.f };
 		int			_simulationSeed		  { 0 };

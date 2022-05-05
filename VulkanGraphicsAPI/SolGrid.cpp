@@ -7,6 +7,9 @@ namespace SolEngine
         : _rDiagnosticData(rDiagnosticData),
           _rGridSettings(rGridData)
     {
+        // Allocate the cells
+        _rDiagnosticData.gridMemoryAllocatedBytes = cells.AllocateDataArrays();
+
         Initialise();
     }
 
@@ -40,7 +43,6 @@ namespace SolEngine
 
     void SolGrid::TraverseAllGridCells(const TraverseCubesCallback_t& callback)
     {
-        //const float gridStep = _rGridSettings.step;
         const glm::uvec3 gridDimensions = GetDimensions();
 
         for (uint32_t z(0U); z < gridDimensions.z; ++z)
@@ -53,23 +55,20 @@ namespace SolEngine
                 }
             }
         }
-
     }
 
     void SolGrid::InitialiseNodes()
     {
         const size_t nodeCount = _rGridSettings.GetNodeCount();
-        size_t bytesInUse(0);
+        size_t nodesBytesInUse(0);
 
-        _rDiagnosticData.memoryAllocatedBytes = cells.AllocateDataArrays();
+        nodesBytesInUse += GenerateVertices<Axis::X>(cells.pXVertices, _minBounds.x, _maxBounds.x);
+        nodesBytesInUse += GenerateVertices<Axis::Y>(cells.pYVertices, _minBounds.y, _maxBounds.y);
+        nodesBytesInUse += GenerateVertices<Axis::Z>(cells.pZVertices, _minBounds.z, _maxBounds.z);
+        nodesBytesInUse += DefaultLiveNeighbours(cells.pLiveNeighbourCounts, nodeCount);
+        nodesBytesInUse += GenerateRandomStates(cells.pCellStates, nodeCount);
 
-        bytesInUse += GenerateVertices<Axis::X>(cells.pXVertices, _minBounds.x, _maxBounds.x);
-        bytesInUse += GenerateVertices<Axis::Y>(cells.pYVertices, _minBounds.y, _maxBounds.y);
-        bytesInUse += GenerateVertices<Axis::Z>(cells.pZVertices, _minBounds.z, _maxBounds.z);
-        bytesInUse += DefaultLiveNeighbours(cells.pLiveNeighbourCounts, nodeCount);
-        bytesInUse += GenerateRandomStates(cells.pCellStates, nodeCount);
-
-        _rDiagnosticData.memoryUsedBytes = bytesInUse;
+        _rDiagnosticData.gridMemoryUsedBytes = nodesBytesInUse;
     }
 
     void SolGrid::SetBoundsWithDimensions(const glm::uvec3& dimensions)

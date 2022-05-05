@@ -8,7 +8,7 @@ namespace SolEngine
     class SolBuffer : private IDisposable
     {
     public:
-        SolBuffer(SolDevice &rDevice, const VkDeviceSize &instanceSize, const uint32_t instanceCount, 
+        SolBuffer(SolDevice& rDevice, const VkDeviceSize& instanceSize, const uint32_t instanceCount, 
                   const VkBufferUsageFlags usageFlags, const VkMemoryPropertyFlags memPropertyFlags, const VkDeviceSize minOffsetAlignment = 1);
 
         ~SolBuffer();
@@ -17,13 +17,13 @@ namespace SolEngine
         void Unmap();
 
         // Buffer
-        void				   WriteToBuffer(void *pData, const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0) const;
+        void				   WriteToBuffer(void* pData, const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0) const;
         VkResult			   FlushBuffer(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0) const;
         VkDescriptorBufferInfo DescriptorBufferInfo(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0) const;
         VkResult			   InvalidateBuffer(const VkDeviceSize size = VK_WHOLE_SIZE, const VkDeviceSize offset = 0) const;
 
         // Index
-        void                   WriteToIndex(void *pData, const size_t index) const;
+        void                   WriteToIndex(void* pData, const size_t index) const;
         VkResult               FlushIndex(const size_t index) const;
         VkDescriptorBufferInfo DescriptorIndexInfo(const size_t index) const;
         VkResult               InvalidateIndex(const size_t index) const;
@@ -49,8 +49,8 @@ namespace SolEngine
         // Inherited via IDisposable
         virtual void Dispose() override;
 
-        SolDevice &    _rDevice;
-        void *         _pMappedData  { nullptr };
+        SolDevice&     _rDevice;
+        void*          _pMappedData  { nullptr };
         VkBuffer       _buffer       { VK_NULL_HANDLE };
         VkDeviceMemory _bufferMemory { VK_NULL_HANDLE };
 

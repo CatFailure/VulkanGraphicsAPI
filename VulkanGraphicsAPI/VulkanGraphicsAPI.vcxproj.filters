@@ -64,6 +64,9 @@
     <Filter Include="SolEngine\GUI\View">
       <UniqueIdentifier>{fce4f4dc-75cf-4031-bf3e-0c906ef18f97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\Input">
+      <UniqueIdentifier>{cdf4c170-75b4-4530-808a-df1148e0c5d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -168,6 +171,15 @@
     <ClCompile Include="GuiGameOfLifeView.cpp">
       <Filter>SolEngine\GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="GuiGridView.cpp">
+      <Filter>SolEngine\GUI\View</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraController.cpp">
+      <Filter>SolEngine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="GuiRenderSystemView.cpp">
+      <Filter>SolEngine\GUI\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -242,9 +254,6 @@
     <ClInclude Include="Application.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CameraProjectionInfo.hpp">
-      <Filter>SolEngine\Data</Filter>
-    </ClInclude>
     <ClInclude Include="SolBuffer.hpp">
       <Filter>SolEngine</Filter>
     </ClInclude>
@@ -283,9 +292,6 @@
     </ClInclude>
     <ClInclude Include="GuiDiagnosticWindow.hpp">
       <Filter>SolEngine\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="IGuiWindow.hpp">
-      <Filter>SolEngine\Interface</Filter>
     </ClInclude>
     <ClInclude Include="GuiWindowManager.hpp">
       <Filter>SolEngine\GUI</Filter>
@@ -349,6 +355,30 @@
     </ClInclude>
     <ClInclude Include="NeighbourhoodType.hpp">
       <Filter>SolEngine\Enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiGridView.hpp">
+      <Filter>SolEngine\GUI\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.hpp">
+      <Filter>SolEngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseButton.hpp">
+      <Filter>SolEngine\Enumeration</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.hpp">
+      <Filter>SolEngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraSettings.hpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSettings.hpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiWindowBase.hpp">
+      <Filter>SolEngine\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiRenderSystemView.hpp">
+      <Filter>SolEngine\GUI\View</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

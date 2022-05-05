@@ -3,8 +3,10 @@
 namespace SolEngine::Rendering
 {
     SimpleRenderSystem::SimpleRenderSystem(SolDevice& rSolDevice, 
+                                           RenderSettings& rRenderSettings,
                                            VkRenderPass renderPass)
         : GenericRenderSystem(rSolDevice, 
+                              rRenderSettings,
                               renderPass)
     {}
 

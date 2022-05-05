@@ -4,20 +4,20 @@ namespace SolEngine::Data
 {
 	struct DiagnosticData
 	{
-		float MemoryUsedPercentage() const 
-		{ 
-			const float returnVal = ((float)memoryUsedBytes / memoryAllocatedBytes) * 100.f; 
-
-			return returnVal;
-		}
+		size_t GetTotalMemoryAllocatedBytes() const { return gridMemoryAllocatedBytes + verticesMemoryAllocatedBytes; }
+		size_t GetTotalMemoryUsedBytes()	  const { return gridMemoryUsedBytes + verticesMemoryUsedBytes; }
+		float  GetMemoryUsedPercentage()      const { return ((float)GetTotalMemoryUsedBytes() / GetTotalMemoryAllocatedBytes()) * 100.f; }
 
 		// Frame time data
 		float deltaTimeSeconds{ 0.f };
 		float totalTimeSeconds{ 0.f };
 
 		// Memory data
-		size_t memoryAllocatedBytes{ 0U };
-		size_t memoryUsedBytes	   { 0U };
+		size_t gridMemoryAllocatedBytes	   { 0U };
+		size_t gridMemoryUsedBytes		   { 0U };
+
+		size_t verticesMemoryAllocatedBytes{ 0U };
+		size_t verticesMemoryUsedBytes	   { 0U };
 
 		// Geometry data
 		size_t vertexCount{ 0U };

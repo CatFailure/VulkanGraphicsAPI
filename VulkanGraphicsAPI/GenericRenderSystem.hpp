@@ -4,8 +4,10 @@
 #include "SolPipeline.hpp"
 #include "SolCamera.hpp"
 #include "SimplePushConstantData.hpp"
+#include "RenderSettings.hpp"
 
 using namespace SolEngine::Data;
+using namespace SolEngine::Settings;
 
 namespace SolEngine::Rendering
 {
@@ -13,7 +15,7 @@ namespace SolEngine::Rendering
 	{
 	public:
 		GenericRenderSystem() = delete;
-		GenericRenderSystem(SolDevice &rSolDevice, const VkRenderPass renderPass);
+		GenericRenderSystem(SolDevice& rSolDevice, RenderSettings& rRenderSettings, const VkRenderPass renderPass);
 		virtual ~GenericRenderSystem();
 
 	protected:
@@ -23,7 +25,8 @@ namespace SolEngine::Rendering
 		virtual void CreatePipelineLayout();
 		virtual void CreatePipeline(const VkRenderPass renderPass);
 
-		SolDevice                   &_rSolDevice;
+		SolDevice&					 _rSolDevice;
+		RenderSettings&				 _rRenderSettings;
 		std::unique_ptr<SolPipeline> _pSolPipeline{ nullptr };
 		VkPipelineLayout             _pipelineLayout;
 	};
