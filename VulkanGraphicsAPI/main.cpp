@@ -1,4 +1,6 @@
 #include "Application.hpp"
+#define ARG_EXE_PATH 0
+#define ARG_DRAG_DROP_FILE_PATH 1
 
 int main(size_t argc, char* argv[])
 {
@@ -6,7 +8,7 @@ int main(size_t argc, char* argv[])
 	{
 		.windowTitle	  = "[13/04/22] Marching Cubes Cellular Automata",
 		.windowDimensions = glm::uvec2(1280, 720),
-		.exeDirectory	  = path(argv[0]).parent_path()
+		.exeDirectory	  = path(argv[ARG_EXE_PATH]).parent_path()
 	};
 
 	DiagnosticData diagnosticData{};
@@ -15,7 +17,7 @@ int main(size_t argc, char* argv[])
 	// Are any settings being passed by cmd?
 	if (argc == MAX_CMD_ARG_COUNT)
 	{
-		const std::string settingsFilepath = argv[1];
+		const std::string settingsFilepath = argv[ARG_DRAG_DROP_FILE_PATH];
 
 		if (settings.DeserializeFromFile(settingsFilepath))
 		{
