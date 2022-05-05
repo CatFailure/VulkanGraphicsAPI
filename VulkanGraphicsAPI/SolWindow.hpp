@@ -33,6 +33,7 @@ namespace SolEngine
         static void CursorPositionCallback(GLFWwindow* pWindow, const double xPos, const double yPos);
         static void CursorEnterCallback(GLFWwindow* pWindow, const int entered);
         static void MouseButtonCallback(GLFWwindow* pWindow, const int button, const int action, const int mods);
+        static void FileDroppedCallback(GLFWwindow* pWindow, const int count, const char* filepaths[]);
 
         void CreateGLFWWindow();
 

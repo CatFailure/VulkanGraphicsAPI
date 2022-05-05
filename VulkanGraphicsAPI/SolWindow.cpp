@@ -91,6 +91,9 @@ namespace SolEngine
         }
     }
 
+    void SolWindow::FileDroppedCallback(GLFWwindow* pWindow, const int count, const char* filepaths[])
+    {}
+
     void SolWindow::CreateGLFWWindow()
     {
         glfwInit();                                    // Initialise GLFW Library
@@ -108,5 +111,6 @@ namespace SolEngine
         glfwSetCursorPosCallback(_pWindow, CursorPositionCallback);             // Bind Mouse Position Callback
         glfwSetCursorEnterCallback(_pWindow, CursorEnterCallback);              // Bind Mouse Enter Callback
         glfwSetMouseButtonCallback(_pWindow, MouseButtonCallback);              // Bind Mouse Button Callback
+        glfwSetDropCallback(_pWindow, FileDroppedCallback);                     // Bind File Dropped Callback
     }
 }
