@@ -2,10 +2,12 @@
 
 namespace SolEngine::Rendering
 {
-    SimpleRenderSystem::SimpleRenderSystem(SolDevice& rSolDevice, 
+    SimpleRenderSystem::SimpleRenderSystem(const std::string& workingDir,
+                                           SolDevice& rSolDevice, 
                                            RenderSettings& rRenderSettings,
                                            VkRenderPass renderPass)
-        : GenericRenderSystem(rSolDevice, 
+        : GenericRenderSystem(workingDir,
+                              rSolDevice, 
                               rRenderSettings,
                               renderPass)
     {}

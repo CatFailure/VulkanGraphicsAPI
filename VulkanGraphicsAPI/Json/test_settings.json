@@ -4,9 +4,9 @@
         "far": 1000,
         "field_of_view": 50,
         "position": {
-            "x": 0,
-            "y": 0,
-            "z": 0
+            "x": 0.0,
+            "y": 0.0,
+            "z": 32.0
         }
     },
     "game_of_life_settings": {
@@ -17,9 +17,9 @@
     },
     "grid_settings": {
         "dimensions": {
-            "x": 32,
-            "y": 32,
-            "z": 32
+            "x": 16,
+            "y": 16,
+            "z": 16
         }
     },
     "render_settings": {

@@ -5,7 +5,8 @@ int main(size_t argc, char* argv[])
 	const ApplicationData appData
 	{
 		.windowTitle	  = "[13/04/22] Marching Cubes Cellular Automata",
-		.windowDimensions = glm::uvec2(1280, 720)
+		.windowDimensions = glm::uvec2(1280, 720),
+		.exeDirectory	  = path(argv[0]).parent_path()
 	};
 
 	DiagnosticData diagnosticData{};
@@ -16,7 +17,12 @@ int main(size_t argc, char* argv[])
 	{
 		const std::string settingsFilepath = argv[1];
 
-		if (!settings.DeserializeFromFile(settingsFilepath))
+		if (settings.DeserializeFromFile(settingsFilepath))
+		{
+			printf_s("%s - loaded successfully!\n", 
+					 settingsFilepath.c_str());
+		}
+		else
 		{
 			printf_s("One (or More) Settings failed to load from: %s!\n", 
 					 settingsFilepath.c_str());
@@ -24,7 +30,7 @@ int main(size_t argc, char* argv[])
 	}
 	else if (argc > MAX_CMD_ARG_COUNT)
 	{
-		printf_s("Too many Arguments passed - Possible multiple files uploaded (This is not allowed).\nNo Settings Loaded.");
+		printf_s("Too many Arguments - Possible multiple files uploaded (This is not allowed).\nNo Settings Loaded.");
 	}
 
 #ifdef LAPTOP_BUILD

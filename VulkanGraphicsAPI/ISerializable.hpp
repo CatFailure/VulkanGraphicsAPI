@@ -27,8 +27,7 @@ namespace SolEngine::Interface
                 // Uh-oh!
                 const std::string errMsg{ "Failed to open file." + filepath };
 
-                DBG_ASSERT_MSG(false, 
-                               errMsg.c_str());
+                printf_s("Failed to open file: %s", errMsg.c_str());
 
                 return false;
             }

@@ -59,7 +59,7 @@ namespace SolEngine::Settings
         float     near              { 0.01f };
         float     far               { 1000.f };
         float     fieldOfViewDegrees{ 50.f };
-        glm::vec3 position          { 0.f };
+        glm::vec3 position          { 0.f, 0.f, 55.f };
 
     private:
         static constexpr const char* PROP_NEAR           { "near" };
