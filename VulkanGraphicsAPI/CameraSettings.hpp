@@ -1,10 +1,11 @@
 #pragma once
-#undef near
-#undef far
 #include <glm/glm.hpp>
 
 #include "ISerializable.hpp"
 #include "Helpers.hpp"
+
+#undef near
+#undef far
 
 using namespace Utility;
 using namespace SolEngine::Interface;

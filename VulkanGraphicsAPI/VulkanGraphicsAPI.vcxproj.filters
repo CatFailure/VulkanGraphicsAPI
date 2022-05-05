@@ -180,6 +180,9 @@
     <ClCompile Include="GuiRenderSystemView.cpp">
       <Filter>SolEngine\GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="SettingsFileLoader.cpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugHelpers.hpp">
@@ -384,6 +387,9 @@
       <Filter>SolEngine\Interface</Filter>
     </ClInclude>
     <ClInclude Include="SettingsBundle.hpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsFileLoader.hpp">
       <Filter>SolEngine\Settings</Filter>
     </ClInclude>
   </ItemGroup>

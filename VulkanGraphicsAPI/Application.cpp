@@ -3,36 +3,17 @@
 Application::Application(const ApplicationData& appData, 
                          DiagnosticData& rDiagnosticData, 
                          SettingsBundle& rSettings)
-    : Application(appData, 
-                  rDiagnosticData,
-                  rSettings.renderSettings,
-                  rSettings.cameraSettings,
-                  rSettings.gridSettings,
-                  rSettings.gameOfLifeSettings,
-                  rSettings.simulationSettings)
-{}
-
-Application::Application(const ApplicationData& appData,
-                         DiagnosticData& rDiagnosticData,
-                         RenderSettings& rRenderSettings,
-                         CameraSettings& rCameraSettings,
-                         GridSettings& rGridSettings,
-                         GameOfLifeSettings& rGameOfLifeSettings,
-                         SimulationSettings& rSimulationSettings)
-    : _solRenderer(_appData,
+    : _solRenderer(_appData, 
                    _solWindow,
                    _solDevice),
-    _solDevice(_solWindow,
-               _appData),
-    _solWindow(_appData.windowTitle,
-               _appData.windowDimensions),
-    _appData(appData),
-    _rDiagnosticData(rDiagnosticData),
-    _rRenderSettings(rRenderSettings),
-    _rGridSettings(rGridSettings),
-    _rGameOfLifeSettings(rGameOfLifeSettings),
-    _rSimulationSettings(rSimulationSettings),
-    _rCameraSettings(rCameraSettings)
+      _solDevice(_solWindow,
+                 _appData),
+      _solWindow(_appData.windowTitle,
+                 _appData.windowDimensions,
+                 _rSettings),
+      _appData(appData),
+      _rDiagnosticData(rDiagnosticData),
+      _rSettings(rSettings)
 {
     CreateDescriptorPool();
 
@@ -111,16 +92,17 @@ void Application::Update(const float deltaTime)
 
 void Application::Render()
 {
-    const VkCommandBuffer commandBuffer = _solRenderer.BeginFrame();
+    const VkCommandBuffer commandBuffer   = _solRenderer.BeginFrame();
+    RenderSettings&       rRenderSettings = _rSettings.renderSettings;
 
-    if (_rRenderSettings.isRendererOutOfDate)
+    if (rRenderSettings.isRendererOutOfDate)
     {
         _pRenderSystem = std::make_unique<SimpleRenderSystem>(_appData.exeDirectory.string(),
                                                               _solDevice, 
-                                                              _rRenderSettings, 
+                                                              rRenderSettings, 
                                                               _solRenderer.GetSwapchainRenderPass());
 
-        _rRenderSettings.isRendererOutOfDate = false;
+        rRenderSettings.isRendererOutOfDate = false;
     }
 
     if (commandBuffer == nullptr)
@@ -160,20 +142,20 @@ void Application::CreateDescriptorPool()
 
 void Application::SetupRandomNumberGenerator()
 {
-    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+    RandomNumberGenerator::SetSeed(_rSettings.simulationSettings.seed);
 }
 
 void Application::SetupCamera()
 {
     _pSolCamera = std::make_unique<SolCamera>(_solRenderer,
-                                              _rCameraSettings);
+                                              _rSettings.cameraSettings);
 
     _pSolCamera->LookAt(_pSolCamera->GetPosition() - VEC3_FORWARD);    // Look forwards
 }
 
 void Application::SetupGrid()
 {
-    _pSolGrid = std::make_unique<SolGrid>(_rGridSettings, 
+    _pSolGrid = std::make_unique<SolGrid>(_rSettings.gridSettings, 
                                           _rDiagnosticData);
 }
 
@@ -189,8 +171,8 @@ void Application::SetupMarchingCubesSystem()
 void Application::SetupGameOfLifeSystem()
 {
     _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
-                                                            _rGameOfLifeSettings,
-                                                            _rSimulationSettings);
+                                                            _rSettings.gameOfLifeSettings,
+                                                            _rSettings.simulationSettings);
 
     _pGameOfLifeSystem->CheckAllCellNeighbours();
 }
@@ -203,27 +185,35 @@ void Application::SetupEventCallbacks()
                           _pMarchingCubesSystem->March(); 
                       });
 
-    _rSimulationSettings.onSimulationSpeedChangedEvent
+    _rSettings.simulationSettings.onSimulationSpeedChangedEvent
                         .AddListener([this](const float speed) 
                         {
                             // Force update the next generation delay to the new value
                             _pGameOfLifeSystem->ResetNextGenerationDelayRemaining();
                         });
 
-    _rGameOfLifeSettings.onNeighbourhoodTypeChangedEvent
+    _rSettings.gameOfLifeSettings.onNeighbourhoodTypeChangedEvent
                         .AddListener([this]() 
                         {
                             // Re-check neighbours in accordance
                             // to new neighbourhood ruleset
                             _pGameOfLifeSystem->CheckAllCellNeighbours();
                         });
+
+    SettingsFileLoader::GetInstance().onFileLoadedEvent
+                                     .AddListener([this](const SettingsBundle& settings)
+                                     {
+                                          // Queue up a simulation reset to reflect settings file changes
+                                          _rSettings.simulationSettings.isSimulationResetRequested = true;
+                                          _rSettings.gridSettings.isGridDimensionsChangeRequested = true;
+                                     });
 }
 
 void Application::HandleUserInput(Transform& rGameObjectTransform)
 {
     Cursor& rCursor = Cursor::GetInstance();
 
-    if (_rCameraSettings.isMouseOverGUI)
+    if (_rSettings.cameraSettings.isMouseOverGUI)
     {
         rCursor.UpdateLastMousePosition();
 
@@ -248,33 +238,37 @@ void Application::HandleUserInput(Transform& rGameObjectTransform)
 
 void Application::CheckForSimulationResetFlag()
 {
-    if (!_rSimulationSettings.isSimulationResetRequested)
+    SimulationSettings& rSimulationSettings = _rSettings.simulationSettings;
+
+    if (!rSimulationSettings.isSimulationResetRequested)
     {
         return;
     }
 
     // Reset the seed to generate new values 
     // OR keep same values for repeatable simulations
-    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+    RandomNumberGenerator::SetSeed(rSimulationSettings.seed);
 
     _pSolGrid->Reset();                             // Reset the grid nodes and re-generate initial node states
     _pMarchingCubesSystem->March();                 // Create the reset vertices
     _pGameOfLifeSystem->CheckAllCellNeighbours();   // Retrieve the next generation state
 
     // Finished!
-    _rSimulationSettings.isSimulationResetRequested = false;
+    rSimulationSettings.isSimulationResetRequested = false;
 }
 
 void Application::CheckForGridDimenionsChangedFlag()
 {
-    if (!_rGridSettings.isGridDimensionsChangeRequested)
+    GridSettings& rGridSettings = _rSettings.gridSettings;
+
+    if (!rGridSettings.isGridDimensionsChangeRequested)
     {
         return;
     }
 
     // Reset the seed to generate new values 
     // OR keep same values for repeatable simulations
-    RandomNumberGenerator::SetSeed(_rSimulationSettings.seed);
+    RandomNumberGenerator::SetSeed(_rSettings.simulationSettings.seed);
 
     _pSolGrid->Initialise();                                // Re-initialise the Grid
     _pMarchingCubesSystem->ResetVerticesContainerSize();    // Shrink vertex container to free up wasted memory
@@ -282,7 +276,7 @@ void Application::CheckForGridDimenionsChangedFlag()
     _pGameOfLifeSystem->CheckAllCellNeighbours();           // Retrieve the next generation state
 
     // Finished!
-    _rGridSettings.isGridDimensionsChangeRequested = false;
+    rGridSettings.isGridDimensionsChangeRequested = false;
 }
 
 #ifndef DISABLE_IM_GUI
