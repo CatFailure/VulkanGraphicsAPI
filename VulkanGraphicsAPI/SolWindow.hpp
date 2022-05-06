@@ -14,6 +14,7 @@
 using namespace SolEngine::Data;
 using namespace SolEngine::Interface;
 using namespace SolEngine::Input;
+using namespace SolEngine::IO;
 using namespace SolEngine::Settings;
 using namespace Utility;
 

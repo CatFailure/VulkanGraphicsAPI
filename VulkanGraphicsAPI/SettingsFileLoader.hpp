@@ -6,8 +6,9 @@
 
 using namespace Utility;
 using namespace SolEngine::Events;
+using namespace SolEngine::Settings;
 
-namespace SolEngine::Settings
+namespace SolEngine::IO
 {
     struct SettingsFileLoader : public Singleton<SettingsFileLoader>
     {

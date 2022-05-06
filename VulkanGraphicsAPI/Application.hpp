@@ -29,6 +29,7 @@ public:
 private:
     static constexpr float CAMERA_MOVE_SPEED{ 1.5f };
     static constexpr float GAME_OBJECT_ROT_SPEED{ glm::radians(.5f) };
+
     // Inherited via IMonoBehaviour
     virtual void Update(const float deltaTime) override;
     void Render();

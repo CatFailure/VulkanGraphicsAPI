@@ -1,6 +1,6 @@
 #include "SettingsFileLoader.hpp"
 
-namespace SolEngine::Settings
+namespace SolEngine::IO
 {
     void SettingsFileLoader::LoadSettingsFromFile(const char* filepath,
                                                   SettingsBundle* pOutSettings)
