@@ -17,18 +17,17 @@ namespace SolEngine::Data
 	static constexpr glm::vec3 VEC3_UP     { 0.f, -1.f, 0.f };
 	static constexpr glm::vec3 VEC3_FORWARD{ 0.f, 0.f, 1.f };
 
-    static constexpr float    SPHERE_RADIUS        { 5.f };
-    static constexpr uint32_t CUBE_VERTEX_COUNT    { 8U };
+    static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
 
     static constexpr uint32_t CELL_NEIGHBOURS_COUNT_MOORE      { 26U };
     static constexpr uint32_t CELL_NEIGHBOURS_COUNT_VON_NEUMANN{ 6U };
 
-    static constexpr uint32_t MIN_CELLS_PER_AXIS_COUNT          { 2U };
-    static constexpr uint32_t MAX_CELLS_PER_AXIS_COUNT          { 1 << 7 };   // Currently can only go upto 9 (134,217,728 Cubes)
-    static constexpr uint32_t MAX_CELLS_COUNT                   { MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT };
-    static constexpr uint32_t MAX_CELLS_VERTEX_COUNT            { MAX_CELLS_COUNT * CUBE_VERTEX_COUNT };
+    static constexpr uint32_t MIN_CELLS_PER_AXIS_COUNT{ 2U };
+    static constexpr uint32_t MAX_CELLS_PER_AXIS_COUNT{ 1 << 7 };   // Currently can only go upto 9 (134,217,728 Cubes)
+    static constexpr uint32_t MAX_CELLS_COUNT         { MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT * MAX_CELLS_PER_AXIS_COUNT };
+    static constexpr uint32_t MAX_CELLS_VERTEX_COUNT  { MAX_CELLS_COUNT * CUBE_VERTEX_COUNT };
 
-    static constexpr size_t TRI_TABLE_COUNT{ 256 };
+    static constexpr size_t TRI_TABLE_COUNT      { 256 };
     static constexpr size_t TRI_TABLE_INDEX_COUNT{ 16 };
 
     static constexpr Index_t TRI_TABLE[TRI_TABLE_COUNT][TRI_TABLE_INDEX_COUNT]

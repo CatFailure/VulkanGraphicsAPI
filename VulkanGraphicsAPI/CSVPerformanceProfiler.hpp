@@ -1,10 +1,14 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
 #include <string>
 #include <iostream>
 #include <iomanip>
 #include <time.h>
 #include <sstream>
 #include <fstream>
+
 #include "DiagnosticData.hpp"
 
 using namespace SolEngine::Data;
@@ -24,10 +28,12 @@ namespace SolEngine::IO
         static constexpr const char* CSV_TIMESTAMP_FORMAT{ "%d-%m-%Y_%H-%M-%S" };
 
         void GenerateFilenameWithTimestamp();
+        bool CreateOutputDirectory();
         bool InitCSV();
 
         const std::string& _workingDir;
         std::string _filename;
-        std::string _filepath;
+        std::string _outputDirectory;
+        std::string _outputFilepath;
     };
 }
