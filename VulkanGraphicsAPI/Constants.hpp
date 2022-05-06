@@ -17,6 +17,7 @@ namespace SolEngine::Data
 	static constexpr glm::vec3 VEC3_UP     { 0.f, -1.f, 0.f };
 	static constexpr glm::vec3 VEC3_FORWARD{ 0.f, 0.f, 1.f };
 
+    static constexpr float    SPHERE_RADIUS    { 5.f };
     static constexpr uint32_t CUBE_VERTEX_COUNT{ 8U };
 
     static constexpr uint32_t CELL_NEIGHBOURS_COUNT_MOORE      { 26U };

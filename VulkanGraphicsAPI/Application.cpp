@@ -3,7 +3,9 @@
 Application::Application(const ApplicationData& appData, 
                          DiagnosticData& rDiagnosticData, 
                          SettingsBundle& rSettings)
-    : _performanceProfiler(_appData.exeDirectory.string()),
+    : _performanceProfiler(_appData.exeDirectory.string(), 
+                           _rDiagnosticData, 
+                           _rSettings),
       _solRenderer(_appData, 
                    _solWindow,
                    _solDevice),
@@ -28,6 +30,7 @@ Application::Application(const ApplicationData& appData,
     SetupMarchingCubesSystem();
     SetupGameOfLifeSystem();
     SetupEventCallbacks();
+    _performanceProfiler.Init();
 }
 
 Application::~Application()
@@ -48,10 +51,10 @@ void Application::Run()
 
         const float deltaTime = _solClock.Restart();
 
-#ifndef DISABLE_IM_GUI
         _rDiagnosticData.deltaTimeSeconds = deltaTime;
         _rDiagnosticData.totalTimeSeconds = _solClock.GetTotalTime();
 
+#ifndef DISABLE_IM_GUI
         // Start Dear ImGui frame...
         _pGuiWindowManager->NewFrame();
 #endif  // !DISABLE_IM_GUI
@@ -171,7 +174,8 @@ void Application::SetupMarchingCubesSystem()
 
 void Application::SetupGameOfLifeSystem()
 {
-    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid, 
+    _pGameOfLifeSystem = std::make_unique<GameOfLifeSystem>(*_pSolGrid,
+                                                            _performanceProfiler,
                                                             _rSettings.gameOfLifeSettings,
                                                             _rSettings.simulationSettings);
 
