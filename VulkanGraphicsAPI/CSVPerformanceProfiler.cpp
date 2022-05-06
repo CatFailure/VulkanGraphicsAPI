@@ -161,7 +161,9 @@ namespace SolEngine::IO
         GameOfLifeSettings& rGameOfLifeSettings = _rSettings.gameOfLifeSettings;
         const glm::uvec3&   gridDimensions      = _rSettings.gridSettings.dimensions;
 
-        const std::string neighbourhoodType = rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::VON_NEUMANN ? "VON_NEUMANN" : "MOORE";
+        const std::string neighbourhoodType = 
+            rGameOfLifeSettings.neighbourhoodType == NeighbourhoodType::VON_NEUMANN ?
+                "VON_NEUMANN" : "MOORE";
 
         const std::string csvRow = std::format(CSV_ROW_FORMAT_DYNAMIC_DATA,
                                                rSimSettings.generation, 
