@@ -46,6 +46,8 @@ namespace SolEngine::IO
 
     bool CSVPerformanceProfiler::Init()
     {
+        _recordedEntriesCount = 0;
+
         if (!CreateOutputDirectory())
         {
             printf_s("Failed to Create Output Directory: %s",
@@ -149,6 +151,12 @@ namespace SolEngine::IO
 
     void CSVPerformanceProfiler::WriteDynamicDataRow()
     {
+        if (IsMaxEntriesReached())
+        {
+            // Prevent more entries being added.
+            return;
+        }
+
         SimulationSettings& rSimSettings        = _rSettings.simulationSettings;
         GameOfLifeSettings& rGameOfLifeSettings = _rSettings.gameOfLifeSettings;
         const glm::uvec3&   gridDimensions      = _rSettings.gridSettings.dimensions;
@@ -171,5 +179,7 @@ namespace SolEngine::IO
                 {
                     rFilestream << csvRow;
                 });
+
+        ++_recordedEntriesCount;
     }
 }

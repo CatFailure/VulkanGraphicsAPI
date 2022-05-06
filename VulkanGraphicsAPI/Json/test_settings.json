@@ -31,6 +31,6 @@
         "speed": 0.1
     },
     "profiler_settings": {
-        "max_record_count": -1
+        "max_record_count": 25
     }
 }

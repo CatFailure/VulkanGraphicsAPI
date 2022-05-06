@@ -28,6 +28,7 @@ namespace SolEngine::IO
 
         bool Init();
         bool LogSnapshot();
+        bool IsMaxEntriesReached() const { return !(_recordedEntriesCount < _rSettings.profilerSettings.maxRecordCount); }
 
     private:
         static constexpr const char* CSV_EXT                    { ".csv" };
@@ -54,5 +55,7 @@ namespace SolEngine::IO
         std::string _filename;
         std::string _outputDirectory;
         std::string _outputFilepath;
+
+        int _recordedEntriesCount{ 0 };
     };
 }
