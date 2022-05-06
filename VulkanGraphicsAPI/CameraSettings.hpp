@@ -63,12 +63,12 @@ namespace SolEngine::Settings
         glm::vec3 position          { 0.f, 0.f, 55.f };
 
     private:
-        static constexpr const char* PROP_NEAR           { "near" };
-        static constexpr const char* PROP_FAR            { "far" };
-        static constexpr const char* PROP_FOV            { "field_of_view" };
-        static constexpr const char* PROP_POSITION_OBJ   { "position" };
-        static constexpr const char* PROP_POSITION_X     { "x" };
-        static constexpr const char* PROP_POSITION_Y     { "y" };
-        static constexpr const char* PROP_POSITION_Z     { "z" };
+        static constexpr const char* PROP_NEAR        { "near" };
+        static constexpr const char* PROP_FAR         { "far" };
+        static constexpr const char* PROP_FOV         { "field_of_view" };
+        static constexpr const char* PROP_POSITION_OBJ{ "position" };
+        static constexpr const char* PROP_POSITION_X  { "x" };
+        static constexpr const char* PROP_POSITION_Y  { "y" };
+        static constexpr const char* PROP_POSITION_Z  { "z" };
     };
 }

@@ -22,7 +22,7 @@ namespace SolEngine::Settings
             return true;
         };
 
-        int maxRecordCount{ -1 };
+        int maxRecordCount{ -1 };   // Values below 0 disable recording
 
     private:
         static constexpr const char* PROP_MAX_RECORD_COUNT{ "max_record_count" };

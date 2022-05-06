@@ -12,8 +12,8 @@ int main(size_t argc, char* argv[])
 		.exeDirectory	  = path(argv[ARG_EXE_PATH]).parent_path()
 	};
 
-	DiagnosticData	   diagnosticData{};
-	SettingsBundle	   settings	     {};
+	DiagnosticData diagnosticData{};
+	SettingsBundle settings	     {};
 
 	// Are any settings being passed by cmd?
 	if (argc == MAX_CMD_ARG_COUNT)
