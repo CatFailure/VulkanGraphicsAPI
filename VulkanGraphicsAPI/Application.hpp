@@ -1,8 +1,4 @@
 #pragma once
-#if _DEBUG_LAPTOP || NDEBUG_LAPTOP
-#define LAPTOP_BUILD
-#define DISABLE_IM_GUI	// Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
-#endif // _DEBUG_LAPTOP || NDEBUG_LAPTOP
 
 #include "SolClock.hpp"
 #include "SolDescriptorWriter.hpp"
@@ -26,9 +22,6 @@ class Application : public IMonoBehaviour
 public:
     Application() = delete;
     Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData, SettingsBundle& rSettings);
-    Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData,
-                RenderSettings& rRenderSettings, CameraSettings& rCameraSettings, GridSettings& rGridSettings, 
-                GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
     ~Application();
         
     void Run();
@@ -58,13 +51,9 @@ private:
     void CreateGuiWindowManager();
 #endif  // !DISABLE_IM_GUI
 
-    ApplicationData     _appData;
-    CameraSettings&     _rCameraSettings;
-    DiagnosticData&     _rDiagnosticData;
-    RenderSettings&     _rRenderSettings;
-    GridSettings&       _rGridSettings;
-    GameOfLifeSettings& _rGameOfLifeSettings;
-    SimulationSettings& _rSimulationSettings;
+    ApplicationData _appData;
+    SettingsBundle& _rSettings;
+    DiagnosticData& _rDiagnosticData;
 
     SolClock    _solClock;
     SolWindow   _solWindow;

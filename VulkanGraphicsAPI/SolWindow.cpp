@@ -3,9 +3,11 @@
 namespace SolEngine
 {
     SolWindow::SolWindow(const std::string& winTitle, 
-                         const glm::uvec2& winDimensions)
+                         const glm::uvec2& winDimensions, 
+                         SettingsBundle& rSettings)
         : _winTitle(winTitle),
-          _winDimensions(winDimensions)
+          _winDimensions(winDimensions),
+          _rSettings(rSettings)
     {
         CreateGLFWWindow();
     }
@@ -91,6 +93,26 @@ namespace SolEngine
         }
     }
 
+    void SolWindow::FileDroppedCallback(GLFWwindow* pWindow, 
+                                        const int count, 
+                                        const char* filepaths[])
+    {
+        if (count != MAX_FILE_DROP_COUNT)
+        {
+            return;
+        }
+
+        SolWindow* pSolWindow = reinterpret_cast<SolWindow*>(glfwGetWindowUserPointer(pWindow));
+
+        SettingsFileLoader::GetInstance().LoadSettingsFromFile(filepaths[0], 
+                                                               &pSolWindow->_rSettings);
+
+#ifdef LAPTOP_BUILD
+        // Toggle the simulation to play automatically on laptop builds (since there's no GUI to start it manually)
+        pSolWindow->_rSettings.simulationSettings.state = SimulationState::PLAY;
+#endif // LAPTOP_BUILD
+    }
+
     void SolWindow::CreateGLFWWindow()
     {
         glfwInit();                                    // Initialise GLFW Library
@@ -108,5 +130,6 @@ namespace SolEngine
         glfwSetCursorPosCallback(_pWindow, CursorPositionCallback);             // Bind Mouse Position Callback
         glfwSetCursorEnterCallback(_pWindow, CursorEnterCallback);              // Bind Mouse Enter Callback
         glfwSetMouseButtonCallback(_pWindow, MouseButtonCallback);              // Bind Mouse Button Callback
+        glfwSetDropCallback(_pWindow, FileDroppedCallback);                     // Bind File Dropped Callback
     }
 }

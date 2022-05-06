@@ -1,13 +1,20 @@
 #pragma once
+#if _DEBUG_LAPTOP || NDEBUG_LAPTOP
+#define LAPTOP_BUILD
+#define DISABLE_IM_GUI	// Disables all Dear ImGui integration. (On by default on laptop due to insufficient Pool memory)
+#endif // _DEBUG_LAPTOP || NDEBUG_LAPTOP
 #define VK_USE_PLATFORM_WIN32_KHR
 
 #include "ApplicationData.hpp"
 #include "DebugHelpers.hpp"
 #include "IDisposable.hpp"
 #include "Cursor.hpp"
+#include "SettingsFileLoader.hpp"
 
+using namespace SolEngine::Data;
 using namespace SolEngine::Interface;
 using namespace SolEngine::Input;
+using namespace SolEngine::Settings;
 using namespace Utility;
 
 namespace SolEngine
@@ -15,7 +22,7 @@ namespace SolEngine
     class SolWindow : public IDisposable
     {
     public:
-        SolWindow(const std::string& winTitle, const glm::uvec2& winDimensions);
+        SolWindow(const std::string& winTitle, const glm::uvec2& winDimensions, SettingsBundle& rSettings);
         ~SolWindow();
 
         bool ShouldClose()      const { return glfwWindowShouldClose(_pWindow); }
@@ -33,6 +40,7 @@ namespace SolEngine
         static void CursorPositionCallback(GLFWwindow* pWindow, const double xPos, const double yPos);
         static void CursorEnterCallback(GLFWwindow* pWindow, const int entered);
         static void MouseButtonCallback(GLFWwindow* pWindow, const int button, const int action, const int mods);
+        static void FileDroppedCallback(GLFWwindow* pWindow, const int count, const char* filepaths[]);
 
         void CreateGLFWWindow();
 
@@ -41,5 +49,6 @@ namespace SolEngine
 
         std::string _winTitle{ NULL };  // Application Window Title
         GLFWwindow* _pWindow { NULL };  // Application Window
+        SettingsBundle& _rSettings;
     };
 }
