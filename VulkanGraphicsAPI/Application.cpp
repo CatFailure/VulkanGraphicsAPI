@@ -3,7 +3,8 @@
 Application::Application(const ApplicationData& appData, 
                          DiagnosticData& rDiagnosticData, 
                          SettingsBundle& rSettings)
-    : _solRenderer(_appData, 
+    : _performanceProfiler(_appData.exeDirectory.string()),
+      _solRenderer(_appData, 
                    _solWindow,
                    _solDevice),
       _solDevice(_solWindow,

@@ -9,6 +9,7 @@
 #include "GameOfLifeSystem.hpp"
 #include "CameraController.hpp"
 #include "SettingsBundle.hpp"
+#include "CSVPerformanceProfiler.hpp"
 
 using namespace SolEngine;
 using namespace SolEngine::Data;
@@ -60,6 +61,8 @@ private:
     SolWindow   _solWindow;
     SolDevice   _solDevice;
     SolRenderer _solRenderer;
+
+    CSVPerformanceProfiler _performanceProfiler;
 
     std::unique_ptr<SolDescriptorPool> _pSolDescriptorPool;
 
