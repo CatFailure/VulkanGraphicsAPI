@@ -248,7 +248,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -295,7 +295,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>E:\VulkanSDK\1.2.189.2\Include;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glm;E:\Users\Cameron\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -327,7 +327,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;NDEBUG_LAPTOP;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>D:\VulkanSDK\1.2.189.2\Include;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glm;C:\Users\camso\Documents\Visual Studio 2019\Libraries\glfw-3.3.4.bin.WIN64\include;..\Libraries\rapidjson\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
@@ -417,6 +417,7 @@
     <ClInclude Include="MarchingCubesSystem.hpp" />
     <ClInclude Include="MouseButton.hpp" />
     <ClInclude Include="NeighbourhoodType.hpp" />
+    <ClInclude Include="ProfilerSettings.hpp" />
     <ClInclude Include="RandomNumberGenerator.hpp" />
     <ClInclude Include="RenderSettings.hpp" />
     <ClInclude Include="SettingsBundle.hpp" />

@@ -401,6 +401,9 @@
     <ClInclude Include="SettingsFileLoader.hpp">
       <Filter>SolEngine\IO</Filter>
     </ClInclude>
+    <ClInclude Include="ProfilerSettings.hpp">
+      <Filter>SolEngine\Settings</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SimpleShader.frag">

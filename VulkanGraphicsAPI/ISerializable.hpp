@@ -15,6 +15,8 @@ namespace SolEngine::Interface
 {
     struct ISerializable
     {
+        virtual ~ISerializable() = default;
+
         bool DeserializeFromFile(const std::string& filepath)
         {
             FILE* pFile;

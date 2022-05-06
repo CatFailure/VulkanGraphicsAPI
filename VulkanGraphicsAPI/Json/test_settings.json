@@ -29,5 +29,8 @@
     "simulation_settings": {
         "seed": 0,
         "speed": 0.1
+    },
+    "profiler_settings": {
+        "max_record_count": -1
     }
 }
