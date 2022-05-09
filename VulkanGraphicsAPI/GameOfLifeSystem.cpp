@@ -3,9 +3,11 @@
 namespace SolEngine::System
 {
     GameOfLifeSystem::GameOfLifeSystem(SolGrid& rSolGrid, 
+                                       CSVPerformanceProfiler& rPerformanceProfiler,
                                        GameOfLifeSettings& rGameOfLifeSettings,
                                        SimulationSettings& rSimulationSettings)
         : _rSolGrid(rSolGrid),
+          _rPerformanceProfiler(rPerformanceProfiler),
           _rGameOfLifeSettings(rGameOfLifeSettings),
           _rSimulationSettings(rSimulationSettings),
           _nextGenerationDelayRemaining(rSimulationSettings.speed)
@@ -410,6 +412,8 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::NextGeneration()
     {
+        _rPerformanceProfiler.LogSnapshot();
+
         UpdateAllCellStates();                  // Update all cell states to the next generation
         CheckAllCellNeighbours();               // Check what state they will be in the generation after
         ResetNextGenerationDelayRemaining();

@@ -7,13 +7,13 @@ int main(size_t argc, char* argv[])
 {
 	const ApplicationData appData
 	{
-		.windowTitle	  = "Marching Cubes Cellular Automata [v1.1.1 External Settings Support]",
+		.windowTitle	  = "Marching Cubes Cellular Automata [v1.2.0 CSV Profiling Support]",
 		.windowDimensions = glm::uvec2(1280, 720),
 		.exeDirectory	  = path(argv[ARG_EXE_PATH]).parent_path()
 	};
 
-	DiagnosticData	   diagnosticData{};
-	SettingsBundle	   settings	     {};
+	DiagnosticData diagnosticData{};
+	UserSettings   settings	     {};
 
 	// Are any settings being passed by cmd?
 	if (argc == MAX_CMD_ARG_COUNT)
@@ -25,7 +25,7 @@ int main(size_t argc, char* argv[])
 	}
 	else if (argc > MAX_CMD_ARG_COUNT)
 	{
-		printf_s("Too many Arguments - Possible multiple files uploaded (This is not allowed).\nNo Settings Loaded.");
+		printf_s("Too many Arguments - Possible multiple files uploaded (This is not allowed).\nNo Settings Loaded.\n");
 	}
 
 #ifdef LAPTOP_BUILD

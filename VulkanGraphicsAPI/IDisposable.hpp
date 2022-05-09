@@ -4,7 +4,7 @@ namespace SolEngine::Interface
 	class IDisposable
 	{
 	public:
-		virtual ~IDisposable() {}
+		virtual ~IDisposable() = default;
 		void virtual Dispose() = 0;
 	};
 }

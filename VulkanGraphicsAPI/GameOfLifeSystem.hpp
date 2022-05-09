@@ -3,16 +3,18 @@
 #include "SolEvent.hpp"
 #include "GameOfLifeSettings.hpp"
 #include "SimulationSettings.hpp"
+#include "CSVPerformanceProfiler.hpp"
 
 using namespace SolEngine::Events;
 using namespace SolEngine::Settings;
+using namespace SolEngine::IO;
 
 namespace SolEngine::System
 {
     class GameOfLifeSystem
     {
     public:
-        GameOfLifeSystem(SolGrid& rSolGrid, GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
+        GameOfLifeSystem(SolGrid& rSolGrid, CSVPerformanceProfiler& rPerformanceProfiler, GameOfLifeSettings& rGameOfLifeSettings, SimulationSettings& rSimulationSettings);
 
         void CheckAllCellNeighbours();
         void UpdateAllCellStates();
@@ -39,8 +41,9 @@ namespace SolEngine::System
 
         float _nextGenerationDelayRemaining;
 
-        SolGrid&            _rSolGrid;
-        GameOfLifeSettings& _rGameOfLifeSettings;
-        SimulationSettings& _rSimulationSettings;
+        SolGrid&                _rSolGrid;
+        CSVPerformanceProfiler& _rPerformanceProfiler;
+        GameOfLifeSettings&     _rGameOfLifeSettings;
+        SimulationSettings&     _rSimulationSettings;
     };
 }

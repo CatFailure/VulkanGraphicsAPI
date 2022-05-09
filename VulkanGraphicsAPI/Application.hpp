@@ -8,7 +8,8 @@
 #include "MarchingCubesSystem.hpp"
 #include "GameOfLifeSystem.hpp"
 #include "CameraController.hpp"
-#include "SettingsBundle.hpp"
+#include "UserSettings.hpp"
+#include "CSVPerformanceProfiler.hpp"
 
 using namespace SolEngine;
 using namespace SolEngine::Data;
@@ -21,7 +22,7 @@ class Application : public IMonoBehaviour
 {
 public:
     Application() = delete;
-    Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData, SettingsBundle& rSettings);
+    Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData, UserSettings& rSettings);
     ~Application();
         
     void Run();
@@ -29,6 +30,7 @@ public:
 private:
     static constexpr float CAMERA_MOVE_SPEED{ 1.5f };
     static constexpr float GAME_OBJECT_ROT_SPEED{ glm::radians(.5f) };
+
     // Inherited via IMonoBehaviour
     virtual void Update(const float deltaTime) override;
     void Render();
@@ -52,13 +54,15 @@ private:
 #endif  // !DISABLE_IM_GUI
 
     ApplicationData _appData;
-    SettingsBundle& _rSettings;
+    UserSettings& _rSettings;
     DiagnosticData& _rDiagnosticData;
 
     SolClock    _solClock;
     SolWindow   _solWindow;
     SolDevice   _solDevice;
     SolRenderer _solRenderer;
+
+    CSVPerformanceProfiler _performanceProfiler;
 
     std::unique_ptr<SolDescriptorPool> _pSolDescriptorPool;
 

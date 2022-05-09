@@ -67,6 +67,9 @@
     <Filter Include="SolEngine\Input">
       <UniqueIdentifier>{cdf4c170-75b4-4530-808a-df1148e0c5d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SolEngine\IO">
+      <UniqueIdentifier>{bf936567-3de7-4607-a117-8dedf9518504}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugHelpers.cpp">
@@ -180,8 +183,11 @@
     <ClCompile Include="GuiRenderSystemView.cpp">
       <Filter>SolEngine\GUI\View</Filter>
     </ClCompile>
+    <ClCompile Include="CSVPerformanceProfiler.cpp">
+      <Filter>SolEngine\IO</Filter>
+    </ClCompile>
     <ClCompile Include="SettingsFileLoader.cpp">
-      <Filter>SolEngine\Settings</Filter>
+      <Filter>SolEngine\IO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -386,10 +392,16 @@
     <ClInclude Include="ISerializable.hpp">
       <Filter>SolEngine\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SettingsBundle.hpp">
+    <ClInclude Include="UserSettings.hpp">
       <Filter>SolEngine\Settings</Filter>
     </ClInclude>
+    <ClInclude Include="CSVPerformanceProfiler.hpp">
+      <Filter>SolEngine\IO</Filter>
+    </ClInclude>
     <ClInclude Include="SettingsFileLoader.hpp">
+      <Filter>SolEngine\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="ProfilerSettings.hpp">
       <Filter>SolEngine\Settings</Filter>
     </ClInclude>
   </ItemGroup>

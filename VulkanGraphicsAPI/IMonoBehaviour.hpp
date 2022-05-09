@@ -2,9 +2,9 @@
 
 namespace SolEngine::Interface
 {
-	class IMonoBehaviour
+	struct IMonoBehaviour
 	{
-	public:
+		virtual ~IMonoBehaviour() = default;
 		virtual void Update(const float deltaTime) = 0;
 	};
 }

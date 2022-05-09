@@ -4,7 +4,7 @@ namespace SolEngine
 {
     SolWindow::SolWindow(const std::string& winTitle, 
                          const glm::uvec2& winDimensions, 
-                         SettingsBundle& rSettings)
+                         UserSettings& rSettings)
         : _winTitle(winTitle),
           _winDimensions(winDimensions),
           _rSettings(rSettings)
