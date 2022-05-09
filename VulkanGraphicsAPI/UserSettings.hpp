@@ -8,7 +8,7 @@
 
 namespace SolEngine::Settings
 {
-    struct SettingsBundle : public ISerializable
+    struct UserSettings : public ISerializable
     {
 		virtual bool Deserialize(const rapidjson::Value& obj) override
 		{

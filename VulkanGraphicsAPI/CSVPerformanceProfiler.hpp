@@ -12,7 +12,7 @@
 #include <functional>
 
 #include "DiagnosticData.hpp"
-#include "SettingsBundle.hpp"
+#include "UserSettings.hpp"
 
 using namespace SolEngine::Data;
 using namespace SolEngine::Settings;
@@ -24,7 +24,7 @@ namespace SolEngine::IO
     public:
         typedef std::function<void(std::ofstream&)> OpenCSVCallback_t;
 
-        CSVPerformanceProfiler(const std::string& workingDir, DiagnosticData& rDiagnosticData, SettingsBundle& rSettings);
+        CSVPerformanceProfiler(const std::string& workingDir, DiagnosticData& rDiagnosticData, UserSettings& rSettings);
 
         bool Init();
         bool LogSnapshot();
@@ -50,7 +50,7 @@ namespace SolEngine::IO
 
         const std::string& _workingDir;
         DiagnosticData& _rDiagnosticData;
-        SettingsBundle& _rSettings;
+        UserSettings& _rSettings;
 
         std::string _filename;
         std::string _outputDirectory;

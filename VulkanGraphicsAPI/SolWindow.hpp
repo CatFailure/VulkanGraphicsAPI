@@ -23,7 +23,7 @@ namespace SolEngine
     class SolWindow : public IDisposable
     {
     public:
-        SolWindow(const std::string& winTitle, const glm::uvec2& winDimensions, SettingsBundle& rSettings);
+        SolWindow(const std::string& winTitle, const glm::uvec2& winDimensions, UserSettings& rSettings);
         ~SolWindow();
 
         bool ShouldClose()      const { return glfwWindowShouldClose(_pWindow); }
@@ -48,8 +48,8 @@ namespace SolEngine
         glm::uvec2 _winDimensions;                    // Window Dimensions
         bool       _isFramebufferResized{ false };    // Was the window resized?
 
-        std::string _winTitle{ NULL };  // Application Window Title
-        GLFWwindow* _pWindow { NULL };  // Application Window
-        SettingsBundle& _rSettings;
+        std::string   _winTitle{ NULL };  // Application Window Title
+        GLFWwindow*   _pWindow { NULL };  // Application Window
+        UserSettings& _rSettings;
     };
 }

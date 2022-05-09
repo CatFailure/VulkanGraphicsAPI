@@ -2,7 +2,7 @@
 
 Application::Application(const ApplicationData& appData, 
                          DiagnosticData& rDiagnosticData, 
-                         SettingsBundle& rSettings)
+                         UserSettings& rSettings)
     : _performanceProfiler(_appData.exeDirectory.string(), 
                            _rDiagnosticData, 
                            _rSettings),
@@ -206,7 +206,7 @@ void Application::SetupEventCallbacks()
                         });
 
     SettingsFileLoader::GetInstance().onFileLoadedEvent
-                                     .AddListener([this](const SettingsBundle& settings)
+                                     .AddListener([this](const UserSettings& settings)
                                      {
                                           // Queue up a simulation reset to reflect settings file changes
                                           _rSettings.simulationSettings.isSimulationResetRequested = true;

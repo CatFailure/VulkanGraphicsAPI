@@ -392,7 +392,7 @@
     <ClInclude Include="ISerializable.hpp">
       <Filter>SolEngine\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="SettingsBundle.hpp">
+    <ClInclude Include="UserSettings.hpp">
       <Filter>SolEngine\Settings</Filter>
     </ClInclude>
     <ClInclude Include="CSVPerformanceProfiler.hpp">

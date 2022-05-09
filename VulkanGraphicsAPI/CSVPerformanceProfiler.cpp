@@ -4,7 +4,7 @@ namespace SolEngine::IO
 {
     CSVPerformanceProfiler::CSVPerformanceProfiler(const std::string& workingDir, 
                                                    DiagnosticData& rDiagnosticData,
-                                                   SettingsBundle& rSettings)
+                                                   UserSettings& rSettings)
         : _workingDir(workingDir),
           _rDiagnosticData(rDiagnosticData),
           _rSettings(rSettings)

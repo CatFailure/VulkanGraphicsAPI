@@ -8,7 +8,7 @@
 #include "MarchingCubesSystem.hpp"
 #include "GameOfLifeSystem.hpp"
 #include "CameraController.hpp"
-#include "SettingsBundle.hpp"
+#include "UserSettings.hpp"
 #include "CSVPerformanceProfiler.hpp"
 
 using namespace SolEngine;
@@ -22,7 +22,7 @@ class Application : public IMonoBehaviour
 {
 public:
     Application() = delete;
-    Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData, SettingsBundle& rSettings);
+    Application(const ApplicationData& appData, DiagnosticData& rDiagnosticData, UserSettings& rSettings);
     ~Application();
         
     void Run();
@@ -54,7 +54,7 @@ private:
 #endif  // !DISABLE_IM_GUI
 
     ApplicationData _appData;
-    SettingsBundle& _rSettings;
+    UserSettings& _rSettings;
     DiagnosticData& _rDiagnosticData;
 
     SolClock    _solClock;

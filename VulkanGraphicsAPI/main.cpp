@@ -13,7 +13,7 @@ int main(size_t argc, char* argv[])
 	};
 
 	DiagnosticData diagnosticData{};
-	SettingsBundle settings	     {};
+	UserSettings   settings	     {};
 
 	// Are any settings being passed by cmd?
 	if (argc == MAX_CMD_ARG_COUNT)
@@ -25,7 +25,7 @@ int main(size_t argc, char* argv[])
 	}
 	else if (argc > MAX_CMD_ARG_COUNT)
 	{
-		printf_s("Too many Arguments - Possible multiple files uploaded (This is not allowed).\nNo Settings Loaded.");
+		printf_s("Too many Arguments - Possible multiple files uploaded (This is not allowed).\nNo Settings Loaded.\n");
 	}
 
 #ifdef LAPTOP_BUILD

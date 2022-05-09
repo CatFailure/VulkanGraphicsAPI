@@ -420,7 +420,7 @@
     <ClInclude Include="ProfilerSettings.hpp" />
     <ClInclude Include="RandomNumberGenerator.hpp" />
     <ClInclude Include="RenderSettings.hpp" />
-    <ClInclude Include="SettingsBundle.hpp" />
+    <ClInclude Include="UserSettings.hpp" />
     <ClInclude Include="SettingsFileLoader.hpp" />
     <ClInclude Include="SimulationSettings.hpp" />
     <ClInclude Include="SimulationState.hpp" />
