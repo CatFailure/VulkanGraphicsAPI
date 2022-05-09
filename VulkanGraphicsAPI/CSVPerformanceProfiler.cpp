@@ -25,7 +25,7 @@ namespace SolEngine::IO
         const time_t time = std::time(NULL);                    // Retrieve the current timestamp
         tm localTime;
 
-        if (::localtime_s(&localTime, &time) != 0)
+        if (localtime_s(&localTime, &time) != 0)
         {
             printf_s("Failed to retrieve local time!\n");
 
