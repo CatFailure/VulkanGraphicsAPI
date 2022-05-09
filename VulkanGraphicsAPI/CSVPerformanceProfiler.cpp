@@ -50,7 +50,7 @@ namespace SolEngine::IO
 
         if (!CreateOutputDirectory())
         {
-            printf_s("Failed to Create Output Directory: %s",
+            printf_s("Failed to Create Output Directory: %s\n",
                      _outputDirectory.c_str());
 
             return false;
@@ -77,7 +77,7 @@ namespace SolEngine::IO
         {
             fileStream.close();
 
-            printf_s("Failed to Create CSV file: %s", 
+            printf_s("Failed to Create CSV file: %s\n", 
                      _outputFilepath.c_str());
 
             return false;
@@ -133,11 +133,13 @@ namespace SolEngine::IO
                                                gridDimensions_string, 
                                                _rDiagnosticData.GetTotalMemoryAllocatedBytes());
 
+        const auto writeRow = [&csvRow](std::ofstream& rFilestream)
+        {
+            rFilestream << csvRow;
+        };
+
         OpenCSV(std::ios_base::app, 
-                [&csvRow](std::ofstream& rFilestream)
-                {
-                    rFilestream << csvRow;
-                });
+                writeRow);
     }
 
     void CSVPerformanceProfiler::WriteDynamicHeaders()
@@ -176,11 +178,13 @@ namespace SolEngine::IO
                                                _rDiagnosticData.deltaTimeSeconds,
                                                _rDiagnosticData.totalTimeSeconds);
 
+        const auto writeRow = [&csvRow](std::ofstream& rFilestream)
+        {
+            rFilestream << csvRow;
+        };
+
         OpenCSV(std::ios_base::app, 
-                [&csvRow](std::ofstream& rFilestream) 
-                {
-                    rFilestream << csvRow;
-                });
+                writeRow);
 
         ++_recordedEntriesCount;
     }
