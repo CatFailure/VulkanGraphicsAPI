@@ -2,12 +2,9 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
-#include <string>
-#include <iostream>
 #include <format>
 #include <iomanip>
 #include <time.h>
-#include <sstream>
 #include <fstream>
 #include <functional>
 
@@ -49,8 +46,8 @@ namespace SolEngine::IO
         void WriteDynamicDataRow();
 
         const std::string& _workingDir;
-        DiagnosticData& _rDiagnosticData;
-        UserSettings& _rSettings;
+        DiagnosticData&    _rDiagnosticData;
+        UserSettings&      _rSettings;
 
         std::string _filename;
         std::string _outputDirectory;
