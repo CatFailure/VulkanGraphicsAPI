@@ -24,7 +24,13 @@ namespace SolEngine::IO
     {
         const time_t time = std::time(NULL);                    // Retrieve the current timestamp
         tm localTime;
-        ::localtime_s(&localTime, &time);
+
+        if (::localtime_s(&localTime, &time) != 0)
+        {
+            printf_s("Failed to retrieve local time!\n");
+
+            return;
+        }
 
         std::ostringstream oss;
         oss << std::put_time(&localTime, CSV_TIMESTAMP_FORMAT); // Format timestamp into string
