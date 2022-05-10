@@ -9,7 +9,7 @@ namespace SolEngine::IO
           _rDiagnosticData(rDiagnosticData),
           _rSettings(rSettings)
     {
-        if (_rSettings.profilerSettings.maxRecordCount == -1)
+        if (!IsLoggingEnabled())
         {
             return;
         }
@@ -19,6 +19,11 @@ namespace SolEngine::IO
 
     bool CSVPerformanceProfiler::LogSnapshot()
     {
+        if (!IsLoggingEnabled())
+        {
+            return true;
+        }
+
         WriteDynamicDataRow();
         WriteNewLine();
 

@@ -26,6 +26,7 @@ namespace SolEngine::IO
         bool Init();
         bool LogSnapshot();
         bool IsMaxEntriesReached() const { return !(_recordedEntriesCount < _rSettings.profilerSettings.maxRecordCount); }
+        bool IsLoggingEnabled()    const { return _rSettings.profilerSettings.maxRecordCount != -1; }
 
     private:
         static constexpr const char* CSV_EXT                    { ".csv" };

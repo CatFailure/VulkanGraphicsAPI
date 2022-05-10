@@ -30,6 +30,12 @@ Application::Application(const ApplicationData& appData,
     SetupMarchingCubesSystem();
     SetupGameOfLifeSystem();
     SetupEventCallbacks();
+
+    if (!_performanceProfiler.IsLoggingEnabled())
+    {
+        return;
+    }
+
     _performanceProfiler.Init();
 }
 

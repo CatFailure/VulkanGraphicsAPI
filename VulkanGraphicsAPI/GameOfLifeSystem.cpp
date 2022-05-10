@@ -412,7 +412,10 @@ namespace SolEngine::System
 
     void GameOfLifeSystem::NextGeneration()
     {
-        _rPerformanceProfiler.LogSnapshot();
+        if (_rPerformanceProfiler.IsLoggingEnabled())
+        {
+            _rPerformanceProfiler.LogSnapshot();
+        }
 
         UpdateAllCellStates();                  // Update all cell states to the next generation
         CheckAllCellNeighbours();               // Check what state they will be in the generation after
