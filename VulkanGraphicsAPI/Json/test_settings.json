@@ -6,7 +6,7 @@
         "position": {
             "x": 0.0,
             "y": 0.0,
-            "z": 32.0
+            "z": 40.0
         }
     },
     "game_of_life_settings": {
@@ -17,9 +17,9 @@
     },
     "grid_settings": {
         "dimensions": {
-            "x": 16,
-            "y": 16,
-            "z": 16
+            "x": 30,
+            "y": 30,
+            "z": 30
         }
     },
     "render_settings": {

@@ -9,6 +9,11 @@ namespace SolEngine::IO
           _rDiagnosticData(rDiagnosticData),
           _rSettings(rSettings)
     {
+        if (_rSettings.profilerSettings.maxRecordCount == -1)
+        {
+            return;
+        }
+
         GenerateFilenameWithTimestamp();
     }
 
